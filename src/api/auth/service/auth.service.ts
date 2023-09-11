@@ -8,10 +8,14 @@ import UserRepository from '../../user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestUserSaveDto from '../dto/user.save.dto';
-import { BadRequestException } from 'src/exception/customException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from 'src/exception/customException';
 import { JwtPayload } from 'src/types';
 import { UserRole } from '../dto/user.role';
 import CommonResponse from 'src/common/dto/api.response';
+import RequestUserLoginDto from '../dto/user.login.dto';
 
 @Injectable()
 export default class AuthService {
@@ -43,6 +47,24 @@ export default class AuthService {
     return CommonResponse.of({
       statusCode: 200,
       message: '회원가입 했습니다.',
+      data: token,
+    });
+  }
+
+  public async loginUser(dto: RequestUserLoginDto) {
+    const findUser = await this.userRepository.findOne({
+      where: { token: dto.token },
+    });
+
+    if (!findUser) {
+      throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+
+    const token = this.generateToken({ id: findUser.id, role: UserRole.USER });
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '로그인에 성공했습니다.',
       data: token,
     });
   }

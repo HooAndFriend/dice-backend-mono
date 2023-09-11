@@ -4,11 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsString } from 'class-validator';
 export default class RequestUserLoginDto {
-  @ApiProperty()
+  @ApiProperty({ example: '123asdasdpsajdgfkhdasfglajdfh' })
   @IsString()
-  email: string;
-
-  @ApiProperty()
-  @IsString()
-  password: string;
+  token: string;
 }
