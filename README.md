@@ -1,6 +1,8 @@
+# Dice Backend
+
 ## Description
 
-Nest js 보일러 플레이팅
+Dice Project Backend Repository 입니다.
 
 ## 폴더 구조
 
