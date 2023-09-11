@@ -20,6 +20,7 @@ export default class LocalStrategy extends PassportStrategy(Strategy) {
     });
   }
   async validate(email: string, password: string): Promise<ApiResponse<any>> {
-    return await this.authService.localLogin({ email, password });
+    return null;
+    // return await this.authService.localLogin({ email, password });
   }
 }

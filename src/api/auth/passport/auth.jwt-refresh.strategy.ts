@@ -34,9 +34,10 @@ export default class JwtRefreshStrategy extends PassportStrategy(
   }
 
   public async validate(req, payload: JwtPayload): Promise<any> {
-    return await this.authService.findRefreshToken(
-      req.body.refreshToken,
-      payload,
-    );
+    return null;
+    // return await this.authService.findRefreshToken(
+    //   req.body.refreshToken,
+    //   payload,
+    // );
   }
 }

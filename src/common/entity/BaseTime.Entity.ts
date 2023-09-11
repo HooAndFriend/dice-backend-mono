@@ -1,18 +1,10 @@
 // ** Typeorm Imports
-import {
-  BaseEntity,
-  CreateDateColumn,
-  DeleteDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export default abstract class BaseTimeEntity extends BaseEntity {
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_date' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_date' })
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }
