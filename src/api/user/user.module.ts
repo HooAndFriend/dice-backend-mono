@@ -4,18 +4,24 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
+// ** Typeorm Imports
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 // ** Custom Module Imports
-import AuthController from './controller/auth.controller';
+import AuthController from './controller/user.controller';
 import LocalStrategy from './passport/auth.local.strategy';
-import AuthService from './service/auth.service';
+import UserRepository from './repository/user.repository';
+import AuthService from './service/user.service';
+import User from './domain/user.entity';
+import { TypeOrmExModule } from 'src/repository/typeOrmEx.module';
 import JwtAccessStrategy from './passport/auth.jwt-access.strategy';
 import JwtRefreshStrategy from './passport/auth.jwt-refresh.strategy';
-import UserModule from '../user/user.module';
 
 @Module({
   imports: [
-    UserModule,
     PassportModule,
+    TypeOrmModule.forFeature([User]),
+    TypeOrmExModule.forCustomRepository([UserRepository]),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -26,7 +32,7 @@ import UserModule from '../user/user.module';
       }),
     }),
   ],
-  exports: [],
+  exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -35,4 +41,4 @@ import UserModule from '../user/user.module';
     JwtRefreshStrategy,
   ],
 })
-export default class AuthModule {}
+export default class UserModule {}

@@ -3,9 +3,10 @@ import AuthModule from './auth/auth.module';
 import UploadModule from './upload/upload.module';
 import ViewModule from './view/view.module';
 import AdapterModule from './adapter/adapter.module';
+import UserModule from './user/user.module';
 
 @Module({
-  imports: [AuthModule, UploadModule, ViewModule, AdapterModule],
+  imports: [AuthModule, UserModule, UploadModule, ViewModule, AdapterModule],
   providers: [],
   exports: [],
   controllers: [],

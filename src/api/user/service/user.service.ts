@@ -6,12 +6,12 @@ import { ConfigService } from '@nestjs/config';
 // ** enum, dto, entity, types Imports
 
 // ** Custom Module Imports
-import UserRepository from '../../user/repository/user.repository';
+import UserRepository from '../repository/user.repository';
 
 // Other Imports
 
 @Injectable()
-export default class AuthService {
+export default class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
