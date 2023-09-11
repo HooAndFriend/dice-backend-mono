@@ -42,7 +42,7 @@ export default class AuthService {
       }),
     );
 
-    const token = this.generateToken({ id: saveUser.id, role: UserRole.USER });
+    const token = this.generateToken({ id: saveUser.id });
 
     return CommonResponse.of({
       statusCode: 200,
@@ -60,7 +60,7 @@ export default class AuthService {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
 
-    const token = this.generateToken({ id: findUser.id, role: UserRole.USER });
+    const token = this.generateToken({ id: findUser.id });
 
     return CommonResponse.of({
       statusCode: 200,
