@@ -16,4 +16,8 @@ export default class UserService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
+
+  public async save() {
+    this.userRepository.findOne({ where: { id: 1 } });
+  }
 }
