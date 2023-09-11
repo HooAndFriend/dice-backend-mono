@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
+import RequestUserSaveDto from '../dto/user.save.dto';
 
 // Other Imports
 
@@ -17,4 +18,6 @@ export default class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
+
+  public async loginUser(dto: RequestUserSaveDto) {}
 }

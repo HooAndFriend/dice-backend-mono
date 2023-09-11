@@ -2,14 +2,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+import { UserType } from 'src/enums/UserType.enum';
 
 export default class RequestUserSaveDto {
-  @ApiProperty()
+  @ApiProperty({ example: '123asdasdpsajdgfkhdasfglajdfh' })
   @IsString()
-  email: string;
+  token: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Pinomaker' })
   @IsString()
-  password: string;
+  nickname: string;
+
+  @ApiProperty({ example: UserType.APPLE })
+  @IsEnum(UserType)
+  type: UserType;
 }

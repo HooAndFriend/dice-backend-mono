@@ -14,7 +14,6 @@ import UserRepository from '../repository/user.repository';
 export default class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 }
