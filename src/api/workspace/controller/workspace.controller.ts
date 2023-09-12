@@ -23,12 +23,12 @@ export default class WorkspaceController {
   constructor(private readonly workspaceService: WorkspaceService) {}
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '유저 생성' })
+  @ApiOperation({ summary: '워크스페이스 생성' })
   @ApiBody({ type: RequestWorkspaceSaveDto })
   @ApiResponse(WorkspaceResponse.saveWorksapce[200])
   @ApiResponse(WorkspaceResponse.saveWorksapce[400])
   @UseGuards(JwtAccessGuard)
-  @Post('/user')
+  @Post('/')
   public async saveUser(
     @Body() dto: RequestWorkspaceSaveDto,
     @Req() { user }: RequestWithUsernDto,
