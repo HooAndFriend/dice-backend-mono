@@ -5,8 +5,8 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
 import { UserType } from 'src/enums/UserType.enum';
 
-@Entity({ name: 'tbl_user' })
-@Unique(['email'])
+@Entity({ name: 'TB_USER' })
+@Unique(['email', 'token'])
 export default class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,7 +22,7 @@ export default class User extends BaseTimeEntity {
   @Column({
     type: 'enum',
     enum: UserType,
-    comment: '소셜 종류',
+    comment: '로그인 종류',
     nullable: false,
   })
   type: UserType;
@@ -38,7 +38,7 @@ export default class User extends BaseTimeEntity {
   @Column({
     type: 'varchar',
     length: 120,
-    comment: '닉네임',
+    comment: '이메일',
     nullable: true,
   })
   email: string;
