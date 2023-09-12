@@ -1,9 +1,16 @@
 // ** Typeorm Imports
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
 import { UserType } from 'src/enums/UserType.enum';
+import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -58,4 +65,7 @@ export default class User extends BaseTimeEntity {
     nullable: true,
   })
   link: string;
+
+  @ManyToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
+  workspaceUser: WorkspaceUser[];
 }
