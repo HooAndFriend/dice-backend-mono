@@ -5,6 +5,7 @@ import ViewModule from './view/view.module';
 import AdapterModule from './adapter/adapter.module';
 import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
+import WorkspaceUserModule from './workspace-user/workspace-user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import WorkspaceModule from './workspace/workspace.module';
     ViewModule,
     AdapterModule,
     WorkspaceModule,
+    WorkspaceUserModule,
   ],
   providers: [],
   exports: [],

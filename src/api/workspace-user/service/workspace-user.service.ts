@@ -5,14 +5,14 @@ import { ConfigService } from '@nestjs/config';
 // ** enum, dto, entity, types Imports
 
 // ** Custom Module Imports
-import WorkspaceRepository from '../repository/workspace-user.repository';
+import WorkspaceUserRepository from '../repository/workspace-user.repository';
 
 // Other Imports
 
 @Injectable()
-export default class WorkspaceService {
+export default class WorkspaceUserService {
   constructor(
-    private readonly workspaceRepository: WorkspaceRepository,
+    private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly configService: ConfigService,
   ) {}
 }

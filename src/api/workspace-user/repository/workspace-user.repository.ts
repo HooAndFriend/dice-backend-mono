@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import { CustomRepository } from 'src/repository/typeorm-ex.decorator';
-import Workspace from '../domain/workspace-user.entity';
+import WorkspaceUser from '../domain/workspace-user.entity';
 
-@CustomRepository(Workspace)
-export default class WorkspaceRepository extends Repository<Workspace> {}
+@CustomRepository(WorkspaceUser)
+export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {}
