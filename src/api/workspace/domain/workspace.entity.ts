@@ -2,7 +2,7 @@
 import {
   Column,
   Entity,
-  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -40,6 +40,6 @@ export default class Workspace extends BaseTimeEntity {
   })
   profile: string;
 
-  @ManyToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
+  @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
   workspaceUser: WorkspaceUser[];
 }

@@ -8,13 +8,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from 'src/repository/typeOrmEx.module';
 import Workspace from './domain/workspace.entity';
 import WorkspaceRepository from './repository/workspace.repository';
-import WorkspaceController from './controller/workspace.controller';
 import WorkspaceService from './service/workspace.service';
+import WorkspaceUserModule from '../workspace-user/workspace-user.module';
+import WorkspaceController from './controller/workspace.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Workspace]),
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
+    WorkspaceUserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceController],

@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
@@ -20,9 +20,10 @@ export default class WorkspaceUser extends BaseTimeEntity {
   })
   role: WorkspaceRoleType;
 
-  @ManyToMany(() => User, (user) => user.workspaceUser)
-  user: User[];
+  @ManyToOne(() => User, (user) => user.workspaceUser)
+  user: User;
 
-  @ManyToMany(() => Workspace, (workspace) => workspace.workspaceUser)
-  workspace: Workspace[];
+  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser)
+  workspace: Workspace;
 }
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk0NTA0MjI3LCJleHAiOjE2OTQ1MDc4Mjd9.WuWEePafsidSEE4jCeOTn7Ba1cyI7WfzHS0R2Bd_cRY
