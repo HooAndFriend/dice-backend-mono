@@ -26,4 +26,3 @@ export default class WorkspaceUser extends BaseTimeEntity {
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser)
   workspace: Workspace;
 }
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk0NTA0MjI3LCJleHAiOjE2OTQ1MDc4Mjd9.WuWEePafsidSEE4jCeOTn7Ba1cyI7WfzHS0R2Bd_cRY

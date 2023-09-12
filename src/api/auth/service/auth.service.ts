@@ -81,4 +81,16 @@ export default class AuthService {
       }),
     };
   }
+
+  public async findUserByJwt({ id }: JwtPayload): Promise<any> {
+    const findUser = await this.userRepository.findOne({ where: { id } });
+    if (!findUser) {
+      throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+    return findUser;
+  }
+
+  public async findRefreshToken({ id }: JwtPayload) {
+    return await this.userRepository.findOne({ where: { id } });
+  }
 }

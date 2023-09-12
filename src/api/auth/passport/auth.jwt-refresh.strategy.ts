@@ -24,7 +24,6 @@ export default class JwtRefreshStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
-          console.log(request.body.refreshToken);
           return request.body.refreshToken;
         },
       ]),
@@ -34,10 +33,6 @@ export default class JwtRefreshStrategy extends PassportStrategy(
   }
 
   public async validate(req, payload: JwtPayload): Promise<any> {
-    return null;
-    // return await this.authService.findRefreshToken(
-    //   req.body.refreshToken,
-    //   payload,
-    // );
+    return await this.authService.findRefreshToken(payload);
   }
 }
