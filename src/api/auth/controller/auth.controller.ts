@@ -51,7 +51,7 @@ export default class AuthController {
   @ApiBody({ type: RequestDiceUserSaveDto })
   @ApiResponse(AuthResponse.saveDiceUser[200])
   @ApiResponse(AuthResponse.saveDiceUser[400])
-  @Post('/social/user')
+  @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
     return await this.authService.saveDiceUser(dto);
   }
