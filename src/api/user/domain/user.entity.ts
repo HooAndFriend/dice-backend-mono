@@ -9,7 +9,7 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import { UserType } from 'src/enums/UserType.enum';
+import { UserType } from 'src/common/enum/UserType.enum';
 import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_USER' })

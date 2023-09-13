@@ -15,7 +15,7 @@ import { DataSource } from 'typeorm';
 import CommonResponse from 'src/common/dto/api.response';
 import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
-import { WorkspaceRoleType } from 'src/enums/WorkspaceRoleType.enum';
+import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 
 // Other Imports
 

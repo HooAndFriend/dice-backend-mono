@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsEnum, IsString } from 'class-validator';
-import { UserType } from 'src/enums/UserType.enum';
+import { UserType } from 'src/common/enum/UserType.enum';
 
 export default class RequestUserSaveDto {
   @ApiProperty({ example: '123asdasdpsajdgfkhdasfglajdfh' })

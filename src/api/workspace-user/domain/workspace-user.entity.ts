@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import { WorkspaceRoleType } from 'src/enums/WorkspaceRoleType.enum';
+import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 import User from 'src/api/user/domain/user.entity';
 import Workspace from 'src/api/workspace/domain/workspace.entity';
 
