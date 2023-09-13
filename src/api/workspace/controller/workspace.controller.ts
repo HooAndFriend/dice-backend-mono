@@ -18,7 +18,7 @@ import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
 import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
 
 @ApiTags('Workspace')
-@Controller('workspace')
+@Controller('/api/workspace')
 export default class WorkspaceController {
   constructor(private readonly workspaceService: WorkspaceService) {}
 

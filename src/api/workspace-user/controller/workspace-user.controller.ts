@@ -8,7 +8,7 @@ import WorkspaceUserService from '../service/workspace-user.service';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Workspace User')
-@Controller('workspace/user')
+@Controller('/api/workspace/user')
 export default class WorkspaceUserController {
   constructor(private readonly workspaceUserService: WorkspaceUserService) {}
 }

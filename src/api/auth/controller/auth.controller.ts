@@ -15,7 +15,7 @@ import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 
 @ApiTags('Auth')
-@Controller('auth')
+@Controller('/api/auth')
 export default class AuthController {
   constructor(private readonly authService: AuthService) {}
 

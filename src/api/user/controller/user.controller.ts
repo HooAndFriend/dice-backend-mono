@@ -8,7 +8,7 @@ import UserService from '../service/user.service';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
-@Controller('user')
+@Controller('/api/user')
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 }
