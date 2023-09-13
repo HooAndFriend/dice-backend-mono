@@ -6,6 +6,9 @@ import { ConfigService } from '@nestjs/config';
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
 
+// ** Utils Imports
+import * as bcrypt from 'bcryptjs';
+
 // ** enum, dto, entity, types Imports
 import {
   BadRequestException,
@@ -15,6 +18,7 @@ import { JwtPayload } from 'src/types';
 import CommonResponse from 'src/common/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
+import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 
 @Injectable()
 export default class AuthService {
@@ -57,6 +61,30 @@ export default class AuthService {
 
     if (!findUser) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+
+    const token = this.generateToken({ id: findUser.id });
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '로그인에 성공했습니다.',
+      data: token,
+    });
+  }
+
+  public async loginDiceUser(dto: RequestDiceUserLoginDto) {
+    const findUser = await this.userRepository.findOne({
+      where: { username: dto.username },
+    });
+
+    if (!findUser) {
+      throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+
+    const result = await bcrypt.compare(dto.password, findUser.password);
+
+    if (!result) {
+      throw new BadRequestException('비밀번호가 맞지 않습니다.');
     }
 
     const token = this.generateToken({ id: findUser.id });
