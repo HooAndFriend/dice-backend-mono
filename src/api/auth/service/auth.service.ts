@@ -7,15 +7,14 @@ import { ConfigService } from '@nestjs/config';
 import UserRepository from '../../user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
-import RequestUserSaveDto from '../dto/user.save.dto';
 import {
   BadRequestException,
   NotFoundException,
 } from 'src/exception/customException';
 import { JwtPayload } from 'src/types';
-import { UserRole } from '../dto/user.role';
 import CommonResponse from 'src/common/dto/api.response';
-import RequestUserLoginDto from '../dto/user.login.dto';
+import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
+import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 
 @Injectable()
 export default class AuthService {
@@ -25,7 +24,7 @@ export default class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async saveUser(dto: RequestUserSaveDto) {
+  public async saveSocialUser(dto: RequestSocialUserSaveDto) {
     const findUser = await this.userRepository.findOne({
       where: { token: dto.token },
     });
@@ -51,7 +50,7 @@ export default class AuthService {
     });
   }
 
-  public async loginUser(dto: RequestUserLoginDto) {
+  public async loginSocialUser(dto: RequestSocialUserLoginDto) {
     const findUser = await this.userRepository.findOne({
       where: { token: dto.token },
     });
