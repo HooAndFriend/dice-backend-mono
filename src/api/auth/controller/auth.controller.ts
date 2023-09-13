@@ -21,7 +21,7 @@ export default class AuthController {
   @ApiBody({ type: RequestSocialUserSaveDto })
   @ApiResponse(AuthResponse.saveUser[200])
   @ApiResponse(AuthResponse.saveUser[400])
-  @Post('/user')
+  @Post('/social/user')
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
     return await this.authService.saveSocialUser(dto);
   }
@@ -30,7 +30,7 @@ export default class AuthController {
   @ApiBody({ type: RequestSocialUserLoginDto })
   @ApiResponse(AuthResponse.loginUser[200])
   @ApiResponse(AuthResponse.loginUser[404])
-  @Post('/')
+  @Post('/social')
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
     return await this.authService.loginSocialUser(dto);
   }
