@@ -12,6 +12,7 @@ import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import { AuthResponse } from 'src/response/auth.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
+import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -36,7 +37,7 @@ export default class AuthController {
     return await this.authService.loginSocialUser(dto);
   }
 
-  @ApiOperation({ summary: '유저 로그인' })
+  @ApiOperation({ summary: '다이스 유저 로그인' })
   @ApiBody({ type: RequestDiceUserLoginDto })
   @ApiResponse(AuthResponse.loginDiceUser[200])
   @ApiResponse(AuthResponse.loginDiceUser[400])
@@ -44,5 +45,14 @@ export default class AuthController {
   @Post('/')
   public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
     return await this.authService.loginDiceUser(dto);
+  }
+
+  @ApiOperation({ summary: '다이스 유저 생성' })
+  @ApiBody({ type: RequestDiceUserSaveDto })
+  @ApiResponse(AuthResponse.saveDiceUser[200])
+  @ApiResponse(AuthResponse.saveDiceUser[400])
+  @Post('/social/user')
+  public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
+    return await this.authService.saveDiceUser(dto);
   }
 }

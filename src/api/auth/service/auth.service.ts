@@ -19,6 +19,8 @@ import CommonResponse from 'src/common/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
+import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
+import { UserType } from 'src/common/enum/UserType.enum';
 
 @Injectable()
 export default class AuthService {
@@ -92,6 +94,35 @@ export default class AuthService {
     return CommonResponse.of({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
+      data: token,
+    });
+  }
+
+  public async saveDiceUser(dto: RequestDiceUserSaveDto) {
+    const findUser = await this.userRepository.findOne({
+      where: { token: dto.username },
+    });
+
+    if (findUser) {
+      return new BadRequestException('이미 회원가입한 유저 입니다.');
+    }
+
+    const hash = await bcrypt.hash(dto.password, 10);
+
+    const saveUser = await this.userRepository.save(
+      this.userRepository.create({
+        username: dto.username,
+        password: hash,
+        nickname: dto.nickname,
+        type: UserType.DICE,
+      }),
+    );
+
+    const token = this.generateToken({ id: saveUser.id });
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '회원가입 했습니다.',
       data: token,
     });
   }
