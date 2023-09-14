@@ -86,7 +86,7 @@ export default class AuthService {
       return CommonResponse.of({
         statusCode: 200,
         message: '회원가입 했습니다.',
-        data: token,
+        data: { token, user: { nickname: saveUser.nickname } },
       });
     } catch (error) {
       this.logger.error(error);
@@ -116,7 +116,7 @@ export default class AuthService {
     return CommonResponse.of({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
-      data: token,
+      data: { token, user: { nickname: findUser.nickname } },
     });
   }
 
@@ -140,7 +140,7 @@ export default class AuthService {
     return CommonResponse.of({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
-      data: token,
+      data: { token, user: { nickname: findUser.nickname } },
     });
   }
 
@@ -192,7 +192,7 @@ export default class AuthService {
       return CommonResponse.of({
         statusCode: 200,
         message: '회원가입 했습니다.',
-        data: token,
+        data: { token, user: { nickname: saveUser.nickname } },
       });
     } catch (error) {
       await queryRunner.rollbackTransaction();
