@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -38,6 +38,8 @@ export default class AuthService {
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
+  private logger = new Logger();
+
   public async saveSocialUser(dto: RequestSocialUserSaveDto) {
     const findUser = await this.userRepository.findOne({
       where: { token: dto.token },
@@ -47,21 +49,57 @@ export default class AuthService {
       return new BadRequestException('이미 회원가입한 유저 입니다.');
     }
 
-    const saveUser = await this.userRepository.save(
-      this.userRepository.create({
-        token: dto.token,
-        nickname: dto.nickname,
-        type: dto.type,
-      }),
-    );
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    const token = this.generateToken({ id: saveUser.id });
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    return CommonResponse.of({
-      statusCode: 200,
-      message: '회원가입 했습니다.',
-      data: token,
-    });
+    try {
+      const saveUser = await queryRunner.manager.save(
+        this.userRepository.create({
+          token: dto.token,
+          nickname: dto.nickname,
+          type: dto.type,
+        }),
+      );
+
+      const saveWorkspace = await queryRunner.manager.save(
+        this.workspaceRepository.create({
+          name: dto.nickname,
+          comment: '',
+          isPersonal: false,
+        }),
+      );
+
+      await queryRunner.manager.save(
+        this.workspaceUserRepository.create({
+          role: WorkspaceRoleType.OWNER,
+          workspace: saveWorkspace,
+          user: saveUser,
+        }),
+      );
+
+      await queryRunner.commitTransaction();
+
+      const token = this.generateToken({ id: saveUser.id });
+
+      return CommonResponse.of({
+        statusCode: 200,
+        message: '회원가입 했습니다.',
+        data: token,
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   public async loginSocialUser(dto: RequestSocialUserLoginDto) {
