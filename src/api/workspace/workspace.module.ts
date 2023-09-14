@@ -11,6 +11,7 @@ import WorkspaceRepository from './repository/workspace.repository';
 import WorkspaceService from './service/workspace.service';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 import WorkspaceController from './controller/workspace.controller';
+import LoggerModule from 'src/util/logger/logger.module';
 
 @Module({
   imports: [

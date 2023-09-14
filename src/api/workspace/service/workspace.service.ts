@@ -1,5 +1,11 @@
 // ** Nest Imports
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
@@ -28,6 +34,8 @@ export default class WorkspaceService {
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
+  private logger = new Logger();
+
   public async saveWorksapce(dto: RequestWorksapceSaveDto, user: User) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { name: dto.name },
@@ -43,8 +51,6 @@ export default class WorkspaceService {
     await queryRunner.startTransaction();
 
     try {
-      await queryRunner.commitTransaction();
-
       const saveWorkspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.name,
@@ -61,15 +67,20 @@ export default class WorkspaceService {
         }),
       );
 
+      await queryRunner.commitTransaction();
+
       return CommonResponse.of({
         statusCode: 200,
         message: '워크스페이스를 생성합니다.',
       });
     } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
       if (error instanceof HttpException) {
         throw new HttpException(error.message, error.getStatus());
       }
-      await queryRunner.rollbackTransaction();
+
+      throw new InternalServerErrorException('Internal Server Error');
     } finally {
       await queryRunner.release();
     }
