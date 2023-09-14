@@ -25,10 +25,15 @@ export const AuthResponse = {
   loginSocialUser: {
     200: createSuccessResponse({
       data: {
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',
-        refreshToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NTA0ODcyN30.1AHIFH9JdJpawAHqPJEMLdhDP1iJiEGZUdyijPsPMf0',
+        token: {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTQ2Njc3ODh9.d2awAqFTFZAczYaQp9ps5Y0wwTXICQtsdqeuMMewKVw',
+          refreshToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTUyNjg5ODh9.LAYNv1HXMXnk19EZEszvWHNLF886pqMVSL0sJ6TTuDM',
+        },
+        user: {
+          nickname: 'Pinomaker',
+        },
       },
       statusCode: 200,
       message: '로그인에 성공했습니다.',
@@ -42,10 +47,15 @@ export const AuthResponse = {
   loginDiceUser: {
     200: createSuccessResponse({
       data: {
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',
-        refreshToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NTA0ODcyN30.1AHIFH9JdJpawAHqPJEMLdhDP1iJiEGZUdyijPsPMf0',
+        token: {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTQ2Njc3ODh9.d2awAqFTFZAczYaQp9ps5Y0wwTXICQtsdqeuMMewKVw',
+          refreshToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTUyNjg5ODh9.LAYNv1HXMXnk19EZEszvWHNLF886pqMVSL0sJ6TTuDM',
+        },
+        user: {
+          nickname: 'Pinomaker',
+        },
       },
       statusCode: 200,
       message: '로그인에 성공했습니다.',
