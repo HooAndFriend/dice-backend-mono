@@ -1,10 +1,11 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
+import { DataSource } from 'typeorm';
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
@@ -12,6 +13,7 @@ import * as bcrypt from 'bcryptjs';
 // ** enum, dto, entity, types Imports
 import {
   BadRequestException,
+  InternalServerErrorException,
   NotFoundException,
 } from 'src/exception/customException';
 import { JwtPayload } from 'src/types';
@@ -21,6 +23,9 @@ import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from 'src/common/enum/UserType.enum';
+import WorkspaceRepository from 'src/api/workspace/repository/workspace.repository';
+import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
+import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 
 @Injectable()
 export default class AuthService {
@@ -28,6 +33,9 @@ export default class AuthService {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly workspaceRepository: WorkspaceRepository,
+    private readonly workspaceUserRepository: WorkspaceUserRepository,
+    @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
   public async saveSocialUser(dto: RequestSocialUserSaveDto) {
@@ -108,23 +116,57 @@ export default class AuthService {
     }
 
     const hash = await bcrypt.hash(dto.password, 10);
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    const saveUser = await this.userRepository.save(
-      this.userRepository.create({
-        username: dto.username,
-        password: hash,
-        nickname: dto.nickname,
-        type: UserType.DICE,
-      }),
-    );
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    const token = this.generateToken({ id: saveUser.id });
+    try {
+      const saveUser = await queryRunner.manager.save(
+        this.userRepository.create({
+          username: dto.username,
+          password: hash,
+          nickname: dto.nickname,
+          type: UserType.DICE,
+        }),
+      );
 
-    return CommonResponse.of({
-      statusCode: 200,
-      message: '회원가입 했습니다.',
-      data: token,
-    });
+      const saveWorkspace = await queryRunner.manager.save(
+        this.workspaceRepository.create({
+          name: dto.nickname,
+          comment: '',
+          isPersonal: false,
+        }),
+      );
+
+      await queryRunner.manager.save(
+        this.workspaceUserRepository.create({
+          role: WorkspaceRoleType.OWNER,
+          workspace: saveWorkspace,
+          user: saveUser,
+        }),
+      );
+
+      await queryRunner.commitTransaction();
+
+      const token = this.generateToken({ id: saveUser.id });
+
+      return CommonResponse.of({
+        statusCode: 200,
+        message: '회원가입 했습니다.',
+        data: token,
+      });
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   private generateToken(payload: JwtPayload) {
