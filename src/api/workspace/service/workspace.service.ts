@@ -49,6 +49,7 @@ export default class WorkspaceService {
         this.workspaceRepository.create({
           name: dto.name,
           comment: dto.comment,
+          isPersonal: false,
         }),
       );
 
