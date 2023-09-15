@@ -7,6 +7,9 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
+import RequestUserUpdateDto from '../dto/user.update.dto';
+import User from '../domain/user.entity';
+import CommonResponse from 'src/common/dto/api.response';
 
 // Other Imports
 
@@ -17,7 +20,16 @@ export default class UserService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async save() {
-    this.userRepository.findOne({ where: { id: 1 } });
+  public async updateUser(dto: RequestUserUpdateDto, user: User) {
+    await this.userRepository.update(user.id, {
+      nickname: dto.nickname,
+      email: dto.email,
+      profile: dto.profile,
+    });
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '유저의 정보를 수정합니다.',
+    });
   }
 }
