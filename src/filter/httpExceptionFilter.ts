@@ -10,7 +10,7 @@ import {
 export class AllExceptionsFilter implements ExceptionFilter {
   private logger = new Logger();
 
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -40,6 +40,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
       return;
     }
+
+    this.logger.error(`ERROR NAME : ${exception.name}`);
+    this.logger.error(`ERROR MSG : ${exception.message}`);
 
     response.status(500).json({
       statusCode: 500,
