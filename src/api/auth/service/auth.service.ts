@@ -67,7 +67,7 @@ export default class AuthService {
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
-          isPersonal: false,
+          isPersonal: true,
         }),
       );
 
@@ -173,7 +173,7 @@ export default class AuthService {
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
-          isPersonal: false,
+          isPersonal: true,
         }),
       );
 
