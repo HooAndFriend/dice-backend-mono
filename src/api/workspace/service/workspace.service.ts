@@ -15,13 +15,17 @@ import WorkspaceRepository from '../repository/workspace.repository';
 
 // ** enum, dto, entity, types Imports
 
-import { BadRequestException } from 'src/exception/customException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from 'src/exception/customException';
 import User from 'src/api/user/domain/user.entity';
 import { DataSource } from 'typeorm';
 import CommonResponse from 'src/common/dto/api.response';
 import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
+import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 
 // Other Imports
 
@@ -84,5 +88,26 @@ export default class WorkspaceService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async updateWorkspace(dto: RequestWorkspaceUpdateDto) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id: dto.id },
+    });
+
+    if (!findWorkspace) {
+      throw new NotFoundException('워크스페이스를 찾을 수 없습니다.');
+    }
+
+    await this.workspaceRepository.update(dto.id, {
+      name: dto.name,
+      profile: dto.profile,
+      comment: dto.comment,
+    });
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '워크스페이스를 수정합니다.',
+    });
   }
 }
