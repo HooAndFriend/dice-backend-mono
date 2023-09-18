@@ -7,6 +7,7 @@ import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
 import WorkspaceUserModule from './workspace-user/workspace-user.module';
 import ErdModule from './erd/erd.module';
+import CollectionModule from './collection/collection.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import ErdModule from './erd/erd.module';
     WorkspaceModule,
     WorkspaceUserModule,
     ErdModule,
+    CollectionModule,
   ],
   providers: [],
   exports: [],

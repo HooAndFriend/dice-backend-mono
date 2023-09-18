@@ -5,6 +5,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
 import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 import Erd from 'src/api/erd/domain/erd.entity';
+import Collection from 'src/api/collection/domain/collection.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -46,4 +47,7 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Erd, (erd) => erd.workspace)
   erd: Erd[];
+
+  @OneToMany(() => Collection, (collection) => collection.workspace)
+  collection: Collection[];
 }
