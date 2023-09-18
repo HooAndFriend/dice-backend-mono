@@ -8,7 +8,6 @@ import WorkspaceUser from '../domain/workspace-user.entity';
 @CustomRepository(WorkspaceUser)
 export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
   public async findWorkspaceList(userId: number) {
-    console.log(userId);
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
         'workspace.id',
