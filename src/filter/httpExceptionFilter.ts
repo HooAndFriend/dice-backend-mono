@@ -20,6 +20,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     this.logger.error('===== ERROR =====');
     this.logger.error(`${method} : ${originalUrl}`);
+    this.logger.error(`ERROR NAME : ${exception.name}`);
+    this.logger.error(`ERROR MSG : ${exception.message}`);
 
     if (request.body) {
       this.logger.error(`Request Body : ${JSON.stringify(request.body)}`);
@@ -40,9 +42,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
       return;
     }
-
-    this.logger.error(`ERROR NAME : ${exception.name}`);
-    this.logger.error(`ERROR MSG : ${exception.message}`);
 
     response.status(500).json({
       statusCode: 500,
