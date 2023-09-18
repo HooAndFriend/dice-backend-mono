@@ -18,6 +18,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspaceUser.role',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
+      .orderBy('workspace.isPersonal', 'DESC')
       .where('workspaceUser.userId = :userId', {
         userId,
       });
