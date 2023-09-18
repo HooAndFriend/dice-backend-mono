@@ -110,4 +110,20 @@ export default class WorkspaceService {
       message: '워크스페이스를 수정합니다.',
     });
   }
+
+  public async findWorkspace(workspaceId: number) {
+    const findWorkspace = await this.workspaceRepository.findWorkspace(
+      workspaceId,
+    );
+
+    if (!findWorkspace) {
+      throw new NotFoundException('워크스페이스를 찾을 수 없습니다.');
+    }
+
+    return CommonResponse.of({
+      statusCode: 200,
+      message: '워크스페이스 정보를 조회합니다.',
+      data: findWorkspace,
+    });
+  }
 }
