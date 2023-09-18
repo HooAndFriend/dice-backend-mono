@@ -4,6 +4,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
 import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
+import Erd from 'src/api/erd/domain/erd.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -42,4 +43,7 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
   workspaceUser: WorkspaceUser[];
+
+  @OneToMany(() => Erd, (erd) => erd.workspace)
+  erd: Erd[];
 }
