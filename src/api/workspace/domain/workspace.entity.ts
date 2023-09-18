@@ -6,6 +6,7 @@ import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
 import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 import Erd from 'src/api/erd/domain/erd.entity';
 import Collection from 'src/api/collection/domain/collection.entity';
+import Api from 'src/api/api/domain/api.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -50,4 +51,7 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Collection, (collection) => collection.workspace)
   collection: Collection[];
+
+  @OneToMany(() => Api, (api) => api.workspace)
+  api: Api[];
 }

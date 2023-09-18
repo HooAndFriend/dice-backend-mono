@@ -20,6 +20,7 @@ import CollectionModule from './collection/collection.module';
     WorkspaceUserModule,
     ErdModule,
     CollectionModule,
+    ApiModule,
   ],
   providers: [],
   exports: [],
