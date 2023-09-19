@@ -15,6 +15,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspace.profile',
         'workspace.isPersonal',
         'workspaceUser.role',
+        'workspaceUser.id',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
       .orderBy('workspace.isPersonal', 'DESC')
