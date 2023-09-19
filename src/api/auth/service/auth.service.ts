@@ -46,7 +46,7 @@ export default class AuthService {
     });
 
     if (findUser) {
-      return new BadRequestException('이미 회원가입한 유저 입니다.');
+      throw new BadRequestException('이미 회원가입한 유저 입니다.');
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -150,7 +150,7 @@ export default class AuthService {
     });
 
     if (findUser) {
-      return new BadRequestException('이미 회원가입한 유저 입니다.');
+      throw new BadRequestException('이미 회원가입한 유저 입니다.');
     }
 
     const hash = await bcrypt.hash(dto.password, 10);
