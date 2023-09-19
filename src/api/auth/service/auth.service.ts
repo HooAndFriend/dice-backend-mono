@@ -146,7 +146,7 @@ export default class AuthService {
 
   public async saveDiceUser(dto: RequestDiceUserSaveDto) {
     const findUser = await this.userRepository.findOne({
-      where: { token: dto.username },
+      where: { username: dto.username },
     });
 
     if (findUser) {

@@ -13,7 +13,7 @@ import { UserType } from 'src/common/enum/UserType.enum';
 import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_USER' })
-@Unique(['email', 'token'])
+@Unique(['username', 'token'])
 export default class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
