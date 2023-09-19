@@ -25,7 +25,7 @@ export default class WorkspaceUserService {
       user.id,
     );
 
-    return CommonResponse.of({
+    return CommonResponse.createResponse({
       statusCode: 200,
       message: '워크스페이스를 조회합니다.',
       data: { data, count },
@@ -45,7 +45,7 @@ export default class WorkspaceUserService {
 
     await this.workspaceUserRepository.update(dto.id, { role: dto.role });
 
-    return CommonResponse.of({
+    return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '워크스페이스에서 유저의 권한을 수정합니다.',
     });

@@ -46,7 +46,9 @@ export default class WorkspaceService {
     });
 
     if (findWorkspace) {
-      throw new BadRequestException('같은 이름의 워크스페이스가 있습니다.');
+      return CommonResponse.createBadRequestException(
+        '같은 이름의 워크스페이스가 있습니다.',
+      );
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -73,7 +75,7 @@ export default class WorkspaceService {
 
       await queryRunner.commitTransaction();
 
-      return CommonResponse.of({
+      return CommonResponse.createResponseMessage({
         statusCode: 200,
         message: '워크스페이스를 생성합니다.',
       });
@@ -105,7 +107,7 @@ export default class WorkspaceService {
       comment: dto.comment,
     });
 
-    return CommonResponse.of({
+    return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '워크스페이스를 수정합니다.',
     });
@@ -120,7 +122,7 @@ export default class WorkspaceService {
       throw new NotFoundException('워크스페이스를 찾을 수 없습니다.');
     }
 
-    return CommonResponse.of({
+    return CommonResponse.createResponse({
       statusCode: 200,
       message: '워크스페이스 정보를 조회합니다.',
       data: findWorkspace,

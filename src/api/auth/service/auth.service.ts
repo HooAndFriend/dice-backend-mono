@@ -46,7 +46,9 @@ export default class AuthService {
     });
 
     if (findUser) {
-      throw new BadRequestException('이미 회원가입한 유저 입니다.');
+      return CommonResponse.createBadRequestException(
+        '이미 회원가입한 유저 입니다.',
+      );
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -83,7 +85,7 @@ export default class AuthService {
 
       const token = this.generateToken({ id: saveUser.id });
 
-      return CommonResponse.of({
+      return CommonResponse.createResponse({
         statusCode: 200,
         message: '회원가입 했습니다.',
         data: { token, user: { nickname: saveUser.nickname } },
@@ -113,7 +115,7 @@ export default class AuthService {
 
     const token = this.generateToken({ id: findUser.id });
 
-    return CommonResponse.of({
+    return CommonResponse.createResponse({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
       data: { token, user: { nickname: findUser.nickname } },
@@ -132,12 +134,14 @@ export default class AuthService {
     const result = await bcrypt.compare(dto.password, findUser.password);
 
     if (!result) {
-      throw new BadRequestException('비밀번호가 맞지 않습니다.');
+      return CommonResponse.createBadRequestException(
+        '비밀번호가 맞지 않습니다.',
+      );
     }
 
     const token = this.generateToken({ id: findUser.id });
 
-    return CommonResponse.of({
+    return CommonResponse.createResponse({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
       data: { token, user: { nickname: findUser.nickname } },
@@ -150,7 +154,9 @@ export default class AuthService {
     });
 
     if (findUser) {
-      throw new BadRequestException('이미 회원가입한 유저 입니다.');
+      return CommonResponse.createBadRequestException(
+        '이미 회원가입한 유저 입니다.',
+      );
     }
 
     const hash = await bcrypt.hash(dto.password, 10);
@@ -189,7 +195,7 @@ export default class AuthService {
 
       const token = this.generateToken({ id: saveUser.id });
 
-      return CommonResponse.of({
+      return CommonResponse.createResponse({
         statusCode: 200,
         message: '회원가입 했습니다.',
         data: { token, user: { nickname: saveUser.nickname } },

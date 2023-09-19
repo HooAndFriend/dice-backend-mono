@@ -27,7 +27,7 @@ export default class UserService {
       profile: dto.profile,
     });
 
-    return CommonResponse.of({
+    return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '유저의 정보를 수정합니다.',
     });

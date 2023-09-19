@@ -54,7 +54,7 @@ export default class CommonResponse<T> {
   }
 
   static createBadRequestException<T>(message: string): CommonResponse<T> {
-    throw new BadRequestException(message);
+    return CommonResponse.createBadRequestException(message);
   }
 
   static createPaginationResponse<T>(payload: {
