@@ -50,7 +50,7 @@ export default class CommonResponse<T> {
   }
 
   static createNotFoundException<T>(message: string): CommonResponse<T> {
-    throw new NotFoundException(message);
+    return CommonResponse.createNotFoundException(message);
   }
 
   static createBadRequestException<T>(message: string): CommonResponse<T> {

@@ -98,7 +98,9 @@ export default class WorkspaceService {
     });
 
     if (!findWorkspace) {
-      throw new NotFoundException('워크스페이스를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
     }
 
     await this.workspaceRepository.update(dto.id, {
@@ -119,7 +121,9 @@ export default class WorkspaceService {
     );
 
     if (!findWorkspace) {
-      throw new NotFoundException('워크스페이스를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
     }
 
     return CommonResponse.createResponse({

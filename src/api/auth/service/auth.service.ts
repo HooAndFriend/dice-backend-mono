@@ -110,7 +110,7 @@ export default class AuthService {
     });
 
     if (!findUser) {
-      throw new NotFoundException('유저를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
     }
 
     const token = this.generateToken({ id: findUser.id });
@@ -128,7 +128,7 @@ export default class AuthService {
     });
 
     if (!findUser) {
-      throw new NotFoundException('유저를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
     }
 
     const result = await bcrypt.compare(dto.password, findUser.password);
@@ -229,7 +229,7 @@ export default class AuthService {
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
     const findUser = await this.userRepository.findOne({ where: { id } });
     if (!findUser) {
-      throw new NotFoundException('유저를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
     }
     return findUser;
   }

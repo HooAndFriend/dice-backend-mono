@@ -39,7 +39,7 @@ export default class WorkspaceUserService {
     });
 
     if (!findWorkspaceUser) {
-      throw new NotFoundException(
+      return CommonResponse.createNotFoundException(
         '워크스페이스에서 유저의 정보를 찾을 수 없습니다.',
       );
     }
