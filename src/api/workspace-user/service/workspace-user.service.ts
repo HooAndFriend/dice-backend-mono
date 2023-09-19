@@ -25,10 +25,11 @@ export default class WorkspaceUserService {
       user.id,
     );
 
-    return CommonResponse.createResponse({
+    return CommonResponse.createPaginationResponse({
       statusCode: 200,
       message: '워크스페이스를 조회합니다.',
-      data: { data, count },
+      data,
+      count,
     });
   }
 

@@ -1,12 +1,12 @@
 import {
   createErrorResponse,
   createMessageResponse,
-  createSuccessResponse,
+  createResponse,
 } from './common';
 
 export const AuthResponse = {
   saveSocialUser: {
-    200: createSuccessResponse({
+    200: createResponse({
       data: {
         accessToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',
@@ -23,7 +23,7 @@ export const AuthResponse = {
     }),
   },
   loginSocialUser: {
-    200: createSuccessResponse({
+    200: createResponse({
       data: {
         token: {
           accessToken:
@@ -45,7 +45,7 @@ export const AuthResponse = {
     }),
   },
   loginDiceUser: {
-    200: createSuccessResponse({
+    200: createResponse({
       data: {
         token: {
           accessToken:
@@ -72,7 +72,7 @@ export const AuthResponse = {
     }),
   },
   saveDiceUser: {
-    200: createSuccessResponse({
+    200: createResponse({
       data: {
         accessToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',

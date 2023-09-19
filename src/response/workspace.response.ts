@@ -1,7 +1,7 @@
 import {
   createErrorResponse,
   createMessageResponse,
-  createSuccessResponse,
+  createResponse,
 } from './common';
 
 export const WorkspaceResponse = {
@@ -28,7 +28,7 @@ export const WorkspaceResponse = {
     }),
   },
   findWorkspace: {
-    200: createSuccessResponse({
+    200: createResponse({
       data: {
         id: 1,
         name: 'HooAndFriend@@@',

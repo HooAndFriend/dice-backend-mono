@@ -10,6 +10,12 @@ export interface SuccessResponse extends Response {
   statusCode: 201 | 200;
 }
 
+export interface PaginationResponse extends Response {
+  data: any;
+  count: number;
+  statusCode: 201 | 200;
+}
+
 export interface ErrorResponse extends Response {
   error: 'BAD REQUEST' | 'NOT FOUND';
 }

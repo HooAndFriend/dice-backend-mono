@@ -1,10 +1,11 @@
 import type {
   ErrorResponse,
   MessageRespons,
+  PaginationResponse,
   SuccessResponse,
 } from 'src/types/api';
 
-export const createSuccessResponse = (data: SuccessResponse) => {
+export const createResponse = (data: SuccessResponse) => {
   return {
     status: data.statusCode,
     description: data.description ? data.description : data.message,
@@ -21,6 +22,33 @@ export const createSuccessResponse = (data: SuccessResponse) => {
         data: {
           type: 'any',
           example: data.data,
+        },
+      },
+    },
+  };
+};
+
+export const createPaginationResponse = (data: PaginationResponse) => {
+  return {
+    status: data.statusCode,
+    description: data.description ? data.description : data.message,
+    schema: {
+      properties: {
+        statusCode: {
+          type: 'number',
+          example: data.statusCode,
+        },
+        message: {
+          type: 'string',
+          example: data.message,
+        },
+        data: {
+          type: 'any',
+          example: data.data,
+        },
+        count: {
+          type: 'number',
+          example: data.count,
         },
       },
     },
