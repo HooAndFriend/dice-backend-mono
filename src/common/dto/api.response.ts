@@ -50,11 +50,11 @@ export default class CommonResponse<T> {
   }
 
   static createNotFoundException<T>(message: string): CommonResponse<T> {
-    return CommonResponse.createNotFoundException(message);
+    throw new NotFoundException(message);
   }
 
   static createBadRequestException<T>(message: string): CommonResponse<T> {
-    return CommonResponse.createBadRequestException(message);
+    throw new BadRequestException(message);
   }
 
   static createPaginationResponse<T>(payload: {
@@ -68,25 +68,6 @@ export default class CommonResponse<T> {
       statusCode: payload.statusCode,
       message: payload.message,
       count: payload.count,
-    });
-  }
-
-  static of<T>(payload: {
-    readonly data?: T;
-    readonly statusCode?: number;
-    readonly message?: string;
-  }): CommonResponse<T> {
-    if (payload.data) {
-      return new CommonResponse<T>({
-        data: payload.data ?? null,
-        statusCode: payload.statusCode ?? 200,
-        message: payload.message ?? '',
-      });
-    }
-
-    return new CommonResponse<T>({
-      statusCode: payload.statusCode ?? 200,
-      message: payload.message ?? '',
     });
   }
 }
