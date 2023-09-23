@@ -132,4 +132,22 @@ export default class WorkspaceService {
       data: findWorkspace,
     });
   }
+
+  public async findMainWorkspace(workspaceId: number) {
+    const findWorkspace = await this.workspaceRepository.findMainWorkspace(
+      workspaceId,
+    );
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '워크스페이스 정보를 조회합니다.',
+      data: findWorkspace,
+    });
+  }
 }

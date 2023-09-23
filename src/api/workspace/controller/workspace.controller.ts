@@ -72,4 +72,14 @@ export default class WorkspaceController {
   public async findWorkspace(@Param('id') id: number) {
     return await this.workspaceService.findWorkspace(id);
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 메인 조회' })
+  @ApiResponse(WorkspaceResponse.findWorkspaceMain[200])
+  @ApiResponse(WorkspaceResponse.findWorkspaceMain[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/home/:id')
+  public async findMainWorkspace(@Param('id') id: number) {
+    return await this.workspaceService.findMainWorkspace(id);
+  }
 }

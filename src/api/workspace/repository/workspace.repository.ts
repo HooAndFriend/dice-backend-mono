@@ -26,4 +26,18 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return await queryBuilder.getOne();
   }
+
+  public async findMainWorkspace(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+        'workspace.isPersonal',
+      ])
+      .where('workspace.id = :workspaceId', { workspaceId });
+
+    return await queryBuilder.getOne();
+  }
 }
