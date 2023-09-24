@@ -25,9 +25,11 @@ export default class UserService {
     });
 
     if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 이메일 입니다.',
-      );
+      if (findUser.id !== user.id) {
+        return CommonResponse.createBadRequestException(
+          '이미 사용 중인 이메일 입니다.',
+        );
+      }
     }
 
     await this.userRepository.update(user.id, {
