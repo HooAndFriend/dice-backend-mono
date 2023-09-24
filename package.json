@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker": "docker build --no-cache --rm -f Dockerfile -t pinomaker/nest:latest . --platform linux/amd64",
-    "docker-push": "docker push pinomaker/nest:latest"
+    "docker": "docker build --no-cache --rm -f Dockerfile -t pinomaker/dice-backend:latest . --platform linux/amd64",
+    "docker-push": "docker push pinomaker/dice-backend:latest"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
