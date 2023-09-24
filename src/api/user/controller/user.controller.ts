@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
@@ -33,5 +33,15 @@ export default class UserController {
     @Req() { user }: RequestWithUsernDto,
   ) {
     return await this.userService.updateUser(dto, user);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저 정보 조회' })
+  @ApiResponse(UserResponse.findUser[200])
+  @ApiResponse(UserResponse.findUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findUser(@Req() { user }: RequestWithUsernDto) {
+    return await this.userService.findUser(user);
   }
 }

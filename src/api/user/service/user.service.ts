@@ -32,4 +32,20 @@ export default class UserService {
       message: '유저의 정보를 수정합니다.',
     });
   }
+
+  public async findUser(user: User) {
+    const findUser = await this.userRepository.findUser(user.id);
+
+    if (!findUser) {
+      return CommonResponse.createNotFoundException(
+        '유저 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '유저 정보를 조회합니다.',
+      data: findUser,
+    });
+  }
 }
