@@ -1,8 +1,4 @@
-import {
-  createErrorResponse,
-  createMessageResponse,
-  createResponse,
-} from './common';
+import { createErrorResponse, createResponse } from './common';
 
 export const AuthResponse = {
   saveSocialUser: {
@@ -86,6 +82,16 @@ export const AuthResponse = {
       statusCode: 400,
       message: '이미 회원가입한 유저 입니다.',
       error: 'BAD REQUEST',
+    }),
+  },
+  reissueToken: {
+    200: createResponse({
+      data: {
+        accessToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NTcxMjM2LCJleHAiOjE2OTU1NzQ4MzZ9.IAu_paMVmVSrPtNPfi4lNTUw9kIHBWEo8If9WbCxcBY',
+      },
+      statusCode: 200,
+      message: '토큰을 재발급합니다.',
     }),
   },
 };

@@ -11,11 +11,7 @@ import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 // ** enum, dto, entity, types Imports
-import {
-  BadRequestException,
-  InternalServerErrorException,
-  NotFoundException,
-} from 'src/exception/customException';
+import { InternalServerErrorException } from 'src/exception/customException';
 import { JwtPayload } from 'src/types';
 import CommonResponse from 'src/common/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
@@ -26,6 +22,7 @@ import { UserType } from 'src/common/enum/UserType.enum';
 import WorkspaceRepository from 'src/api/workspace/repository/workspace.repository';
 import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
 import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
+import User from 'src/api/user/domain/user.entity';
 
 @Injectable()
 export default class AuthService {
@@ -211,6 +208,21 @@ export default class AuthService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async reissueToken(user: User) {
+    const accessToken = this.jwtService.sign(
+      { id: user.id },
+      {
+        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+        expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+      },
+    );
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '토큰을 재발급합니다.',
+      data: { accessToken },
+    });
   }
 
   private generateToken(payload: JwtPayload) {
