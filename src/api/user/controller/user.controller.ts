@@ -27,7 +27,7 @@ export default class UserController {
   @ApiBody({ type: RequestUserUpdateDto })
   @ApiResponse(UserResponse.updateUser[200])
   @UseGuards(JwtAccessGuard)
-  @Put('/social/user')
+  @Put('/')
   public async saveSocialUser(
     @Body() dto: RequestUserUpdateDto,
     @Req() { user }: RequestWithUsernDto,
