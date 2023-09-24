@@ -59,6 +59,7 @@ export default class AuthService {
           token: dto.token,
           nickname: dto.nickname,
           type: dto.type,
+          comment: '',
         }),
       );
 
@@ -169,6 +170,7 @@ export default class AuthService {
           password: hash,
           nickname: dto.nickname,
           type: UserType.DICE,
+          comment: '',
         }),
       );
 

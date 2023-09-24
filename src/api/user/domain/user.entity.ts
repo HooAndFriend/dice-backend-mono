@@ -59,6 +59,13 @@ export default class User extends BaseTimeEntity {
   nickname: string;
 
   @Column({
+    type: 'text',
+    comment: '워크스페이스 설명',
+    nullable: false,
+  })
+  comment: string;
+
+  @Column({
     type: 'varchar',
     length: 120,
     comment: '이메일',

@@ -11,7 +11,13 @@ import User from '../domain/user.entity';
 export default class UserRepository extends Repository<User> {
   public async findUser(userId: number) {
     const queryBuilder = this.createQueryBuilder('user')
-      .select(['user.nickname', 'user.email', 'user.profile', 'user.link'])
+      .select([
+        'user.nickname',
+        'user.email',
+        'user.profile',
+        'user.link',
+        'user.comment',
+      ])
       .where('user.id = :userId', { userId });
 
     return await queryBuilder.getOne();
