@@ -10,6 +10,11 @@ export const UserResponse = {
       statusCode: 200,
       message: '유저의 정보를 수정합니다.',
     }),
+    400: createErrorResponse({
+      statusCode: 400,
+      error: 'BAD REQUEST',
+      message: '이미 사용 중인 이메일 입니다.',
+    }),
   },
   findUser: {
     200: createResponse({

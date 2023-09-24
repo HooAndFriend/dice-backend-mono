@@ -20,6 +20,16 @@ export default class UserService {
   ) {}
 
   public async updateUser(dto: RequestUserUpdateDto, user: User) {
+    const findUser = await this.userRepository.findOne({
+      where: { email: dto.email },
+    });
+
+    if (findUser) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 이메일 입니다.',
+      );
+    }
+
     await this.userRepository.update(user.id, {
       nickname: dto.nickname,
       email: dto.email,
