@@ -15,4 +15,8 @@ export default class RequestUserUpdateDto {
   @ApiProperty({ example: 'http://loasdasd.com' })
   @IsString()
   profile: string;
+
+  @ApiProperty({ example: '나는 심심하다.' })
+  @IsString()
+  comment: string;
 }

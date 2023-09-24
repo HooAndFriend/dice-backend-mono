@@ -1,6 +1,5 @@
 // ** Nest Imports
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
@@ -25,6 +24,7 @@ export default class UserService {
       nickname: dto.nickname,
       email: dto.email,
       profile: dto.profile,
+      comment: dto.comment,
     });
 
     return CommonResponse.createResponseMessage({
