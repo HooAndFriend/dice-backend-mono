@@ -69,7 +69,7 @@ export default class User extends BaseTimeEntity {
     type: 'varchar',
     length: 120,
     comment: '이메일',
-    nullable: true,
+    nullable: false,
   })
   email: string;
 
@@ -77,7 +77,7 @@ export default class User extends BaseTimeEntity {
     type: 'varchar',
     length: 255,
     comment: '프로필 이미지',
-    nullable: true,
+    nullable: false,
   })
   profile: string;
 

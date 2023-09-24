@@ -60,6 +60,8 @@ export default class AuthService {
           nickname: dto.nickname,
           type: dto.type,
           comment: '',
+          profile: '',
+          email: '',
         }),
       );
 
@@ -171,6 +173,8 @@ export default class AuthService {
           nickname: dto.nickname,
           type: UserType.DICE,
           comment: '',
+          profile: '',
+          email: '',
         }),
       );
 
