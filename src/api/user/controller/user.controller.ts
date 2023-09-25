@@ -16,6 +16,9 @@ import RequestUserUpdateDto from '../dto/user.update.dto';
 import { UserResponse } from 'src/response/user.response';
 import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
 import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
+import { WorkspaceRolesGuard } from 'src/roles/workspace/workspace.roles.guard';
+import { WorkspaceRole } from 'src/roles/workspace/workspace.roles.decorator';
+import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 
 @ApiTags('User')
 @Controller('/api/user')
@@ -43,5 +46,18 @@ export default class UserController {
   @Get('/')
   public async findUser(@Req() { user }: RequestWithUsernDto) {
     return await this.userService.findUser(user);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저 정보 조회' })
+  @ApiResponse(UserResponse.findUser[200])
+  @ApiResponse(UserResponse.findUser[404])
+  @WorkspaceRole(WorkspaceRoleType.ADMIN)
+  @UseGuards(WorkspaceRolesGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/test')
+  public async test(@Req() req) {
+    return 'TEST';
+    // return await this.userService.findUser(user);
   }
 }
