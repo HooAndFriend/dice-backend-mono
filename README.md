@@ -2,7 +2,7 @@
 
 ## Description
 
-Dice Project Backend Repository 입니다.
+Dice Project Backend Repository
 
 ## 폴더 구조
 
