@@ -88,7 +88,14 @@ export default class AuthService {
       return CommonResponse.createResponse({
         statusCode: 200,
         message: '회원가입 했습니다.',
-        data: { token, user: { nickname: saveUser.nickname } },
+        data: {
+          token,
+          user: {
+            nickname: saveUser.nickname,
+            profile: saveUser.profile,
+            email: saveUser.email,
+          },
+        },
       });
     } catch (error) {
       this.logger.error(error);
@@ -118,7 +125,14 @@ export default class AuthService {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
-      data: { token, user: { nickname: findUser.nickname } },
+      data: {
+        token,
+        user: {
+          nickname: findUser.nickname,
+          profile: findUser.profile,
+          email: findUser.email,
+        },
+      },
     });
   }
 
@@ -144,7 +158,14 @@ export default class AuthService {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '로그인에 성공했습니다.',
-      data: { token, user: { nickname: findUser.nickname } },
+      data: {
+        token,
+        user: {
+          nickname: findUser.nickname,
+          profile: findUser.profile,
+          email: findUser.email,
+        },
+      },
     });
   }
 
@@ -201,7 +222,14 @@ export default class AuthService {
       return CommonResponse.createResponse({
         statusCode: 200,
         message: '회원가입 했습니다.',
-        data: { token, user: { nickname: saveUser.nickname } },
+        data: {
+          token,
+          user: {
+            nickname: saveUser.nickname,
+            profile: saveUser.profile,
+            email: saveUser.email,
+          },
+        },
       });
     } catch (error) {
       await queryRunner.rollbackTransaction();

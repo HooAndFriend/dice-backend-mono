@@ -4,13 +4,21 @@ export const AuthResponse = {
   saveSocialUser: {
     200: createResponse({
       data: {
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',
-        refreshToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NTA0ODcyN30.1AHIFH9JdJpawAHqPJEMLdhDP1iJiEGZUdyijPsPMf0',
+        token: {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+          refreshToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+        },
+        user: {
+          nickname: '피노피노얍',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          email: 'inhoo987654321@gmail.com',
+        },
       },
       statusCode: 200,
-      message: '회원가입 했습니다.',
+      message: '로그인에 성공했습니다.',
     }),
     400: createErrorResponse({
       statusCode: 400,
@@ -23,12 +31,15 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTQ2Njc3ODh9.d2awAqFTFZAczYaQp9ps5Y0wwTXICQtsdqeuMMewKVw',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTUyNjg5ODh9.LAYNv1HXMXnk19EZEszvWHNLF886pqMVSL0sJ6TTuDM',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
         },
         user: {
-          nickname: 'Pinomaker',
+          nickname: '피노피노얍',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          email: 'inhoo987654321@gmail.com',
         },
       },
       statusCode: 200,
@@ -45,12 +56,15 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTQ2Njc3ODh9.d2awAqFTFZAczYaQp9ps5Y0wwTXICQtsdqeuMMewKVw',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk0NjY0MTg4LCJleHAiOjE2OTUyNjg5ODh9.LAYNv1HXMXnk19EZEszvWHNLF886pqMVSL0sJ6TTuDM',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
         },
         user: {
-          nickname: 'Pinomaker',
+          nickname: '피노피노얍',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          email: 'inhoo987654321@gmail.com',
         },
       },
       statusCode: 200,
@@ -70,13 +84,21 @@ export const AuthResponse = {
   saveDiceUser: {
     200: createResponse({
       data: {
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NDQ0NzUyN30.pUfR0BncjlsbKKBCr0n5cpaaZRgxvdIgCaEgnSP6ZyQ',
-        refreshToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVIiLCJpYXQiOjE2OTQ0NDM5MjcsImV4cCI6MTY5NTA0ODcyN30.1AHIFH9JdJpawAHqPJEMLdhDP1iJiEGZUdyijPsPMf0',
+        token: {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+          refreshToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+        },
+        user: {
+          nickname: '피노피노얍',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          email: 'inhoo987654321@gmail.com',
+        },
       },
       statusCode: 200,
-      message: '회원가입 했습니다.',
+      message: '로그인에 성공했습니다.',
     }),
     400: createErrorResponse({
       statusCode: 400,
