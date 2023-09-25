@@ -10,7 +10,6 @@ import CollectionModule from './collection/collection.module';
   imports: [
     AuthModule,
     UserModule,
-
     WorkspaceModule,
     WorkspaceUserModule,
     ErdModule,
