@@ -5,14 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 // ** Custom Module Imports
 import LoggerModule from './util/logger/logger.module';
 import LoggerMiddleware from './util/logger/logger.middleware';
-import AuthModule from './api/auth/auth.module';
-import UploadModule from './api/upload/upload.module';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from './repository/typeOrmEx.module';
-import ViewModule from './api/view/view.module';
-import AdapterModule from './api/adapter/adapter.module';
 import ApiModule from './api/api.module';
 
 @Module({
