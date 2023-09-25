@@ -40,42 +40,8 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > $HOME/key.pem
           chmod 400 $HOME/key.pem
 
-      - name: Check if Container Exists
+      - name: Run Docker
         env:
           SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker ps -a | grep dice-backend && echo "Container exists" || echo "Container does not exist"'
-        id: check_container
-
-      - name: Check if Image Exists
-        env:
-          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker images | grep pinomaker/dice-backend:latest-amd64 && echo "Image exists" || echo "Image does not exist"'
-        id: check_image
-
-      - name: Remove Container if it Exists
-        if: steps.check_container.outputs.check_container == 'Container exists'
-        env:
-          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker container rm -f dice-backend'
-
-      - name: Remove Image if it Exists
-        if: steps.check_image.outputs.check_image == 'Image exists'
-        env:
-          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker image rm pinomaker/dice-backend:latest-amd64'
-
-      - name: Pull Docker Image
-        env:
-          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker pull pinomaker/dice-backend:latest-amd64'
-
-      - name: Run Docker Container
-        env:
-          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-        run: |
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} 'docker run -d -p 8000:8000 --name dice-backend pinomaker/dice-backend:latest-amd64'
+          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} "sudo docker container rm -f dice-backend && sudo docker image rm pinomaker/dice-backend:latest-amd64 && sudo docker pull pinomaker/dice-backend:latest-amd64 && sudo docker run -d -p 8000:8000 --name dice-backend pinomaker/dice-backend:latest-amd64"
