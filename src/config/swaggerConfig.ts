@@ -16,8 +16,8 @@ const swaggerCustomOptions: SwaggerCustomOptions = {
 
 const swaggerConfig = (app: INestApplication): void => {
   const options = new DocumentBuilder()
-    .setTitle('NestJS cms boilerplate')
-    .setDescription('aiara-nestjs-cms-boilerplate')
+    .setTitle('DICE API')
+    .setDescription('api document of dice project')
     .setVersion('1.0.0')
     .addBearerAuth(
       {
