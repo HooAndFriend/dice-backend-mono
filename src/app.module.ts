@@ -10,7 +10,6 @@ import LoggerMiddleware from './util/logger/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from './repository/typeOrmEx.module';
 import ApiModule from './api/api.module';
-import { WorkspaceRolesGuard } from './roles/workspace/workspace.roles.guard';
 
 @Module({
   imports: [
@@ -35,7 +34,7 @@ import { WorkspaceRolesGuard } from './roles/workspace/workspace.roles.guard';
     ApiModule,
   ],
   controllers: [],
-  providers: [WorkspaceRolesGuard],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
