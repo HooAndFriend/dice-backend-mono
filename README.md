@@ -72,9 +72,7 @@ Dice Project Backend Repository
 ## Api Document
 
 ```
-
 /api-docs
-
 ```
 
 ## Installation
