@@ -10,7 +10,7 @@ import {
 export class AllExceptionsFilter implements ExceptionFilter {
   private logger = new Logger();
 
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -20,6 +20,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     this.logger.error('===== ERROR =====');
     this.logger.error(`${method} : ${originalUrl}`);
+    this.logger.error(`ERROR NAME : ${exception.name}`);
+    this.logger.error(`ERROR MSG : ${exception.message}`);
 
     if (request.body) {
       this.logger.error(`Request Body : ${JSON.stringify(request.body)}`);
@@ -29,10 +31,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
       this.logger.error(`Request Query : ${JSON.stringify(request.query)}`);
     }
 
-    this.logger.error(`[${exception.getStatus()}] ${message}`);
+    if (exception instanceof HttpException) {
+      this.logger.error(`[${exception.getStatus()}] ${message}`);
 
-    response.status(exception.getStatus()).json({
-      statusCode: exception.getStatus(),
+      response.status(exception?.getStatus() || 400).json({
+        statusCode: exception?.getStatus() || 400,
+        error: name,
+        message,
+      });
+
+      return;
+    }
+
+    response.status(500).json({
+      statusCode: 500,
       error: name,
       message,
     });

@@ -1,0 +1,47 @@
+name: Dice Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  DOCKER_BUILD_PUSH:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx build --platform linux/arm64,linux/amd64 -t pinomaker/dice-backend:latest-arm64 -t pinomaker/dice-backend:latest-amd64 --file Dockerfile . --push
+
+  DOCKER_PULL_RUN:
+    runs-on: ubuntu-latest
+    needs: DOCKER_BUILD_PUSH
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.EC2_HOST_DEV }} >> ~/.ssh/known_hosts
+
+      - name: Set Permissions for Private Key
+        run: |
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > $HOME/key.pem
+          chmod 400 $HOME/key.pem
+
+      - name: Run Docker
+        env:
+          SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} "sudo docker container rm -f dice-backend && sudo docker image rm pinomaker/dice-backend:latest-amd64 && sudo docker pull pinomaker/dice-backend:latest-amd64 && sudo docker run -d -p 8000:8000 --name dice-backend pinomaker/dice-backend:latest-amd64"

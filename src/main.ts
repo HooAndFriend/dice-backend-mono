@@ -15,7 +15,7 @@ import LoggerService from './util/logger/logger.service';
 // ** Express Imports
 import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AllExceptionsFilter } from './filter/ExceptionFilter';
+import { AllExceptionsFilter } from './filter/httpExceptionFilter';
 
 async function bootstrap() {
   // ** Server Container 생성

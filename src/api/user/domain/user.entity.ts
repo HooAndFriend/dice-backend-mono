@@ -1,28 +1,51 @@
 // ** Typeorm Imports
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import { UserType } from 'src/enums/UserType.enum';
+import { UserType } from 'src/common/enum/UserType.enum';
+import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
 
-@Entity({ name: 'tbl_user' })
-@Unique(['email'])
+@Entity({ name: 'TB_USER' })
+@Unique(['username', 'token'])
 export default class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'varchar',
+    length: 50,
+    comment: '유저 id',
+    nullable: true,
+  })
+  username: string;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '비밀번호',
+    nullable: true,
+  })
+  password: string;
+
+  @Column({
+    type: 'varchar',
     length: 150,
     comment: '소셜 토큰',
-    nullable: false,
+    nullable: true,
   })
   token: string;
 
   @Column({
     type: 'enum',
     enum: UserType,
-    comment: '소셜 종류',
+    comment: '로그인 종류',
     nullable: false,
   })
   type: UserType;
@@ -36,10 +59,17 @@ export default class User extends BaseTimeEntity {
   nickname: string;
 
   @Column({
+    type: 'text',
+    comment: '워크스페이스 설명',
+    nullable: false,
+  })
+  comment: string;
+
+  @Column({
     type: 'varchar',
     length: 120,
-    comment: '닉네임',
-    nullable: true,
+    comment: '이메일',
+    nullable: false,
   })
   email: string;
 
@@ -47,7 +77,7 @@ export default class User extends BaseTimeEntity {
     type: 'varchar',
     length: 255,
     comment: '프로필 이미지',
-    nullable: true,
+    nullable: false,
   })
   profile: string;
 
@@ -58,4 +88,7 @@ export default class User extends BaseTimeEntity {
     nullable: true,
   })
   link: string;
+
+  @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
+  workspaceUser: WorkspaceUser[];
 }

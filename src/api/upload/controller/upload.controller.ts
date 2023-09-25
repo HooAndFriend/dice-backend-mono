@@ -45,7 +45,7 @@ export default class UploadController {
     }),
   )
   async uploadFile(@UploadedFile() file) {
-    return ApiResponse.of({
+    return ApiResponse.createResponse({
       data: {
         filename: file.filename,
         filepath: `${this.configService.get('SERVER_URL')}/file/${

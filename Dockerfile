@@ -10,4 +10,6 @@ COPY . .
 
 RUN yarn build
 
-CMD ["yarn", "start"]
+ENV TZ=Asia/Seoul
+
+CMD ["yarn", "start:dev"]

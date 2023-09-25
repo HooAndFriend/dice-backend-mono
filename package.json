@@ -18,8 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker": "docker build --no-cache --rm -f Dockerfile -t pinomaker/nest:latest . --platform linux/amd64",
-    "docker-push": "docker push pinomaker/nest:latest"
+    "docker": "docker build --no-cache --rm -f Dockerfile -t pinomaker/dice-backend:latest . --platform linux/amd64",
+    "docker-push": "docker push pinomaker/dice-backend:latest",
+    "docker-buildx": "docker buildx build --platform linux/arm64,linux/amd64 -t pinomaker/dice-backend:latest-arm64 -t pinomaker/dice-backend:latest-amd64 --file Dockerfile . --push"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -39,6 +40,7 @@
     "hbs": "^4.2.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.1.2",
+    "nodemailer": "^6.9.5",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
@@ -55,6 +57,7 @@
     "@types/jest": "29.2.4",
     "@types/multer": "^1.4.7",
     "@types/node": "18.11.18",
+    "@types/nodemailer": "^6.4.10",
     "@types/passport": "^1.0.12",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",

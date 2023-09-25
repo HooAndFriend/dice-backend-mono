@@ -3,4 +3,5 @@ export enum UserType {
   APPLE = 'APPLE',
   GITHUB = 'GITHUB',
   MICROSOFT = 'MICROSOFT',
+  DICE = 'DICE',
 }
