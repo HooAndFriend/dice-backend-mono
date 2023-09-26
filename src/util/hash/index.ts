@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 export const generateSixDigitNumber = () => {
   const randomBytes = crypto.randomBytes(3);

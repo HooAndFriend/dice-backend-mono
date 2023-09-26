@@ -16,6 +16,7 @@ import RequestUserUpdateDto from '../dto/user.update.dto';
 import { UserResponse } from 'src/response/user.response';
 import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
 import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
+import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 
 @ApiTags('User')
 @Controller('/api/user')
