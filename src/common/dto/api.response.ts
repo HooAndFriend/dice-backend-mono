@@ -19,13 +19,13 @@ export default class CommonResponse<T> {
   }
 
   @ApiProperty()
-  private readonly data?: T;
+  public readonly data?: T;
   @ApiProperty()
-  private readonly statusCode: HttpStatus;
+  public readonly statusCode: HttpStatus;
   @ApiProperty()
-  private readonly message: string;
+  public readonly message: string;
   @ApiProperty()
-  private readonly count?: number;
+  public readonly count?: number;
 
   static createResponseMessage<T>(payload: {
     readonly statusCode: number;
