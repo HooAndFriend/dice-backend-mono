@@ -15,6 +15,8 @@ import LoggerService from './util/logger/logger.service';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AllExceptionsFilter } from './filter/httpExceptionFilter';
 
+import csurf from 'csurf';
+
 async function bootstrap() {
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -32,6 +34,7 @@ async function bootstrap() {
 
   // ** Cors Setting
   app.enableCors();
+  app.use(csurf());
 
   // ** Swagger Setting
   swaggerConfig(app);
