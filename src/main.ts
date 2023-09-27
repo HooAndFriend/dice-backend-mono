@@ -34,7 +34,7 @@ async function bootstrap() {
   app.enableCors();
 
   // ** Swagger Setting
-  // swaggerConfig(app);
+  swaggerConfig(app);
 
   // ** Server ON Handler
   await app.listen(process.env.SERVER_PORT);

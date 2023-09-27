@@ -14,7 +14,7 @@ export default class RequestSocialUserSaveDto {
   @IsString()
   nickname: string;
 
-  @ApiProperty({ example: UserType.APPLE })
+  @ApiProperty({ example: UserType.APPLE, enum: UserType })
   @IsEnum(UserType)
   type: UserType;
 }

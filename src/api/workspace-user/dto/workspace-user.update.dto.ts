@@ -12,7 +12,7 @@ export default class RequestWorkspaceUpdateUpdateDto {
   @IsNumber()
   id: number;
 
-  @ApiProperty({ example: WorkspaceRoleType.VIEWER })
+  @ApiProperty({ example: WorkspaceRoleType.VIEWER, enum: WorkspaceRoleType })
   @IsEnum(WorkspaceRoleType)
   role: WorkspaceRoleType;
 }

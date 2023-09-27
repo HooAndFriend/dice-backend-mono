@@ -1,8 +1,7 @@
 // ** Nest Imports
 import { HttpStatus, NotFoundException } from '@nestjs/common';
 
-// ** Swagger Imports
-import { ApiProperty } from '@nestjs/swagger';
+// ** Exceptio Imports
 import { BadRequestException } from '../../exception/customException';
 
 export default class CommonResponse<T> {
@@ -18,13 +17,12 @@ export default class CommonResponse<T> {
     this.count = payload?.count;
   }
 
-  @ApiProperty()
   public readonly data?: T;
-  @ApiProperty()
+
   public readonly statusCode: HttpStatus;
-  @ApiProperty()
+
   public readonly message: string;
-  @ApiProperty()
+
   public readonly count?: number;
 
   static createResponseMessage<T>(payload: {

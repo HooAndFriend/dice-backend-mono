@@ -10,7 +10,7 @@ export default class RequestSocialUserLoginDto {
   @IsString()
   token: string;
 
-  @ApiProperty({ example: UserType.APPLE })
+  @ApiProperty({ example: UserType.APPLE, enum: UserType })
   @IsEnum(UserType)
   type: UserType;
 }
