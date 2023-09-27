@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
   Unique,
 } from 'typeorm';
 
@@ -90,5 +91,5 @@ export default class User extends BaseTimeEntity {
   link: string;
 
   @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
-  workspaceUser: WorkspaceUser[];
+  workspaceUser: Relation<WorkspaceUser>[];
 }

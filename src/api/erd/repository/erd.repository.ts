@@ -2,7 +2,7 @@
 import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
-import { CustomRepository } from 'src/repository/typeorm-ex.decorator';
+import CustomRepository from 'src/repository/typeorm-ex.decorator';
 import Erd from '../domain/erd.entity';
 
 @CustomRepository(Erd)

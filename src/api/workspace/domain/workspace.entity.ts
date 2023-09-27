@@ -1,5 +1,11 @@
 // ** Typeorm Imports
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
@@ -44,14 +50,14 @@ export default class Workspace extends BaseTimeEntity {
   isPersonal: boolean;
 
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
-  workspaceUser: WorkspaceUser[];
+  workspaceUser: Relation<WorkspaceUser>[];
 
   @OneToMany(() => Erd, (erd) => erd.workspace)
-  erd: Erd[];
+  erd: Relation<Erd>[];
 
   @OneToMany(() => Collection, (collection) => collection.workspace)
-  collection: Collection[];
+  collection: Relation<Collection>[];
 
   @OneToMany(() => Api, (api) => api.workspace)
-  api: Api[];
+  api: Relation<Api>[];
 }

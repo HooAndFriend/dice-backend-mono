@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
@@ -11,5 +11,5 @@ export default class Erd extends BaseTimeEntity {
   id: number;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.erd)
-  workspace: Workspace;
+  workspace: Relation<Workspace>;
 }

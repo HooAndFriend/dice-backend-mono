@@ -1,5 +1,11 @@
 // ** Typeorm Imports
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
@@ -21,8 +27,8 @@ export default class WorkspaceUser extends BaseTimeEntity {
   role: WorkspaceRoleType;
 
   @ManyToOne(() => User, (user) => user.workspaceUser)
-  user: User;
+  user: Relation<User>;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser)
-  workspace: Workspace;
+  workspace: Relation<Workspace>;
 }
