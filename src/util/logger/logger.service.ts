@@ -2,7 +2,7 @@
 import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
 
 // ** Utils Imports
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Injectable()
 export default class LoggerService implements NestLoggerService {
