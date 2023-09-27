@@ -11,18 +11,18 @@ import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 // ** enum, dto, entity, types Imports
-import { InternalServerErrorException } from 'src/exception/customException';
-import { JwtPayload } from 'src/types';
-import CommonResponse from 'src/common/dto/api.response';
+import { InternalServerErrorException } from '../../../exception/customException';
+import { JwtPayload } from '../../../types';
+import CommonResponse from '../../../common/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
-import { UserType } from 'src/common/enum/UserType.enum';
-import WorkspaceRepository from 'src/api/workspace/repository/workspace.repository';
-import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
-import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
-import User from 'src/api/user/domain/user.entity';
+import { UserType } from '../../../common/enum/UserType.enum';
+import WorkspaceRepository from '../../../api/workspace/repository/workspace.repository';
+import WorkspaceUserRepository from '../../../api/workspace-user/repository/workspace-user.repository';
+import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
+import User from '../../../api/user/domain/user.entity';
 
 @Injectable()
 export default class AuthService {

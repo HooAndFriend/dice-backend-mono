@@ -9,7 +9,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from 'src/response/common';
+} from '../../../response/common';
 import CollectionService from '../service/collection.service';
 
 @ApiTags('Workspace Collection')

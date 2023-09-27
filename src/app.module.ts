@@ -31,7 +31,7 @@ import ApiModule from './api/api.module';
     }),
     TypeOrmExModule,
     LoggerModule,
-    // ApiModule,
+    ApiModule,
   ],
   controllers: [],
   providers: [],

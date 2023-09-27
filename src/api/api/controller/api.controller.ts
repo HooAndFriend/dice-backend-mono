@@ -10,7 +10,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from 'src/response/common';
+} from '../../../response/common';
 
 // ** Custom Module Imports
 import ApiService from '../service/api.service';

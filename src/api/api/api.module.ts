@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import { TypeOrmExModule } from 'src/repository/typeOrmEx.module';
+import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
 import ApiService from './service/api.service';
 import ApiController from './controller/api.controller';
 import ApiRepository from './repository/api.repository';

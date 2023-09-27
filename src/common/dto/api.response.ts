@@ -3,7 +3,7 @@ import { HttpStatus, NotFoundException } from '@nestjs/common';
 
 // ** Swagger Imports
 import { ApiProperty } from '@nestjs/swagger';
-import { BadRequestException } from 'src/exception/customException';
+import { BadRequestException } from '../../exception/customException';
 
 export default class CommonResponse<T> {
   private constructor(payload: {

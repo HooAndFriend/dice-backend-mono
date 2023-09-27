@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber } from 'class-validator';
 
 // ** Enum Imports
-import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
+import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 
 export default class RequestWorkspaceUpdateUpdateDto {
   @ApiProperty({ example: 1 })

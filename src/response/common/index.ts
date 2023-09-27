@@ -3,7 +3,7 @@ import type {
   MessageRespons,
   PaginationResponse,
   SuccessResponse,
-} from 'src/types/api';
+} from '../../types/api';
 
 export const createResponse = (data: SuccessResponse) => {
   return {

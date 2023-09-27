@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import { TypeOrmExModule } from 'src/repository/typeOrmEx.module';
+import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
 import WorkspaceRepository from './repository/workspace.repository';
 import WorkspaceService from './service/workspace.service';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';

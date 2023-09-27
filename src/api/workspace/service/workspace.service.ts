@@ -13,15 +13,15 @@ import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import WorkspaceRepository from '../repository/workspace.repository';
-import WorkspaceUserRepository from 'src/api/workspace-user/repository/workspace-user.repository';
+import WorkspaceUserRepository from '../../../api/workspace-user/repository/workspace-user.repository';
 
 // ** Response Imports
-import CommonResponse from 'src/common/dto/api.response';
+import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
-import User from 'src/api/user/domain/user.entity';
+import User from '../../../api/user/domain/user.entity';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
-import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
+import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 
 // Other Imports

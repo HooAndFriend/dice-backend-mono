@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import { UserType } from 'src/common/enum/UserType.enum';
-import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
+import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
+import { UserType } from '../../../common/enum/UserType.enum';
+import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['username', 'token'])

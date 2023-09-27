@@ -9,14 +9,14 @@ import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 // ** enum, dto, entity, types Imports
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
-import { AuthResponse } from 'src/response/auth.response';
+import { AuthResponse } from '../../../response/auth.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import RequestUserReissueDto from '../dto/user.reissue.dto';
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
-import { createUnauthorizedResponse } from 'src/response/common';
-import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
+import { createUnauthorizedResponse } from '../../../response/common';
+import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 
 @ApiTags('Auth')
 @Controller('/api/auth')

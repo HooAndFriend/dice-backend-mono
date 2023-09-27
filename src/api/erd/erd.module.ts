@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import { TypeOrmExModule } from 'src/repository/typeOrmEx.module';
+import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
 import Erd from './domain/erd.entity';
 import ErdRepository from './repository/erd.repository';
 import ErdController from './controller/erd.controller';

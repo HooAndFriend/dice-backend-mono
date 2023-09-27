@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import UserRepository from '../repository/user.repository';
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
-import CommonResponse from 'src/common/dto/api.response';
+import CommonResponse from '../../../common/dto/api.response';
 
 // Other Imports
 

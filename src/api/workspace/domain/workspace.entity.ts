@@ -8,11 +8,11 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import WorkspaceUser from 'src/api/workspace-user/domain/workspace-user.entity';
-import Erd from 'src/api/erd/domain/erd.entity';
-import Collection from 'src/api/collection/domain/collection.entity';
-import Api from 'src/api/api/domain/api.entity';
+import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
+import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
+import Erd from '../../../api/erd/domain/erd.entity';
+import Collection from '../../../api/collection/domain/collection.entity';
+import Api from '../../../api/api/domain/api.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {

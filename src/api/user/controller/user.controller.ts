@@ -14,14 +14,14 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '../../../api/auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
-import { UserResponse } from 'src/response/user.response';
+import { UserResponse } from '../../../response/user.response';
 
 // ** Dto Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
-import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
+import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 
 @ApiTags('User')
 @Controller('/api/user')

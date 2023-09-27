@@ -21,15 +21,21 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { WorkspaceResponse } from 'src/response/workspace.response';
+
+// ** Dto Imports
 import RequestWorkspaceSaveDto from '../dto/workspace.save.dto';
-import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
-import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
+import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
+
+// ** Utils Imports
+import JwtAccessGuard from '../../../api/auth/passport/auth.jwt-access.guard';
+
+// ** Response Imports
+import { WorkspaceResponse } from '../../../response/workspace.response';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from 'src/response/common';
+} from '../../../response/common';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())

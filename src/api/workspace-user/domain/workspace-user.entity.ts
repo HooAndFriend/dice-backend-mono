@@ -8,10 +8,10 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from 'src/common/entity/BaseTime.Entity';
-import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
-import User from 'src/api/user/domain/user.entity';
-import Workspace from 'src/api/workspace/domain/workspace.entity';
+import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
+import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
+import User from '../../../api/user/domain/user.entity';
+import Workspace from '../../../api/workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
