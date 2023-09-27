@@ -1,7 +1,5 @@
 # Dice Backend
 
-@
-
 ## Description
 
 Dice Project Backend Repository
