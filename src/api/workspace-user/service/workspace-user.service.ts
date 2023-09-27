@@ -3,13 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
-
-// ** Custom Module Imports
-import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import User from 'src/api/user/domain/user.entity';
 import CommonResponse from 'src/common/dto/api.response';
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
-import { NotFoundException } from 'src/exception/customException';
+
+// ** Custom Module Imports
+import WorkspaceUserRepository from '../repository/workspace-user.repository';
 
 // Other Imports
 

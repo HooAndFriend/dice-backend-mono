@@ -10,13 +10,13 @@ export default class RequestPagingDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  page: number = 1;
+  page = 1;
 
   @ApiProperty({ example: 10, required: false })
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  pageSize: number = 10;
+  pageSize = 10;
 
   get offset(): number {
     return (this.page - 1) * this.pageSize;

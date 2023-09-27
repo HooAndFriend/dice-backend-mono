@@ -1,13 +1,6 @@
 // ** Nest Imports
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Put,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
 
@@ -20,14 +13,18 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-// ** Dto Imports
-import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
+// ** Utils Imports
 import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
+
+// ** Response Imports
 import { WorkspaceUserResponse } from 'src/response/workspace-user.response';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from 'src/response/common';
+
+// ** Dto Imports
+import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())

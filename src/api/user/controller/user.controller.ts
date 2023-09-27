@@ -12,11 +12,16 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import RequestUserUpdateDto from '../dto/user.update.dto';
-import { UserResponse } from 'src/response/user.response';
+
+// ** Utils Imports
 import JwtAccessGuard from 'src/api/auth/passport/auth.jwt-access.guard';
+
+// ** Response Imports
+import { UserResponse } from 'src/response/user.response';
+
+// ** Dto Imports
+import RequestUserUpdateDto from '../dto/user.update.dto';
 import { RequestWithUsernDto } from 'src/common/dto/request.user.dto';
-import { WorkspaceRoleType } from 'src/common/enum/WorkspaceRoleType.enum';
 
 @ApiTags('User')
 @Controller('/api/user')
