@@ -36,11 +36,15 @@ async function bootstrap() {
 
   // ** Cors Setting
   app.enableCors();
-  app.use(csurf());
+  if (process.env.NODE_ENV === 'prod') {
+    app.use(csurf());
+  }
   app.use(helmet());
 
   // ** Swagger Setting
-  swaggerConfig(app);
+  if (process.env.NODE_ENV === 'dev') {
+    swaggerConfig(app);
+  }
 
   // ** Server ON Handler
   await app.listen(process.env.SERVER_PORT);
