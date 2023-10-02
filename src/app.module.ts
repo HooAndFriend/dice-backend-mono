@@ -10,6 +10,7 @@ import LoggerMiddleware from './util/logger/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from './repository/typeOrmEx.module';
 import ApiModule from './api/api.module';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
@@ -28,6 +29,9 @@ import ApiModule from './api/api.module';
       synchronize: true,
       logging: true,
       logger: 'file',
+    }),
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
     }),
     TypeOrmExModule,
     LoggerModule,

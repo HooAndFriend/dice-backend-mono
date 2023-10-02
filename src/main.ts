@@ -23,6 +23,7 @@ async function bootstrap() {
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
+    snapshot: true,
   });
 
   // ** Logger
