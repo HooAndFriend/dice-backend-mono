@@ -3,7 +3,7 @@ name: DICE BACKEND CI/CD
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   DOCKER_BUILD_PUSH:
