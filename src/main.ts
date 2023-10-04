@@ -26,6 +26,9 @@ async function bootstrap() {
     snapshot: true,
   });
 
+  // ** Base URL
+  app.setGlobalPrefix('api');
+
   // ** Nest Version
   app.enableVersioning({
     type: VersioningType.URI,
