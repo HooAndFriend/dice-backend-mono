@@ -32,7 +32,8 @@ export default class AuthService {
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    @Inject(DataSource) private readonly dataSource: DataSource,
+    // @Inject(DataSource) private readonly dataSource: DataSource,
+    private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
@@ -259,7 +260,10 @@ export default class AuthService {
     });
   }
 
-  private generateToken(payload: JwtPayload) {
+  public generateToken(payload: JwtPayload): {
+    accessToken: string;
+    refreshToken: string;
+  } {
     return {
       accessToken: this.jwtService.sign(payload, {
         secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
