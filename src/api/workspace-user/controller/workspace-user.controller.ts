@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
@@ -15,6 +15,7 @@ import {
 
 // ** Utils Imports
 import JwtAccessGuard from '../../../api/auth/passport/auth.jwt-access.guard';
+import { GetUser } from '../../../common/decorators/user.decorators';
 
 // ** Response Imports
 import { WorkspaceUserResponse } from '../../../response/workspace-user.response';
@@ -24,8 +25,8 @@ import {
 } from '../../../response/common';
 
 // ** Dto Imports
-import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
+import User from '../../user/domain/user.entity';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
@@ -39,7 +40,7 @@ export default class WorkspaceUserController {
   @ApiResponse(WorkspaceUserResponse.findWorkspaceList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findWorkspaceList(@Req() { user }: RequestWithUsernDto) {
+  public async findWorkspaceList(@GetUser() user: User) {
     return await this.workspaceUserService.findWorkspaceList(user);
   }
 

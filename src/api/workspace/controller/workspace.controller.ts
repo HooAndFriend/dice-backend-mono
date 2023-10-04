@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 
@@ -24,11 +23,12 @@ import {
 
 // ** Dto Imports
 import RequestWorkspaceSaveDto from '../dto/workspace.save.dto';
-import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
+import User from '../../user/domain/user.entity';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../../api/auth/passport/auth.jwt-access.guard';
+import { GetUser } from '../../../common/decorators/user.decorators';
 
 // ** Response Imports
 import { WorkspaceResponse } from '../../../response/workspace.response';
@@ -53,7 +53,7 @@ export default class WorkspaceController {
   @Post('/')
   public async saveWorkspace(
     @Body() dto: RequestWorkspaceSaveDto,
-    @Req() { user }: RequestWithUsernDto,
+    @GetUser() user: User,
   ) {
     return await this.workspaceService.saveWorksapce(dto, user);
   }

@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
@@ -25,7 +25,8 @@ import {
 
 // ** Dto Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
-import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
+import { GetUser } from '../../../common/decorators/user.decorators';
+import User from '../domain/user.entity';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -42,7 +43,7 @@ export default class UserController {
   @Put('/')
   public async saveSocialUser(
     @Body() dto: RequestUserUpdateDto,
-    @Req() { user }: RequestWithUsernDto,
+    @GetUser() user: User,
   ) {
     return await this.userService.updateUser(dto, user);
   }
@@ -53,7 +54,7 @@ export default class UserController {
   @ApiResponse(UserResponse.findUser[404])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findUser(@Req() { user }: RequestWithUsernDto) {
+  public async findUser(@GetUser() user: User) {
     return await this.userService.findUser(user);
   }
 }

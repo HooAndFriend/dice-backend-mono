@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -19,7 +19,8 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../response/common';
-import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
+import { GetUser } from '../../../common/decorators/user.decorators';
+import User from '../../user/domain/user.entity';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -70,7 +71,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.reissueToken[200])
   @ApiResponse(createUnauthorizedResponse())
   @Post('/reissue')
-  public async reissueToken(@Req() request: RequestWithUsernDto) {
-    return await this.authService.reissueToken(request.user);
+  public async reissueToken(@GetUser() user: User) {
+    return await this.authService.reissueToken(user);
   }
 }
