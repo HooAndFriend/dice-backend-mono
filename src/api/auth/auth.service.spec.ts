@@ -8,7 +8,7 @@ import AuthService from './service/auth.service';
 import UserRepository from '../user/repository/user.repository';
 import WorkspaceRepository from '../workspace/repository/workspace.repository';
 import WorkspaceUserRepository from '../workspace-user/repository/workspace-user.repository';
-import { AppModule } from 'src/app.module';
+import { AppModule } from '../../app.module';
 
 // ** Dto Imports
 import User from '../user/domain/user.entity';

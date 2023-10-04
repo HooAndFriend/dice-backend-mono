@@ -40,7 +40,7 @@ import {
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller('/api/workspace')
+@Controller({ path: '/workspace', version: '1' })
 export default class WorkspaceController {
   constructor(private readonly workspaceService: WorkspaceService) {}
 

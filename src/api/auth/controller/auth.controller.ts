@@ -15,11 +15,15 @@ import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import RequestUserReissueDto from '../dto/user.reissue.dto';
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
-import { createUnauthorizedResponse } from '../../../response/common';
+import {
+  createServerExceptionResponse,
+  createUnauthorizedResponse,
+} from '../../../response/common';
 import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 
 @ApiTags('Auth')
-@Controller('/api/auth')
+@ApiResponse(createServerExceptionResponse())
+@Controller({ path: '/auth', version: '1' })
 export default class AuthController {
   constructor(private readonly authService: AuthService) {}
 

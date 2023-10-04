@@ -17,7 +17,7 @@ import {
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller('/api/workspace/erd')
+@Controller({ path: '/workspace/erd', version: '1' })
 export default class ErdController {
   constructor(private readonly erdService: ErdService) {}
 }

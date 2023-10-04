@@ -18,13 +18,19 @@ import JwtAccessGuard from '../../../api/auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import { UserResponse } from '../../../response/user.response';
+import {
+  createServerExceptionResponse,
+  createUnauthorizedResponse,
+} from '../../../response/common';
 
 // ** Dto Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import { RequestWithUsernDto } from '../../../common/dto/request.user.dto';
 
 @ApiTags('User')
-@Controller('/api/user')
+@ApiResponse(createServerExceptionResponse())
+@ApiResponse(createUnauthorizedResponse())
+@Controller({ path: '/user', version: '1' })
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 

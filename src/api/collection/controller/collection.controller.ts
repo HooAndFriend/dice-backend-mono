@@ -15,7 +15,7 @@ import CollectionService from '../service/collection.service';
 @ApiTags('Workspace Collection')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller('/api/workspace/collection')
+@Controller({ path: '/workspace/collection', version: '1' })
 export default class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 }

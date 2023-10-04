@@ -30,7 +30,7 @@ import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller('/api/workspace-user')
+@Controller({ path: '/workspace-user', version: '1' })
 export default class WorkspaceUserController {
   constructor(private readonly workspaceUserService: WorkspaceUserService) {}
 
