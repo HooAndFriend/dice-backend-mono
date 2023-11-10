@@ -3,14 +3,14 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 // ** Custom Module Imports
-import LoggerModule from './util/logger/logger.module';
 import LoggerMiddleware from './util/logger/logger.middleware';
+import LoggerModule from './util/logger/logger.module';
 
 // ** Typeorm Imports
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmExModule } from './repository/typeOrmEx.module';
-import ApiModule from './api/api.module';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import ApiModule from './api/api.module';
+import { TypeOrmExModule } from './repository/typeOrmEx.module';
 
 @Module({
   imports: [
@@ -29,6 +29,8 @@ import { DevtoolsModule } from '@nestjs/devtools-integration';
       synchronize: true,
       logging: true,
       logger: 'file',
+      charset: 'utf8mb4_unicode_ci',
+      timezone: '+09:00',
     }),
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',

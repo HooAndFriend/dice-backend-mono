@@ -4,7 +4,7 @@ module.exports = {
       name: 'mars-flip',
       script: './dist/main.js',
       instances: 'max',
-      exec_mode: 'cluster'
+      exec_mode: 'cluster',
     },
   ],
 };
