@@ -1,6 +1,6 @@
 // ** Nest Imports
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 
 // ** Custom Module Imports
 import { AppModule } from './app.module';
@@ -46,13 +46,13 @@ async function bootstrap() {
 
   // ** Cors Setting
   app.enableCors();
-  if (process.env.NODE_ENV === 'prod') {
+  if (process.env.NODE_ENV === 'production') {
     app.use(csurf());
   }
   app.use(helmet());
 
   // ** Swagger Setting
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV === 'development') {
     swaggerConfig(app);
   }
 
