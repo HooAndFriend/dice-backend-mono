@@ -25,10 +25,10 @@ export default class ErdService {
   public async saveTable(dto: RequestTableSaveDto) {}
   public async updateTable(id: number, dto: RequestTableUpdateDto) {}
   public async deleteTable(id: number) {}
-  public async findAllTable(id: number) {}
 
   public async saveColumn(dto: RequestColumnSaveDto) {}
   public async updateColumn(id: number, dto: RequestColumnUpdateDto) {}
   public async deleteColumn(id: number) {}
-  public async findAllColumn(id: number) {}
+
+  public async findErd(id: number) {}
 }

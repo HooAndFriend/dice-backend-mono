@@ -81,16 +81,6 @@ export default class ErdController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '테이블 조회' })
-  @ApiResponse(ErdResponse.findAllTable[200])
-  @ApiResponse(ErdResponse.findAllTable[400])
-  @UseGuards(JwtAccessGuard)
-  @Get('/table/:id')
-  public async findAllTable(@Param('id') id: number) {
-    return await this.findAllTable(id);
-  }
-
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '컬럼 생성' })
   @ApiBody({ type: RequestColumnSaveDto })
   @ApiResponse(ErdResponse.saveColumn[200])
@@ -126,12 +116,12 @@ export default class ErdController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '컬럼 조회' })
-  @ApiResponse(ErdResponse.findAllColumn[200])
-  @ApiResponse(ErdResponse.findAllColumn[400])
+  @ApiOperation({ summary: 'Erd 조회' })
+  @ApiResponse(ErdResponse.findErd[200])
+  @ApiResponse(ErdResponse.findErd[400])
   @UseGuards(JwtAccessGuard)
-  @Get('/column/:id')
-  public async findAllColumn(@Param('id') id: number) {
-    return await this.findAllColumn(id);
+  @Get('/:id')
+  public async findErd(@Param('id') id: number) {
+    return await this.findErd(id);
   }
 }
