@@ -5,11 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { ColumnType } from '../../../common/enum/ColumnType.enum';
 
-export default class RequestColumnSaveDto {
-  @ApiProperty({ example: 2 })
-  @IsNumber()
-  table_id: number;
-
+export default class RequestColumnUpdateDto {
   @ApiProperty({ example: ColumnType.PK, enum: ColumnType })
   @IsEnum(ColumnType)
   key: ColumnType;

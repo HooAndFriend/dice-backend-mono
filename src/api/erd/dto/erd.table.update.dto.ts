@@ -4,11 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsNumber, IsString } from 'class-validator';
 
-export default class RequestTableSaveDto {
-  @ApiProperty({ example: 2 })
-  @IsNumber()
-  workspace_id: number;
-
+export default class RequestTableUpdateDto {
   @ApiProperty({ example: 'tbl_test' })
   @IsString()
   name: string;

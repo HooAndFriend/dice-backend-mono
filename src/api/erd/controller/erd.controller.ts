@@ -25,6 +25,8 @@ import RequestTableSaveDto from '../dto/erd.table.save.dto';
 import { AuthResponse } from '../../../response/auth.response';
 import { ErdResponse } from '../../../response/erd.response';
 import RequestColumnSaveDto from '../dto/erd.column.save.dto';
+import RequestTableUpdateDto from '../dto/erd.table.update.dto';
+import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -43,13 +45,13 @@ export default class ErdController {
   }
 
   @ApiOperation({ summary: '테이블 수정' })
-  @ApiBody({ type: RequestTableSaveDto })
+  @ApiBody({ type: RequestTableUpdateDto })
   @ApiResponse(ErdResponse.updateTable[200])
   @ApiResponse(ErdResponse.updateTable[400])
   @Patch('/table/:id')
   public async updateTable(
     @Param('id') id: number,
-    @Body() dto: RequestTableSaveDto,
+    @Body() dto: RequestTableUpdateDto,
   ) {
     return await this.erdService.updateTable(id, dto);
   }
@@ -80,13 +82,13 @@ export default class ErdController {
   }
 
   @ApiOperation({ summary: '컬럼 수정' })
-  @ApiBody({ type: RequestColumnSaveDto })
+  @ApiBody({ type: RequestColumnUpdateDto })
   @ApiResponse(ErdResponse.updateColumn[200])
   @ApiResponse(ErdResponse.updateColumn[400])
   @Patch('/column/:id')
   public async updateColumn(
     @Param('id') id: number,
-    @Body() dto: RequestColumnSaveDto,
+    @Body() dto: RequestColumnUpdateDto,
   ) {
     return await this.erdService.updateColumn(id, dto);
   }
