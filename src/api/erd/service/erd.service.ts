@@ -89,7 +89,38 @@ export default class ErdService {
       await queryRunner.release();
     }
   }
-  public async updateTable(id: number, dto: RequestTableUpdateDto) {}
+  public async updateTable(id: number, dto: RequestTableUpdateDto, user: User) {
+    const findTableName = await this.tableRepository.findOne({
+      where: { name: dto.name },
+    });
+
+    if (findTableName) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 테이블 입니다.',
+      );
+    }
+
+    const findTable = await this.tableRepository.findOne({
+      where: { id },
+    });
+
+    if (!findTable) {
+      return CommonResponse.createNotFoundException(
+        '테이블을 찾을 수 없습니다.',
+      );
+    }
+
+    await this.tableRepository.update(id, {
+      name: dto.name,
+      comment: dto.comment,
+      modify_user: user,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '테이블을 수정합니다.',
+    });
+  }
   public async deleteTable(id: number) {}
 
   public async saveColumn(dto: RequestColumnSaveDto) {}

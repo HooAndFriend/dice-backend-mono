@@ -25,6 +25,11 @@ export const ErdResponse = {
       error: 'BAD REQUEST',
       message: '이미 사용 중인 테이블 입니다.',
     }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: '테이블을 찾을 수 없습니다.',
+    }),
   },
   deleteTable: {
     200: createMessageResponse({
