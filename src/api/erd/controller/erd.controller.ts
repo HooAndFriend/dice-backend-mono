@@ -94,8 +94,11 @@ export default class ErdController {
   @ApiResponse(ErdResponse.saveColumn[400])
   @UseGuards(JwtAccessGuard)
   @Post('/column')
-  public async saveColumn(@Body() dto: RequestColumnSaveDto) {
-    return await this.erdService.saveColumn(dto);
+  public async saveColumn(
+    @Body() dto: RequestColumnSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.saveColumn(dto, user);
   }
 
   @ApiBearerAuth('access-token')

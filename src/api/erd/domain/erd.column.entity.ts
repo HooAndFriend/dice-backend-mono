@@ -61,7 +61,7 @@ export default class Columns extends BaseTimeEntity {
     comment: '데이터 타입',
     nullable: true,
   })
-  dataType: string;
+  data_type: string;
 
   @Column({
     type: 'varchar',

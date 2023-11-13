@@ -12,16 +12,16 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
-import WorkspaceRepository from '../repository/workspace.repository';
 import WorkspaceUserRepository from '../../../api/workspace-user/repository/workspace-user.repository';
+import WorkspaceRepository from '../repository/workspace.repository';
 
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import User from '../../../api/user/domain/user.entity';
-import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
+import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 
 // Other Imports
@@ -58,6 +58,7 @@ export default class WorkspaceService {
         this.workspaceRepository.create({
           name: dto.name,
           comment: dto.comment,
+          profile: dto.profile,
           isPersonal: false,
         }),
       );

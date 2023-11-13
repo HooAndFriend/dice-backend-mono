@@ -20,6 +20,7 @@ import User from '../../user/domain/user.entity';
 import CommonResponse from '../../../common/dto/api.response';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
+import ColumnRepository from '../repository/erd.column.repository';
 
 // Other Imports
 
@@ -27,6 +28,7 @@ import WorkspaceRepository from '../../workspace/repository/workspace.repository
 export default class ErdService {
   constructor(
     private readonly tableRepository: TableRepository,
+    private readonly columnRepository: ColumnRepository,
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
@@ -123,7 +125,65 @@ export default class ErdService {
   }
   public async deleteTable(id: number) {}
 
-  public async saveColumn(dto: RequestColumnSaveDto) {}
+  public async saveColumn(dto: RequestColumnSaveDto, user: User) {
+    const findTable = await this.tableRepository.findOne({
+      where: { id: dto.table_id },
+    });
+
+    if (!findTable) {
+      return CommonResponse.createNotFoundException(
+        '테이블을 찾을 수 없습니다.',
+      );
+    }
+
+    const findColumn = await this.columnRepository.findOne({
+      where: { name: dto.name },
+    });
+
+    if (findColumn) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 컬럼 입니다.',
+      );
+    }
+
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save(
+        this.columnRepository.create({
+          table: findTable,
+          create_user: user,
+          modify_user: user,
+          key: dto.key,
+          name: dto.name,
+          isnull: dto.isnull,
+          data_type: dto.data_type,
+          option: dto.option,
+          comment: dto.comment,
+        }),
+      );
+
+      await queryRunner.commitTransaction();
+
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: '컬럼을 생성합니다.',
+      });
+    } catch (err) {
+      this.logger.error(err);
+      await queryRunner.rollbackTransaction();
+      if (err instanceof HttpException) {
+        throw new HttpException(err.message, err.getStatus());
+      }
+
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
+  }
   public async updateColumn(id: number, dto: RequestColumnUpdateDto) {}
   public async deleteColumn(id: number) {}
 
