@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -11,8 +12,9 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
+import Columns from './erd.column.entity';
 
-@Entity({ name: 'TB_Table' })
+@Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,6 +27,9 @@ export default class Table extends BaseTimeEntity {
 
   @ManyToOne(() => User, (user) => user.table)
   modify_user: Relation<User>;
+
+  @OneToMany(() => Columns, (column) => column.table)
+  column: Relation<Columns>[];
 
   @Column({
     type: 'varchar',

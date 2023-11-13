@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsEnum, IsNumber, IsString } from 'class-validator';
-import { ColumnType } from '../../../common/enum/ColumnType.enum';
+import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
 
 export default class RequestColumnSaveDto {
   @ApiProperty({ example: 2 })
@@ -16,7 +16,7 @@ export default class RequestColumnSaveDto {
 
   @ApiProperty({ example: 'testColumn' })
   @IsString()
-  column: string;
+  name: string;
 
   @ApiProperty({ example: '예시 컬럼' })
   @IsString()
@@ -26,9 +26,9 @@ export default class RequestColumnSaveDto {
   @IsString()
   data_type: string;
 
-  @ApiProperty({ example: 'N' })
-  @IsString()
-  isnull: string;
+  @ApiProperty({ example: IsNull.N, enum: IsNull })
+  @IsEnum(IsNull)
+  isnull: IsNull;
 
   @ApiProperty({ example: 'auto_increment' })
   @IsString()

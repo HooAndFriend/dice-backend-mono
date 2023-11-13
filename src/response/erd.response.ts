@@ -90,7 +90,7 @@ export const ErdResponse = {
             {
               id: 1,
               key: 'PK',
-              column: 'test_column',
+              name: 'test_column',
               isnull: 'N-N',
               data_type: 'integer',
               option: 'auto_increment',
