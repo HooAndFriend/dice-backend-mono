@@ -17,13 +17,13 @@ export default class Table extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.erd)
+  @ManyToOne(() => Workspace, (workspace) => workspace.table)
   workspase: Relation<Workspace>;
 
-  @ManyToOne(() => User, (user) => user.erd)
+  @ManyToOne(() => User, (user) => user.table)
   create_user: Relation<User>;
 
-  @ManyToOne(() => User, (user) => user.erd)
+  @ManyToOne(() => User, (user) => user.table)
   modify_user: Relation<User>;
 
   @Column({

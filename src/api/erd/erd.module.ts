@@ -10,11 +10,13 @@ import ErdController from './controller/erd.controller';
 import ErdService from './service/erd.service';
 import Table from './domain/erd.table.entity';
 import TableRepository from './repository/erd.table.repository';
+import WorkspaceModule from '../workspace/workspace.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Table]),
     TypeOrmExModule.forCustomRepository([TableRepository]),
+    WorkspaceModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [ErdController],

@@ -37,6 +37,8 @@ import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { GetUser } from '../../../common/decorators/user.decorators';
+import User from '../../user/domain/user.entity';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -52,8 +54,11 @@ export default class ErdController {
   @ApiResponse(ErdResponse.saveTable[400])
   @UseGuards(JwtAccessGuard)
   @Post('/table')
-  public async saveTable(@Body() dto: RequestTableSaveDto) {
-    return await this.erdService.saveTable(dto);
+  public async saveTable(
+    @Body() dto: RequestTableSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.saveTable(dto, user);
   }
 
   @ApiBearerAuth('access-token')

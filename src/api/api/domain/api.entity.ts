@@ -10,6 +10,6 @@ export default class Api extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.erd)
+  @ManyToOne(() => Workspace, (workspace) => workspace.table)
   workspace: Relation<Workspace>;
 }
