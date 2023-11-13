@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
-import Erd from '../domain/erd.entity';
+import Table from '../domain/erd.table.entity';
 
-@CustomRepository(Erd)
-export default class ErdRepository extends Repository<Erd> {}
+@CustomRepository(Table)
+export default class TableRepository extends Repository<Table> {}

@@ -6,15 +6,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
 import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
-import Erd from './domain/erd.entity';
-import ErdRepository from './repository/erd.repository';
 import ErdController from './controller/erd.controller';
 import ErdService from './service/erd.service';
+import Table from './domain/erd.table.entity';
+import TableRepository from './repository/erd.table.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Erd]),
-    TypeOrmExModule.forCustomRepository([ErdRepository]),
+    TypeOrmModule.forFeature([Table]),
+    TypeOrmExModule.forCustomRepository([TableRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [ErdController],

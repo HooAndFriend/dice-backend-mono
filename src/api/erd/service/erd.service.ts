@@ -5,18 +5,18 @@ import { ConfigService } from '@nestjs/config';
 // ** enum, dto, entity, types Imports
 
 // ** Custom Module Imports
-import ErdRepository from '../repository/erd.repository';
 import RequestTableSaveDto from '../dto/erd.table.save.dto';
 import RequestColumnSaveDto from '../dto/erd.column.save.dto';
 import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 import RequestTableUpdateDto from '../dto/erd.table.update.dto';
+import TableRepository from '../repository/erd.table.repository';
 
 // Other Imports
 
 @Injectable()
 export default class ErdService {
   constructor(
-    private readonly erdRepository: ErdRepository,
+    private readonly tableRepository: TableRepository,
     private readonly configService: ConfigService,
   ) {}
 
