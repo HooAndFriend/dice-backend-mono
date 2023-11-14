@@ -15,12 +15,12 @@ import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 import RequestTableUpdateDto from '../dto/erd.table.update.dto';
 
 // ** Custom Module Imports
-import TableRepository from '../repository/erd.table.repository';
 import User from '../../user/domain/user.entity';
 import CommonResponse from '../../../common/dto/api.response';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import ColumnRepository from '../repository/erd.column.repository';
+import TableRepository from '../repository/erd.table.repository';
 
 // Other Imports
 
@@ -36,6 +36,7 @@ export default class ErdService {
 
   private logger = new Logger();
 
+  // Table Service
   public async saveTable(dto: RequestTableSaveDto, user: User) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: dto.workspace_id },
@@ -103,8 +104,10 @@ export default class ErdService {
       message: '테이블을 수정합니다.',
     });
   }
+
   public async deleteTable(id: number) {}
 
+  // Column Service
   public async saveColumn(dto: RequestColumnSaveDto, user: User) {
     const findTable = await this.tableRepository.findOne({
       where: { id: dto.table_id },
@@ -145,7 +148,35 @@ export default class ErdService {
       message: '컬럼을 생성합니다.',
     });
   }
-  public async updateColumn(id: number, dto: RequestColumnUpdateDto) {}
+  public async updateColumn(
+    id: number,
+    dto: RequestColumnUpdateDto,
+    user: User,
+  ) {
+    const findColumn = await this.columnRepository.findOne({
+      where: { id },
+    });
+
+    if (!findColumn) {
+      return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
+    }
+
+    await this.columnRepository.update(id, {
+      modify_user: user,
+      key: dto.key,
+      name: dto.name,
+      isnull: dto.isnull,
+      data_type: dto.data_type,
+      option: dto.option,
+      comment: dto.comment,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '컬럼을 수정합니다.',
+    });
+  }
+
   public async deleteColumn(id: number) {}
 
   public async findErd(id: number) {}

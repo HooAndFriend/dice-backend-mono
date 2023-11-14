@@ -63,6 +63,11 @@ export const ErdResponse = {
       error: 'BAD REQUEST',
       message: '이미 사용 중인 컬럼 입니다.',
     }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: '컬럼을 찾을 수 없습니다.',
+    }),
   },
   deleteColumn: {
     200: createMessageResponse({

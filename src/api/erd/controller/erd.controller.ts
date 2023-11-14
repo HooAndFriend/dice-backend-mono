@@ -106,13 +106,15 @@ export default class ErdController {
   @ApiBody({ type: RequestColumnUpdateDto })
   @ApiResponse(ErdResponse.updateColumn[200])
   @ApiResponse(ErdResponse.updateColumn[400])
+  @ApiResponse(ErdResponse.updateColumn[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/column/:id')
   public async updateColumn(
     @Param('id') id: number,
     @Body() dto: RequestColumnUpdateDto,
+    @GetUser() user: User,
   ) {
-    return await this.erdService.updateColumn(id, dto);
+    return await this.erdService.updateColumn(id, dto, user);
   }
 
   @ApiBearerAuth('access-token')
