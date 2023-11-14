@@ -57,40 +57,20 @@ export default class ErdService {
       );
     }
 
-    const queryRunner = this.dataSource.createQueryRunner();
+    this.tableRepository.save({
+      name: dto.name,
+      comment: dto.comment,
+      workspase: findWorkspace,
+      create_user: user,
+      modify_user: user,
+    });
 
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      await queryRunner.manager.save(
-        this.tableRepository.create({
-          name: dto.name,
-          comment: dto.comment,
-          workspase: findWorkspace,
-          create_user: user,
-          modify_user: user,
-        }),
-      );
-
-      await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: '테이블을 생성합니다.',
-      });
-    } catch (err) {
-      this.logger.error(err);
-      await queryRunner.rollbackTransaction();
-      if (err instanceof HttpException) {
-        throw new HttpException(err.message, err.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
-    }
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '테이블을 생성합니다.',
+    });
   }
+
   public async updateTable(id: number, dto: RequestTableUpdateDto, user: User) {
     const findTableName = await this.tableRepository.findOne({
       where: { name: dto.name },
