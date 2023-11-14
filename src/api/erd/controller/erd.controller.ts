@@ -134,6 +134,6 @@ export default class ErdController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findErd(@Param('id') id: number) {
-    return await this.findErd(id);
+    return await this.erdService.findErd(id);
   }
 }

@@ -20,7 +20,7 @@ export default class Table extends BaseTimeEntity {
   id: number;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.table)
-  workspase: Relation<Workspace>;
+  workspace: Relation<Workspace>;
 
   @ManyToOne(() => User, (user) => user.table)
   create_user: Relation<User>;

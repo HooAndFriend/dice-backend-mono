@@ -194,5 +194,33 @@ export default class ErdService {
     });
   }
 
-  public async findErd(id: number) {}
+  public async findErd(id: number) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id },
+    });
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
+
+    const erd = [];
+    const [findTable, count] = await this.tableRepository.findTable(id);
+
+    for (let i = 0; i < count; i++) {
+      const column = await this.columnRepository
+        .findColumn(findTable[i].id)
+        .then((column) => {
+          const tmp = { table: findTable[i], column };
+          erd.push(tmp);
+        });
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Erd 정보를 조회합니다.',
+      data: erd,
+    });
+  }
 }

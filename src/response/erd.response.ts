@@ -88,8 +88,18 @@ export const ErdResponse = {
             id: 1,
             name: 'tbl_test',
             comment: '예시 테이블입니다.',
-            create_user: 'pino',
-            last_modify_user: 'jooman',
+            create_user: {
+              nickname: 'pino',
+              email: 'pino@gamil.com',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+            },
+            modify_user: {
+              nickname: 'jooman',
+              email: 'joo@gamil.com',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+            },
           },
           column: [
             {
@@ -100,8 +110,18 @@ export const ErdResponse = {
               data_type: 'integer',
               option: 'auto_increment',
               comment: '예시 컬럼입니다.',
-              create_user: 'pino',
-              last_modify_user: 'jooman',
+              create_user: {
+                nickname: 'pino',
+                email: 'pino@gamil.com',
+                profile:
+                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+              },
+              modify_user: {
+                nickname: 'jooman',
+                email: 'joo@gamil.com',
+                profile:
+                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+              },
             },
           ],
         },
