@@ -121,48 +121,29 @@ export default class ErdService {
     });
 
     if (findColumn) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 컬럼 입니다.',
-      );
-    }
-
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      await queryRunner.manager.save(
-        this.columnRepository.create({
-          table: findTable,
-          create_user: user,
-          modify_user: user,
-          key: dto.key,
-          name: dto.name,
-          isnull: dto.isnull,
-          data_type: dto.data_type,
-          option: dto.option,
-          comment: dto.comment,
-        }),
-      );
-
-      await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: '컬럼을 생성합니다.',
-      });
-    } catch (err) {
-      this.logger.error(err);
-      await queryRunner.rollbackTransaction();
-      if (err instanceof HttpException) {
-        throw new HttpException(err.message, err.getStatus());
+      if (findColumn.table == findTable) {
+        return CommonResponse.createBadRequestException(
+          '이미 사용 중인 컬럼 입니다.',
+        );
       }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
+
+    this.columnRepository.save({
+      table: findTable,
+      create_user: user,
+      modify_user: user,
+      key: dto.key,
+      name: dto.name,
+      isnull: dto.isnull,
+      data_type: dto.data_type,
+      option: dto.option,
+      comment: dto.comment,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '컬럼을 생성합니다.',
+    });
   }
   public async updateColumn(id: number, dto: RequestColumnUpdateDto) {}
   public async deleteColumn(id: number) {}
