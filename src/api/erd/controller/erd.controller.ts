@@ -124,7 +124,7 @@ export default class ErdController {
   @UseGuards(JwtAccessGuard)
   @Delete('/column/:id')
   public async deleteColumn(@Param('id') id: number) {
-    return await this.deleteColumn(id);
+    return await this.erdService.deleteColumn(id);
   }
 
   @ApiBearerAuth('access-token')

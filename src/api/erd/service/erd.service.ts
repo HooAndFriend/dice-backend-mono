@@ -177,7 +177,22 @@ export default class ErdService {
     });
   }
 
-  public async deleteColumn(id: number) {}
+  public async deleteColumn(id: number) {
+    const findColumn = this.columnRepository.findOne({
+      where: { id },
+    });
+
+    if (!findColumn) {
+      return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
+    }
+
+    await this.columnRepository.delete(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '컬럼을 삭제합니다.',
+    });
+  }
 
   public async findErd(id: number) {}
 }
