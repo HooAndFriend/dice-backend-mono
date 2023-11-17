@@ -84,7 +84,7 @@ export default class ErdController {
   @UseGuards(JwtAccessGuard)
   @Delete('/table/:tableId')
   public async deleteTable(@Param('tableId') id: number) {
-    return await this.deleteTable(id);
+    return await this.erdService.deleteTable(id);
   }
 
   @ApiBearerAuth('access-token')

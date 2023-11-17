@@ -118,9 +118,14 @@ export default class ErdService {
       );
     }
 
+    await this.columnRepository.deleteColumnByTable(id);
+
     await this.tableRepository.delete(id);
 
-    return CommonResponse.createBadRequestException('테이블을 삭제합니다.');
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '테이블을 삭제합니다.',
+    });
   }
 
   // Column Service
