@@ -3,18 +3,18 @@ import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Columns from '../domain/column.entity';
 
 @CustomRepository(Columns)
-export default class ColumnRepository extends Repository<Columns> {
+export default class ColumnsRepository extends Repository<Columns> {
   public async findColumn(tableId: number) {
     const qb = this.createQueryBuilder('column')
       .select([
         'column.id',
-        'table.id',
         'column.key',
         'column.name',
         'column.comment',
         'column.data_type',
         'column.isnull',
         'column.option',
+        'table.id',
         'create_user.nickname',
         'create_user.email',
         'create_user.profile',

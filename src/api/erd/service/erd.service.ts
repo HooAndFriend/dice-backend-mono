@@ -13,7 +13,7 @@ import User from '../../user/domain/user.entity';
 import CommonResponse from '../../../common/dto/api.response';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import ColumnRepository from '../repository/erd.column.repository';
+import ColumnsRepository from '../repository/erd.column.repository';
 import TableRepository from '../repository/erd.table.repository';
 
 // Other Imports
@@ -22,7 +22,7 @@ import TableRepository from '../repository/erd.table.repository';
 export default class ErdService {
   constructor(
     private readonly tableRepository: TableRepository,
-    private readonly columnRepository: ColumnRepository,
+    private readonly columnsRepository: ColumnsRepository,
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
@@ -112,7 +112,7 @@ export default class ErdService {
       );
     }
 
-    await this.columnRepository.deleteColumnByTable(id);
+    await this.columnsRepository.deleteColumnByTable(id);
 
     await this.tableRepository.delete(id);
 
@@ -134,7 +134,7 @@ export default class ErdService {
       );
     }
 
-    const findColumn = await this.columnRepository.findColumnByNameAndTable(
+    const findColumn = await this.columnsRepository.findColumnByNameAndTable(
       dto.name,
       dto.table_id,
     );
@@ -145,7 +145,7 @@ export default class ErdService {
       );
     }
 
-    this.columnRepository.save({
+    this.columnsRepository.save({
       table: findTable,
       create_user: user,
       modify_user: user,
@@ -163,14 +163,16 @@ export default class ErdService {
     });
   }
   public async updateColumn(dto: RequestColumnUpdateDto, user: User) {
-    const findColumn = await this.columnRepository.findColumnById(dto.columnId);
+    const findColumn = await this.columnsRepository.findColumnById(
+      dto.columnId,
+    );
 
     if (!findColumn) {
       return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
     }
 
     const findColumnByNameAndTable =
-      await this.columnRepository.findColumnByNameAndTable(
+      await this.columnsRepository.findColumnByNameAndTable(
         dto.name,
         findColumn.table.id,
       );
@@ -181,7 +183,7 @@ export default class ErdService {
       );
     }
 
-    await this.columnRepository.update(dto.columnId, {
+    await this.columnsRepository.update(dto.columnId, {
       modifyUser: user,
       key: dto.key,
       name: dto.name,
@@ -198,7 +200,7 @@ export default class ErdService {
   }
 
   public async deleteColumn(id: number) {
-    const findColumn = this.columnRepository.findOne({
+    const findColumn = this.columnsRepository.findOne({
       where: { id },
     });
 
@@ -206,7 +208,7 @@ export default class ErdService {
       return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
     }
 
-    await this.columnRepository.delete(id);
+    await this.columnsRepository.delete(id);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -229,7 +231,7 @@ export default class ErdService {
     const [findTable, count] = await this.tableRepository.findTable(id);
 
     for (let i = 0; i < count; i++) {
-      const column = await this.columnRepository
+      const column = await this.columnsRepository
         .findColumn(findTable[i].id)
         .then((column) => {
           const tmp = { table: findTable[i], column };

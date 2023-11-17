@@ -11,15 +11,13 @@ import ErdService from './service/erd.service';
 import Table from './domain/table.entity';
 import WorkspaceModule from '../workspace/workspace.module';
 import Columns from './domain/column.entity';
-import ColumnRepository from './repository/erd.column.repository';
+import ColumnsRepository from './repository/erd.column.repository';
 import TableRepository from './repository/erd.table.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Table]),
-    TypeOrmExModule.forCustomRepository([TableRepository]),
-    TypeOrmModule.forFeature([Columns]),
-    TypeOrmExModule.forCustomRepository([ColumnRepository]),
+    TypeOrmModule.forFeature([Table, Columns]),
+    TypeOrmExModule.forCustomRepository([TableRepository, ColumnsRepository]),
     WorkspaceModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
