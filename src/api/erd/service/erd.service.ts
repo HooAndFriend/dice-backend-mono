@@ -1,5 +1,11 @@
 // ** Nest Imports
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
@@ -11,6 +17,8 @@ import RequestColumnSaveDto from '../dto/erd.column.save.dto';
 import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 import RequestTableUpdateDto from '../dto/erd.table.update.dto';
 import User from '../../user/domain/user.entity';
+import Columns from '../domain/column.entity';
+import Table from '../domain/table.entity';
 
 // ** Custom Module Imports
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
@@ -56,7 +64,7 @@ export default class ErdService {
       );
     }
 
-    this.tableRepository.save({
+    await this.tableRepository.save({
       name: dto.name,
       comment: dto.comment,
       workspace: findWorkspace,
@@ -114,14 +122,32 @@ export default class ErdService {
       );
     }
 
-    await this.columnsRepository.deleteColumnByTable(id);
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    await this.tableRepository.delete(id);
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '테이블을 삭제합니다.',
-    });
+    try {
+      const deleteColumn = await queryRunner.manager.delete(Columns, {
+        table: id,
+      });
+      const deleteTable = await queryRunner.manager.delete(Table, { id });
+
+      await queryRunner.commitTransaction();
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: '테이블을 삭제합니다.',
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   // Column Service
@@ -147,7 +173,7 @@ export default class ErdService {
       );
     }
 
-    this.columnsRepository.save({
+    await this.columnsRepository.save({
       table: findTable,
       create_user: user,
       modify_user: user,
