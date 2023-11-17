@@ -10,14 +10,15 @@ import ApiService from './service/api.service';
 import ApiController from './controller/api.controller';
 import ApiRepository from './repository/api.repository';
 import Api from './domain/api.entity';
+import ApiHeaderRepository from './repository/header.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Api]),
     TypeOrmExModule.forCustomRepository([ApiRepository]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, ApiHeaderRepository],
   controllers: [ApiController],
-  providers: [ApiService],
+  providers: [ApiService, ApiHeaderRepository],
 })
-export default class ApiModule {}
+export default class RequestApiModule {}

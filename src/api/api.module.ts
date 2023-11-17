@@ -6,6 +6,7 @@ import WorkspaceModule from './workspace/workspace.module';
 import WorkspaceUserModule from './workspace-user/workspace-user.module';
 import ErdModule from './erd/erd.module';
 import CollectionModule from './collection/collection.module';
+import RequestApiModule from './api/api.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import CollectionModule from './collection/collection.module';
     WorkspaceUserModule,
     ErdModule,
     CollectionModule,
-    ApiModule,
+    RequestApiModule,
   ],
   providers: [],
   exports: [],
