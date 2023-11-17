@@ -1,11 +1,5 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports

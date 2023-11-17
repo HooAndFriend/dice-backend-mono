@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Columns from '../domain/erd.column.entity';
-import Table from '../domain/erd.table.entity';
 
 @CustomRepository(Columns)
 export default class ColumnRepository extends Repository<Columns> {

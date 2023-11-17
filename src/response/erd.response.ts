@@ -104,6 +104,9 @@ export const ErdResponse = {
           column: [
             {
               id: 1,
+              table: {
+                id: 1,
+              },
               key: 'PK',
               name: 'test_column',
               isnull: 'N-N',
