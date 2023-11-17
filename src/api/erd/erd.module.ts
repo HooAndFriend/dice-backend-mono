@@ -8,9 +8,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
 import ErdController from './controller/erd.controller';
 import ErdService from './service/erd.service';
-import Table from './domain/erd.table.entity';
+import Table from './domain/table.entity';
 import WorkspaceModule from '../workspace/workspace.module';
-import Columns from './domain/erd.column.entity';
+import Columns from './domain/column.entity';
 import ColumnRepository from './repository/erd.column.repository';
 import TableRepository from './repository/erd.table.repository';
 

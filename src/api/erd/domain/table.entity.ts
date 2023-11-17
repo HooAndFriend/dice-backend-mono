@@ -12,24 +12,12 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
-import Columns from './erd.column.entity';
+import Columns from './column.entity';
 
 @Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ManyToOne(() => Workspace, (workspace) => workspace.table)
-  workspace: Relation<Workspace>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  create_user: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  modify_user: Relation<User>;
-
-  @OneToMany(() => Columns, (column) => column.table)
-  column: Relation<Columns>[];
 
   @Column({
     type: 'varchar',
@@ -48,4 +36,16 @@ export default class Table extends BaseTimeEntity {
     nullable: true,
   })
   comment: string;
+
+  @ManyToOne(() => Workspace, (workspace) => workspace.table)
+  workspace: Relation<Workspace>;
+
+  @ManyToOne(() => User, (user) => user.table)
+  createUser: Relation<User>;
+
+  @ManyToOne(() => User, (user) => user.table)
+  modifyUser: Relation<User>;
+
+  @OneToMany(() => Columns, (column) => column.table)
+  column: Relation<Columns>[];
 }

@@ -92,7 +92,7 @@ export default class ErdService {
     await this.tableRepository.update(id, {
       name: dto.name,
       comment: dto.comment,
-      modify_user: user,
+      modifyUser: user,
     });
 
     return CommonResponse.createResponseMessage({
@@ -162,12 +162,8 @@ export default class ErdService {
       message: '컬럼을 생성합니다.',
     });
   }
-  public async updateColumn(
-    id: number,
-    dto: RequestColumnUpdateDto,
-    user: User,
-  ) {
-    const findColumn = await this.columnRepository.findColumnById(id);
+  public async updateColumn(dto: RequestColumnUpdateDto, user: User) {
+    const findColumn = await this.columnRepository.findColumnById(dto.columnId);
 
     if (!findColumn) {
       return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
@@ -185,12 +181,12 @@ export default class ErdService {
       );
     }
 
-    await this.columnRepository.update(id, {
-      modify_user: user,
+    await this.columnRepository.update(dto.columnId, {
+      modifyUser: user,
       key: dto.key,
       name: dto.name,
       isnull: dto.isnull,
-      data_type: dto.data_type,
+      dataType: dto.data_type,
       option: dto.option,
       comment: dto.comment,
     });

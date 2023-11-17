@@ -2,10 +2,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
 
 export default class RequestColumnUpdateDto {
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  columnId: number;
+
   @ApiProperty({ example: ColumnType.PK, enum: ColumnType })
   @IsEnum(ColumnType)
   key: ColumnType;

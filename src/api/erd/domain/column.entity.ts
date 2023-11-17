@@ -11,21 +11,12 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import User from '../../user/domain/user.entity';
 import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
-import Table from './erd.table.entity';
+import Table from './table.entity';
 
 @Entity({ name: 'TB_COLUMN' })
 export default class Columns extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ManyToOne(() => User, (user) => user.table)
-  create_user: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  modify_user: Relation<User>;
-
-  @ManyToOne(() => Table, (table) => table.column)
-  table: Relation<Table>;
 
   @Column({
     type: 'enum',
@@ -61,7 +52,7 @@ export default class Columns extends BaseTimeEntity {
     comment: '데이터 타입',
     nullable: true,
   })
-  data_type: string;
+  dataType: string;
 
   @Column({
     type: 'varchar',
@@ -80,4 +71,13 @@ export default class Columns extends BaseTimeEntity {
     nullable: true,
   })
   comment: string;
+
+  @ManyToOne(() => User, (user) => user.table)
+  createUser: Relation<User>;
+
+  @ManyToOne(() => User, (user) => user.table)
+  modifyUser: Relation<User>;
+
+  @ManyToOne(() => Table, (table) => table.column)
+  table: Relation<Table>;
 }
