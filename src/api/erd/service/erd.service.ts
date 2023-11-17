@@ -75,12 +75,10 @@ export default class ErdService {
       where: { name: dto.name },
     });
 
-    if (findTableName) {
-      if (findTableName.id != id) {
-        return CommonResponse.createBadRequestException(
-          '이미 사용 중인 테이블 입니다.',
-        );
-      }
+    if (findTableName && findTableName.id != id) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 테이블 입니다.',
+      );
     }
 
     const findTable = await this.tableRepository.findOne({
