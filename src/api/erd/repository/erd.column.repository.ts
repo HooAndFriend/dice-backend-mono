@@ -5,7 +5,7 @@ import Columns from '../domain/column.entity';
 @CustomRepository(Columns)
 export default class ColumnsRepository extends Repository<Columns> {
   public async findColumn(tableId: number) {
-    const qb = this.createQueryBuilder('column')
+    const querybuilder = this.createQueryBuilder('column')
       .select([
         'column.id',
         'column.key',
@@ -26,7 +26,7 @@ export default class ColumnsRepository extends Repository<Columns> {
       .leftJoin('column.create_user', 'create_user')
       .leftJoin('column.modify_user', 'modify_user')
       .where('column.table = :tableId', { tableId });
-    return await qb.getMany();
+    return await querybuilder.getMany();
   }
 
   public async findColumnByNameAndTable(columnName: string, tableId: number) {
