@@ -128,10 +128,10 @@ export default class ErdService {
     await queryRunner.startTransaction();
 
     try {
-      const deleteColumn = await queryRunner.manager.delete(Columns, {
+      await queryRunner.manager.delete(Columns, {
         table: id,
       });
-      const deleteTable = await queryRunner.manager.delete(Table, { id });
+      await queryRunner.manager.delete(Table, { id });
 
       await queryRunner.commitTransaction();
       return CommonResponse.createResponseMessage({
