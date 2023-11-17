@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Columns from '../domain/erd.column.entity';
+import Table from '../domain/erd.table.entity';
 
 @CustomRepository(Columns)
 export default class ColumnRepository extends Repository<Columns> {
@@ -27,5 +28,40 @@ export default class ColumnRepository extends Repository<Columns> {
       .leftJoin('column.modify_user', 'modify_user')
       .where('column.table = :tableId', { tableId });
     return await qb.getMany();
+  }
+
+  public async findColumnByNameAndTable(columnName: string, tableId: number) {
+    return this.createQueryBuilder('column')
+      .select([
+        'column.id',
+        'table.id',
+        'column.key',
+        'column.name',
+        'column.comment',
+        'column.data_type',
+        'column.isnull',
+        'column.option',
+      ])
+      .leftJoin('column.table', 'table')
+      .where('column.name = :columnName', { columnName })
+      .andWhere('column.table = :tableId', { tableId })
+      .getOne();
+  }
+
+  public async findColumnById(id: number) {
+    return this.createQueryBuilder('column')
+      .select([
+        'column.id',
+        'table.id',
+        'column.key',
+        'column.name',
+        'column.comment',
+        'column.data_type',
+        'column.isnull',
+        'column.option',
+      ])
+      .leftJoin('column.table', 'table')
+      .where('column.id = :id', { id })
+      .getOne();
   }
 }

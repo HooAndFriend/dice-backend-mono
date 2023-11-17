@@ -61,7 +61,7 @@ export default class ErdService {
     this.tableRepository.save({
       name: dto.name,
       comment: dto.comment,
-      workspase: findWorkspace,
+      workspace: findWorkspace,
       create_user: user,
       modify_user: user,
     });
@@ -78,9 +78,11 @@ export default class ErdService {
     });
 
     if (findTableName) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 테이블 입니다.',
-      );
+      if (findTableName.id != id) {
+        return CommonResponse.createBadRequestException(
+          '이미 사용 중인 테이블 입니다.',
+        );
+      }
     }
 
     const findTable = await this.tableRepository.findOne({
@@ -105,7 +107,21 @@ export default class ErdService {
     });
   }
 
-  public async deleteTable(id: number) {}
+  public async deleteTable(id: number) {
+    const findTable = await this.tableRepository.findOne({
+      where: { id },
+    });
+
+    if (!findTable) {
+      return CommonResponse.createNotFoundException(
+        '테이블을 찾을 수 없습니다.',
+      );
+    }
+
+    await this.tableRepository.delete(id);
+
+    return CommonResponse.createBadRequestException('테이블을 삭제합니다.');
+  }
 
   // Column Service
   public async saveColumn(dto: RequestColumnSaveDto, user: User) {
@@ -119,16 +135,15 @@ export default class ErdService {
       );
     }
 
-    const findColumn = await this.columnRepository.findOne({
-      where: { name: dto.name },
-    });
+    const findColumn = await this.columnRepository.findColumnByNameAndTable(
+      dto.name,
+      dto.table_id,
+    );
 
     if (findColumn) {
-      if (findColumn.table == findTable) {
-        return CommonResponse.createBadRequestException(
-          '이미 사용 중인 컬럼 입니다.',
-        );
-      }
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 컬럼 입니다.',
+      );
     }
 
     this.columnRepository.save({
@@ -153,12 +168,22 @@ export default class ErdService {
     dto: RequestColumnUpdateDto,
     user: User,
   ) {
-    const findColumn = await this.columnRepository.findOne({
-      where: { id },
-    });
+    const findColumn = await this.columnRepository.findColumnById(id);
 
     if (!findColumn) {
       return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
+    }
+
+    const findColumnByNameAndTable =
+      await this.columnRepository.findColumnByNameAndTable(
+        dto.name,
+        findColumn.table.id,
+      );
+
+    if (findColumnByNameAndTable) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용 중인 컬럼 입니다.',
+      );
     }
 
     await this.columnRepository.update(id, {

@@ -68,9 +68,9 @@ export default class ErdController {
   @ApiResponse(ErdResponse.updateTable[400])
   @ApiResponse(ErdResponse.updateTable[404])
   @UseGuards(JwtAccessGuard)
-  @Patch('/table/:id')
+  @Patch('/table/:tableId')
   public async updateTable(
-    @Param('id') id: number,
+    @Param('tableId') id: number,
     @Body() dto: RequestTableUpdateDto,
     @GetUser() user: User,
   ) {
@@ -82,8 +82,8 @@ export default class ErdController {
   @ApiResponse(ErdResponse.deleteTable[200])
   @ApiResponse(ErdResponse.deleteTable[400])
   @UseGuards(JwtAccessGuard)
-  @Delete('/table/:id')
-  public async deleteTable(@Param('id') id: number) {
+  @Delete('/table/:tableId')
+  public async deleteTable(@Param('tableId') id: number) {
     return await this.deleteTable(id);
   }
 
@@ -108,9 +108,9 @@ export default class ErdController {
   @ApiResponse(ErdResponse.updateColumn[400])
   @ApiResponse(ErdResponse.updateColumn[404])
   @UseGuards(JwtAccessGuard)
-  @Patch('/column/:id')
+  @Patch('/column/:columnId')
   public async updateColumn(
-    @Param('id') id: number,
+    @Param('columnId') id: number,
     @Body() dto: RequestColumnUpdateDto,
     @GetUser() user: User,
   ) {
@@ -122,8 +122,8 @@ export default class ErdController {
   @ApiResponse(ErdResponse.deleteColumn[200])
   @ApiResponse(ErdResponse.deleteColumn[400])
   @UseGuards(JwtAccessGuard)
-  @Delete('/column/:id')
-  public async deleteColumn(@Param('id') id: number) {
+  @Delete('/column/:columnId')
+  public async deleteColumn(@Param('columnId') id: number) {
     return await this.erdService.deleteColumn(id);
   }
 
@@ -132,8 +132,8 @@ export default class ErdController {
   @ApiResponse(ErdResponse.findErd[200])
   @ApiResponse(ErdResponse.findErd[400])
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findErd(@Param('id') id: number) {
+  @Get('/:workspaceId')
+  public async findErd(@Param('workspaceId') id: number) {
     return await this.erdService.findErd(id);
   }
 }
