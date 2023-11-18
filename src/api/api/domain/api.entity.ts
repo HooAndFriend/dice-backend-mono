@@ -1,10 +1,17 @@
 // ** Typeorm Imports
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
 import { ApiType } from '../../../common/enum/apiType.enum';
+import User from '../../user/domain/user.entity';
 
 @Entity({ name: 'TB_WORKSPACE_API' })
 export default class Api extends BaseTimeEntity {
@@ -35,8 +42,12 @@ export default class Api extends BaseTimeEntity {
   })
   endpoint: String;
 
-
   @ManyToOne(() => Workspace, (workspace) => workspace.erd)
   workspace: Relation<Workspace>;
 
+  @ManyToOne(() => User, (user) => user.api)
+  createdUser: Relation<User>;
+
+  @ManyToOne(() => User, (user) => user.api)
+  modifiedUser: Relation<User>;
 }

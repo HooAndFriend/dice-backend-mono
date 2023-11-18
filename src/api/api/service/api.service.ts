@@ -19,6 +19,7 @@ import RequestApiSaveDto from '../dto/api.save.dto';
 import CommonResponse from '../../../common/dto/api.response';
 import ApiHeaderRepository from '../repository/header.repository';
 import RequestApiUpdateDto from '../dto/api.update.dto';
+import User from '../../user/domain/user.entity';
 
 // Other Imports
 
@@ -33,7 +34,7 @@ export default class ApiService {
 
   private logger = new Logger();
 
-  public async saveApi(dto: RequestApiSaveDto) {
+  public async saveApi(dto: RequestApiSaveDto, user: User) {
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -45,6 +46,8 @@ export default class ApiService {
           name: dto.name,
           type: dto.type,
           endpoint: dto.endpoint,
+          createdUser: user,
+          modifiedUser: user,
         }),
       );
 
@@ -75,16 +78,46 @@ export default class ApiService {
     }
   }
 
-  public async updateApi(dto: RequestApiUpdateDto) {
+  public async updateApi(dto: RequestApiUpdateDto, user: User) {
     await this.apiRepository.update(dto.id, {
       name: dto.name,
       type: dto.type,
       endpoint: dto.endpoint,
+      modifiedUser: user,
     });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'api의 정보를 수정합니다.',
+    });
+  }
+
+  public async findApi(apiId: number) {
+    const findApi = await this.apiRepository.findApi(apiId);
+
+    if (!findApi) {
+      return CommonResponse.createNotFoundException('api를 찾을 수 없습니다.');
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'api 정보를 조회합니다.',
+      data: findApi,
+    });
+  }
+
+  public async deleteApi(apiId: number) {
+    const findApi = await this.apiRepository.findApi(apiId);
+
+    if (!findApi) {
+      return CommonResponse.createNotFoundException('api를 찾을 수 없습니다.');
+    }
+
+    await this.apiRepository.delete(apiId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '해당 api를 삭제합니다.',
     });
   }
 }

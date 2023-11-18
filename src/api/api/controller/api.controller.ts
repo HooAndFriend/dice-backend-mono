@@ -1,5 +1,14 @@
 // ** Nest Imports
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Swagger Imports
 import {
@@ -26,6 +35,8 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { RequestApiResponse } from '../../../response/api.response';
 import { ApiType } from '../../../common/enum/apiType.enum';
 import RequestApiUpdateDto from '../dto/api.update.dto';
+import User from '../../user/domain/user.entity';
+import { GetUser } from '../../../common/decorators/user.decorators';
 
 @ApiTags('Workspace Api')
 @ApiResponse(createServerExceptionResponse())
@@ -40,8 +51,8 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.saveApi[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveApi(@Body() dto: RequestApiSaveDto) {
-    return await this.apiService.saveApi(dto);
+  public async saveApi(@Body() dto: RequestApiSaveDto, @GetUser() user: User) {
+    return await this.apiService.saveApi(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -51,7 +62,30 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.updateApi[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateApi(@Body() dto: RequestApiUpdateDto) {
-    return await this.apiService.updateApi(dto);
+  public async updateApi(
+    @Body() dto: RequestApiUpdateDto,
+    @GetUser() user: User,
+  ) {
+    return await this.apiService.updateApi(dto, user);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'api 조회' })
+  @ApiResponse(RequestApiResponse.findApi[200])
+  @ApiResponse(RequestApiResponse.findApi[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findWorkspace(@Param('id') id: number) {
+    return await this.apiService.findApi(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'api 삭제' })
+  @ApiResponse(RequestApiResponse.deleteApi[200])
+  @ApiResponse(RequestApiResponse.deleteApi[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteCollection(@Param('id') id: number) {
+    return await this.apiService.deleteApi(id);
   }
 }
