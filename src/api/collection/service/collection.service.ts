@@ -45,6 +45,7 @@ export default class CollectionService {
         this.collectionRepository.create({
           name: dto.name,
           createdUser: user,
+          modifiedUser: user,
         }),
       );
 
@@ -67,7 +68,7 @@ export default class CollectionService {
     }
   }
 
-  public async updateCollection(dto: RequestCollectionUpdateDto) {
+  public async updateCollection(dto: RequestCollectionUpdateDto, user: User) {
     const findCollection = await this.collectionRepository.findOne({
       where: { id: dto.id },
     });
@@ -80,7 +81,7 @@ export default class CollectionService {
 
     await this.collectionRepository.update(dto.id, {
       name: dto.name,
-      // modifiedUser: ,
+      modifiedUser: user,
     });
 
     return CommonResponse.createResponseMessage({

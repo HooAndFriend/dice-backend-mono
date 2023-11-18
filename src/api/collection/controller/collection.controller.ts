@@ -60,8 +60,11 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.updateCollection[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateCollection(@Body() dto: RequestCollectionUpdateDto) {
-    return await this.collectionService.updateCollection(dto);
+  public async updateCollection(
+    @Body() dto: RequestCollectionUpdateDto,
+    @GetUser() user: User,
+  ) {
+    return await this.collectionService.updateCollection(dto, user);
   }
 
   @ApiBearerAuth('access-token')
