@@ -1,8 +1,23 @@
 // ** Nest Imports
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Swagger Imports
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 // ** Dto Imports
 
@@ -25,7 +40,6 @@ import RequestCollectionUpdateDto from '../dto/collection.update.dto';
 export default class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 
-  
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'collection 생성' })
   @ApiBody({ type: RequestCollectionSaveDto })
@@ -34,21 +48,19 @@ export default class CollectionController {
   @Post('/')
   public async saveCollection(
     @Body() dto: RequestCollectionSaveDto,
+    @GetUser() user: User,
   ) {
-    return await this.collectionService.saveCollection(dto);
+    return await this.collectionService.saveCollection(dto, user);
   }
 
-   
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'collection 수정' })
-  @ApiBody({ type: RequestCollectionUpdateDto})
+  @ApiBody({ type: RequestCollectionUpdateDto })
   @ApiResponse(CollectionResponse.updateCollection[200])
   @ApiResponse(CollectionResponse.updateCollection[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateCollection(
-    @Body() dto: RequestCollectionUpdateDto,
-  ) {
+  public async updateCollection(@Body() dto: RequestCollectionUpdateDto) {
     return await this.collectionService.updateCollection(dto);
   }
 
@@ -59,7 +71,7 @@ export default class CollectionController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findWorkspace(@Param('id') id: number) {
-   // return await this.collectionService(id);
+    return await this.collectionService.findCollection(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -69,6 +81,6 @@ export default class CollectionController {
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
   public async deleteCollection(@Param('id') id: number) {
-   // return await this.collectionService(id);
+    return await this.collectionService.deleteCollection(id);
   }
 }

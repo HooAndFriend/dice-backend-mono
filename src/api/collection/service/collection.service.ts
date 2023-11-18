@@ -1,5 +1,11 @@
 // ** Nest Imports
-import { HttpException, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
@@ -24,9 +30,9 @@ export default class CollectionService {
 
   private logger = new Logger();
 
-  public async saveCollection(dto: RequestCollectionSaveDto){
+  public async saveCollection(dto: RequestCollectionSaveDto, user: User) {
     const findCollection = await this.collectionRepository.findOne({
-      where: { name: dto.name},
+      where: { name: dto.name },
     });
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -35,9 +41,10 @@ export default class CollectionService {
     await queryRunner.startTransaction();
 
     try {
-      const saveCollection = await queryRunner.manager.save(
+      await queryRunner.manager.save(
         this.collectionRepository.create({
           name: dto.name,
+          createdUser: user,
         }),
       );
 
@@ -47,37 +54,75 @@ export default class CollectionService {
         statusCode: 200,
         message: 'collection을 생성합니다.',
       });
-    }catch (error) {
+    } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
-      if(error instanceof HttpException) {
+      if (error instanceof HttpException) {
         throw new HttpException(error.message, error.getStatus());
       }
 
       throw new InternalServerErrorException('Internal Server Error');
-    }finally {
+    } finally {
       await queryRunner.release();
     }
   }
 
   public async updateCollection(dto: RequestCollectionUpdateDto) {
     const findCollection = await this.collectionRepository.findOne({
-        where: { id: dto.id },
+      where: { id: dto.id },
     });
 
-    if(!findCollection) {
-        return CommonResponse.createNotFoundException(
-            'collection을 찾을 수 없습니다.'
-        );
+    if (!findCollection) {
+      return CommonResponse.createNotFoundException(
+        'collection을 찾을 수 없습니다.',
+      );
     }
 
     await this.collectionRepository.update(dto.id, {
-        name: dto.name,
+      name: dto.name,
+      // modifiedUser: ,
     });
 
     return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'collection을 수정합니다.'
-    })
+      statusCode: 200,
+      message: 'collection을 수정합니다.',
+    });
+  }
+
+  public async findCollection(collectionId: number) {
+    const findCollection = await this.collectionRepository.findCollection(
+      collectionId,
+    );
+
+    if (!findCollection) {
+      return CommonResponse.createNotFoundException(
+        'collection을 찾을 수 없습니다.',
+      );
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'collection 정보를 조회합니다.',
+      data: findCollection,
+    });
+  }
+
+  public async deleteCollection(collectionId: number) {
+    const findCollection = await this.collectionRepository.findCollection(
+      collectionId,
+    );
+
+    if (!findCollection) {
+      return CommonResponse.createNotFoundException(
+        'collection을 찾을 수 없습니다.',
+      );
+    }
+
+    await this.collectionRepository.delete(collectionId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'collection을 삭제합니다.',
+    });
   }
 }

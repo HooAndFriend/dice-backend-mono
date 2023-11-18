@@ -96,5 +96,4 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Collection, (collection) => collection.createdUser)
   collection: Relation<Collection>[];
-
 }
