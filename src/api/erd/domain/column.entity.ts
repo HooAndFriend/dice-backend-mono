@@ -43,7 +43,7 @@ export default class Columns extends BaseTimeEntity {
     comment: 'null 허용',
     nullable: false,
   })
-  isnull: IsNull;
+  isNull: IsNull;
 
   @Column({
     type: 'varchar',

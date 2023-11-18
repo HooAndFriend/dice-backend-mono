@@ -63,12 +63,4 @@ export default class ColumnsRepository extends Repository<Columns> {
       .where('column.id = :id', { id })
       .getOne();
   }
-
-  public async deleteColumnByTable(tableId: number) {
-    return this.createQueryBuilder('column')
-      .delete()
-      .from(Columns)
-      .where('table = :tableId', { tableId })
-      .execute();
-  }
 }

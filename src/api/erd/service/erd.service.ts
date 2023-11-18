@@ -42,7 +42,9 @@ export default class ErdService {
 
   private logger = new Logger();
 
-  // Table Service
+  // ** Table Service
+
+  // ** 테이블 저장
   public async saveTable(dto: RequestTableSaveDto, user: User) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: dto.workspace_id },
@@ -78,11 +80,13 @@ export default class ErdService {
     });
   }
 
+  // ** 테이블 수정
   public async updateTable(id: number, dto: RequestTableUpdateDto, user: User) {
     const findTableName = await this.tableRepository.findOne({
       where: { name: dto.name },
     });
 
+    // ** 같은 이름의 테이블이 존재하는 경우
     if (findTableName && findTableName.id != id) {
       return CommonResponse.createBadRequestException(
         '이미 사용 중인 테이블 입니다.',
@@ -111,6 +115,7 @@ export default class ErdService {
     });
   }
 
+  // ** 테이블 삭제
   public async deleteTable(id: number) {
     const findTable = await this.tableRepository.findOne({
       where: { id },
@@ -128,12 +133,16 @@ export default class ErdService {
     await queryRunner.startTransaction();
 
     try {
+      // ** 테이블 내의 컬럼들을 먼저 삭제
       await queryRunner.manager.delete(Columns, {
         table: id,
       });
+
+      // ** 이후 해당 테이블을 삭제
       await queryRunner.manager.delete(Table, { id });
 
       await queryRunner.commitTransaction();
+
       return CommonResponse.createResponseMessage({
         statusCode: 200,
         message: '테이블을 삭제합니다.',
@@ -150,7 +159,9 @@ export default class ErdService {
     }
   }
 
-  // Column Service
+  // ** Column Service
+
+  // ** 컬럼 저장
   public async saveColumn(dto: RequestColumnSaveDto, user: User) {
     const findTable = await this.tableRepository.findOne({
       where: { id: dto.table_id },
@@ -179,7 +190,7 @@ export default class ErdService {
       modify_user: user,
       key: dto.key,
       name: dto.name,
-      isnull: dto.isnull,
+      isNull: dto.isNull,
       data_type: dto.data_type,
       option: dto.option,
       comment: dto.comment,
@@ -190,6 +201,8 @@ export default class ErdService {
       message: '컬럼을 생성합니다.',
     });
   }
+
+  // ** 컬럼 수정
   public async updateColumn(dto: RequestColumnUpdateDto, user: User) {
     const findColumn = await this.columnsRepository.findColumnById(
       dto.columnId,
@@ -205,6 +218,7 @@ export default class ErdService {
         findColumn.table.id,
       );
 
+    // ** 해당 테이블에 같은 이름의 컬럼이 존재하는경우
     if (findColumnByNameAndTable) {
       return CommonResponse.createBadRequestException(
         '이미 사용 중인 컬럼 입니다.',
@@ -215,7 +229,7 @@ export default class ErdService {
       modifyUser: user,
       key: dto.key,
       name: dto.name,
-      isnull: dto.isnull,
+      isNull: dto.isNull,
       dataType: dto.data_type,
       option: dto.option,
       comment: dto.comment,
@@ -227,6 +241,7 @@ export default class ErdService {
     });
   }
 
+  // ** 컬럼 삭제
   public async deleteColumn(id: number) {
     const findColumn = this.columnsRepository.findOne({
       where: { id },
@@ -244,6 +259,7 @@ export default class ErdService {
     });
   }
 
+  // ** ERD 조회 >> Table, Column을 동시에 모두 조회
   public async findErd(id: number) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id },

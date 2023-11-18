@@ -28,7 +28,7 @@ export default class RequestColumnSaveDto {
 
   @ApiProperty({ example: IsNull.N, enum: IsNull })
   @IsEnum(IsNull)
-  isnull: IsNull;
+  isNull: IsNull;
 
   @ApiProperty({ example: 'auto_increment' })
   @IsString()
