@@ -21,22 +21,23 @@ import {
 } from '@nestjs/swagger';
 
 // ** Dto Imports
+import RequestApiUpdateDto from '../dto/api.update.dto';
+import RequestApiSaveDto from '../dto/api.save.dto';
+import User from '../../user/domain/user.entity';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../response/common';
-
-// ** Custom Module Imports
-import ApiService from '../service/api.service';
-import RequestApiSaveDto from '../dto/api.save.dto';
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { RequestApiResponse } from '../../../response/api.response';
-import { ApiType } from '../../../common/enum/apiType.enum';
-import RequestApiUpdateDto from '../dto/api.update.dto';
-import User from '../../user/domain/user.entity';
+
+// ** Utils Imports
+import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../common/decorators/user.decorators';
+
+// ** Module Imports
+import ApiService from '../service/api.service';
 
 @ApiTags('Workspace Api')
 @ApiResponse(createServerExceptionResponse())
@@ -75,7 +76,7 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.findApi[404])
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
-  public async findWorkspace(@Param('id') id: number) {
+  public async findApi(@Param('id') id: number) {
     return await this.apiService.findApi(id);
   }
 
@@ -85,7 +86,7 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.deleteApi[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteCollection(@Param('id') id: number) {
+  public async deleteApi(@Param('id') id: number) {
     return await this.apiService.deleteApi(id);
   }
 }

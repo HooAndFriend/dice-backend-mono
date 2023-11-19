@@ -8,17 +8,19 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-// ** enum, dto, entity, types Imports
+// ** Response Imports
+import CommonResponse from '../../../common/dto/api.response';
+
+// ** Typeorm Imports
+import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import CollectionRepository from '../repository/collection.repository';
-import RequestCollectionSaveDto from '../dto/collection.save.dto';
-import { DataSource } from 'typeorm';
-import CommonResponse from '../../../common/dto/api.response';
-import User from '../../user/domain/user.entity';
-import RequestCollectionUpdateDto from '../dto/collection.update.dto';
 
-// Other Imports
+// ** enum, dto, entity, types Imports
+import RequestCollectionSaveDto from '../dto/collection.save.dto';
+import RequestCollectionUpdateDto from '../dto/collection.update.dto';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class CollectionService {
