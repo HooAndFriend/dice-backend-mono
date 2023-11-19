@@ -78,7 +78,7 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.findCollection[404])
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
-  public async findWorkspace(@Param('id') id: number) {
+  public async findCollection(@Param('id') id: number) {
     return await this.collectionService.findCollection(id);
   }
 
