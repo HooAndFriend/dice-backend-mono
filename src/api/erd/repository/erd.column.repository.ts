@@ -11,7 +11,7 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.key',
         'column.name',
         'column.comment',
-        'column.data_type',
+        'column.dataType',
         'column.isnull',
         'column.option',
         'table.id',
@@ -26,7 +26,7 @@ export default class ColumnsRepository extends Repository<Columns> {
       .leftJoin('column.create_user', 'create_user')
       .leftJoin('column.modify_user', 'modify_user')
       .where('column.table = :tableId', { tableId });
-    return await querybuilder.getMany();
+    return await querybuilder.getManyAndCount();
   }
 
   public async findColumnByNameAndTable(columnName: string, tableId: number) {
@@ -37,7 +37,7 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.key',
         'column.name',
         'column.comment',
-        'column.data_type',
+        'column.dataType',
         'column.isnull',
         'column.option',
       ])
@@ -55,12 +55,32 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.key',
         'column.name',
         'column.comment',
-        'column.data_type',
+        'column.dataType',
         'column.isnull',
         'column.option',
       ])
       .leftJoin('column.table', 'table')
       .where('column.id = :id', { id })
       .getOne();
+  }
+
+  public async findErd(workspaceId: number) {
+    const qb = this.createQueryBuilder('column')
+      .select([
+        'column.id',
+        'column.key',
+        'column.name',
+        'column.comment',
+        'column.dataType',
+        'column.isNull',
+        'column.option',
+        'table.id',
+        'table.name',
+        'table.comment',
+      ])
+      .leftJoin('column.table', 'table')
+      .groupBy('table.id')
+      .where('table.workspace = :workspaceId', { workspaceId });
+    return await qb.getManyAndCount();
   }
 }

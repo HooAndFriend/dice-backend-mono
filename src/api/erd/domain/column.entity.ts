@@ -39,7 +39,7 @@ export default class Columns extends BaseTimeEntity {
   @Column({
     type: 'enum',
     enum: IsNull,
-    name: 'isnull',
+    name: 'isNull',
     comment: 'null 허용',
     nullable: false,
   })

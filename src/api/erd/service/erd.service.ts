@@ -70,8 +70,8 @@ export default class ErdService {
       name: dto.name,
       comment: dto.comment,
       workspace: findWorkspace,
-      create_user: user,
-      modify_user: user,
+      createUser: user,
+      modifyUser: user,
     });
 
     return CommonResponse.createResponseMessage({
@@ -81,21 +81,8 @@ export default class ErdService {
   }
 
   // ** 테이블 수정
-  public async updateTable(id: number, dto: RequestTableUpdateDto, user: User) {
-    const findTableName = await this.tableRepository.findOne({
-      where: { name: dto.name },
-    });
-
-    // ** 같은 이름의 테이블이 존재하는 경우
-    if (findTableName && findTableName.id != id) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 테이블 입니다.',
-      );
-    }
-
-    const findTable = await this.tableRepository.findOne({
-      where: { id },
-    });
+  public async updateTable(dto: RequestTableUpdateDto, user: User) {
+    const findTable = await this.tableRepository.findTableById(dto.tableId);
 
     if (!findTable) {
       return CommonResponse.createNotFoundException(
@@ -103,7 +90,20 @@ export default class ErdService {
       );
     }
 
-    await this.tableRepository.update(id, {
+    const findTableWorkspace =
+      await this.tableRepository.findTableByWorkspaceIdAndName(
+        findTable.workspace.id,
+        dto.name,
+      );
+
+    // ** 같은 워크스페이스에서 같은 이름의 테이블이 있는경우
+    if (findTableWorkspace) {
+      return CommonResponse.createBadRequestException(
+        '이미 사용중인 테이블 입니다.',
+      );
+    }
+
+    await this.tableRepository.update(dto.tableId, {
       name: dto.name,
       comment: dto.comment,
       modifyUser: user,
@@ -186,12 +186,12 @@ export default class ErdService {
 
     await this.columnsRepository.save({
       table: findTable,
-      create_user: user,
-      modify_user: user,
+      createUser: user,
+      modifyUser: user,
       key: dto.key,
       name: dto.name,
       isNull: dto.isNull,
-      data_type: dto.data_type,
+      dataType: dto.data_type,
       option: dto.option,
       comment: dto.comment,
     });
@@ -230,7 +230,7 @@ export default class ErdService {
       key: dto.key,
       name: dto.name,
       isNull: dto.isNull,
-      dataType: dto.data_type,
+      dataType: dto.dataType,
       option: dto.option,
       comment: dto.comment,
     });
@@ -271,22 +271,25 @@ export default class ErdService {
       );
     }
 
-    const erd = [];
-    const [findTable, count] = await this.tableRepository.findTable(id);
+    // const [findErd, count] = await this.columnsRepository.findErd(id);
+    // console.log(findErd);
 
-    for (let i = 0; i < count; i++) {
-      const column = await this.columnsRepository
-        .findColumn(findTable[i].id)
-        .then((column) => {
-          const tmp = { table: findTable[i], column };
-          erd.push(tmp);
-        });
-    }
+    // const erd = [];
+    // const [findTable, count] = await this.tableRepository.findTable(id);
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Erd 정보를 조회합니다.',
-      data: erd,
-    });
+    // for (let i = 0; i < count; i++) {
+    //   const column = await this.columnsRepository
+    //     .findColumn(findTable[i].id)
+    //     .then((column) => {
+    //       const tmp = { table: findTable[i], column };
+    //       erd.push(tmp);
+    //     });
+    // }
+
+    // return CommonResponse.createResponse({
+    //   statusCode: 200,
+    //   message: 'Erd 정보를 조회합니다.',
+    //   data: erd,
+    // });
   }
 }

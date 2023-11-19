@@ -7,22 +7,22 @@ import Table from '../domain/table.entity';
 
 @CustomRepository(Table)
 export default class TableRepository extends Repository<Table> {
-  public async findTable(workspaceId: number) {
+  public async findTableByWorkspaceIdAndName(
+    workspaceId: number,
+    name: string,
+  ) {
     const qb = this.createQueryBuilder('table')
-      .select([
-        'table.id',
-        'table.name',
-        'table.comment',
-        'create_user.nickname',
-        'create_user.email',
-        'create_user.profile',
-        'modify_user.nickname',
-        'modify_user.email',
-        'modify_user.profile',
-      ])
-      .leftJoin('table.create_user', 'create_user')
-      .leftJoin('table.modify_user', 'modify_user')
-      .where('table.workspace = :workspaceId', { workspaceId });
-    return await qb.getManyAndCount();
+      .select(['table.id', 'table.name', 'table.comment'])
+      .where('table.workspace = :workspaceId', { workspaceId })
+      .andWhere('table.name = :name', { name });
+    return await qb.getOne();
+  }
+
+  public async findTableById(id: number) {
+    const qb = this.createQueryBuilder('table')
+      .select(['table.id', 'table.name', 'table.comment', 'workspace.id'])
+      .leftJoin('table.workspace', 'workspace')
+      .where('table.id = :id', { id });
+    return await qb.getOne();
   }
 }

@@ -24,7 +24,7 @@ export default class RequestColumnUpdateDto {
 
   @ApiProperty({ example: 'integer' })
   @IsString()
-  data_type: string;
+  dataType: string;
 
   @ApiProperty({ example: IsNull.N, enum: IsNull })
   @IsEnum(IsNull)

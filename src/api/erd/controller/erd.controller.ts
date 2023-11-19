@@ -68,13 +68,12 @@ export default class ErdController {
   @ApiResponse(ErdResponse.updateTable[400])
   @ApiResponse(ErdResponse.updateTable[404])
   @UseGuards(JwtAccessGuard)
-  @Patch('/table/:tableId')
+  @Patch('/table')
   public async updateTable(
-    @Param('tableId') id: number,
     @Body() dto: RequestTableUpdateDto,
     @GetUser() user: User,
   ) {
-    return await this.erdService.updateTable(id, dto, user);
+    return await this.erdService.updateTable(dto, user);
   }
 
   @ApiBearerAuth('access-token')
