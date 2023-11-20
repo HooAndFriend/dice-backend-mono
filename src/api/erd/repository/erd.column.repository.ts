@@ -74,13 +74,29 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.dataType',
         'column.isNull',
         'column.option',
+        'column_createUser.nickname',
+        'column_createUser.email',
+        'column_createUser.profile',
+        'column_modifyUser.nickname',
+        'column_modifyUser.email',
+        'column_modifyUser.profile',
         'table.id',
         'table.name',
         'table.comment',
+        'table_createUser.nickname',
+        'table_createUser.email',
+        'table_createUser.profile',
+        'table_modifyUser.nickname',
+        'table_modifyUser.email',
+        'table_modifyUser.profile',
       ])
       .leftJoin('column.table', 'table')
-      .groupBy('table.id')
-      .where('table.workspace = :workspaceId', { workspaceId });
+      .leftJoin('column.createUser', 'column_createUser')
+      .leftJoin('column.modifyUser', 'column_modifyUser')
+      .leftJoin('table.createUser', 'table_createUser')
+      .leftJoin('table.modifyUser', 'table_modifyUser')
+      .where('table.workspace = :workspaceId', { workspaceId })
+      .orderBy('table.id');
     return await qb.getManyAndCount();
   }
 }

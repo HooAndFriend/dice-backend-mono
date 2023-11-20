@@ -271,8 +271,10 @@ export default class ErdService {
       );
     }
 
-    // const [findErd, count] = await this.columnsRepository.findErd(id);
-    // console.log(findErd);
+    // const [findErd, count] = await this.tableRepository.findErd(id);
+    // console.log(findErd, count);
+
+    const findErd = await this.tableRepository.findErd(id);
 
     // const erd = [];
     // const [findTable, count] = await this.tableRepository.findTable(id);
@@ -286,10 +288,10 @@ export default class ErdService {
     //     });
     // }
 
-    // return CommonResponse.createResponse({
-    //   statusCode: 200,
-    //   message: 'Erd 정보를 조회합니다.',
-    //   data: erd,
-    // });
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Erd 정보를 조회합니다.',
+      data: findErd,
+    });
   }
 }
