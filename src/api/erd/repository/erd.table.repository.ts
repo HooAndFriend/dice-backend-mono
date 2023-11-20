@@ -88,13 +88,13 @@ export default class TableRepository extends Repository<Table> {
         'column_modifyUser.email',
         'column_modifyUser.profile',
       ])
-      .leftJoin(Columns, 'column', 'column.table = table.id')
+      .leftJoin('table.column', 'column')
       .leftJoin('column.createUser', 'column_createUser')
       .leftJoin('column.modifyUser', 'column_modifyUser')
       .leftJoin('table.createUser', 'table_createUser')
       .leftJoin('table.modifyUser', 'table_modifyUser')
       .where('table.workspace = :workspaceId', { workspaceId })
       .orderBy('table.id');
-    return await qb.getQuery();
+    return await qb.getMany();
   }
 }
