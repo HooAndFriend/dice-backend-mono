@@ -14,6 +14,7 @@ import { UserType } from '../../../common/enum/UserType.enum';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
 import Table from '../../erd/domain/table.entity';
 import Collection from '../../collection/domain/collection.entity';
+import Api from '../../api/domain/api.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['username', 'token'])
@@ -100,4 +101,7 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Collection, (collection) => collection.createdUser)
   collection: Relation<Collection>[];
+
+  @OneToMany(() => Api, (api) => api.createdUser)
+  api: Relation<Collection>[];
 }
