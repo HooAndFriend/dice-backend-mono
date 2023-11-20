@@ -64,13 +64,37 @@ export default class TableRepository extends Repository<Table> {
 
   public async findErd(workspaceId: number) {
     const qb = this.createQueryBuilder('table')
-      .leftJoinAndSelect(Columns, 'column', 'column.table = table.id')
-      .leftJoinAndSelect('column.createUser', 'column_createUser')
-      .leftJoinAndSelect('column.modifyUser', 'column_modifyUser')
-      .leftJoinAndSelect('table.createUser', 'table_createUser')
-      .leftJoinAndSelect('table.modifyUser', 'table_modifyUser')
+      .select([
+        'table.id',
+        'table.name',
+        'table.comment',
+        'table_createUser.nickname',
+        'table_createUser.email',
+        'table_createUser.profile',
+        'table_modifyUser.nickname',
+        'table_modifyUser.email',
+        'table_modifyUser.profile',
+        'column.id',
+        'column.key',
+        'column.name',
+        'column.comment',
+        'column.dataType',
+        'column.isNull',
+        'column.option',
+        'column_createUser.nickname',
+        'column_createUser.email',
+        'column_createUser.profile',
+        'column_modifyUser.nickname',
+        'column_modifyUser.email',
+        'column_modifyUser.profile',
+      ])
+      .leftJoin(Columns, 'column', 'column.table = table.id')
+      .leftJoin('column.createUser', 'column_createUser')
+      .leftJoin('column.modifyUser', 'column_modifyUser')
+      .leftJoin('table.createUser', 'table_createUser')
+      .leftJoin('table.modifyUser', 'table_modifyUser')
       .where('table.workspace = :workspaceId', { workspaceId })
       .orderBy('table.id');
-    return await qb.getMany();
+    return await qb.getQuery();
   }
 }
