@@ -95,6 +95,6 @@ export default class TableRepository extends Repository<Table> {
       .leftJoin('table.modifyUser', 'table_modifyUser')
       .where('table.workspace = :workspaceId', { workspaceId })
       .orderBy('table.id');
-    return await qb.getMany();
+    return await qb.getManyAndCount();
   }
 }

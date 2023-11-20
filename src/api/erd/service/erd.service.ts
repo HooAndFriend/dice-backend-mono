@@ -271,12 +271,12 @@ export default class ErdService {
       );
     }
 
-    const findErd = await this.tableRepository.findErd(id);
+    const [findErd, count] = await this.tableRepository.findErd(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'ERD를 조회합니다.',
-      data: findErd,
+      data: { findErd, count },
     });
   }
 }
