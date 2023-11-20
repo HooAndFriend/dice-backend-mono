@@ -84,58 +84,51 @@ export const ErdResponse = {
     200: createResponse({
       data: [
         {
-          table: {
-            id: 1,
-            name: 'tbl_test',
-            comment: '예시 테이블입니다.',
-            create_user: {
-              nickname: 'pino',
-              email: 'pino@gamil.com',
-              profile:
-                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
-            },
-            modify_user: {
-              nickname: 'jooman',
-              email: 'joo@gamil.com',
-              profile:
-                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
-            },
-          },
+          id: 7,
+          name: 'tbl_test',
+          comment: '예시 테이블',
           column: [
             {
               id: 1,
-              table: {
-                id: 1,
-              },
               key: 'PK',
-              name: 'test_column',
-              isnull: 'N-N',
-              data_type: 'integer',
-              option: 'auto_increment',
-              comment: '예시 컬럼입니다.',
-              create_user: {
-                nickname: 'pino',
-                email: 'pino@gamil.com',
+              name: 'test',
+              isNull: 'N-N',
+              dataType: 'integer',
+              option: null,
+              comment: null,
+              createUser: {
+                nickname: 'zhco',
+                email: 'zhco9413@gmail.com',
                 profile:
-                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2Fmusic2.jpg?alt=media&token=2df4dea2-b822-40c9-b751-244bdacf1db7',
               },
-              modify_user: {
-                nickname: 'jooman',
-                email: 'joo@gamil.com',
+              modifyUser: {
+                nickname: 'zhco',
+                email: 'zhco9413@gmail.com',
                 profile:
-                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%',
+                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2Fmusic2.jpg?alt=media&token=2df4dea2-b822-40c9-b751-244bdacf1db7',
               },
             },
           ],
+          createUser: {
+            nickname: 'jooman',
+            email: '',
+            profile: '',
+          },
+          modifyUser: {
+            nickname: 'jooman',
+            email: '',
+            profile: '',
+          },
         },
       ],
       statusCode: 200,
-      message: 'erd을 조회합니다.',
+      message: 'ERD를 조회합니다.',
     }),
     400: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',
-      message: 'erd 정보를 찾을수 없습니다.',
+      message: 'ERD 정보를 찾을수 없습니다.',
     }),
   },
 };
