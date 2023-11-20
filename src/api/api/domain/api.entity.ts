@@ -18,6 +18,7 @@ export default class Api extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ManyToOne(() => Workspace, (workspace) => workspace.table)
   @Column({
     type: 'varchar',
     length: 50,
@@ -42,7 +43,7 @@ export default class Api extends BaseTimeEntity {
   })
   endpoint: String;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.erd)
+  @ManyToOne(() => Workspace, (workspace) => workspace.table)
   workspace: Relation<Workspace>;
 
   @ManyToOne(() => User, (user) => user.api)

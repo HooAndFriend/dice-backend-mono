@@ -10,9 +10,9 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
-import Erd from '../../../api/erd/domain/erd.entity';
 import Collection from '../../../api/collection/domain/collection.entity';
 import Api from '../../../api/api/domain/api.entity';
+import Table from '../../erd/domain/table.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -52,8 +52,8 @@ export default class Workspace extends BaseTimeEntity {
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
   workspaceUser: Relation<WorkspaceUser>[];
 
-  @OneToMany(() => Erd, (erd) => erd.workspace)
-  erd: Relation<Erd>[];
+  @OneToMany(() => Table, (table) => table.workspace)
+  table: Relation<Table>[];
 
   @OneToMany(() => Collection, (collection) => collection.workspace)
   collection: Relation<Collection>[];

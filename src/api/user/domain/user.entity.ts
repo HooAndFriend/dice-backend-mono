@@ -12,6 +12,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { UserType } from '../../../common/enum/UserType.enum';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
+import Table from '../../erd/domain/table.entity';
 import Collection from '../../collection/domain/collection.entity';
 import Api from '../../api/domain/api.entity';
 
@@ -94,6 +95,9 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
   workspaceUser: Relation<WorkspaceUser>[];
+
+  @OneToMany(() => Table, (table) => [table.createUser, table.modifyUser])
+  table: Relation<Table>[];
 
   @OneToMany(() => Collection, (collection) => collection.createdUser)
   collection: Relation<Collection>[];

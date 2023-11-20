@@ -37,6 +37,8 @@ import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { GetUser } from '../../../common/decorators/user.decorators';
+import User from '../../user/domain/user.entity';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -52,8 +54,11 @@ export default class ErdController {
   @ApiResponse(ErdResponse.saveTable[400])
   @UseGuards(JwtAccessGuard)
   @Post('/table')
-  public async saveTable(@Body() dto: RequestTableSaveDto) {
-    return await this.erdService.saveTable(dto);
+  public async saveTable(
+    @Body() dto: RequestTableSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.saveTable(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -61,13 +66,14 @@ export default class ErdController {
   @ApiBody({ type: RequestTableUpdateDto })
   @ApiResponse(ErdResponse.updateTable[200])
   @ApiResponse(ErdResponse.updateTable[400])
+  @ApiResponse(ErdResponse.updateTable[404])
   @UseGuards(JwtAccessGuard)
-  @Patch('/table/:id')
+  @Patch('/table')
   public async updateTable(
-    @Param('id') id: number,
     @Body() dto: RequestTableUpdateDto,
+    @GetUser() user: User,
   ) {
-    return await this.erdService.updateTable(id, dto);
+    return await this.erdService.updateTable(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -75,9 +81,9 @@ export default class ErdController {
   @ApiResponse(ErdResponse.deleteTable[200])
   @ApiResponse(ErdResponse.deleteTable[400])
   @UseGuards(JwtAccessGuard)
-  @Delete('/table/:id')
-  public async deleteTable(@Param('id') id: number) {
-    return await this.deleteTable(id);
+  @Delete('/table/:tableId')
+  public async deleteTable(@Param('tableId') id: number) {
+    return await this.erdService.deleteTable(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -87,8 +93,11 @@ export default class ErdController {
   @ApiResponse(ErdResponse.saveColumn[400])
   @UseGuards(JwtAccessGuard)
   @Post('/column')
-  public async saveColumn(@Body() dto: RequestColumnSaveDto) {
-    return await this.erdService.saveColumn(dto);
+  public async saveColumn(
+    @Body() dto: RequestColumnSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.saveColumn(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -96,13 +105,14 @@ export default class ErdController {
   @ApiBody({ type: RequestColumnUpdateDto })
   @ApiResponse(ErdResponse.updateColumn[200])
   @ApiResponse(ErdResponse.updateColumn[400])
+  @ApiResponse(ErdResponse.updateColumn[404])
   @UseGuards(JwtAccessGuard)
-  @Patch('/column/:id')
+  @Patch('/column')
   public async updateColumn(
-    @Param('id') id: number,
     @Body() dto: RequestColumnUpdateDto,
+    @GetUser() user: User,
   ) {
-    return await this.erdService.updateColumn(id, dto);
+    return await this.erdService.updateColumn(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -110,9 +120,9 @@ export default class ErdController {
   @ApiResponse(ErdResponse.deleteColumn[200])
   @ApiResponse(ErdResponse.deleteColumn[400])
   @UseGuards(JwtAccessGuard)
-  @Delete('/column/:id')
-  public async deleteColumn(@Param('id') id: number) {
-    return await this.deleteColumn(id);
+  @Delete('/column/:columnId')
+  public async deleteColumn(@Param('columnId') id: number) {
+    return await this.erdService.deleteColumn(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -120,8 +130,8 @@ export default class ErdController {
   @ApiResponse(ErdResponse.findErd[200])
   @ApiResponse(ErdResponse.findErd[400])
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findErd(@Param('id') id: number) {
-    return await this.findErd(id);
+  @Get('/:workspaceId')
+  public async findErd(@Param('workspaceId') id: number) {
+    return await this.erdService.findErd(id);
   }
 }
