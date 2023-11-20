@@ -7,14 +7,18 @@ import Collection from '../domain/collection.entity';
 
 @CustomRepository(Collection)
 export default class CollectionRepository extends Repository<Collection> {
-    public async findCollection(collectionId: number){
-      const queryBuilder = this.createQueryBuilder('collection')
-        .select([
-            'collection.id',
-            'collection.name',
-        ])
-        .where('collection.id = :collectionId', { collectionId });
+  public async findCollection(collectionId: number) {
+    const queryBuilder = this.createQueryBuilder('collection')
+      .select([
+        'collection.id',
+        'collection.name',
+        'createdUser.nickname',
+        'modifiedUser.nickname',
+      ])
+      .leftJoin('collection.createdUser', 'createdUser')
+      .leftJoin('collection.modifiedUser', 'modifiedUser')
+      .where('collection.id = :collectionId', { collectionId });
 
-      return await queryBuilder.getOne();
-    }
+    return await queryBuilder.getOne();
+  }
 }
