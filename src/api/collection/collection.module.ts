@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import { TypeOrmExModule } from '../../repository/typeOrmEx.module';
+import { TypeOrmExModule } from '../../repository/typeorm-ex.module';
 import CollectionService from './service/collection.service';
 import CollectionController from './controller/collection.controller';
 import CollectionRepository from './repository/collection.repository';

@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import ApiModule from './api/api.module';
-import { TypeOrmExModule } from './repository/typeOrmEx.module';
+import { TypeOrmExModule } from './repository/typeorm-ex.module';
 import LoggerService from './util/logger/logger.service';
 
 @Module({
