@@ -13,12 +13,16 @@ import LoggerService from './util/logger/logger.service';
 
 // ** Express Imports
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AllExceptionsFilter } from './filter/httpExceptionFilter';
 
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
+
+// ** Interceptor Imports
 import { LoggingInterceptor } from './interceptor/LoggingInterceptor';
+
+// ** Filter Imports
+import { CustomExceptionFilter } from './filter/CustomExceptionFilter';
 
 async function bootstrap() {
   // ** Server Container 생성
@@ -40,7 +44,7 @@ async function bootstrap() {
   app.useLogger(app.get(LoggerService));
 
   // ** FIlter 개념
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new CustomExceptionFilter());
 
   // ** Global Pipe Line
   app.useGlobalPipes(new ValidationPipe());
