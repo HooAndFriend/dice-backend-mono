@@ -16,7 +16,7 @@ import Api from './domain/api.entity';
     TypeOrmModule.forFeature([Api]),
     TypeOrmExModule.forCustomRepository([ApiRepository]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule, ApiHeaderRepository],
+  exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [ApiController],
   providers: [ApiService],
 })
