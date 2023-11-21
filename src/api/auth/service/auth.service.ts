@@ -138,6 +138,10 @@ export default class AuthService {
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
+    // if (true) {
+    //   return CommonResponse.createBadRequestException('Hello');
+    // }
+
     const findUser = await this.userRepository.findOne({
       where: { username: dto.username },
     });

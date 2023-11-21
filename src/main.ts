@@ -18,6 +18,7 @@ import { AllExceptionsFilter } from './filter/httpExceptionFilter';
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
+import { LoggingInterceptor } from './interceptor/LoggingInterceptor';
 
 async function bootstrap() {
   // ** Server Container 생성
@@ -43,6 +44,9 @@ async function bootstrap() {
 
   // ** Global Pipe Line
   app.useGlobalPipes(new ValidationPipe());
+
+  // ** Interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   // ** Cors Setting
   app.enableCors();

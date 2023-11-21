@@ -1,16 +1,13 @@
 // ** Nest Imports
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-// ** Custom Module Imports
-import LoggerMiddleware from './util/logger/logger.middleware';
-import LoggerModule from './util/logger/logger.module';
 
 // ** Typeorm Imports
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import ApiModule from './api/api.module';
 import { TypeOrmExModule } from './repository/typeOrmEx.module';
+import LoggerService from './util/logger/logger.service';
 
 @Module({
   imports: [
@@ -36,14 +33,9 @@ import { TypeOrmExModule } from './repository/typeOrmEx.module';
       http: process.env.NODE_ENV !== 'production',
     }),
     TypeOrmExModule,
-    LoggerModule,
     ApiModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [LoggerService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
