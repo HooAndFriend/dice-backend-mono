@@ -10,7 +10,7 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
-import { ApiType } from '../../../common/enum/apiType.enum';
+import { ApiType } from '../../../common/enum/ApiType.enum';
 import User from '../../user/domain/user.entity';
 
 @Entity({ name: 'TB_WORKSPACE_API' })

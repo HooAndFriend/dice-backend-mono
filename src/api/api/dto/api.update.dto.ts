@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsEnum, IsNumber, IsString } from 'class-validator';
-import { ApiType } from '../../../common/enum/apiType.enum';
+import { ApiType } from '../../../common/enum/ApiType.enum';
 
 export default class RequestApiUpdateDto {
   @ApiProperty({ example: 1 })
