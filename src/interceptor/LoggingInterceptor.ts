@@ -29,7 +29,7 @@ export class LoggingInterceptor implements NestInterceptor {
     }
 
     if (!isEmpty(request.query)) {
-      this.logger.log(1, request.query);
+      this.logger.log(request.query);
     }
 
     return next.handle().pipe(
