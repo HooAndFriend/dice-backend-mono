@@ -18,7 +18,7 @@ export default class RequestApiUpdateDto {
   @IsEnum(ApiType)
   type: ApiType;
 
-  @ApiProperty({ example: 'localhost:8080/api/...'})
+  @ApiProperty({ example: 'localhost:8080/api/...' })
   @IsString()
   endpoint: string;
 }

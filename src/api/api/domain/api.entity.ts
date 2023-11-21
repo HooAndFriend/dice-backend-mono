@@ -41,7 +41,7 @@ export default class Api extends BaseTimeEntity {
     comment: 'api 경로',
     nullable: true,
   })
-  endpoint: String;
+  endpoint: string;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.table)
   workspace: Relation<Workspace>;

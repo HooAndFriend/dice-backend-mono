@@ -10,11 +10,11 @@ export default class RequestApiSaveDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: ApiType.POST, type: 'enum', enum: ApiType})
+  @ApiProperty({ example: ApiType.POST, type: 'enum', enum: ApiType })
   @IsEnum(ApiType)
   type: ApiType;
 
-  @ApiProperty({ example: 'localhost:8080/api/...'})
+  @ApiProperty({ example: 'localhost:8080/api/...' })
   @IsString()
   endpoint: string;
 }
