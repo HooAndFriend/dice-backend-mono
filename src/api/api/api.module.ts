@@ -10,7 +10,6 @@ import ApiService from './service/api.service';
 import ApiController from './controller/api.controller';
 import ApiRepository from './repository/api.repository';
 import Api from './domain/api.entity';
-import ApiHeaderRepository from './repository/header.repository';
 
 @Module({
   imports: [
@@ -19,6 +18,6 @@ import ApiHeaderRepository from './repository/header.repository';
   ],
   exports: [TypeOrmExModule, TypeOrmModule, ApiHeaderRepository],
   controllers: [ApiController],
-  providers: [ApiService, ApiHeaderRepository],
+  providers: [ApiService],
 })
 export default class RequestApiModule {}

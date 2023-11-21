@@ -21,14 +21,12 @@ import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import ApiRepository from '../repository/api.repository';
-import ApiHeaderRepository from '../repository/header.repository';
 
 @Injectable()
 export default class ApiService {
   constructor(
     private readonly apiRepository: ApiRepository,
     private readonly configService: ConfigService,
-    private readonly apiHeaderRepository: ApiHeaderRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
@@ -50,15 +48,6 @@ export default class ApiService {
           modifiedUser: user,
         }),
       );
-
-      //전체 저장시 이용할 헤더 저장 부분 -> 후에 저장 기능에 대해 정해지면 처리.
-      // const saveHeader = await queryRunner.manager.save(
-      //   this.apiHeaderRepository.create({
-      //     key: '',
-      //     value: '',
-      //     description: '',
-      //   })
-      // )
 
       await queryRunner.commitTransaction();
 
