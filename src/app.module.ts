@@ -1,10 +1,19 @@
 // ** Nest Imports
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+
+// ** Cache Imports
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+
+// ** Redis Imports
+import * as redisStore from 'cache-manager-redis-store';
 
 // ** Typeorm Imports
-import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+// ** Custom Module Imports
 import ApiModule from './api/api.module';
 import { TypeOrmExModule } from './repository/typeorm-ex.module';
 import LoggerService from './util/logger/logger.service';
@@ -32,10 +41,22 @@ import LoggerService from './util/logger/logger.service';
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),
+    CacheModule.register({
+      // store: redisStore,
+      // host: process.env.REDIS_HOST,
+      // port: +process.env.REDIS_PORT,
+      isGlobal: true,
+    }),
     TypeOrmExModule,
     ApiModule,
   ],
   controllers: [],
-  providers: [LoggerService],
+  providers: [
+    LoggerService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}
