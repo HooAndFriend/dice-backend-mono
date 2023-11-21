@@ -1,11 +1,13 @@
 // ** Nest Imports
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
 import { DataSource } from 'typeorm';
+import WorkspaceRepository from '../../../api/workspace/repository/workspace.repository';
+import WorkspaceUserRepository from '../../../api/workspace-user/repository/workspace-user.repository';
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
@@ -19,8 +21,6 @@ import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from '../../../common/enum/UserType.enum';
-import WorkspaceRepository from '../../../api/workspace/repository/workspace.repository';
-import WorkspaceUserRepository from '../../../api/workspace-user/repository/workspace-user.repository';
 import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import User from '../../../api/user/domain/user.entity';
 
@@ -32,7 +32,6 @@ export default class AuthService {
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    // @Inject(DataSource) private readonly dataSource: DataSource,
     private readonly dataSource: DataSource,
   ) {}
 
