@@ -128,7 +128,18 @@ export const ErdResponse = {
     400: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',
-      message: 'ERD 정보를 찾을수 없습니다.',
+      message: 'ERD 정보를 찾을 수 없습니다.',
+    }),
+  },
+  tableMapping: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '테이블을 매핑합니다.',
+    }),
+    400: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: '테이블 정보를 찾을 수 없습니다.',
     }),
   },
 };

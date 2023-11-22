@@ -24,9 +24,11 @@ import Table from '../domain/table.entity';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import ColumnsRepository from '../repository/erd.column.repository';
 import TableRepository from '../repository/erd.table.repository';
+import MappingRepository from '../repository/erd.mapping.repository';
 
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
+import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 
 // Other Imports
 
@@ -37,6 +39,7 @@ export default class ErdService {
     private readonly columnsRepository: ColumnsRepository,
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
+    private readonly mappingRepository: MappingRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
@@ -279,4 +282,7 @@ export default class ErdService {
       data: { findErd, count },
     });
   }
+
+  // ** Table Mapping
+  public async tableMapping(dto: RequestMappingSaveDto, user: User) {}
 }

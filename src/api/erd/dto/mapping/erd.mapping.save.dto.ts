@@ -12,5 +12,5 @@ export default class RequestMappingSaveDto {
 
   @ApiProperty({ example: 2 })
   @IsNumber()
-  ColumnId: number;
+  columnId: number;
 }

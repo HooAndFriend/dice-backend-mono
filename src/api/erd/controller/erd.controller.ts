@@ -39,11 +39,12 @@ import RequestColumnUpdateDto from '../dto/column/erd.column.update.dto';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../common/decorators/user.decorators';
 import User from '../../user/domain/user.entity';
+import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/workspace/erd', version: '1' })
+@Controller({ path: '/erd', version: '1' })
 export default class ErdController {
   constructor(private readonly erdService: ErdService) {}
 
@@ -133,5 +134,18 @@ export default class ErdController {
   @Get('/:workspaceId')
   public async findErd(@Param('workspaceId') id: number) {
     return await this.erdService.findErd(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Table Mapping' })
+  @ApiResponse(ErdResponse.tableMapping[200])
+  @ApiResponse(ErdResponse.tableMapping[400])
+  @UseGuards(JwtAccessGuard)
+  @Post('/mapping')
+  public async tableMapping(
+    @Body() dto: RequestMappingSaveDto,
+    @GetUser() user: User,
+  ) {
+    return this.erdService.tableMapping(dto, user);
   }
 }
