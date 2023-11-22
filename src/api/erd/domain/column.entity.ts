@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -12,6 +13,7 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import User from '../../user/domain/user.entity';
 import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
 import Table from './table.entity';
+import Mapping from './mapping.entity';
 
 @Entity({ name: 'TB_COLUMN' })
 export default class Columns extends BaseTimeEntity {
@@ -80,4 +82,7 @@ export default class Columns extends BaseTimeEntity {
 
   @ManyToOne(() => Table, (table) => table.column)
   table: Relation<Table>;
+
+  @OneToMany(() => Mapping, (mapping) => mapping.column)
+  mapping: Relation<Mapping>[];
 }

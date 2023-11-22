@@ -13,6 +13,7 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Columns from './column.entity';
+import Mapping from './mapping.entity';
 
 @Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {
@@ -48,4 +49,10 @@ export default class Table extends BaseTimeEntity {
 
   @OneToMany(() => Columns, (column) => column.table)
   column: Relation<Columns>[];
+
+  @OneToMany(
+    () => Mapping,
+    (mapping) => [mapping.table_parent, mapping.table_child],
+  )
+  mapping: Relation<Mapping>[];
 }
