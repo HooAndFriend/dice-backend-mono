@@ -4,6 +4,13 @@
 
 Dice Project Backend Repository
 
+## using
+
+```
+nest : v10
+node : v18.16.0
+```
+
 ## Project Document
 
 ```bash

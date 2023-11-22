@@ -9,7 +9,7 @@ import request from 'supertest';
 import { NestApplication } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import LoggerService from '../../src/util/logger/logger.service';
-import { AllExceptionsFilter } from '../../src/filter/CustomExceptionFilter';
+import { CustomExceptionFilter } from '../../src/filter/CustomExceptionFilter';
 
 import csurf from 'csurf';
 import helmet from 'helmet';
@@ -30,7 +30,7 @@ describe('Auth Module E2E TEST', () => {
     });
 
     // ** FIlter 개념
-    app.useGlobalFilters(new AllExceptionsFilter());
+    app.useGlobalFilters(new CustomExceptionFilter());
 
     // ** Global Pipe Line
     app.useGlobalPipes(new ValidationPipe());
