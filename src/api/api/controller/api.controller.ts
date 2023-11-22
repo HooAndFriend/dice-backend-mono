@@ -42,7 +42,7 @@ import ApiService from '../service/api.service';
 @ApiTags('Workspace Api')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/workspace/request', version: '1' })
+@Controller({ path: '/request', version: '1' })
 export default class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
