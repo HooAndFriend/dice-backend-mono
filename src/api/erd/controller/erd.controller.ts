@@ -30,10 +30,10 @@ import {
 import { ErdResponse } from '../../../response/erd.response';
 
 // ** Dto Imports
-import RequestTableSaveDto from '../dto/erd.table.save.dto';
-import RequestColumnSaveDto from '../dto/erd.column.save.dto';
-import RequestTableUpdateDto from '../dto/erd.table.update.dto';
-import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
+import RequestTableSaveDto from '../dto/table/erd.table.save.dto';
+import RequestColumnSaveDto from '../dto/column/erd.column.save.dto';
+import RequestTableUpdateDto from '../dto/table/erd.table.update.dto';
+import RequestColumnUpdateDto from '../dto/column/erd.column.update.dto';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';

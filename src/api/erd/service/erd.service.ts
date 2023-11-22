@@ -12,10 +12,10 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 
 // ** enum, dto, entity, types Imports
-import RequestTableSaveDto from '../dto/erd.table.save.dto';
-import RequestColumnSaveDto from '../dto/erd.column.save.dto';
-import RequestColumnUpdateDto from '../dto/erd.column.update.dto';
-import RequestTableUpdateDto from '../dto/erd.table.update.dto';
+import RequestTableSaveDto from '../dto/table/erd.table.save.dto';
+import RequestColumnSaveDto from '../dto/column/erd.column.save.dto';
+import RequestColumnUpdateDto from '../dto/column/erd.column.update.dto';
+import RequestTableUpdateDto from '../dto/table/erd.table.update.dto';
 import User from '../../user/domain/user.entity';
 import Columns from '../domain/column.entity';
 import Table from '../domain/table.entity';
