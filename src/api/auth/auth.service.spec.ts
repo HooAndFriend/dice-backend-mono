@@ -69,6 +69,7 @@ describe('AuthService unit test', () => {
       // then
       expect(userRepositoryFindOneSpy).toHaveBeenCalledTimes(1);
     });
+
     it('로그인 실패 - 회원 정보 없음', async () => {
       // given
       const loginRequest: RequestDiceUserLoginDto = {
@@ -89,6 +90,7 @@ describe('AuthService unit test', () => {
       // then
       expect(userRepositoryFindOneSpy).toHaveBeenCalledTimes(1);
     });
+
     it('로그인 실패 - 비밀번호 불일치', async () => {
       // given
       const loginRequest: RequestDiceUserLoginDto = {
