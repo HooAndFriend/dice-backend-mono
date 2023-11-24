@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -12,6 +13,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
+import Api from '../../api/domain/api.entity';
 
 @Entity({ name: 'TB_WORKSPACE_COLLECTION' })
 export default class Collection extends BaseTimeEntity {
@@ -34,4 +36,7 @@ export default class Collection extends BaseTimeEntity {
 
   @ManyToOne(() => User, (user) => user.collection)
   modifiedUser: Relation<User>;
+
+  @OneToMany(() => Api, (api) => api.collection)
+  api: Relation<Api>;
 }

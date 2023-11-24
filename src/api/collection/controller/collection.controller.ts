@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -90,5 +91,14 @@ export default class CollectionController {
   @Delete('/:id')
   public async deleteCollection(@Param('id') id: number) {
     return await this.collectionService.deleteCollection(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'collection api 리스트 조회' })
+  @ApiResponse(CollectionResponse.findApiList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('getApiList/:collectionId')
+  public async findApiList(@Param('collectionId') collectionId: number) {
+    return await this.collectionService.findApiList(collectionId);
   }
 }

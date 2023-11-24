@@ -10,6 +10,7 @@ import CollectionService from './service/collection.service';
 import CollectionController from './controller/collection.controller';
 import CollectionRepository from './repository/collection.repository';
 import Collection from './domain/collection.entity';
+import ApiRepository from '../api/repository/api.repository';
 
 @Module({
   imports: [

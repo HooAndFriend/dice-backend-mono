@@ -16,11 +16,13 @@ import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import CollectionRepository from '../repository/collection.repository';
+import ApiRepository from '../../api/repository/api.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestCollectionSaveDto from '../dto/collection.save.dto';
 import RequestCollectionUpdateDto from '../dto/collection.update.dto';
 import User from '../../user/domain/user.entity';
+import Api from '../../api/domain/api.entity';
 
 @Injectable()
 export default class CollectionService {
@@ -106,7 +108,7 @@ export default class CollectionService {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'collection 정보를 조회합니다.',
-      data: findCollection,
+      data: { findCollection },
     });
   }
 
@@ -126,6 +128,18 @@ export default class CollectionService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'collection을 삭제합니다.',
+    });
+  }
+
+  public async findApiList(collectionId: number) {
+    const [data, count] = await this.collectionRepository.findApiList(
+      collectionId,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '콜렉션 api리스트를 조회합니다.',
+      data: { data, count },
     });
   }
 }
