@@ -15,6 +15,7 @@ import { ApiType } from '../../../common/enum/ApiType.enum';
 import User from '../../user/domain/user.entity';
 import { AuthorizationType } from '../../../common/enum/AuthorizationType.enum';
 import Collection from '../../collection/domain/collection.entity';
+import { BodyType } from '../../../common/enum/BodyType.enum';
 
 @Entity({ name: 'TB_WORKSPACE_API' })
 export default class Api extends BaseTimeEntity {
@@ -79,11 +80,35 @@ export default class Api extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: ApiType,
+    enum: BodyType,
     comment: 'body 종류',
     nullable: false,
   })
-  bodytype: ApiType;
+  bodytype: BodyType;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'raw data',
+    nullable: true,
+  })
+  rawdata: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'form data key',
+    nullable: true,
+  })
+  formdatakey: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'form data value',
+    nullable: true,
+  })
+  formdatavalue: string;
 
   @ManyToOne(() => Collection, (collection) => collection.api)
   collection: Relation<Collection>;

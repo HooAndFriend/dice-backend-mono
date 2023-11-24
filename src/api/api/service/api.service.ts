@@ -39,11 +39,19 @@ export default class ApiService {
     await queryRunner.startTransaction();
 
     try {
-      const saveApi = await queryRunner.manager.save(
+      await queryRunner.manager.save(
         this.apiRepository.create({
           name: dto.name,
-          type: dto.type,
+          type: dto.apitype,
           endpoint: dto.endpoint,
+          authtype: dto.authtype,
+          headerkey: dto.headerkey,
+          headervalue: dto.headervalue,
+          headerdiscreption: dto.headerdiscreption,
+          bodytype: dto.bodytype,
+          rawdata: dto.rawdata,
+          formdatakey: dto.formdatakey,
+          formdatavalue: dto.formdatavalue,
           createdUser: user,
           modifiedUser: user,
         }),
@@ -71,8 +79,16 @@ export default class ApiService {
   public async updateApi(dto: RequestApiUpdateDto, user: User) {
     await this.apiRepository.update(dto.id, {
       name: dto.name,
-      type: dto.type,
+      type: dto.apitype,
       endpoint: dto.endpoint,
+      authtype: dto.authtype,
+      headerkey: dto.headerkey,
+      headervalue: dto.headervalue,
+      headerdiscreption: dto.headerdiscreption,
+      bodytype: dto.bodytype,
+      rawdata: dto.rawdata,
+      formdatakey: dto.formdatakey,
+      formdatavalue: dto.formdatavalue,
       modifiedUser: user,
     });
 
