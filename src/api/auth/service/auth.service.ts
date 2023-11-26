@@ -60,7 +60,7 @@ export default class AuthService {
           nickname: dto.nickname,
           type: dto.type,
           comment: '',
-          profile: '',
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           email: '',
         }),
       );
@@ -70,6 +70,7 @@ export default class AuthService {
           name: dto.nickname,
           comment: '',
           isPersonal: true,
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
       );
 
@@ -194,7 +195,7 @@ export default class AuthService {
           nickname: dto.nickname,
           type: UserType.DICE,
           comment: '',
-          profile: '',
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           email: '',
         }),
       );
@@ -204,6 +205,7 @@ export default class AuthService {
           name: dto.nickname,
           comment: '',
           isPersonal: true,
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
       );
 
