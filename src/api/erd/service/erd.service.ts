@@ -29,6 +29,8 @@ import MappingRepository from '../repository/erd.mapping.repository';
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
+import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
+import ReqeustTableSearchDto from '../dto/table/erd.table.search.dto';
 
 // Other Imports
 
@@ -284,5 +286,104 @@ export default class ErdService {
   }
 
   // ** Table Mapping
-  public async tableMapping(dto: RequestMappingSaveDto, user: User) {}
+  public async tableMapping(dto: RequestMappingSaveDto, user: User) {
+    const findParent = await this.tableRepository.findOne({
+      where: { id: dto.tableParentId },
+    });
+
+    if (!findParent) {
+      return CommonResponse.createNotFoundException(
+        '부모 테이블 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const findChild = await this.tableRepository.findOne({
+      where: { id: dto.tableChildId },
+    });
+
+    if (!findChild) {
+      return CommonResponse.createNotFoundException(
+        '자식 테이블 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const findPK = await this.columnsRepository.findPK(findParent.id);
+    if (!findPK) {
+      return CommonResponse.createNotFoundException(
+        'PK 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const fkcount = await this.columnsRepository.findFK(findChild.id);
+
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // ** FK 컬럼을 생성하고 해당 매핑 관계를 테이블에 저장합니다.
+      // ** fk 생성시 기본 이름은 해당 테이블의 부모테이블의 이름 뒤에 fk의 개수
+      const fcolumn = await queryRunner.manager.save(
+        this.columnsRepository.create({
+          table: findChild,
+          createUser: user,
+          modifyUser: user,
+          key: ColumnType.FK,
+          name: `${findPK.name}${fkcount + 1}`,
+          isNull: IsNull.NN,
+          dataType: findPK.dataType,
+          option: findPK.option,
+        }),
+      );
+
+      await queryRunner.manager.save(
+        this.mappingRepository.create({
+          column: fcolumn,
+          tableChild: findChild,
+          tableParent: findParent,
+        }),
+      );
+
+      await queryRunner.commitTransaction();
+
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: '테이블을 매핑합니다.',
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  // ** 테이블 검색
+  public async searchTable(dto: ReqeustTableSearchDto) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id: dto.workspaceId },
+    });
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
+
+    const [searchTable, count] = await this.tableRepository.searchTable(
+      dto.find,
+      dto.workspaceId,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '테이블을 검색합니다.',
+      data: { table: searchTable, count },
+    });
+  }
 }

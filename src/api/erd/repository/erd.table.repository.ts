@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Repository } from 'typeorm';
+import { QueryBuilder, Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
@@ -12,58 +12,23 @@ export default class TableRepository extends Repository<Table> {
     workspaceId: number,
     name: string,
   ) {
-    const qb = this.createQueryBuilder('table')
+    const querybuilder = this.createQueryBuilder('table')
       .select(['table.id', 'table.name', 'table.comment'])
       .where('table.workspace = :workspaceId', { workspaceId })
       .andWhere('table.name = :name', { name });
-    return await qb.getOne();
+    return await querybuilder.getOne();
   }
 
   public async findTableById(id: number) {
-    const qb = this.createQueryBuilder('table')
+    const querybuilder = this.createQueryBuilder('table')
       .select(['table.id', 'table.name', 'table.comment', 'workspace.id'])
       .leftJoin('table.workspace', 'workspace')
       .where('table.id = :id', { id });
-    return await qb.getOne();
-  }
-
-  public async findColumnByNameAndTable(columnName: string, tableId: number) {
-    return this.createQueryBuilder('column')
-      .select([
-        'column.id',
-        'table.id',
-        'column.key',
-        'column.name',
-        'column.comment',
-        'column.dataType',
-        'column.isnull',
-        'column.option',
-      ])
-      .leftJoin('column.table', 'table')
-      .where('column.name = :columnName', { columnName })
-      .andWhere('column.table = :tableId', { tableId })
-      .getOne();
-  }
-
-  public async findColumnById(id: number) {
-    return this.createQueryBuilder('column')
-      .select([
-        'column.id',
-        'table.id',
-        'column.key',
-        'column.name',
-        'column.comment',
-        'column.dataType',
-        'column.isnull',
-        'column.option',
-      ])
-      .leftJoin('column.table', 'table')
-      .where('column.id = :id', { id })
-      .getOne();
+    return await querybuilder.getOne();
   }
 
   public async findErd(workspaceId: number) {
-    const qb = this.createQueryBuilder('table')
+    const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
         'table.name',
@@ -95,6 +60,27 @@ export default class TableRepository extends Repository<Table> {
       .leftJoin('table.modifyUser', 'table_modifyUser')
       .where('table.workspace = :workspaceId', { workspaceId })
       .orderBy('table.id');
-    return await qb.getManyAndCount();
+    return await querybuilder.getManyAndCount();
+  }
+
+  public async searchTable(find: string, workspaceId: number) {
+    const querybuilder = this.createQueryBuilder('table')
+      .select([
+        'table.id',
+        'table.name',
+        'table.comment',
+        'table_createUser.nickname',
+        'table_createUser.email',
+        'table_createUser.profile',
+        'table_modifyUser.nickname',
+        'table_modifyUser.email',
+        'table_modifyUser.profile',
+      ])
+      .leftJoin('table.createUser', 'table_createUser')
+      .leftJoin('table.modifyUser', 'table_modifyUser')
+      .where('table.name like :find', { find: `%${find}%` })
+      .andWhere('table.workspace = :workspaceId', { workspaceId });
+
+    return await querybuilder.getManyAndCount();
   }
 }

@@ -40,6 +40,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../common/decorators/user.decorators';
 import User from '../../user/domain/user.entity';
 import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
+import ReqeustTableSearchDto from '../dto/table/erd.table.search.dto';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -85,6 +86,27 @@ export default class ErdController {
   @Delete('/table/:tableId')
   public async deleteTable(@Param('tableId') id: number) {
     return await this.erdService.deleteTable(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '테이블 매핑' })
+  @ApiResponse(ErdResponse.tableMapping[200])
+  @ApiResponse(ErdResponse.tableMapping[400])
+  @UseGuards(JwtAccessGuard)
+  @Post('/table/mapping')
+  public async tableMapping(
+    @Body() dto: RequestMappingSaveDto,
+    @GetUser() user: User,
+  ) {
+    return this.erdService.tableMapping(dto, user);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '테이블 검색' })
+  @UseGuards(JwtAccessGuard)
+  @Post('/table/search')
+  public async searchTable(@Body() dto: ReqeustTableSearchDto) {
+    return this.erdService.searchTable(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -134,18 +156,5 @@ export default class ErdController {
   @Get('/:workspaceId')
   public async findErd(@Param('workspaceId') id: number) {
     return await this.erdService.findErd(id);
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Table Mapping' })
-  @ApiResponse(ErdResponse.tableMapping[200])
-  @ApiResponse(ErdResponse.tableMapping[400])
-  @UseGuards(JwtAccessGuard)
-  @Post('/mapping')
-  public async tableMapping(
-    @Body() dto: RequestMappingSaveDto,
-    @GetUser() user: User,
-  ) {
-    return this.erdService.tableMapping(dto, user);
   }
 }

@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Entity, ManyToOne, PrimaryColumn, Relation } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
@@ -8,14 +8,14 @@ import Columns from './column.entity';
 
 @Entity({ name: 'TB_MAPPING' })
 export default class Mapping extends BaseTimeEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Table, (table) => table.mapping)
-  table_parent: Relation<Table>;
+  tableParent: Relation<Table>;
 
   @ManyToOne(() => Table, (table) => table.mapping)
-  table_child: Relation<Table>;
+  tableChild: Relation<Table>;
 
   @ManyToOne(() => Columns, (column) => column.mapping)
   column: Relation<Columns>;

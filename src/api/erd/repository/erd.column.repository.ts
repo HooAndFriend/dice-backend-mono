@@ -12,7 +12,7 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.name',
         'column.comment',
         'column.dataType',
-        'column.isnull',
+        'column.isNull',
         'column.option',
         'table.id',
         'create_user.nickname',
@@ -38,7 +38,7 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.name',
         'column.comment',
         'column.dataType',
-        'column.isnull',
+        'column.isNull',
         'column.option',
       ])
       .leftJoin('column.table', 'table')
@@ -56,7 +56,7 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.name',
         'column.comment',
         'column.dataType',
-        'column.isnull',
+        'column.isNull',
         'column.option',
       ])
       .leftJoin('column.table', 'table')
@@ -64,8 +64,8 @@ export default class ColumnsRepository extends Repository<Columns> {
       .getOne();
   }
 
-  public async findErd(workspaceId: number) {
-    const qb = this.createQueryBuilder('column')
+  public async findPK(tableId: number) {
+    return this.createQueryBuilder('column')
       .select([
         'column.id',
         'column.key',
@@ -74,29 +74,27 @@ export default class ColumnsRepository extends Repository<Columns> {
         'column.dataType',
         'column.isNull',
         'column.option',
-        'column_createUser.nickname',
-        'column_createUser.email',
-        'column_createUser.profile',
-        'column_modifyUser.nickname',
-        'column_modifyUser.email',
-        'column_modifyUser.profile',
-        'table.id',
-        'table.name',
-        'table.comment',
-        'table_createUser.nickname',
-        'table_createUser.email',
-        'table_createUser.profile',
-        'table_modifyUser.nickname',
-        'table_modifyUser.email',
-        'table_modifyUser.profile',
       ])
       .leftJoin('column.table', 'table')
-      .leftJoin('column.createUser', 'column_createUser')
-      .leftJoin('column.modifyUser', 'column_modifyUser')
-      .leftJoin('table.createUser', 'table_createUser')
-      .leftJoin('table.modifyUser', 'table_modifyUser')
-      .where('table.workspace = :workspaceId', { workspaceId })
-      .orderBy('table.id');
-    return await qb.getManyAndCount();
+      .where('table.id = :tableId', { tableId })
+      .where("column.key = 'PK'")
+      .getOne();
+  }
+
+  public async findFK(tableId: number) {
+    return this.createQueryBuilder('column')
+      .select([
+        'column.id',
+        'column.key',
+        'column.name',
+        'column.comment',
+        'column.dataType',
+        'column.isNull',
+        'column.option',
+      ])
+      .leftJoin('column.table', 'table')
+      .where('table.id = :tableId', { tableId })
+      .where("column.key = 'FK'")
+      .getCount();
   }
 }

@@ -142,4 +142,30 @@ export const ErdResponse = {
       message: '테이블 정보를 찾을 수 없습니다.',
     }),
   },
+  searchTable: {
+    200: createResponse({
+      data: {
+        table: [
+          {
+            id: 1,
+            name: 'tbl_test1',
+            comment: '예시 테이블1',
+            createUser: {
+              nickname: 'joo',
+              email: '',
+              profile: '',
+            },
+            modifyUser: {
+              nickname: 'joo',
+              email: '',
+              profile: '',
+            },
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: '테이블을 검색합니다.',
+    }),
+  },
 };

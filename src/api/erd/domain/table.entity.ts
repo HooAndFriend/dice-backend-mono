@@ -52,7 +52,7 @@ export default class Table extends BaseTimeEntity {
 
   @OneToMany(
     () => Mapping,
-    (mapping) => [mapping.table_parent, mapping.table_child],
+    (mapping) => [mapping.tableParent, mapping.tableChild],
   )
   mapping: Relation<Mapping>[];
 }

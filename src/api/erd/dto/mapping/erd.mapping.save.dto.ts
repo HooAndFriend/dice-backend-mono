@@ -1,5 +1,9 @@
+// ** Swagger Imports
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+
+// ** Pipe Imports
+import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsNull } from '../../../../common/enum/ColumnType.enum';
 
 export default class RequestMappingSaveDto {
   @ApiProperty({ example: 2 })
@@ -9,8 +13,4 @@ export default class RequestMappingSaveDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   tableChildId: number;
-
-  @ApiProperty({ example: 2 })
-  @IsNumber()
-  columnId: number;
 }
