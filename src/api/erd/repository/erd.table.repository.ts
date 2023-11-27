@@ -62,25 +62,4 @@ export default class TableRepository extends Repository<Table> {
       .orderBy('table.id');
     return await querybuilder.getManyAndCount();
   }
-
-  public async searchTable(find: string, workspaceId: number) {
-    const querybuilder = this.createQueryBuilder('table')
-      .select([
-        'table.id',
-        'table.name',
-        'table.comment',
-        'table_createUser.nickname',
-        'table_createUser.email',
-        'table_createUser.profile',
-        'table_modifyUser.nickname',
-        'table_modifyUser.email',
-        'table_modifyUser.profile',
-      ])
-      .leftJoin('table.createUser', 'table_createUser')
-      .leftJoin('table.modifyUser', 'table_modifyUser')
-      .where('table.name like :find', { find: `%${find}%` })
-      .andWhere('table.workspace = :workspaceId', { workspaceId });
-
-    return await querybuilder.getManyAndCount();
-  }
 }

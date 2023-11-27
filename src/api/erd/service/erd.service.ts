@@ -362,28 +362,4 @@ export default class ErdService {
       await queryRunner.release();
     }
   }
-
-  // ** 테이블 검색
-  public async searchTable(dto: ReqeustTableSearchDto) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: dto.workspaceId },
-    });
-
-    if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
-    }
-
-    const [searchTable, count] = await this.tableRepository.searchTable(
-      dto.find,
-      dto.workspaceId,
-    );
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '테이블을 검색합니다.',
-      data: { table: searchTable, count },
-    });
-  }
 }

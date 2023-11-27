@@ -102,14 +102,6 @@ export default class ErdController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '테이블 검색' })
-  @UseGuards(JwtAccessGuard)
-  @Post('/table/search')
-  public async searchTable(@Body() dto: ReqeustTableSearchDto) {
-    return this.erdService.searchTable(dto);
-  }
-
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '컬럼 생성' })
   @ApiBody({ type: RequestColumnSaveDto })
   @ApiResponse(ErdResponse.saveColumn[200])
