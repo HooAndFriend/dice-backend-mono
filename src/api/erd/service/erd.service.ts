@@ -29,7 +29,7 @@ import MappingRepository from '../repository/erd.mapping.repository';
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
-import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
+import { ColumnType, IsNull } from '../../../common/enum/ErdType.enum';
 import ReqeustTableSearchDto from '../dto/table/erd.table.search.dto';
 
 // Other Imports
@@ -179,7 +179,7 @@ export default class ErdService {
     }
 
     const findColumn = await this.columnsRepository.findColumnByNameAndTable(
-      dto.name,
+      dto.physicalName,
       dto.table_id,
     );
 
@@ -194,7 +194,8 @@ export default class ErdService {
       createUser: user,
       modifyUser: user,
       key: dto.key,
-      name: dto.name,
+      physicalName: dto.physicalName,
+      logicalName: dto.logicalName,
       isNull: dto.isNull,
       dataType: dto.data_type,
       option: dto.option,
@@ -219,7 +220,7 @@ export default class ErdService {
 
     const findColumnByNameAndTable =
       await this.columnsRepository.findColumnByNameAndTable(
-        dto.name,
+        dto.physicalName,
         findColumn.table.id,
       );
 
@@ -233,7 +234,8 @@ export default class ErdService {
     await this.columnsRepository.update(dto.columnId, {
       modifyUser: user,
       key: dto.key,
-      name: dto.name,
+      physicalName: dto.physicalName,
+      logicalName: dto.logicalName,
       isNull: dto.isNull,
       dataType: dto.dataType,
       option: dto.option,
@@ -330,7 +332,8 @@ export default class ErdService {
           createUser: user,
           modifyUser: user,
           key: ColumnType.FK,
-          name: `${findPK.name}${fkcount + 1}`,
+          physicalName: `${findPK.physicalName}${fkcount + 1}`,
+          logicalName: `${findPK.logicalName}${fkcount + 1}`,
           isNull: IsNull.NN,
           dataType: findPK.dataType,
           option: findPK.option,
@@ -342,6 +345,7 @@ export default class ErdService {
           column: fcolumn,
           tableChild: findChild,
           tableParent: findParent,
+          type: dto.type,
         }),
       );
 

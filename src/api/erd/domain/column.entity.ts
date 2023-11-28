@@ -11,7 +11,7 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import User from '../../user/domain/user.entity';
-import { ColumnType, IsNull } from '../../../common/enum/ColumnType.enum';
+import { ColumnType, IsNull } from '../../../common/enum/ErdType.enum';
 import Table from './table.entity';
 import Mapping from './mapping.entity';
 
@@ -32,11 +32,20 @@ export default class Columns extends BaseTimeEntity {
   @Column({
     type: 'varchar',
     length: 50,
-    name: 'name',
-    comment: '컬럼 명',
-    nullable: true,
+    name: 'logical_name',
+    comment: '논리 컬럼',
+    nullable: false,
   })
-  name: string;
+  logicalName: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'physical_name',
+    comment: '물리 컬럼',
+    nullable: false,
+  })
+  physicalName: string;
 
   @Column({
     type: 'enum',
