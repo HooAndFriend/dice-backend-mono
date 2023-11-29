@@ -7,7 +7,7 @@ import { IsNumber, IsString } from 'class-validator';
 export default class RequestCollectionSaveDto {
   @ApiProperty({ example: 'New Collection' })
   @IsString()
-  name: string = 'New Collection';
+  name = 'New Collection';
 
   @ApiProperty({ example: 10 })
   @IsNumber()
