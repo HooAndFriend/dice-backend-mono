@@ -17,6 +17,10 @@ import RequestDiceUserLoginDto from './dto/user.dice.login.dto';
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import RequestDiceUserSaveDto from './dto/user.dice.save.dto';
+import Workspace from '../workspace/domain/workspace.entity';
+import WorkspaceUser from '../workspace-user/domain/workspace-user.entity';
+import { WorkspaceRoleType } from '../../common/enum/WorkspaceRoleType.enum';
 
 const mockUserInfo = { username: 'admin', password: '1234' };
 
@@ -25,10 +29,16 @@ const mockTokenInfo = {
   refreshToken: 'refresh.token.c',
 };
 
+const mockPersonalWorkspace = { name: 'admin' };
+
 describe('AuthService unit test', () => {
   let authService: AuthService;
   let userRepository: UserRepository;
+  let worksapceRepository: WorkspaceRepository;
+  let workspaceUserRepository: WorkspaceUserRepository;
   let user: User;
+  let workspace: Workspace;
+  let workSpaceUser: WorkspaceUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,9 +55,20 @@ describe('AuthService unit test', () => {
 
     authService = module.get<AuthService>(AuthService);
     userRepository = module.get<UserRepository>(UserRepository);
+    worksapceRepository = module.get<WorkspaceRepository>(WorkspaceRepository);
+    workspaceUserRepository = module.get<WorkspaceUserRepository>(
+      WorkspaceUserRepository,
+    );
+
     user = await generateUser(mockUserInfo);
+    workspace = await generateWorkspace(mockPersonalWorkspace);
+    workSpaceUser = await genereateWorksapceUser({
+      workspace,
+      user,
+    });
   });
 
+  // ** Dice Login
   describe('DICE LOGIN TEST', () => {
     it('로그인 성공', async () => {
       // given
@@ -112,6 +133,33 @@ describe('AuthService unit test', () => {
       expect(userRepositoryFindOneSpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  // ** Dice Register
+  describe('DICE SIGNUP', () => {
+    it('회원가입 성공', async () => {
+      // ** Given
+      const signupRequest: RequestDiceUserSaveDto = {
+        username: 'admin',
+        password: '1234',
+        nickname: 'admin',
+      };
+
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+      const userRepositoryCreateSpy = jest
+        .spyOn(userRepository, 'create')
+        .mockReturnValue(user);
+      jest.spyOn(worksapceRepository, 'create').mockReturnValue(workspace);
+      jest
+        .spyOn(workspaceUserRepository, 'create')
+        .mockReturnValue(workSpaceUser);
+
+      // ** when
+      await authService.saveDiceUser(signupRequest);
+
+      // ** then
+      expect(userRepositoryCreateSpy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
 
 const generateUser = async ({ id = 1, username, password }) => {
@@ -123,4 +171,27 @@ const generateUser = async ({ id = 1, username, password }) => {
   user.id = id;
 
   return user;
+};
+
+const generateWorkspace = async ({ id = 1, name }) => {
+  const workspace = new Workspace();
+  workspace.name = name;
+  workspace.id = id;
+  workspace.isPersonal = true;
+  workspace.comment = '';
+
+  return workspace;
+};
+
+const genereateWorksapceUser = async ({
+  role = WorkspaceRoleType.OWNER,
+  workspace,
+  user,
+}) => {
+  const workspaceUser = new WorkspaceUser();
+  workspaceUser.role = role;
+  workspaceUser.workspace = workspace;
+  workspaceUser.user = user;
+
+  return workspaceUser;
 };
