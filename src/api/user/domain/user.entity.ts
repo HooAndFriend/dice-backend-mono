@@ -98,10 +98,4 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Table, (table) => [table.createUser, table.modifyUser])
   table: Relation<Table>[];
-
-  @OneToMany(() => Collection, (collection) => collection.createdUser)
-  collection: Relation<Collection>[];
-
-  @OneToMany(() => Api, (api) => api.createdUser)
-  api: Relation<Collection>[];
 }

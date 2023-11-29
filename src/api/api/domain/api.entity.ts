@@ -36,6 +36,7 @@ export default class Api extends BaseTimeEntity {
     enum: ApiType,
     comment: 'api 종류',
     nullable: false,
+    default: ApiType.GET,
   })
   type: ApiType;
 
@@ -112,10 +113,4 @@ export default class Api extends BaseTimeEntity {
 
   @ManyToOne(() => Collection, (collection) => collection.api)
   collection: Relation<Collection>;
-
-  @ManyToOne(() => User, (user) => user.api)
-  createdUser: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.api)
-  modifiedUser: Relation<User>;
 }

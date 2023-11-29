@@ -31,12 +31,6 @@ export default class Collection extends BaseTimeEntity {
   @ManyToOne(() => Workspace, (workspace) => workspace.collection)
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => User, (user) => user.collection)
-  createdUser: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.collection)
-  modifiedUser: Relation<User>;
-
   @OneToMany(() => Api, (api) => api.collection)
   api: Relation<Api>;
 }
