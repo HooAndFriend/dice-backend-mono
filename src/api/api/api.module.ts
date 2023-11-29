@@ -20,4 +20,4 @@ import Api from './domain/api.entity';
   controllers: [ApiController],
   providers: [ApiService],
 })
-export default class RequestApiModule {}
+export default class RequestModule {}
