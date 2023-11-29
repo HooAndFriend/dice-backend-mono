@@ -23,56 +23,39 @@ import RequestCollectionSaveDto from '../dto/collection.save.dto';
 import RequestCollectionUpdateDto from '../dto/collection.update.dto';
 import User from '../../user/domain/user.entity';
 import Api from '../../api/domain/api.entity';
+import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 
 @Injectable()
 export default class CollectionService {
   constructor(
     private readonly collectionRepository: CollectionRepository,
-    private readonly configService: ConfigService,
+    private readonly workspaceRepository: WorkspaceRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
-
-  public async saveCollection(dto: RequestCollectionSaveDto, user: User) {
-    const findCollection = await this.collectionRepository.findOne({
-      where: { name: dto.name },
+  public async saveCollection(dto: RequestCollectionSaveDto) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id: dto.workspaceId },
     });
 
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      await queryRunner.manager.save(
-        this.collectionRepository.create({
-          name: dto.name,
-          createdUser: user,
-          modifiedUser: user,
-        }),
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
       );
-
-      await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'collection을 생성합니다.',
-      });
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
+    await this.collectionRepository.save(
+      this.collectionRepository.create({
+        name: dto.name,
+        workspace: findWorkspace,
+      }),
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'collection을 생성합니다.',
+    });
   }
 
-  public async updateCollection(dto: RequestCollectionUpdateDto, user: User) {
+  public async updateCollection(dto: RequestCollectionUpdateDto) {
     const findCollection = await this.collectionRepository.findOne({
       where: { id: dto.id },
     });
@@ -85,30 +68,11 @@ export default class CollectionService {
 
     await this.collectionRepository.update(dto.id, {
       name: dto.name,
-      modifiedUser: user,
     });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'collection을 수정합니다.',
-    });
-  }
-
-  public async findCollection(collectionId: number) {
-    const findCollection = await this.collectionRepository.findCollection(
-      collectionId,
-    );
-
-    if (!findCollection) {
-      return CommonResponse.createNotFoundException(
-        'collection을 찾을 수 없습니다.',
-      );
-    }
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'collection 정보를 조회합니다.',
-      data: { findCollection },
     });
   }
 
@@ -131,14 +95,23 @@ export default class CollectionService {
     });
   }
 
-  public async findApiList(collectionId: number) {
+  public async findCollectionList(workspaceId: number) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id: workspaceId },
+    });
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
     const [data, count] = await this.collectionRepository.findApiList(
-      collectionId,
+      workspaceId,
     );
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: '콜렉션 api리스트를 조회합니다.',
+      message: 'Collection 리스트를 조회합니다.',
       data: { data, count },
     });
   }

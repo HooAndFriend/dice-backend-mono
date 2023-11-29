@@ -52,11 +52,8 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.saveCollection[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveCollection(
-    @Body() dto: RequestCollectionSaveDto,
-    @GetUser() user: User,
-  ) {
-    return await this.collectionService.saveCollection(dto, user);
+  public async saveCollection(@Body() dto: RequestCollectionSaveDto) {
+    return await this.collectionService.saveCollection(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -66,21 +63,8 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.updateCollection[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateCollection(
-    @Body() dto: RequestCollectionUpdateDto,
-    @GetUser() user: User,
-  ) {
-    return await this.collectionService.updateCollection(dto, user);
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'collection 조회' })
-  @ApiResponse(CollectionResponse.findCollection[200])
-  @ApiResponse(CollectionResponse.findCollection[404])
-  @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findCollection(@Param('id') id: number) {
-    return await this.collectionService.findCollection(id);
+  public async updateCollection(@Body() dto: RequestCollectionUpdateDto) {
+    return await this.collectionService.updateCollection(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -94,11 +78,11 @@ export default class CollectionController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'collection api 리스트 조회' })
-  @ApiResponse(CollectionResponse.findApiList[200])
+  @ApiOperation({ summary: 'collection 리스트 조회' })
+  @ApiResponse(CollectionResponse.findCollectionList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('getApiList/:collectionId')
-  public async findApiList(@Param('collectionId') collectionId: number) {
-    return await this.collectionService.findApiList(collectionId);
+  @Get('/:workspaceId')
+  public async findCollectionList(@Param('workspaceId') workspaceId: number) {
+    return await this.collectionService.findCollectionList(workspaceId);
   }
 }
