@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -41,7 +42,7 @@ import { CollectionResponse } from '../../../response/collection.response';
 @ApiTags('Workspace Collection')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/workspace/collection', version: '1' })
+@Controller({ path: '/collection', version: '1' })
 export default class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 
@@ -51,11 +52,8 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.saveCollection[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveCollection(
-    @Body() dto: RequestCollectionSaveDto,
-    @GetUser() user: User,
-  ) {
-    return await this.collectionService.saveCollection(dto, user);
+  public async saveCollection(@Body() dto: RequestCollectionSaveDto) {
+    return await this.collectionService.saveCollection(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -65,21 +63,8 @@ export default class CollectionController {
   @ApiResponse(CollectionResponse.updateCollection[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateCollection(
-    @Body() dto: RequestCollectionUpdateDto,
-    @GetUser() user: User,
-  ) {
-    return await this.collectionService.updateCollection(dto, user);
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'collection 조회' })
-  @ApiResponse(CollectionResponse.findCollection[200])
-  @ApiResponse(CollectionResponse.findCollection[404])
-  @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findCollection(@Param('id') id: number) {
-    return await this.collectionService.findCollection(id);
+  public async updateCollection(@Body() dto: RequestCollectionUpdateDto) {
+    return await this.collectionService.updateCollection(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -90,5 +75,14 @@ export default class CollectionController {
   @Delete('/:id')
   public async deleteCollection(@Param('id') id: number) {
     return await this.collectionService.deleteCollection(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'collection 리스트 조회' })
+  @ApiResponse(CollectionResponse.findCollectionList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:workspaceId')
+  public async findCollectionList(@Param('workspaceId') workspaceId: number) {
+    return await this.collectionService.findCollectionList(workspaceId);
   }
 }

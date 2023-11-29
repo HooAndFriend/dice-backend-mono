@@ -1,6 +1,7 @@
 import {
   createErrorResponse,
   createMessageResponse,
+  createPaginationResponse,
   createResponse,
 } from './common';
 
@@ -27,8 +28,19 @@ export const RequestApiResponse = {
   findApi: {
     200: createResponse({
       data: {
-        id: 1,
-        name: 'New Api',
+        name: 'New Request',
+        type: 'GET',
+        endpoint: 'null',
+        authtype: 'null',
+        headerkey: 'null',
+        headervalue: 'null',
+        headerdiscreption: 'null',
+        bodytype: 'null',
+        rawdata: 'null',
+        formdatakey: 'null',
+        formdatavalue: 'null',
+        paramkey: 'null',
+        paramvalue: 'null',
       },
       statusCode: 200,
       message: 'Api 정보를 조회합니다.',

@@ -13,11 +13,15 @@ export default class ApiRepository extends Repository<Api> {
         'api.name',
         'api.type',
         'api.endpoint',
-        'createdUser.nickname',
-        'modifiedUser.nickname',
+        'api.authtype',
+        'api.headerkey',
+        'api.headervalue',
+        'api.headerdiscreption',
+        'api.bodytype',
+        'api.rawdata',
+        'api.formdatakey',
+        'api.formdatavalue',
       ])
-      .leftJoin('api.createdUser', 'createdUser')
-      .leftJoin('api.modifiedUser', 'modifiedUser')
       .where('api.id = :apiId', { apiId });
 
     return await queryBuilder.getOne();
