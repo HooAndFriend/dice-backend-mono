@@ -83,9 +83,9 @@ export default class Api extends BaseTimeEntity {
     type: 'enum',
     enum: BodyType,
     comment: 'body 종류',
-    nullable: false,
+    nullable: true,
   })
-  bodytype: BodyType;
+  bodytype: BodyType = null;
 
   @Column({
     type: 'varchar',
@@ -110,6 +110,22 @@ export default class Api extends BaseTimeEntity {
     nullable: true,
   })
   formdatavalue: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'param key값',
+    nullable: true,
+  })
+  paramkey: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'param value값',
+    nullable: true,
+  })
+  paramvalue: string;
 
   @ManyToOne(() => Collection, (collection) => collection.api)
   collection: Relation<Collection>;

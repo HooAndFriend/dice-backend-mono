@@ -10,11 +10,12 @@ import ApiService from './service/api.service';
 import ApiController from './controller/api.controller';
 import ApiRepository from './repository/api.repository';
 import Api from './domain/api.entity';
+import CollectionRepository from '../collection/repository/collection.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Api]),
-    TypeOrmExModule.forCustomRepository([ApiRepository]),
+    TypeOrmExModule.forCustomRepository([ApiRepository, CollectionRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [ApiController],
