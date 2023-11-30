@@ -2,7 +2,6 @@
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -12,7 +11,6 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
-import User from '../../user/domain/user.entity';
 import Api from '../../api/domain/api.entity';
 
 @Entity({ name: 'TB_WORKSPACE_COLLECTION' })
