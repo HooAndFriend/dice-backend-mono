@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -12,6 +13,9 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
 import { ApiType } from '../../../common/enum/ApiType.enum';
 import User from '../../user/domain/user.entity';
+import { AuthorizationType } from '../../../common/enum/AuthorizationType.enum';
+import Collection from '../../collection/domain/collection.entity';
+import { BodyType } from '../../../common/enum/BodyType.enum';
 
 @Entity({ name: 'TB_WORKSPACE_API' })
 export default class Api extends BaseTimeEntity {
@@ -23,6 +27,7 @@ export default class Api extends BaseTimeEntity {
     length: 50,
     comment: 'api 이름',
     nullable: true,
+    default: 'New Request',
   })
   name: string;
 
@@ -31,6 +36,7 @@ export default class Api extends BaseTimeEntity {
     enum: ApiType,
     comment: 'api 종류',
     nullable: false,
+    default: ApiType.GET,
   })
   type: ApiType;
 
@@ -42,12 +48,85 @@ export default class Api extends BaseTimeEntity {
   })
   endpoint: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.api)
-  workspace: Relation<Workspace>;
+  @Column({
+    type: 'enum',
+    enum: AuthorizationType,
+    comment: 'auth 종류',
+    nullable: true,
+  })
+  authtype: AuthorizationType;
 
-  @ManyToOne(() => User, (user) => user.api)
-  createdUser: Relation<User>;
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: 'key값',
+    nullable: true,
+  })
+  headerkey: string;
 
-  @ManyToOne(() => User, (user) => user.api)
-  modifiedUser: Relation<User>;
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'value값',
+    nullable: true,
+  })
+  headervalue: string;
+
+  @Column({
+    type: 'text',
+    comment: '설명값',
+    nullable: true,
+  })
+  headerdiscreption: Text;
+
+  @Column({
+    type: 'enum',
+    enum: BodyType,
+    comment: 'body 종류',
+    nullable: true,
+  })
+  bodytype: BodyType = null;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'raw data',
+    nullable: true,
+  })
+  rawdata: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'form data key',
+    nullable: true,
+  })
+  formdatakey: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'form data value',
+    nullable: true,
+  })
+  formdatavalue: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'param key값',
+    nullable: true,
+  })
+  paramkey: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: 'param value값',
+    nullable: true,
+  })
+  paramvalue: string;
+
+  @ManyToOne(() => Collection, (collection) => collection.api)
+  collection: Relation<Collection>;
 }

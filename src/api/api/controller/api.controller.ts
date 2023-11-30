@@ -34,7 +34,6 @@ import { RequestApiResponse } from '../../../response/api.response';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetUser } from '../../../common/decorators/user.decorators';
 
 // ** Module Imports
 import ApiService from '../service/api.service';
@@ -42,7 +41,7 @@ import ApiService from '../service/api.service';
 @ApiTags('Workspace Api')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/workspace/request', version: '1' })
+@Controller({ path: '/request', version: '1' })
 export default class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
@@ -52,8 +51,8 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.saveApi[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveApi(@Body() dto: RequestApiSaveDto, @GetUser() user: User) {
-    return await this.apiService.saveApi(dto, user);
+  public async saveApi(@Body() dto: RequestApiSaveDto) {
+    return await this.apiService.saveApi(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -63,11 +62,8 @@ export default class ApiController {
   @ApiResponse(RequestApiResponse.updateApi[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateApi(
-    @Body() dto: RequestApiUpdateDto,
-    @GetUser() user: User,
-  ) {
-    return await this.apiService.updateApi(dto, user);
+  public async updateApi(@Body() dto: RequestApiUpdateDto) {
+    return await this.apiService.updateApi(dto);
   }
 
   @ApiBearerAuth('access-token')

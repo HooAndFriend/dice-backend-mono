@@ -21,59 +21,44 @@ import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import ApiRepository from '../repository/api.repository';
+import CollectionRepository from '../../collection/repository/collection.repository';
 
 @Injectable()
 export default class ApiService {
   constructor(
+    private readonly collectionRepository: CollectionRepository,
     private readonly apiRepository: ApiRepository,
     private readonly configService: ConfigService,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  public async saveApi(dto: RequestApiSaveDto) {
+    const findCollection = await this.collectionRepository.findOne({
+      where: { id: dto.collectionId },
+    });
 
-  public async saveApi(dto: RequestApiSaveDto, user: User) {
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const saveApi = await queryRunner.manager.save(
-        this.apiRepository.create({
-          name: dto.name,
-          type: dto.type,
-          endpoint: dto.endpoint,
-          createdUser: user,
-          modifiedUser: user,
-        }),
+    if (!findCollection) {
+      return CommonResponse.createNotFoundException(
+        '해당 collection을 찾을 수 없습니다.',
       );
-
-      await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: '새로운 api를 생성합니다.',
-      });
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
+    await this.apiRepository.save(
+      this.apiRepository.create({
+        name: dto.name,
+        collection: findCollection,
+      }),
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '새로운 api를 생성합니다.',
+    });
   }
 
-  public async updateApi(dto: RequestApiUpdateDto, user: User) {
+  public async updateApi(dto: RequestApiUpdateDto) {
     await this.apiRepository.update(dto.id, {
       name: dto.name,
-      type: dto.type,
-      endpoint: dto.endpoint,
-      modifiedUser: user,
+      type: dto.apitype,
     });
 
     return CommonResponse.createResponseMessage({

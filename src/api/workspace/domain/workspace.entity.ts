@@ -57,7 +57,4 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Collection, (collection) => collection.workspace)
   collection: Relation<Collection>[];
-
-  @OneToMany(() => Api, (api) => api.workspace)
-  api: Relation<Api>[];
 }

@@ -14,11 +14,7 @@ export default class RequestApiUpdateDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: ApiType.POST, enum: ApiType })
+  @ApiProperty({ example: ApiType.GET, enum: ApiType })
   @IsEnum(ApiType)
-  type: ApiType;
-
-  @ApiProperty({ example: 'localhost:8080/api/...' })
-  @IsString()
-  endpoint: string;
+  apitype: ApiType;
 }

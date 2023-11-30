@@ -10,11 +10,14 @@ import CollectionService from './service/collection.service';
 import CollectionController from './controller/collection.controller';
 import CollectionRepository from './repository/collection.repository';
 import Collection from './domain/collection.entity';
-
+import WorkspaceRepository from '../workspace/repository/workspace.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Collection]),
-    TypeOrmExModule.forCustomRepository([CollectionRepository]),
+    TypeOrmExModule.forCustomRepository([
+      CollectionRepository,
+      WorkspaceRepository,
+    ]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [CollectionController],
