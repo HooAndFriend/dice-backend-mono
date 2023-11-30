@@ -34,12 +34,12 @@ import RequestTableSaveDto from '../dto/table/erd.table.save.dto';
 import RequestColumnSaveDto from '../dto/column/erd.column.save.dto';
 import RequestTableUpdateDto from '../dto/table/erd.table.update.dto';
 import RequestColumnUpdateDto from '../dto/column/erd.column.update.dto';
+import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../common/decorators/user.decorators';
 import User from '../../user/domain/user.entity';
-import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -80,7 +80,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '테이블 삭제' })
   @ApiResponse(ErdResponse.deleteTable[200])
-  @ApiResponse(ErdResponse.deleteTable[400])
+  @ApiResponse(ErdResponse.deleteTable[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/table/:tableId')
   public async deleteTable(@Param('tableId') id: number) {
@@ -90,7 +90,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '테이블 매핑' })
   @ApiResponse(ErdResponse.tableMapping[200])
-  @ApiResponse(ErdResponse.tableMapping[400])
+  @ApiResponse(ErdResponse.tableMapping[404])
   @UseGuards(JwtAccessGuard)
   @Post('/table/mapping')
   public async tableMapping(
@@ -132,7 +132,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '컬럼 삭제' })
   @ApiResponse(ErdResponse.deleteColumn[200])
-  @ApiResponse(ErdResponse.deleteColumn[400])
+  @ApiResponse(ErdResponse.deleteColumn[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/column/:columnId')
   public async deleteColumn(@Param('columnId') id: number) {
@@ -142,7 +142,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Erd 조회' })
   @ApiResponse(ErdResponse.findErd[200])
-  @ApiResponse(ErdResponse.findErd[400])
+  @ApiResponse(ErdResponse.findErd[404])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
   public async findErd(@Param('workspaceId') id: number) {
