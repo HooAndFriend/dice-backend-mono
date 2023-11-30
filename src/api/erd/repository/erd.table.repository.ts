@@ -4,7 +4,6 @@ import { QueryBuilder, Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Table from '../domain/table.entity';
-import Columns from '../domain/column.entity';
 
 @CustomRepository(Table)
 export default class TableRepository extends Repository<Table> {
@@ -27,7 +26,7 @@ export default class TableRepository extends Repository<Table> {
     return await querybuilder.getOne();
   }
 
-  public async findErd(workspaceId: number) {
+  public async findErd(diagramId: number) {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
@@ -58,7 +57,7 @@ export default class TableRepository extends Repository<Table> {
       .leftJoin('column.modifyUser', 'column_modifyUser')
       .leftJoin('table.createUser', 'table_createUser')
       .leftJoin('table.modifyUser', 'table_modifyUser')
-      .where('table.workspace = :workspaceId', { workspaceId })
+      .where('table.diagram = :diagramId', { diagramId })
       .orderBy('table.id');
     return await querybuilder.getManyAndCount();
   }

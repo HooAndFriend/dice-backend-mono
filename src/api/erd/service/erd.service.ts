@@ -21,7 +21,7 @@ import Columns from '../domain/column.entity';
 import Table from '../domain/table.entity';
 
 // ** Custom Module Imports
-import WorkspaceRepository from '../../workspace/repository/workspace.repository';
+import DiagramRepository from '../../diagram/repository/diagram.repository';
 import ColumnsRepository from '../repository/erd.column.repository';
 import TableRepository from '../repository/erd.table.repository';
 import MappingRepository from '../repository/erd.mapping.repository';
@@ -39,7 +39,7 @@ export default class ErdService {
     private readonly tableRepository: TableRepository,
     private readonly columnsRepository: ColumnsRepository,
     private readonly configService: ConfigService,
-    private readonly workspaceRepository: WorkspaceRepository,
+    private readonly diagramRepository: DiagramRepository,
     private readonly mappingRepository: MappingRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -50,30 +50,21 @@ export default class ErdService {
 
   // ** 테이블 저장
   public async saveTable(dto: RequestTableSaveDto, user: User) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: dto.workspace_id },
+    const findDiagram = await this.diagramRepository.findOne({
+      where: { id: dto.diagramId },
     });
 
-    if (!findWorkspace) {
+    if (!findDiagram) {
       return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
-    }
-
-    const findTable = await this.tableRepository.findOne({
-      where: { name: dto.name },
-    });
-
-    if (findTable) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 테이블 입니다.',
+        '다이어그램을 찾을 수 없습니다.',
       );
     }
 
     await this.tableRepository.save({
-      name: dto.name,
+      physicalName: dto.physicalName,
+      logicalName: dto.logicalName,
       comment: dto.comment,
-      workspace: findWorkspace,
+      diagram: findDiagram,
       createUser: user,
       modifyUser: user,
     });
@@ -94,24 +85,12 @@ export default class ErdService {
       );
     }
 
-    const findTableWorkspace =
-      await this.tableRepository.findTableByWorkspaceIdAndName(
-        findTable.workspace.id,
-        dto.name,
-      );
-
-    // ** 같은 워크스페이스에서 같은 이름의 테이블이 있는경우
-    if (findTableWorkspace) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용중인 테이블 입니다.',
-      );
-    }
-
-    // await this.tableRepository.update(dto.tableId, {
-    //   name: dto.name,
-    //   comment: dto.comment,
-    //   modifyUser: user,
-    // });
+    await this.tableRepository.update(dto.tableId, {
+      physicalName: dto.physicalName,
+      logicalName: dto.logicalName,
+      comment: dto.comment,
+      // modifyUser: user,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -267,13 +246,13 @@ export default class ErdService {
 
   // ** ERD 조회 >> Table, Column을 동시에 모두 조회
   public async findErd(id: number) {
-    const findWorkspace = await this.workspaceRepository.findOne({
+    const findWorkspace = await this.diagramRepository.findOne({
       where: { id },
     });
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
+        '다이어그램을 찾을 수 없습니다.',
       );
     }
 

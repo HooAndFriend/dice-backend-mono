@@ -7,11 +7,15 @@ import { IsNumber, IsString } from 'class-validator';
 export default class RequestTableSaveDto {
   @ApiProperty({ example: 2 })
   @IsNumber()
-  workspace_id: number;
+  diagramId: number;
 
   @ApiProperty({ example: 'tbl_test' })
   @IsString()
-  name: string;
+  physicalName: string;
+
+  @ApiProperty({ example: 'tbl_test' })
+  @IsString()
+  logicalName: string;
 
   @ApiProperty({ example: '예시 테이블' })
   @IsString()

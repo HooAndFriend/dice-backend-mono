@@ -10,7 +10,6 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Columns from './column.entity';
 import Mapping from './mapping.entity';
@@ -24,11 +23,20 @@ export default class Table extends BaseTimeEntity {
   @Column({
     type: 'varchar',
     length: 50,
-    name: 'name',
+    name: 'physical_name',
     comment: '테이블 이름',
     nullable: false,
   })
-  name: string;
+  physicalName: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'logical_name',
+    comment: '테이블 이름',
+    nullable: false,
+  })
+  logicalName: string;
 
   @Column({
     type: 'varchar',
