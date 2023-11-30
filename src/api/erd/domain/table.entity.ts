@@ -14,6 +14,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Columns from './column.entity';
 import Mapping from './mapping.entity';
+import Diagram from '../../diagram/domain/diagram.entity';
 
 @Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {
@@ -38,8 +39,8 @@ export default class Table extends BaseTimeEntity {
   })
   comment: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.table)
-  workspace: Relation<Workspace>;
+  @ManyToOne(() => Diagram, (diagram) => diagram.table)
+  diagram: Relation<Diagram>;
 
   @ManyToOne(() => User, (user) => user.table)
   createUser: Relation<User>;
