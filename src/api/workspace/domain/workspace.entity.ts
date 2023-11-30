@@ -11,7 +11,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
 import Collection from '../../../api/collection/domain/collection.entity';
-import Api from '../../../api/api/domain/api.entity';
+import Api from '../../request/domain/request.entity';
 import Table from '../../erd/domain/table.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })

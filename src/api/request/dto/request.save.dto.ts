@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsNumber, IsString } from 'class-validator';
 
-export default class RequestApiSaveDto {
+export default class RequestRequestSaveDto {
   @ApiProperty({ example: 'New Request' })
   @IsString()
   name: string;

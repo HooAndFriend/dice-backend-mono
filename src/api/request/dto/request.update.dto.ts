@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { ApiType } from '../../../common/enum/ApiType.enum';
 
-export default class RequestApiUpdateDto {
+export default class RequestRequestUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   id: number;
@@ -16,5 +16,5 @@ export default class RequestApiUpdateDto {
 
   @ApiProperty({ example: ApiType.GET, enum: ApiType })
   @IsEnum(ApiType)
-  apitype: ApiType;
+  apiType: ApiType;
 }

@@ -20,22 +20,22 @@ export default class CollectionRepository extends Repository<Collection> {
       .select([
         'collection.id',
         'collection.name',
-        'api.id',
-        'api.name',
-        'api.type',
-        'api.endpoint',
-        'api.authtype',
-        'api.headerkey',
-        'api.headervalue',
-        'api.headerdiscreption',
-        'api.bodytype',
-        'api.rawdata',
-        'api.formdatakey',
-        'api.formdatavalue',
-        'api.paramkey',
-        'api.paramvalue',
+        'request.id',
+        'request.name',
+        'request.type',
+        'request.endpoint',
+        'request.authtype',
+        'request.headerkey',
+        'request.headervalue',
+        'request.headerdiscreption',
+        'request.bodytype',
+        'request.rawdata',
+        'request.formdatakey',
+        'request.formdatavalue',
+        'request.paramkey',
+        'request.paramvalue',
       ])
-      .leftJoin('collection.api', 'api')
+      .leftJoin('collection.request', 'request')
       .where('collection.workspace = :workspaceId', {
         workspaceId,
       })

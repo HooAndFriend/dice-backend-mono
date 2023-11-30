@@ -1,28 +1,15 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 
-// ** Typeorm Imports
-import { DataSource } from 'typeorm';
-
 // ** Custom Module Imports
 import CollectionRepository from '../repository/collection.repository';
-import ApiRepository from '../../api/repository/api.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestCollectionSaveDto from '../dto/collection.save.dto';
 import RequestCollectionUpdateDto from '../dto/collection.update.dto';
-import User from '../../user/domain/user.entity';
-import Api from '../../api/domain/api.entity';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 
 @Injectable()
@@ -30,7 +17,6 @@ export default class CollectionService {
   constructor(
     private readonly collectionRepository: CollectionRepository,
     private readonly workspaceRepository: WorkspaceRepository,
-    @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
   public async saveCollection(dto: RequestCollectionSaveDto) {

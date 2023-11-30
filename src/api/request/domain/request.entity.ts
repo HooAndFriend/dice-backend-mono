@@ -3,22 +3,19 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import Workspace from '../../../api/workspace/domain/workspace.entity';
 import { ApiType } from '../../../common/enum/ApiType.enum';
-import User from '../../user/domain/user.entity';
 import { AuthorizationType } from '../../../common/enum/AuthorizationType.enum';
 import Collection from '../../collection/domain/collection.entity';
 import { BodyType } from '../../../common/enum/BodyType.enum';
 
-@Entity({ name: 'TB_WORKSPACE_API' })
-export default class Api extends BaseTimeEntity {
+@Entity({ name: 'TB_WORKSPACE_REQUEST' })
+export default class Request extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -127,6 +124,6 @@ export default class Api extends BaseTimeEntity {
   })
   paramvalue: string;
 
-  @ManyToOne(() => Collection, (collection) => collection.api)
+  @ManyToOne(() => Collection, (collection) => collection.request)
   collection: Relation<Collection>;
 }

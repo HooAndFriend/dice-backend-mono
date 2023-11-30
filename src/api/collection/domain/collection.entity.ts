@@ -11,7 +11,7 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../../api/workspace/domain/workspace.entity';
-import Api from '../../api/domain/api.entity';
+import Request from '../../request/domain/request.entity';
 
 @Entity({ name: 'TB_WORKSPACE_COLLECTION' })
 export default class Collection extends BaseTimeEntity {
@@ -29,6 +29,6 @@ export default class Collection extends BaseTimeEntity {
   @ManyToOne(() => Workspace, (workspace) => workspace.collection)
   workspace: Relation<Workspace>;
 
-  @OneToMany(() => Api, (api) => api.collection)
-  api: Relation<Api>;
+  @OneToMany(() => Request, (request) => request.collection)
+  request: Relation<Request>;
 }

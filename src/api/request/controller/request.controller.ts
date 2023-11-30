@@ -15,15 +15,13 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
 // ** Dto Imports
-import RequestApiUpdateDto from '../dto/api.update.dto';
-import RequestApiSaveDto from '../dto/api.save.dto';
-import User from '../../user/domain/user.entity';
+import RequestApiUpdateDto from '../dto/request.update.dto';
+import RequestApiSaveDto from '../dto/request.save.dto';
 
 // ** Response Imports
 import {
@@ -36,14 +34,14 @@ import { RequestApiResponse } from '../../../response/api.response';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Module Imports
-import ApiService from '../service/api.service';
+import RequestSerivice from '../service/request.service';
 
-@ApiTags('Workspace Api')
+@ApiTags('Request Api')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/request', version: '1' })
-export default class ApiController {
-  constructor(private readonly apiService: ApiService) {}
+export default class RequestController {
+  constructor(private readonly requestService: RequestSerivice) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'api 생성' })
@@ -52,7 +50,7 @@ export default class ApiController {
   @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveApi(@Body() dto: RequestApiSaveDto) {
-    return await this.apiService.saveApi(dto);
+    return await this.requestService.saveApi(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -63,7 +61,7 @@ export default class ApiController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateApi(@Body() dto: RequestApiUpdateDto) {
-    return await this.apiService.updateApi(dto);
+    return await this.requestService.updateApi(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -73,7 +71,7 @@ export default class ApiController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findApi(@Param('id') id: number) {
-    return await this.apiService.findApi(id);
+    return await this.requestService.findApi(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -83,6 +81,6 @@ export default class ApiController {
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
   public async deleteApi(@Param('id') id: number) {
-    return await this.apiService.deleteApi(id);
+    return await this.requestService.deleteApi(id);
   }
 }

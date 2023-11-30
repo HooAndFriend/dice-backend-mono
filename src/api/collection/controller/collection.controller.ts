@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -26,11 +25,9 @@ import {
 // ** Dto Imports
 import RequestCollectionUpdateDto from '../dto/collection.update.dto';
 import RequestCollectionSaveDto from '../dto/collection.save.dto';
-import User from '../../user/domain/user.entity';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetUser } from '../../../common/decorators/user.decorators';
 
 // ** Response Imports
 import {

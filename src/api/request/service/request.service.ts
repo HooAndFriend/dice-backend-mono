@@ -1,35 +1,22 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
 // ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
-import RequestApiSaveDto from '../dto/api.save.dto';
-import RequestApiUpdateDto from '../dto/api.update.dto';
-import User from '../../user/domain/user.entity';
-
-// ** Typeorm Imports
-import { DataSource } from 'typeorm';
+import RequestApiSaveDto from '../dto/request.save.dto';
+import RequestApiUpdateDto from '../dto/request.update.dto';
 
 // ** Custom Module Imports
-import ApiRepository from '../repository/api.repository';
+import RequestRepository from '../repository/request.repository';
 import CollectionRepository from '../../collection/repository/collection.repository';
 
 @Injectable()
-export default class ApiService {
+export default class RequestService {
   constructor(
     private readonly collectionRepository: CollectionRepository,
-    private readonly apiRepository: ApiRepository,
-    private readonly configService: ConfigService,
-    @Inject(DataSource) private readonly dataSource: DataSource,
+    private readonly requestRepository: RequestRepository,
   ) {}
 
   public async saveApi(dto: RequestApiSaveDto) {
@@ -42,8 +29,8 @@ export default class ApiService {
         '해당 collection을 찾을 수 없습니다.',
       );
     }
-    await this.apiRepository.save(
-      this.apiRepository.create({
+    await this.requestRepository.save(
+      this.requestRepository.create({
         name: dto.name,
         collection: findCollection,
       }),
@@ -56,9 +43,9 @@ export default class ApiService {
   }
 
   public async updateApi(dto: RequestApiUpdateDto) {
-    await this.apiRepository.update(dto.id, {
+    await this.requestRepository.update(dto.id, {
       name: dto.name,
-      type: dto.apitype,
+      type: dto.apiType,
     });
 
     return CommonResponse.createResponseMessage({
@@ -68,7 +55,7 @@ export default class ApiService {
   }
 
   public async findApi(apiId: number) {
-    const findApi = await this.apiRepository.findApi(apiId);
+    const findApi = await this.requestRepository.findApi(apiId);
 
     if (!findApi) {
       return CommonResponse.createNotFoundException('api를 찾을 수 없습니다.');
@@ -82,13 +69,13 @@ export default class ApiService {
   }
 
   public async deleteApi(apiId: number) {
-    const findApi = await this.apiRepository.findApi(apiId);
+    const findApi = await this.requestRepository.findApi(apiId);
 
     if (!findApi) {
       return CommonResponse.createNotFoundException('api를 찾을 수 없습니다.');
     }
 
-    await this.apiRepository.delete(apiId);
+    await this.requestRepository.delete(apiId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

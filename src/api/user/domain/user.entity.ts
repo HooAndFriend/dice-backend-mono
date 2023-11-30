@@ -14,7 +14,7 @@ import { UserType } from '../../../common/enum/UserType.enum';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
 import Table from '../../erd/domain/table.entity';
 import Collection from '../../collection/domain/collection.entity';
-import Api from '../../api/domain/api.entity';
+import Api from '../../request/domain/request.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['username', 'token'])
