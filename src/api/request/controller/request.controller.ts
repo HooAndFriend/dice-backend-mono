@@ -36,7 +36,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 // ** Module Imports
 import RequestSerivice from '../service/request.service';
 
-@ApiTags('Request Api')
+@ApiTags('Workspace Request')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/request', version: '1' })
@@ -44,7 +44,7 @@ export default class RequestController {
   constructor(private readonly requestService: RequestSerivice) {}
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'api 생성' })
+  @ApiOperation({ summary: 'request 생성' })
   @ApiBody({ type: RequestApiSaveDto })
   @ApiResponse(RequestApiResponse.saveApi[200])
   @UseGuards(JwtAccessGuard)
@@ -54,7 +54,7 @@ export default class RequestController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'api 수정' })
+  @ApiOperation({ summary: 'request 수정' })
   @ApiBody({ type: RequestApiUpdateDto })
   @ApiResponse(RequestApiResponse.updateApi[200])
   @ApiResponse(RequestApiResponse.updateApi[404])
@@ -65,7 +65,7 @@ export default class RequestController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'api 조회' })
+  @ApiOperation({ summary: 'request 조회' })
   @ApiResponse(RequestApiResponse.findApi[200])
   @ApiResponse(RequestApiResponse.findApi[404])
   @UseGuards(JwtAccessGuard)
@@ -75,7 +75,7 @@ export default class RequestController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'api 삭제' })
+  @ApiOperation({ summary: 'request 삭제' })
   @ApiResponse(RequestApiResponse.deleteApi[200])
   @ApiResponse(RequestApiResponse.deleteApi[404])
   @UseGuards(JwtAccessGuard)
