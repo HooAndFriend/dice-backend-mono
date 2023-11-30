@@ -30,7 +30,6 @@ import MappingRepository from '../repository/erd.mapping.repository';
 import CommonResponse from '../../../common/dto/api.response';
 import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 import { ColumnType, IsNull } from '../../../common/enum/ErdType.enum';
-import ReqeustTableSearchDto from '../dto/table/erd.table.search.dto';
 
 // Other Imports
 
