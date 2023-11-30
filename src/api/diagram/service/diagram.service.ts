@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import DiagramRepository from '../repository/diagram.repository';
+import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 
 // ** Response Imports
 
@@ -19,6 +20,7 @@ export default class DiagramService {
   constructor(
     private readonly configService: ConfigService,
     private readonly diagramRepository: DiagramRepository,
+    private readonly workspaceRepository: WorkspaceRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
   private logger = new Logger();

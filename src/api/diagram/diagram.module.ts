@@ -12,11 +12,13 @@ import DiagramController from './controller/diagram.controller';
 
 // ** entity Imports
 import Diagram from './domain/diagram.entity';
+import WorkspaceModule from '../workspace/workspace.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Diagram]),
     TypeOrmExModule.forCustomRepository([DiagramRepository]),
+    WorkspaceModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [DiagramController],
