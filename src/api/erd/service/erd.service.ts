@@ -209,16 +209,16 @@ export default class ErdService {
       );
     }
 
-    // await this.columnsRepository.update(dto.columnId, {
-    //   modifyUser: user,
-    //   key: dto.key,
-    //   physicalName: dto.physicalName,
-    //   logicalName: dto.logicalName,
-    //   isNull: dto.isNull,
-    //   dataType: dto.dataType,
-    //   option: dto.option,
-    //   comment: dto.comment,
-    // });
+    await this.columnsRepository.update(dto.columnId, {
+      // modifyUser: user,
+      key: dto.key,
+      physicalName: dto.physicalName,
+      logicalName: dto.logicalName,
+      isNull: dto.isNull,
+      dataType: dto.dataType,
+      option: dto.option,
+      comment: dto.comment,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

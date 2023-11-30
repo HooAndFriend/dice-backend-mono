@@ -52,7 +52,6 @@ export default class ErdController {
   @ApiOperation({ summary: '테이블 생성' })
   @ApiBody({ type: RequestTableSaveDto })
   @ApiResponse(ErdResponse.saveTable[200])
-  @ApiResponse(ErdResponse.saveTable[400])
   @UseGuards(JwtAccessGuard)
   @Post('/table')
   public async saveTable(
@@ -66,7 +65,6 @@ export default class ErdController {
   @ApiOperation({ summary: '테이블 수정' })
   @ApiBody({ type: RequestTableUpdateDto })
   @ApiResponse(ErdResponse.updateTable[200])
-  @ApiResponse(ErdResponse.updateTable[400])
   @ApiResponse(ErdResponse.updateTable[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/table')
@@ -104,7 +102,6 @@ export default class ErdController {
   @ApiOperation({ summary: '컬럼 생성' })
   @ApiBody({ type: RequestColumnSaveDto })
   @ApiResponse(ErdResponse.saveColumn[200])
-  @ApiResponse(ErdResponse.saveColumn[400])
   @UseGuards(JwtAccessGuard)
   @Post('/column')
   public async saveColumn(
@@ -118,7 +115,6 @@ export default class ErdController {
   @ApiOperation({ summary: '컬럼 수정' })
   @ApiBody({ type: RequestColumnUpdateDto })
   @ApiResponse(ErdResponse.updateColumn[200])
-  @ApiResponse(ErdResponse.updateColumn[400])
   @ApiResponse(ErdResponse.updateColumn[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/column')
@@ -144,8 +140,8 @@ export default class ErdController {
   @ApiResponse(ErdResponse.findErd[200])
   @ApiResponse(ErdResponse.findErd[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:workspaceId')
-  public async findErd(@Param('workspaceId') id: number) {
+  @Get('/:diagramId')
+  public async findErd(@Param('diagramId') id: number) {
     return await this.erdService.findErd(id);
   }
 }

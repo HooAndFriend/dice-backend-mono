@@ -9,21 +9,11 @@ export const ErdResponse = {
       statusCode: 200,
       message: '테이블을 생성합니다.',
     }),
-    400: createErrorResponse({
-      statusCode: 400,
-      error: 'BAD REQUEST',
-      message: '이미 사용 중인 테이블 입니다.',
-    }),
   },
   updateTable: {
     200: createMessageResponse({
       statusCode: 200,
       message: '테이블을 수정합니다.',
-    }),
-    400: createErrorResponse({
-      statusCode: 400,
-      error: 'BAD REQUEST',
-      message: '이미 사용 중인 테이블 입니다.',
     }),
     404: createErrorResponse({
       statusCode: 404,
@@ -47,21 +37,11 @@ export const ErdResponse = {
       statusCode: 200,
       message: '컬럼을 생성합니다.',
     }),
-    400: createErrorResponse({
-      statusCode: 400,
-      error: 'BAD REQUEST',
-      message: '이미 사용 중인 컬럼 입니다.',
-    }),
   },
   updateColumn: {
     200: createMessageResponse({
       statusCode: 200,
       message: '컬럼을 수정합니다.',
-    }),
-    400: createErrorResponse({
-      statusCode: 400,
-      error: 'BAD REQUEST',
-      message: '이미 사용 중인 컬럼 입니다.',
     }),
     404: createErrorResponse({
       statusCode: 404,
