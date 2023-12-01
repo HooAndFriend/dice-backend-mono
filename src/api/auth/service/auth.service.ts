@@ -13,7 +13,7 @@ import WorkspaceUserRepository from '../../../api/workspace-user/repository/work
 import * as bcrypt from 'bcryptjs';
 
 // ** enum, dto, entity, types Imports
-import { InternalServerErrorException } from '../../../exception/customException';
+import { InternalServerErrorException } from '../../../exception/CustomException';
 import { JwtPayload } from '../../../types';
 import CommonResponse from '../../../common/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
