@@ -22,7 +22,7 @@ import helmet from 'helmet';
 import { LoggingInterceptor } from './interceptor/LoggingInterceptor';
 
 // ** Filter Imports
-import { CustomExceptionFilter } from './filter/customExceptionFilter';
+import { CustomExceptionFilter } from './filter/CustomExceptionFilter';
 
 async function bootstrap() {
   // ** Server Container 생성
