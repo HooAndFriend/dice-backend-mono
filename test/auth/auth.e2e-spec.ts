@@ -8,8 +8,7 @@ import { AppModule } from '../../src/app.module';
 import request from 'supertest';
 import { NestApplication } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import LoggerService from '../../src/util/logger/logger.service';
-import { CustomExceptionFilter } from '../../src/filter/CustomExceptionFilter';
+import { CustomExceptionFilter } from '../../src/filter/customExceptionFilter';
 
 import csurf from 'csurf';
 import helmet from 'helmet';
