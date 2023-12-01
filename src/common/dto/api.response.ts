@@ -2,7 +2,7 @@
 import { HttpStatus, NotFoundException } from '@nestjs/common';
 
 // ** Exceptio Imports
-import { BadRequestException } from '../../exception/CustomException';
+import { BadRequestException } from '../../exception/customException';
 
 export default class CommonResponse<T> {
   private constructor(payload: {
