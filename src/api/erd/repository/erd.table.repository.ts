@@ -12,7 +12,12 @@ export default class TableRepository extends Repository<Table> {
     name: string,
   ) {
     const querybuilder = this.createQueryBuilder('table')
-      .select(['table.id', 'table.name', 'table.comment'])
+      .select([
+        'table.id',
+        'table.physical_name',
+        'table.logical_name',
+        'table.comment',
+      ])
       .where('table.workspace = :workspaceId', { workspaceId })
       .andWhere('table.name = :name', { name });
     return await querybuilder.getOne();
@@ -20,8 +25,14 @@ export default class TableRepository extends Repository<Table> {
 
   public async findTableById(id: number) {
     const querybuilder = this.createQueryBuilder('table')
-      .select(['table.id', 'table.name', 'table.comment', 'workspace.id'])
-      .leftJoin('table.workspace', 'workspace')
+      .select([
+        'table.id',
+        'table.physical_name',
+        'table.logical_name',
+        'table.comment',
+        'diagram.id',
+      ])
+      .leftJoin('table.diagram', 'diagram')
       .where('table.id = :id', { id });
     return await querybuilder.getOne();
   }
@@ -30,7 +41,8 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.name',
+        'table.physical_name',
+        'table.logical_name',
         'table.comment',
         'table_createUser.nickname',
         'table_createUser.email',
@@ -40,7 +52,8 @@ export default class TableRepository extends Repository<Table> {
         'table_modifyUser.profile',
         'column.id',
         'column.key',
-        'column.name',
+        'column.physical_name',
+        'column.logical_name',
         'column.comment',
         'column.dataType',
         'column.isNull',

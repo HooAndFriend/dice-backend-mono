@@ -156,17 +156,6 @@ export default class ErdService {
       );
     }
 
-    const findColumn = await this.columnsRepository.findColumnByNameAndTable(
-      dto.physicalName,
-      dto.table_id,
-    );
-
-    if (findColumn) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 컬럼 입니다.',
-      );
-    }
-
     await this.columnsRepository.save({
       table: findTable,
       createUser: user,
@@ -194,19 +183,6 @@ export default class ErdService {
 
     if (!findColumn) {
       return CommonResponse.createNotFoundException('컬럼을 찾을 수 없습니다.');
-    }
-
-    const findColumnByNameAndTable =
-      await this.columnsRepository.findColumnByNameAndTable(
-        dto.physicalName,
-        findColumn.table.id,
-      );
-
-    // ** 해당 테이블에 같은 이름의 컬럼이 존재하는경우
-    if (findColumnByNameAndTable) {
-      return CommonResponse.createBadRequestException(
-        '이미 사용 중인 컬럼 입니다.',
-      );
     }
 
     await this.columnsRepository.update(dto.columnId, {
