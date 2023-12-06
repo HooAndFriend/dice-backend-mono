@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from '../../repository/typeorm-ex.module';
 import ErdController from './controller/erd.controller';
 import ErdService from './service/erd.service';
-import WorkspaceModule from '../workspace/workspace.module';
 import ColumnsRepository from './repository/erd.column.repository';
 import TableRepository from './repository/erd.table.repository';
 import MappingRepository from './repository/erd.mapping.repository';
@@ -17,6 +16,7 @@ import MappingRepository from './repository/erd.mapping.repository';
 import Table from './domain/table.entity';
 import Columns from './domain/column.entity';
 import Mapping from './domain/mapping.entity';
+import DiagramModule from '../diagram/diagram.module';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import Mapping from './domain/mapping.entity';
       ColumnsRepository,
       MappingRepository,
     ]),
-    WorkspaceModule,
+    DiagramModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [ErdController],

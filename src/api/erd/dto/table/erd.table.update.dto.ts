@@ -11,7 +11,11 @@ export default class RequestTableUpdateDto {
 
   @ApiProperty({ example: 'tbl_test' })
   @IsString()
-  name: string;
+  physicalName: string;
+
+  @ApiProperty({ example: 'tbl_test' })
+  @IsString()
+  logicalName: string;
 
   @ApiProperty({ example: '예시 테이블' })
   @IsString()

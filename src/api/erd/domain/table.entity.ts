@@ -10,10 +10,10 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Columns from './column.entity';
 import Mapping from './mapping.entity';
+import Diagram from '../../diagram/domain/diagram.entity';
 
 @Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {
@@ -23,11 +23,20 @@ export default class Table extends BaseTimeEntity {
   @Column({
     type: 'varchar',
     length: 50,
-    name: 'name',
+    name: 'physical_name',
     comment: '테이블 이름',
     nullable: false,
   })
-  name: string;
+  physicalName: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'logical_name',
+    comment: '테이블 이름',
+    nullable: false,
+  })
+  logicalName: string;
 
   @Column({
     type: 'varchar',
@@ -38,8 +47,8 @@ export default class Table extends BaseTimeEntity {
   })
   comment: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.table)
-  workspace: Relation<Workspace>;
+  @ManyToOne(() => Diagram, (diagram) => diagram.table)
+  diagram: Relation<Diagram>;
 
   @ManyToOne(() => User, (user) => user.table)
   createUser: Relation<User>;

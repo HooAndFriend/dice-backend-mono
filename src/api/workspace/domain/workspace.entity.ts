@@ -12,7 +12,7 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import WorkspaceUser from '../../../api/workspace-user/domain/workspace-user.entity';
 import Collection from '../../../api/collection/domain/collection.entity';
 import Api from '../../request/domain/request.entity';
-import Table from '../../erd/domain/table.entity';
+import Diagram from '../../diagram/domain/diagram.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -52,8 +52,8 @@ export default class Workspace extends BaseTimeEntity {
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
   workspaceUser: Relation<WorkspaceUser>[];
 
-  @OneToMany(() => Table, (table) => table.workspace)
-  table: Relation<Table>[];
+  @OneToMany(() => Diagram, (diagram) => diagram.workspace)
+  diagram: Relation<Diagram>[];
 
   @OneToMany(() => Collection, (collection) => collection.workspace)
   collection: Relation<Collection>[];

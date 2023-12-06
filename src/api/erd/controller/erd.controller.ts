@@ -34,13 +34,12 @@ import RequestTableSaveDto from '../dto/table/erd.table.save.dto';
 import RequestColumnSaveDto from '../dto/column/erd.column.save.dto';
 import RequestTableUpdateDto from '../dto/table/erd.table.update.dto';
 import RequestColumnUpdateDto from '../dto/column/erd.column.update.dto';
+import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../common/decorators/user.decorators';
 import User from '../../user/domain/user.entity';
-import RequestMappingSaveDto from '../dto/mapping/erd.mapping.save.dto';
-import ReqeustTableSearchDto from '../dto/table/erd.table.search.dto';
 
 @ApiTags('Workspace Erd')
 @ApiResponse(createServerExceptionResponse())
@@ -53,7 +52,6 @@ export default class ErdController {
   @ApiOperation({ summary: '테이블 생성' })
   @ApiBody({ type: RequestTableSaveDto })
   @ApiResponse(ErdResponse.saveTable[200])
-  @ApiResponse(ErdResponse.saveTable[400])
   @UseGuards(JwtAccessGuard)
   @Post('/table')
   public async saveTable(
@@ -67,7 +65,6 @@ export default class ErdController {
   @ApiOperation({ summary: '테이블 수정' })
   @ApiBody({ type: RequestTableUpdateDto })
   @ApiResponse(ErdResponse.updateTable[200])
-  @ApiResponse(ErdResponse.updateTable[400])
   @ApiResponse(ErdResponse.updateTable[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/table')
@@ -81,7 +78,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '테이블 삭제' })
   @ApiResponse(ErdResponse.deleteTable[200])
-  @ApiResponse(ErdResponse.deleteTable[400])
+  @ApiResponse(ErdResponse.deleteTable[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/table/:tableId')
   public async deleteTable(@Param('tableId') id: number) {
@@ -91,7 +88,7 @@ export default class ErdController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '테이블 매핑' })
   @ApiResponse(ErdResponse.tableMapping[200])
-  @ApiResponse(ErdResponse.tableMapping[400])
+  @ApiResponse(ErdResponse.tableMapping[404])
   @UseGuards(JwtAccessGuard)
   @Post('/table/mapping')
   public async tableMapping(
@@ -101,52 +98,50 @@ export default class ErdController {
     return this.erdService.tableMapping(dto, user);
   }
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: '컬럼 생성' })
-  // @ApiBody({ type: RequestColumnSaveDto })
-  // @ApiResponse(ErdResponse.saveColumn[200])
-  // @ApiResponse(ErdResponse.saveColumn[400])
-  // @UseGuards(JwtAccessGuard)
-  // @Post('/column')
-  // public async saveColumn(
-  //   @Body() dto: RequestColumnSaveDto,
-  //   @GetUser() user: User,
-  // ) {
-  //   return await this.erdService.saveColumn(dto, user);
-  // }
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '컬럼 생성' })
+  @ApiBody({ type: RequestColumnSaveDto })
+  @ApiResponse(ErdResponse.saveColumn[200])
+  @UseGuards(JwtAccessGuard)
+  @Post('/column')
+  public async saveColumn(
+    @Body() dto: RequestColumnSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.saveColumn(dto, user);
+  }
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: '컬럼 수정' })
-  // @ApiBody({ type: RequestColumnUpdateDto })
-  // @ApiResponse(ErdResponse.updateColumn[200])
-  // @ApiResponse(ErdResponse.updateColumn[400])
-  // @ApiResponse(ErdResponse.updateColumn[404])
-  // @UseGuards(JwtAccessGuard)
-  // @Patch('/column')
-  // public async updateColumn(
-  //   @Body() dto: RequestColumnUpdateDto,
-  //   @GetUser() user: User,
-  // ) {
-  //   return await this.erdService.updateColumn(dto, user);
-  // }
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '컬럼 수정' })
+  @ApiBody({ type: RequestColumnUpdateDto })
+  @ApiResponse(ErdResponse.updateColumn[200])
+  @ApiResponse(ErdResponse.updateColumn[404])
+  @UseGuards(JwtAccessGuard)
+  @Patch('/column')
+  public async updateColumn(
+    @Body() dto: RequestColumnUpdateDto,
+    @GetUser() user: User,
+  ) {
+    return await this.erdService.updateColumn(dto, user);
+  }
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: '컬럼 삭제' })
-  // @ApiResponse(ErdResponse.deleteColumn[200])
-  // @ApiResponse(ErdResponse.deleteColumn[400])
-  // @UseGuards(JwtAccessGuard)
-  // @Delete('/column/:columnId')
-  // public async deleteColumn(@Param('columnId') id: number) {
-  //   return await this.erdService.deleteColumn(id);
-  // }
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '컬럼 삭제' })
+  @ApiResponse(ErdResponse.deleteColumn[200])
+  @ApiResponse(ErdResponse.deleteColumn[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/column/:columnId')
+  public async deleteColumn(@Param('columnId') id: number) {
+    return await this.erdService.deleteColumn(id);
+  }
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: 'Erd 조회' })
-  // @ApiResponse(ErdResponse.findErd[200])
-  // @ApiResponse(ErdResponse.findErd[400])
-  // @UseGuards(JwtAccessGuard)
-  // @Get('/:workspaceId')
-  // public async findErd(@Param('workspaceId') id: number) {
-  //   return await this.erdService.findErd(id);
-  // }
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Erd 조회' })
+  @ApiResponse(ErdResponse.findErd[200])
+  @ApiResponse(ErdResponse.findErd[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:diagramId')
+  public async findErd(@Param('diagramId') id: number) {
+    return await this.erdService.findErd(id);
+  }
 }

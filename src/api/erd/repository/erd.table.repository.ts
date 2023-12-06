@@ -4,7 +4,6 @@ import { QueryBuilder, Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Table from '../domain/table.entity';
-import Columns from '../domain/column.entity';
 
 @CustomRepository(Table)
 export default class TableRepository extends Repository<Table> {
@@ -13,7 +12,12 @@ export default class TableRepository extends Repository<Table> {
     name: string,
   ) {
     const querybuilder = this.createQueryBuilder('table')
-      .select(['table.id', 'table.name', 'table.comment'])
+      .select([
+        'table.id',
+        'table.physical_name',
+        'table.logical_name',
+        'table.comment',
+      ])
       .where('table.workspace = :workspaceId', { workspaceId })
       .andWhere('table.name = :name', { name });
     return await querybuilder.getOne();
@@ -21,17 +25,24 @@ export default class TableRepository extends Repository<Table> {
 
   public async findTableById(id: number) {
     const querybuilder = this.createQueryBuilder('table')
-      .select(['table.id', 'table.name', 'table.comment', 'workspace.id'])
-      .leftJoin('table.workspace', 'workspace')
+      .select([
+        'table.id',
+        'table.physical_name',
+        'table.logical_name',
+        'table.comment',
+        'diagram.id',
+      ])
+      .leftJoin('table.diagram', 'diagram')
       .where('table.id = :id', { id });
     return await querybuilder.getOne();
   }
 
-  public async findErd(workspaceId: number) {
+  public async findErd(diagramId: number) {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.name',
+        'table.physical_name',
+        'table.logical_name',
         'table.comment',
         'table_createUser.nickname',
         'table_createUser.email',
@@ -41,7 +52,8 @@ export default class TableRepository extends Repository<Table> {
         'table_modifyUser.profile',
         'column.id',
         'column.key',
-        'column.name',
+        'column.physical_name',
+        'column.logical_name',
         'column.comment',
         'column.dataType',
         'column.isNull',
@@ -58,7 +70,7 @@ export default class TableRepository extends Repository<Table> {
       .leftJoin('column.modifyUser', 'column_modifyUser')
       .leftJoin('table.createUser', 'table_createUser')
       .leftJoin('table.modifyUser', 'table_modifyUser')
-      .where('table.workspace = :workspaceId', { workspaceId })
+      .where('table.diagram = :diagramId', { diagramId })
       .orderBy('table.id');
     return await querybuilder.getManyAndCount();
   }
