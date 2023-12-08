@@ -41,13 +41,13 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
         'column.id',
         'column.key',
-        'column.physical_name',
-        'column.logical_name',
+        'column.physicalName',
+        'column.logicalName',
         'column.comment',
         'column.dataType',
         'column.isNull',
