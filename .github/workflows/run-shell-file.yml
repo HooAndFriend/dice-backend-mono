@@ -45,8 +45,11 @@ jobs:
           SSH_PEM_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST_DEV }} "sudo docker container rm -f dice-backend && sudo docker image rm pinomaker/dice-backend:latest-amd64 && sudo docker pull pinomaker/dice-backend:latest-amd64 && sudo docker run -d -p 8080:8080 --name dice-backend pinomaker/dice-backend:latest-amd64"
+  NOTI:
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Request Send Slack Message
         run: |
-          - echo "Send Slack Notification with CURL - Deploy Successful"
-          - curl --location 'http://125.133.34.224:8001/api/v1/slack/deploy' --header 'Content-Type: application/json' --data '{"name":"DICE_BACKEND","url":"https://hooks.slack.com/services/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","message":"DICE_BACKEND의 배포가 완료되었습니다."}'
+          echo "Send Slack Notification with CURL - Deploy Successful"
+          curl --location 'http://125.133.34.224:8001/api/v1/slack/deploy' --header 'Content-Type: application/json' --data '{"name":"DICE_BACKEND","url":"https://hooks.slack.com/services/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","message":"DICE_BACKEND의 배포가 완료되었습니다."}'
