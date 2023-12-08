@@ -14,8 +14,8 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
       ])
       .where('table.workspace = :workspaceId', { workspaceId })
@@ -27,8 +27,8 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
         'diagram.id',
       ])
