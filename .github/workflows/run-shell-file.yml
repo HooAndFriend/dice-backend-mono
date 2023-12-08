@@ -49,4 +49,4 @@ jobs:
       - name: Request Send Slack Message
         run: |
           - echo "Send Slack Notification with CURL - Deploy Successful"
-          - curl —-location 'http://125.133.34.224:8001/api/v1/slack/deploy' --header 'Content-Type: application/json' --data '{"name":"DICE_BACKEND","url":"https://hooks.slack.com/services/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","message":"DICE_BACKEND의 배포가 완료되었습니다."}'
+          - curl --location 'http://125.133.34.224:8001/api/v1/slack/deploy' --header 'Content-Type: application/json' --data '{"name":"DICE_BACKEND","url":"https://hooks.slack.com/services/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","message":"DICE_BACKEND의 배포가 완료되었습니다."}'
