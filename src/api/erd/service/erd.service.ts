@@ -239,6 +239,14 @@ export default class ErdService {
       message: 'ERD를 조회합니다.',
       data: { findErd, count },
     });
+
+    // const findErd = await this.tableRepository.findErd(id);
+
+    // return CommonResponse.createResponse({
+    //   statusCode: 200,
+    //   message: 'ERD를 조회합니다.',
+    //   data: findErd,
+    // });
   }
 
   // ** Table Mapping
