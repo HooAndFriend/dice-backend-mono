@@ -14,7 +14,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import ApiModule from './api/api.module';
+import ApiModule from '@/src/api/api.module';
 import { TypeOrmExModule } from './repository/typeorm-ex.module';
 import LoggerService from './util/logger/logger.service';
 
