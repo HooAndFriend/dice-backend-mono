@@ -14,8 +14,8 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
       ])
       .where('table.workspace = :workspaceId', { workspaceId })
@@ -27,8 +27,8 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
         'diagram.id',
       ])
@@ -41,37 +41,26 @@ export default class TableRepository extends Repository<Table> {
     const querybuilder = this.createQueryBuilder('table')
       .select([
         'table.id',
-        'table.physical_name',
-        'table.logical_name',
+        'table.physicalName',
+        'table.logicalName',
         'table.comment',
-        'table_createUser.nickname',
-        'table_createUser.email',
-        'table_createUser.profile',
-        'table_modifyUser.nickname',
-        'table_modifyUser.email',
-        'table_modifyUser.profile',
         'column.id',
         'column.key',
-        'column.physical_name',
-        'column.logical_name',
+        'column.physicalName',
+        'column.logicalName',
         'column.comment',
         'column.dataType',
         'column.isNull',
         'column.option',
-        'column_createUser.nickname',
-        'column_createUser.email',
-        'column_createUser.profile',
-        'column_modifyUser.nickname',
-        'column_modifyUser.email',
-        'column_modifyUser.profile',
+        'chlid.id',
+        'parent.id',
+        'mapping.type',
       ])
       .leftJoin('table.column', 'column')
-      .leftJoin('column.createUser', 'column_createUser')
-      .leftJoin('column.modifyUser', 'column_modifyUser')
-      .leftJoin('table.createUser', 'table_createUser')
-      .leftJoin('table.modifyUser', 'table_modifyUser')
-      .where('table.diagram = :diagramId', { diagramId })
-      .orderBy('table.id');
+      .leftJoin('column.mapping', 'mapping')
+      .leftJoin('mapping.tableChild', 'chlid')
+      .leftJoin('mapping.tableParent', 'parent')
+      .where('table.diagram = :diagramId', { diagramId });
     return await querybuilder.getManyAndCount();
   }
 }

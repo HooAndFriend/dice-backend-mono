@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -92,6 +93,6 @@ export default class Columns extends BaseTimeEntity {
   @ManyToOne(() => Table, (table) => table.column)
   table: Relation<Table>;
 
-  @OneToMany(() => Mapping, (mapping) => mapping.column)
+  @OneToOne(() => Mapping, (mapping) => mapping.column)
   mapping: Relation<Mapping>[];
 }
