@@ -8,6 +8,8 @@ import ErdModule from './erd/erd.module';
 import CollectionModule from './collection/collection.module';
 import RequestModule from './request/request.module';
 import DiagramModule from './diagram/diagram.module';
+import TeamModule from './team/team.module';
+import TeamUserModule from './team-user/team-user.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import DiagramModule from './diagram/diagram.module';
     CollectionModule,
     RequestModule,
     DiagramModule,
+    TeamModule,
+    TeamUserModule,
   ],
   providers: [],
   exports: [],
