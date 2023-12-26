@@ -1,11 +1,9 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# Dependencies
 node_modules
 .pnp
 .pnp.js
 
-# Local env files
+*.log
+
 .env
 .env.local
 .env.development.local
@@ -36,3 +34,5 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+ormlogs.log
