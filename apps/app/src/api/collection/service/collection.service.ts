@@ -63,9 +63,8 @@ export default class CollectionService {
   }
 
   public async deleteCollection(collectionId: number) {
-    const findCollection = await this.collectionRepository.findCollection(
-      collectionId,
-    );
+    const findCollection =
+      await this.collectionRepository.findCollection(collectionId);
 
     if (!findCollection) {
       return CommonResponse.createNotFoundException(
@@ -91,9 +90,8 @@ export default class CollectionService {
         '워크스페이스를 찾을 수 없습니다.',
       );
     }
-    const [data, count] = await this.collectionRepository.findApiList(
-      workspaceId,
-    );
+    const [data, count] =
+      await this.collectionRepository.findApiList(workspaceId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
