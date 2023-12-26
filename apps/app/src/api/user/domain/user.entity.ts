@@ -96,9 +96,6 @@ export default class User extends BaseTimeEntity {
   @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
   workspaceUser: Relation<WorkspaceUser>[];
 
-  @OneToMany(() => Table, (table) => [table.createUser, table.modifyUser])
-  table: Relation<Table>[];
-
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teamUser: Relation<TeamUser>[];
 

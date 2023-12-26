@@ -10,7 +10,6 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import User from '../../user/domain/user.entity';
 import Columns from './column.entity';
 import Mapping from './mapping.entity';
 import Diagram from '../../diagram/domain/diagram.entity';
@@ -49,12 +48,6 @@ export default class Table extends BaseTimeEntity {
 
   @ManyToOne(() => Diagram, (diagram) => diagram.table)
   diagram: Relation<Diagram>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  createUser: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  modifyUser: Relation<User>;
 
   @OneToMany(() => Columns, (column) => column.table)
   column: Relation<Columns>[];

@@ -11,7 +11,6 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import User from '../../user/domain/user.entity';
 import { ColumnType, IsNull } from '../../../common/enum/ErdType.enum';
 import Table from './table.entity';
 import Mapping from './mapping.entity';
@@ -83,12 +82,6 @@ export default class Columns extends BaseTimeEntity {
     nullable: true,
   })
   comment: string;
-
-  @ManyToOne(() => User, (user) => user.table)
-  createUser: Relation<User>;
-
-  @ManyToOne(() => User, (user) => user.table)
-  modifyUser: Relation<User>;
 
   @ManyToOne(() => Table, (table) => table.column)
   table: Relation<Table>;

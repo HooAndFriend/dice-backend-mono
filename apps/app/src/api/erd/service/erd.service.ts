@@ -291,8 +291,6 @@ export default class ErdService {
       const fcolumn = await queryRunner.manager.save(
         this.columnsRepository.create({
           table: findChild,
-          createUser: user,
-          modifyUser: user,
           key: ColumnType.FK,
           physicalName: `${findPK.physicalName}${fkcount + 1}`,
           logicalName: `${findPK.logicalName}${fkcount + 1}`,
