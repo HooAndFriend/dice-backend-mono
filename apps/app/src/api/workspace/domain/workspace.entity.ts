@@ -2,6 +2,7 @@
 import {
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
@@ -11,9 +12,10 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
 import Collection from '../../collection/domain/collection.entity';
-import Api from '../../request/domain/request.entity';
 import Diagram from '../../diagram/domain/diagram.entity';
 import WorkspaceFunction from '../../workspace-function/domain/workspace-function.entity';
+import User from '../../user/domain/user.entity';
+import Team from '../../team/domain/team.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -64,4 +66,14 @@ export default class Workspace extends BaseTimeEntity {
     (workspaceFunction) => workspaceFunction.workspace,
   )
   workspaceFunction: Relation<WorkspaceFunction>[];
+
+  @ManyToOne(() => User, (user) => user.workspace, {
+    nullable: true,
+  })
+  user: Relation<User>;
+
+  @ManyToOne(() => Team, (team) => team.workspace, {
+    nullable: true,
+  })
+  team: Relation<Team>;
 }
