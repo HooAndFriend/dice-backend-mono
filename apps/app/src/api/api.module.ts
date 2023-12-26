@@ -10,6 +10,7 @@ import RequestModule from './request/request.module';
 import DiagramModule from './diagram/diagram.module';
 import TeamModule from './team/team.module';
 import TeamUserModule from './team-user/team-user.module';
+import WorkspaceFunctionModule from './workspace-function/workspace-function.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import TeamUserModule from './team-user/team-user.module';
     UserModule,
     WorkspaceModule,
     WorkspaceUserModule,
+    WorkspaceFunctionModule,
     ErdModule,
     CollectionModule,
     RequestModule,
