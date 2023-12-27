@@ -66,8 +66,8 @@ export default class AuthService {
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
-          isPersonal: true,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          user: saveUser,
         }),
       );
 
@@ -191,8 +191,8 @@ export default class AuthService {
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
-          isPersonal: true,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          user: saveUser,
         }),
       );
 

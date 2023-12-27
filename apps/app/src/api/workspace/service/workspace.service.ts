@@ -1,11 +1,5 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
@@ -20,11 +14,8 @@ import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
-import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
-
-// Other Imports
 
 @Injectable()
 export default class WorkspaceService {
@@ -38,56 +29,19 @@ export default class WorkspaceService {
   private logger = new Logger();
 
   public async saveWorksapce(dto: RequestWorksapceSaveDto, user: User) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { name: dto.name },
+    await this.workspaceRepository.save(
+      this.workspaceRepository.create({
+        name: dto.name,
+        comment: dto.comment,
+        profile: dto.profile,
+        user,
+      }),
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '워크스페이스를 생성합니다.',
     });
-
-    if (findWorkspace) {
-      return CommonResponse.createBadRequestException(
-        '같은 이름의 워크스페이스가 있습니다.',
-      );
-    }
-
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const saveWorkspace = await queryRunner.manager.save(
-        this.workspaceRepository.create({
-          name: dto.name,
-          comment: dto.comment,
-          profile: dto.profile,
-          isPersonal: false,
-        }),
-      );
-
-      // await queryRunner.manager.save(
-      //   this.workspaceUserRepository.create({
-      //     role: WorkspaceRoleType.ADMIN,
-      //     workspace: saveWorkspace,
-      //     user,
-      //   }),
-      // );
-
-      await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: '워크스페이스를 생성합니다.',
-      });
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
-    }
   }
 
   public async updateWorkspace(dto: RequestWorkspaceUpdateDto) {

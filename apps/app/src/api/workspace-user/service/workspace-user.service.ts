@@ -24,27 +24,10 @@ export default class WorkspaceUserService {
       user.id,
     );
 
-    // ** 개인 워크스페이스 처리
-    const response = data.map((item) => {
-      if (item.workspace.isPersonal) {
-        return {
-          ...item,
-          workspace: {
-            id: item.workspace.id,
-            name: user.nickname,
-            profile: user.profile,
-            isPersonal: item.workspace.isPersonal,
-          },
-        };
-      }
-
-      return item;
-    });
-
     return CommonResponse.createPaginationResponse({
       statusCode: 200,
       message: '워크스페이스를 조회합니다.',
-      data: response,
+      data,
       count,
     });
   }

@@ -45,13 +45,6 @@ export default class Workspace extends BaseTimeEntity {
   })
   profile: string;
 
-  @Column({
-    type: 'boolean',
-    comment: '개인 워크스페이스 여부',
-    nullable: false,
-  })
-  isPersonal: boolean;
-
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
   workspaceUser: Relation<WorkspaceUser>[];
 

@@ -14,7 +14,6 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
-        'workspace.isPersonal',
         'workspaceUser.role',
         'user.nickname',
         'user.email',
@@ -34,7 +33,6 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
-        'workspace.isPersonal',
       ])
       .where('workspace.id = :workspaceId', { workspaceId });
 
