@@ -11,7 +11,6 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { UserType } from '../../../common/enum/UserType.enum';
-import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
 import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
@@ -68,9 +67,6 @@ export default class User extends BaseTimeEntity {
     nullable: false,
   })
   profile: string;
-
-  @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.teamUser)
-  workspaceUser: Relation<WorkspaceUser>[];
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teamUser: Relation<TeamUser>[];

@@ -10,7 +10,6 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
-import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import TeamUser from '../../team-user/domain/team-user.entity';
 
