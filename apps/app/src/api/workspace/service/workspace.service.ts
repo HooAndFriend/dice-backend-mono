@@ -63,13 +63,13 @@ export default class WorkspaceService {
         }),
       );
 
-      await queryRunner.manager.save(
-        this.workspaceUserRepository.create({
-          role: WorkspaceRoleType.ADMIN,
-          workspace: saveWorkspace,
-          user,
-        }),
-      );
+      // await queryRunner.manager.save(
+      //   this.workspaceUserRepository.create({
+      //     role: WorkspaceRoleType.ADMIN,
+      //     workspace: saveWorkspace,
+      //     user,
+      //   }),
+      // );
 
       await queryRunner.commitTransaction();
 
@@ -114,8 +114,9 @@ export default class WorkspaceService {
   }
 
   public async findWorkspace(workspaceId: number) {
-    const findWorkspace =
-      await this.workspaceRepository.findWorkspace(workspaceId);
+    const findWorkspace = await this.workspaceRepository.findWorkspace(
+      workspaceId,
+    );
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(
@@ -131,8 +132,9 @@ export default class WorkspaceService {
   }
 
   public async findMainWorkspace(workspaceId: number) {
-    const findWorkspace =
-      await this.workspaceRepository.findMainWorkspace(workspaceId);
+    const findWorkspace = await this.workspaceRepository.findMainWorkspace(
+      workspaceId,
+    );
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(

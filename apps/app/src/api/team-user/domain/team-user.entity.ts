@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import User from '../../user/domain/user.entity';
 import Team from '../../team/domain/team.entity';
+import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_TEAM_USER' })
 export default class TeamUser extends BaseTimeEntity {
@@ -30,4 +32,7 @@ export default class TeamUser extends BaseTimeEntity {
 
   @ManyToOne(() => Team, (team) => team.teamUser)
   team: Relation<Team>;
+
+  @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.teamUser)
+  workspaceUser: Relation<WorkspaceUser>[];
 }

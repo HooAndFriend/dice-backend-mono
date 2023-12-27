@@ -93,7 +93,7 @@ export default class User extends BaseTimeEntity {
   })
   link: string;
 
-  @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.user)
+  @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.teamUser)
   workspaceUser: Relation<WorkspaceUser>[];
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)

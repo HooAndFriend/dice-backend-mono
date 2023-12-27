@@ -21,7 +21,6 @@ import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from '../../../common/enum/UserType.enum';
-import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import User from '../../user/domain/user.entity';
 
 @Injectable()
@@ -74,13 +73,13 @@ export default class AuthService {
         }),
       );
 
-      await queryRunner.manager.save(
-        this.workspaceUserRepository.create({
-          role: WorkspaceRoleType.OWNER,
-          workspace: saveWorkspace,
-          user: saveUser,
-        }),
-      );
+      // await queryRunner.manager.save(
+      //   this.workspaceUserRepository.create({
+      //     role: WorkspaceRoleType.OWNER,
+      //     workspace: saveWorkspace,
+      //     user: saveUser,
+      //   }),
+      // );
 
       await queryRunner.commitTransaction();
 
@@ -209,13 +208,13 @@ export default class AuthService {
         }),
       );
 
-      await queryRunner.manager.save(
-        this.workspaceUserRepository.create({
-          role: WorkspaceRoleType.OWNER,
-          workspace: saveWorkspace,
-          user: saveUser,
-        }),
-      );
+      // await queryRunner.manager.save(
+      //   this.workspaceUserRepository.create({
+      //     role: WorkspaceRoleType.OWNER,
+      //     workspace: saveWorkspace,
+      //     user: saveUser,
+      //   }),
+      // );
 
       await queryRunner.commitTransaction();
 

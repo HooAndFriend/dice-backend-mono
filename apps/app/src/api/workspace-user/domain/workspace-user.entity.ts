@@ -12,6 +12,7 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+import TeamUser from '../../team-user/domain/team-user.entity';
 
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
@@ -26,8 +27,8 @@ export default class WorkspaceUser extends BaseTimeEntity {
   })
   role: WorkspaceRoleType;
 
-  @ManyToOne(() => User, (user) => user.workspaceUser)
-  user: Relation<User>;
+  @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser)
+  teamUser: Relation<TeamUser>;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser)
   workspace: Relation<Workspace>;

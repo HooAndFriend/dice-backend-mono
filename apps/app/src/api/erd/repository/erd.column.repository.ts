@@ -18,7 +18,6 @@ export default class ColumnsRepository extends Repository<Columns> {
         'table.id',
       ])
       .leftJoin('column.table', 'table')
-
       .where('column.table = :tableId', { tableId });
     return await querybuilder.getManyAndCount();
   }
