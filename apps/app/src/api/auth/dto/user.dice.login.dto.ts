@@ -6,7 +6,7 @@ import { IsString } from 'class-validator';
 export default class RequestDiceUserLoginDto {
   @ApiProperty({ example: 'admin' })
   @IsString()
-  username: string;
+  email: string;
 
   @ApiProperty({ example: '1234' })
   @IsString()

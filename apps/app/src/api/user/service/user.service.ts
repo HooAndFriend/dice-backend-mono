@@ -2,15 +2,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-// ** enum, dto, entity, types Imports
-
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
-import RequestUserUpdateDto from '../dto/user.update.dto';
-import User from '../domain/user.entity';
+
+// ** Response Imports
 import CommonResponse from '../../../common/dto/api.response';
 
-// Other Imports
+// ** enum, dto, entity, types Imports
+import RequestUserUpdateDto from '../dto/user.update.dto';
+import User from '../domain/user.entity';
 
 @Injectable()
 export default class UserService {
@@ -20,23 +20,9 @@ export default class UserService {
   ) {}
 
   public async updateUser(dto: RequestUserUpdateDto, user: User) {
-    const findUser = await this.userRepository.findOne({
-      where: { email: dto.email },
-    });
-
-    if (findUser) {
-      if (findUser.id !== user.id) {
-        return CommonResponse.createBadRequestException(
-          '이미 사용 중인 이메일 입니다.',
-        );
-      }
-    }
-
     await this.userRepository.update(user.id, {
       nickname: dto.nickname,
-      email: dto.email,
       profile: dto.profile,
-      comment: dto.comment,
     });
 
     return CommonResponse.createResponseMessage({

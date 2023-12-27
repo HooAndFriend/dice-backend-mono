@@ -58,13 +58,11 @@ export default class AuthService {
           token: dto.token,
           nickname: dto.nickname,
           type: dto.type,
-          comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          email: '',
         }),
       );
 
-      const saveWorkspace = await queryRunner.manager.save(
+      await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
@@ -72,14 +70,6 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
       );
-
-      // await queryRunner.manager.save(
-      //   this.workspaceUserRepository.create({
-      //     role: WorkspaceRoleType.OWNER,
-      //     workspace: saveWorkspace,
-      //     user: saveUser,
-      //   }),
-      // );
 
       await queryRunner.commitTransaction();
 
@@ -138,7 +128,7 @@ export default class AuthService {
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
     const findUser = await this.userRepository.findOne({
-      where: { username: dto.username },
+      where: { email: dto.email },
     });
 
     if (!findUser) {
@@ -171,7 +161,7 @@ export default class AuthService {
 
   public async saveDiceUser(dto: RequestDiceUserSaveDto) {
     const findUser = await this.userRepository.findOne({
-      where: { username: dto.username },
+      where: { email: dto.email },
     });
 
     if (findUser) {
@@ -189,17 +179,15 @@ export default class AuthService {
     try {
       const saveUser = await queryRunner.manager.save(
         this.userRepository.create({
-          username: dto.username,
+          email: dto.email,
           password: hash,
           nickname: dto.nickname,
           type: UserType.DICE,
-          comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          email: '',
         }),
       );
 
-      const saveWorkspace = await queryRunner.manager.save(
+      await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
@@ -207,14 +195,6 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
       );
-
-      // await queryRunner.manager.save(
-      //   this.workspaceUserRepository.create({
-      //     role: WorkspaceRoleType.OWNER,
-      //     workspace: saveWorkspace,
-      //     user: saveUser,
-      //   }),
-      // );
 
       await queryRunner.commitTransaction();
 

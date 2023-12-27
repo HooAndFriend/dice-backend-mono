@@ -12,23 +12,22 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { UserType } from '../../../common/enum/UserType.enum';
 import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
-import Table from '../../erd/domain/table.entity';
 import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_USER' })
-@Unique(['username', 'token'])
+@Unique(['email', 'token'])
 export default class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'varchar',
-    length: 50,
-    comment: '유저 id',
+    length: 120,
+    comment: '이메일',
     nullable: true,
   })
-  username: string;
+  email: string;
 
   @Column({
     type: 'varchar',
@@ -63,35 +62,12 @@ export default class User extends BaseTimeEntity {
   nickname: string;
 
   @Column({
-    type: 'text',
-    comment: '워크스페이스 설명',
-    nullable: false,
-  })
-  comment: string;
-
-  @Column({
-    type: 'varchar',
-    length: 120,
-    comment: '이메일',
-    nullable: false,
-  })
-  email: string;
-
-  @Column({
     type: 'varchar',
     length: 255,
     comment: '프로필 이미지',
     nullable: false,
   })
   profile: string;
-
-  @Column({
-    type: 'varchar',
-    length: 255,
-    comment: '링크',
-    nullable: true,
-  })
-  link: string;
 
   @OneToMany(() => WorkspaceUser, (worksapceUser) => worksapceUser.teamUser)
   workspaceUser: Relation<WorkspaceUser>[];
