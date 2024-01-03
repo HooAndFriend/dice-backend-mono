@@ -2,22 +2,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
-export default class RequestWorkspaceSaveDto {
+export default class RequestTeamSaveDto {
   @ApiProperty({ example: 'HooAndFriend' })
   @IsString()
   name: string;
 
   @ApiProperty({ example: '이 워크스페이스는..' })
   @IsString()
-  comment: string;
+  description: string;
 
   @ApiProperty({ example: '이 워크스페이스는..' })
   @IsString()
   profile: string;
-
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  teamId: number;
 }

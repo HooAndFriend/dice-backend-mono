@@ -20,7 +20,7 @@ import TeamModule from '../team/team.module';
     TypeOrmModule.forFeature([Workspace]),
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
     WorkspaceUserModule,
-    TeamModule,
+    forwardRef(() => TeamModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceController],
