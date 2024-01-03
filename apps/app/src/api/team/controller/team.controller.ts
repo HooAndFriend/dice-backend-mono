@@ -42,7 +42,7 @@ export default class TeamController {
   @ApiResponse(TeamResponse.saveTeam[400])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveWorkspace(
+  public async saveTeam(
     @Body() dto: RequestTeamSaveDto,
     @GetUser() user: User,
   ) {
