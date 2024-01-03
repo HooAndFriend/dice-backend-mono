@@ -18,7 +18,7 @@ import Workspace from './domain/workspace.entity';
   imports: [
     TypeOrmModule.forFeature([Workspace]),
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
-    forwardRef(() => WorkspaceUserModule),
+    WorkspaceUserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceController],

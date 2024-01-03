@@ -101353,3 +101353,1279 @@
 [2024-01-03T14:30:12.075Z][QUERY]: SELECT `User`.`created_date` AS `User_created_date`, `User`.`updated_date` AS `User_updated_date`, `User`.`id` AS `User_id`, `User`.`email` AS `User_email`, `User`.`password` AS `User_password`, `User`.`token` AS `User_token`, `User`.`type` AS `User_type`, `User`.`nickname` AS `User_nickname`, `User`.`profile` AS `User_profile` FROM `TB_USER` `User` WHERE (`User`.`id` = ?) LIMIT 1 -- PARAMETERS: [1]
 [2024-01-03T14:30:12.106Z][QUERY]: SELECT `workspace`.`id` AS `workspace_id`, `workspace`.`name` AS `workspace_name`, `workspace`.`comment` AS `workspace_comment`, `workspace`.`profile` AS `workspace_profile` FROM `TB_WORKSPACE` `workspace` WHERE `workspace`.`userId` = ? -- PARAMETERS: [1]
 [2024-01-03T14:30:12.144Z][QUERY]: SELECT COUNT(1) AS `cnt` FROM `TB_WORKSPACE` `workspace` WHERE `workspace`.`userId` = ? -- PARAMETERS: [1]
+[2024-01-03T14:30:54.852Z][QUERY]: SELECT VERSION() AS `version`
+[2024-01-03T14:30:54.904Z][QUERY]: START TRANSACTION
+[2024-01-03T14:30:54.932Z][QUERY]: SELECT DATABASE() AS `db_name`
+[2024-01-03T14:30:54.972Z][QUERY]: SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_USER' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_REQUEST' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_MAPPING' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_COLUMN' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TABLE' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_DIAGRAM' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TEAM' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TEAM_USER' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_USER'
+[2024-01-03T14:30:55.075Z][QUERY]: 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+                
+[2024-01-03T14:30:55.076Z][QUERY]: SELECT * FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_USER'
+            ) `kcu` WHERE `CONSTRAINT_NAME` = 'PRIMARY'
+[2024-01-03T14:30:55.076Z][QUERY]: 
+            SELECT
+                `SCHEMA_NAME`,
+                `DEFAULT_CHARACTER_SET_NAME` as `CHARSET`,
+                `DEFAULT_COLLATION_NAME` AS `COLLATION`
+            FROM `INFORMATION_SCHEMA`.`SCHEMATA`
+            
+[2024-01-03T14:30:55.077Z][QUERY]: 
+            SELECT
+                `s`.*
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `s`
+            LEFT JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `rc`
+                ON
+                    `s`.`INDEX_NAME` = `rc`.`CONSTRAINT_NAME`
+                    AND
+                    `s`.`TABLE_SCHEMA` = `rc`.`CONSTRAINT_SCHEMA`
+            WHERE
+                `s`.`INDEX_NAME` != 'PRIMARY'
+                AND
+                `rc`.`CONSTRAINT_NAME` IS NULL
+            
+[2024-01-03T14:30:55.077Z][QUERY]: 
+            SELECT
+                `kcu`.`TABLE_SCHEMA`,
+                `kcu`.`TABLE_NAME`,
+                `kcu`.`CONSTRAINT_NAME`,
+                `kcu`.`COLUMN_NAME`,
+                `kcu`.`REFERENCED_TABLE_SCHEMA`,
+                `kcu`.`REFERENCED_TABLE_NAME`,
+                `kcu`.`REFERENCED_COLUMN_NAME`,
+                `rc`.`DELETE_RULE` `ON_DELETE`,
+                `rc`.`UPDATE_RULE` `ON_UPDATE`
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_USER'
+            ) `kcu`
+            INNER JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `rc`
+                ON
+                    `rc`.`CONSTRAINT_SCHEMA` = `kcu`.`CONSTRAINT_SCHEMA`
+                    AND
+                    `rc`.`TABLE_NAME` = `kcu`.`TABLE_NAME`
+                    AND
+                    `rc`.`CONSTRAINT_NAME` = `kcu`.`CONSTRAINT_NAME`
+            
+[2024-01-03T14:30:55.683Z][QUERY]: SELECT VERSION() AS `version`
+[2024-01-03T14:30:55.710Z][QUERY]: SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'typeorm_metadata'
+[2024-01-03T14:30:55.741Z][QUERY]: COMMIT
+[2024-01-03T14:30:59.062Z][QUERY]: SELECT VERSION() AS `version`
+[2024-01-03T14:30:59.115Z][QUERY]: START TRANSACTION
+[2024-01-03T14:30:59.132Z][QUERY]: SELECT DATABASE() AS `db_name`
+[2024-01-03T14:30:59.172Z][QUERY]: SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_USER' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_REQUEST' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_MAPPING' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_COLUMN' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TABLE' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_DIAGRAM' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_WORKSPACE' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TEAM' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_TEAM_USER' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'TB_USER'
+[2024-01-03T14:30:59.253Z][QUERY]: 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+                
+[2024-01-03T14:30:59.254Z][QUERY]: SELECT * FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_USER'
+            ) `kcu` WHERE `CONSTRAINT_NAME` = 'PRIMARY'
+[2024-01-03T14:30:59.254Z][QUERY]: 
+            SELECT
+                `SCHEMA_NAME`,
+                `DEFAULT_CHARACTER_SET_NAME` as `CHARSET`,
+                `DEFAULT_COLLATION_NAME` AS `COLLATION`
+            FROM `INFORMATION_SCHEMA`.`SCHEMATA`
+            
+[2024-01-03T14:30:59.254Z][QUERY]: 
+            SELECT
+                `s`.*
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `s`
+            LEFT JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `rc`
+                ON
+                    `s`.`INDEX_NAME` = `rc`.`CONSTRAINT_NAME`
+                    AND
+                    `s`.`TABLE_SCHEMA` = `rc`.`CONSTRAINT_SCHEMA`
+            WHERE
+                `s`.`INDEX_NAME` != 'PRIMARY'
+                AND
+                `rc`.`CONSTRAINT_NAME` IS NULL
+            
+[2024-01-03T14:30:59.254Z][QUERY]: 
+            SELECT
+                `kcu`.`TABLE_SCHEMA`,
+                `kcu`.`TABLE_NAME`,
+                `kcu`.`CONSTRAINT_NAME`,
+                `kcu`.`COLUMN_NAME`,
+                `kcu`.`REFERENCED_TABLE_SCHEMA`,
+                `kcu`.`REFERENCED_TABLE_NAME`,
+                `kcu`.`REFERENCED_COLUMN_NAME`,
+                `rc`.`DELETE_RULE` `ON_DELETE`,
+                `rc`.`UPDATE_RULE` `ON_UPDATE`
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'dice_dev'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'TB_USER'
+            ) `kcu`
+            INNER JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_REQUEST'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_COLLECTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_MAPPING'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_COLUMN'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TABLE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_DIAGRAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE_FUNCTION'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_WORKSPACE'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_TEAM_USER'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'dice_dev'
+                    AND
+                    `TABLE_NAME` = 'TB_USER'
+            ) `rc`
+                ON
+                    `rc`.`CONSTRAINT_SCHEMA` = `kcu`.`CONSTRAINT_SCHEMA`
+                    AND
+                    `rc`.`TABLE_NAME` = `kcu`.`TABLE_NAME`
+                    AND
+                    `rc`.`CONSTRAINT_NAME` = `kcu`.`CONSTRAINT_NAME`
+            
+[2024-01-03T14:30:59.864Z][QUERY]: SELECT VERSION() AS `version`
+[2024-01-03T14:30:59.900Z][QUERY]: SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = 'dice_dev' AND `TABLE_NAME` = 'typeorm_metadata'
+[2024-01-03T14:30:59.933Z][QUERY]: COMMIT
