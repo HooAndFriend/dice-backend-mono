@@ -26,8 +26,10 @@ RUN apk add --no-cache libc6-compat
 
 ENV NODE_ENV development
 
-COPY --from=build /app/dist dist
-COPY  --from=build /app/node_modules node_modules
+COPY  --from=build /app .
+
+# 파일 생성 및 권한 설정
+RUN touch /app/ormlogs.log && chown node:node /app/ormlogs.log
 
 USER node
 
