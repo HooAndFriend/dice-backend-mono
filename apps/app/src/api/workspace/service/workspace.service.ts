@@ -16,6 +16,7 @@ import CommonResponse from '../../../common/dto/api.response';
 import User from '../../user/domain/user.entity';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
+import TeamRepository from '../../team/repository/team.repository';
 
 @Injectable()
 export default class WorkspaceService {
@@ -23,20 +24,38 @@ export default class WorkspaceService {
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly configService: ConfigService,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
+    private readonly teamRepository: TeamRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
 
+  /**
+   * 워크스페이스 생성
+   * @param dto
+   * @param user
+   * @returns
+   */
   public async saveWorksapce(dto: RequestWorksapceSaveDto, user: User) {
-    await this.workspaceRepository.save(
-      this.workspaceRepository.create({
-        name: dto.name,
-        comment: dto.comment,
-        profile: dto.profile,
-        user,
-      }),
-    );
+    const workspace = this.workspaceRepository.create({
+      name: dto.name,
+      comment: dto.comment,
+      profile: dto.profile,
+    });
+
+    if (dto.teamId === 0) {
+      workspace.user = user;
+    } else {
+      const team = await this.teamRepository.findOne({
+        where: { id: dto.teamId },
+      });
+
+      if (!team) {
+        return CommonResponse.createNotFoundException('팀을 찾을 수 없습니다.');
+      }
+      workspace.team = team;
+    }
+    await this.workspaceRepository.save(workspace);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

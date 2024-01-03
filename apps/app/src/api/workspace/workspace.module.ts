@@ -13,12 +13,14 @@ import WorkspaceController from './controller/workspace.controller';
 
 // ** Entity Imports
 import Workspace from './domain/workspace.entity';
+import TeamModule from '../team/team.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Workspace]),
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
     WorkspaceUserModule,
+    TeamModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceController],
