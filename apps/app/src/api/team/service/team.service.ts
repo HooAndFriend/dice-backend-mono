@@ -31,6 +31,12 @@ export default class TeamService {
     private readonly dataSource: DataSource,
   ) {}
 
+  /**
+   * Save Team
+   * @param user
+   * @param dto
+   * @returns
+   */
   public async saveTeam(user: User, dto: RequestTeamSaveDto) {
     const findTeam = await this.teamRepository.exist({
       where: { name: dto.name },
@@ -67,6 +73,7 @@ export default class TeamService {
           name: dto.name,
           profile: dto.profile,
           comment: dto.description,
+          team,
         }),
       );
 
