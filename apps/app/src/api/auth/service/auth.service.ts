@@ -36,6 +36,11 @@ export default class AuthService {
 
   private logger = new Logger();
 
+  /**
+   * 소셜 회원가입
+   * @param dto
+   * @returns
+   */
   public async saveSocialUser(dto: RequestSocialUserSaveDto) {
     const findUser = await this.userRepository.findOne({
       where: { token: dto.token },
@@ -159,6 +164,11 @@ export default class AuthService {
     });
   }
 
+  /**
+   * 다이스 회원가입
+   * @param dto
+   * @returns
+   */
   public async saveDiceUser(dto: RequestDiceUserSaveDto) {
     const findUser = await this.userRepository.findOne({
       where: { email: dto.email },

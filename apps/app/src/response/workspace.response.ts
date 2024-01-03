@@ -1,6 +1,7 @@
 import {
   createErrorResponse,
   createMessageResponse,
+  createPaginationResponse,
   createResponse,
 } from './common';
 
@@ -72,6 +73,25 @@ export const WorkspaceResponse = {
       statusCode: 404,
       message: '워크스페이스를 찾을 수 없습니다.',
       error: 'NOT FOUND',
+    }),
+  },
+  findWorkspaceList: {
+    200: createPaginationResponse({
+      data: [
+        {
+          id: 1,
+          role: 'OWNER',
+          workspace: {
+            id: 1,
+            name: 'Pinomaker',
+            profile: null,
+            isPersonal: false,
+          },
+        },
+      ],
+      count: 1,
+      statusCode: 200,
+      message: '워크스페이스를 조회합니다.',
     }),
   },
 };

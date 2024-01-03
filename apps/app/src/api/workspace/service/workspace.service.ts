@@ -102,4 +102,28 @@ export default class WorkspaceService {
       data: findWorkspace,
     });
   }
+
+  public async findWorkspaceList(user: User, teamId: number) {
+    if (teamId !== 0) {
+      const [data, count] =
+        await this.workspaceRepository.findWorkspaceListByTeamId(teamId);
+
+      return CommonResponse.createPaginationResponse({
+        statusCode: 200,
+        message: '워크스페이스를 조회합니다.',
+        data,
+        count,
+      });
+    }
+
+    const [data, count] =
+      await this.workspaceRepository.findWorkspaceListByUserId(user.id);
+
+    return CommonResponse.createPaginationResponse({
+      statusCode: 200,
+      message: '워크스페이스를 조회합니다.',
+      data,
+      count,
+    });
+  }
 }
