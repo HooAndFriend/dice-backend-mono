@@ -160,7 +160,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.saveComment[200])
   @ApiResponse(TicketResponse.saveComment[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:diagramId')
+  @Post('/comment')
   public async saveComment(dto: RequestCommentSaveDto, @GetUser() user: User) {}
 
   @ApiBearerAuth('access-token')
@@ -169,7 +169,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.updateComment[200])
   @ApiResponse(TicketResponse.updateComment[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:diagramId')
+  @Patch('/comment')
   public async updateComment(
     dto: RequestCommentUpdateDto,
     @GetUser() user: User,
@@ -180,6 +180,6 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteComment[200])
   @ApiResponse(TicketResponse.deleteComment[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:commentId')
+  @Delete('/comment/:commentId')
   public async deleteComment(@Param('commentId') id: number) {}
 }
