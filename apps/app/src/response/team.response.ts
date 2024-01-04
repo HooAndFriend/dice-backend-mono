@@ -5,15 +5,15 @@ import {
   createResponse,
 } from './common';
 
-export const WorkspaceResponse = {
-  saveWorksapce: {
+export const TeamResponse = {
+  saveTeam: {
     200: createMessageResponse({
       statusCode: 200,
-      message: '워크스페이스를 생성합니다.',
+      message: '팀을 생성합니다.',
     }),
     400: createErrorResponse({
       statusCode: 400,
-      message: '같은 이름의 워크스페이스가 있습니다.',
+      message: '같은 이름의 팀이 있습니다.',
       error: 'BAD REQUEST',
     }),
   },

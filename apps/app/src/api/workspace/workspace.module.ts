@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,12 +13,16 @@ import WorkspaceController from './controller/workspace.controller';
 
 // ** Entity Imports
 import Workspace from './domain/workspace.entity';
+import TeamModule from '../team/team.module';
+import TeamUserModule from '../team-user/team-user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Workspace]),
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
     WorkspaceUserModule,
+    forwardRef(() => TeamModule),
+    TeamUserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceController],

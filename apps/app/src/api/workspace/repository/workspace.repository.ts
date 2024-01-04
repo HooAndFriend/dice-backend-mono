@@ -38,4 +38,30 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return await queryBuilder.getOne();
   }
+
+  public async findWorkspaceListByUserId(userId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+      ])
+      .where('workspace.userId = :userId', { userId });
+
+    return await queryBuilder.getManyAndCount();
+  }
+
+  public async findWorkspaceListByTeamId(teamId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+      ])
+      .where('workspace.teamId = :teamId', { teamId });
+
+    return await queryBuilder.getManyAndCount();
+  }
 }

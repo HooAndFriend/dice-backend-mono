@@ -19,11 +19,10 @@ export const UserResponse = {
   findUser: {
     200: createResponse({
       data: {
-        nickname: '피노피노얍',
-        email: 'inhoo987654321@gmail.com',
+        email: 'admin',
+        nickname: 'Pinomaker',
         profile:
-          'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-        link: null,
+          'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
       },
       statusCode: 200,
       message: '유저 정보를 조회합니다.',

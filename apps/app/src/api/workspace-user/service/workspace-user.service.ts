@@ -3,34 +3,19 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
-import User from '../../user/domain/user.entity';
 import CommonResponse from '../../../common/dto/api.response';
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 
-// Other Imports
-
 @Injectable()
 export default class WorkspaceUserService {
   constructor(
     private readonly workspaceUserRepository: WorkspaceUserRepository,
+
     private readonly configService: ConfigService,
   ) {}
-
-  public async findWorkspaceList(user: User) {
-    const [data, count] = await this.workspaceUserRepository.findWorkspaceList(
-      user.id,
-    );
-
-    return CommonResponse.createPaginationResponse({
-      statusCode: 200,
-      message: '워크스페이스를 조회합니다.',
-      data,
-      count,
-    });
-  }
 
   public async updateWorksapceUserRole(dto: RequestWorkspaceUpdateUpdateDto) {
     const findWorkspaceUser = await this.workspaceUserRepository.findOne({

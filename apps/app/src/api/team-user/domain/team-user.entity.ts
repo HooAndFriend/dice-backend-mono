@@ -13,6 +13,7 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import User from '../../user/domain/user.entity';
 import Team from '../../team/domain/team.entity';
 import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
+import Role from '@/src/common/enum/Role';
 
 @Entity({ name: 'TB_TEAM_USER' })
 export default class TeamUser extends BaseTimeEntity {

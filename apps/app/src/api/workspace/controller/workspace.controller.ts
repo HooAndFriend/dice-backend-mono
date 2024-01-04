@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -67,6 +68,18 @@ export default class WorkspaceController {
   @Put('/')
   public async updateWorkspace(@Body() dto: RequestWorkspaceUpdateDto) {
     return await this.workspaceService.updateWorkspace(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 리스트 조회' })
+  @ApiResponse(WorkspaceResponse.findWorkspaceList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findWorkspaceList(
+    @GetUser() user: User,
+    @Query('teamId') teamId: string,
+  ) {
+    return await this.workspaceService.findWorkspaceList(user, Number(teamId));
   }
 
   @ApiBearerAuth('access-token')

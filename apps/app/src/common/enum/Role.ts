@@ -3,3 +3,5 @@ enum Role {
   WRITER = 'WRITER',
   ADMIN = 'ADMIN',
 }
+
+export default Role;

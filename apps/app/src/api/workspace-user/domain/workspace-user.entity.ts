@@ -9,9 +9,9 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import { WorkspaceRoleType } from '../../../common/enum/WorkspaceRoleType.enum';
 import Workspace from '../../workspace/domain/workspace.entity';
 import TeamUser from '../../team-user/domain/team-user.entity';
+import Role from '@/src/common/enum/Role';
 
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
@@ -20,11 +20,11 @@ export default class WorkspaceUser extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: WorkspaceRoleType,
+    enum: Role,
     comment: '역할',
     nullable: false,
   })
-  role: WorkspaceRoleType;
+  role: Role;
 
   @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser)
   teamUser: Relation<TeamUser>;
