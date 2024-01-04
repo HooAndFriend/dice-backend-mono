@@ -1,4 +1,4 @@
-export enum Ticket {
+export enum TicketStatus {
   ToDo = 'todo',
   Doing = 'doing',
   Solved = 'solved',
