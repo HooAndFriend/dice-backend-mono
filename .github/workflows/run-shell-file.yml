@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker buildx build --platform linux/arm64,linux/amd64 -t pinomaker/dice-backend:latest-arm64 -t pinomaker/dice-backend:latest-amd64 --file Dockerfile . --push
+          docker buildx build --platform linux/arm64,linux/amd64 -t pinomaker/dice-backend:latest-arm64 -t pinomaker/dice-backend:latest-amd64 --file apps/app/Dockerfile . --push
 
   DOCKER_PULL_RUN:
     runs-on: ubuntu-latest
