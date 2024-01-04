@@ -28,9 +28,12 @@ ENV NODE_ENV development
 
 COPY  --from=build /app .
 
-# 파일 생성 및 권한 설정
 RUN touch /app/ormlogs.log && chown node:node /app/ormlogs.log
 
 USER node
+
+EXPOSE 8080
+
+ENV PORT 8080
 
 CMD ["node", "dist/main"]
