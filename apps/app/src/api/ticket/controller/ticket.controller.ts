@@ -54,14 +54,14 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
-  public async findAllTicket() {}
+  public async findAllTicket(@Param('workspaceId') id: number) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 상세 조회' })
   @ApiResponse(TicketResponse.findOneTicket[200])
   @ApiResponse(TicketResponse.findOneTicket[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:ticketId')
+  @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {}
 
   @ApiBearerAuth('access-token')
@@ -110,7 +110,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findOneEpic[200])
   @ApiResponse(TicketResponse.findOneEpic[404])
   @UseGuards(JwtAccessGuard)
-  @Post('/epic/:epicId')
+  @Post('/epic/detail/:epicId')
   public async findOneEpic(@Param('epciId') id: number) {}
 
   @ApiBearerAuth('access-token')
