@@ -35,5 +35,5 @@ export default class RequestTicketUpdateDto {
 
   @ApiProperty({ example: [1, 2, 3, 4] })
   @IsArray()
-  file: [Number];
+  file: number[];
 }
