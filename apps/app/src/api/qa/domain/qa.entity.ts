@@ -7,6 +7,7 @@ import Comment from '@/src/api/qa/domain/comment.entity'
 import File from '@/src/api/qa/domain/file.entity'
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+import QaState from '@/src/common/enum/QaState.enum';
 
 @Entity({ name: 'TB_QA' })
 export default class Qa extends BaseTimeEntity {
@@ -21,6 +22,14 @@ export default class Qa extends BaseTimeEntity {
   })
   number: string;
 
+  @Column({
+    type: 'enum',
+    enum: QaState,
+    comment: '상태',
+    nullable: false,
+  })
+  state: QaState;
+  
   @Column({
     type: 'varchar',
     length: 50,
