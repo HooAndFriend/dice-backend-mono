@@ -13,6 +13,8 @@ import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { UserType } from '../../../common/enum/UserType.enum';
 import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+import Qa from '@/src/api/qa/domain/qa.entity';
+import Comment from '@/src/api/qa/domain/comment.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -73,4 +75,10 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Workspace, (workspace) => workspace.user)
   workspace: Relation<Workspace>[];
+
+  @OneToMany(() => Qa, (qa) => [qa.admin, qa.worker])
+  qa: Relation<Qa>[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Relation<Comment>[];
 }

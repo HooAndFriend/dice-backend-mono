@@ -5,8 +5,8 @@ import {
   createPaginationResponse,
 } from './common';
 
-export const QaCommentResponse = {
-  findQaComment: {
+export const CommentResponse = {
+  findComment: {
     200: createPaginationResponse({
       data: {
         qaComment: [
@@ -26,19 +26,14 @@ export const QaCommentResponse = {
       statusCode: 200,
       message: 'qa 댓글을 조회합니다.',
     }),
-    404: createErrorResponse({
-      statusCode: 404,
-      error: 'NOT FOUND',
-      message: 'qa 댓글 정보를 찾을 수 없습니다.',
-    }),
   },
-  saveQaComment: {
+  saveComment: {
     200: createMessageResponse({
       statusCode: 200,
       message: 'Qa 댓글을 생성합니다.',
     }),
   },
-  updateQaComment: {
+  updateComment: {
     200: createMessageResponse({
       statusCode: 200,
       message: 'Qa 댓글을 수정합니다.',
@@ -46,10 +41,10 @@ export const QaCommentResponse = {
     404: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',
-      message: 'qa 정보를 찾을 수 없습니다.',
+      message: 'qa 댓글 정보를 찾을 수 없습니다.',
     }),
   },
-  deleteQaComment: {
+  deleteComment: {
     200: createMessageResponse({
       statusCode: 200,
       message: 'Qa를 삭제합니다.',
@@ -57,7 +52,7 @@ export const QaCommentResponse = {
     404: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',
-      message: 'qa 정보를 찾을 수 없습니다.',
+      message: 'qa 댓글 정보를 찾을 수 없습니다.',
     }),
   },
 };

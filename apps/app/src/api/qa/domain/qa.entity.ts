@@ -1,76 +1,67 @@
 // ** Typeorm Imports
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Relation,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import { UserType } from '../../../common/enum/UserType.enum';
-import TeamUser from '../../team-user/domain/team-user.entity';
+import BaseTimeEntity from '@/src/common/entity/BaseTime.Entity';
+import Comment from '@/src/api/qa/domain/comment.entity'
+import File from '@/src/api/qa/domain/file.entity'
+import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
-@Entity({ name: 'TB_USER' })
-@Unique(['email', 'token'])
-export default class User extends BaseTimeEntity {
+@Entity({ name: 'TB_QA' })
+export default class Qa extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'varchar',
-    length: 120,
-    comment: '이메일',
-    nullable: true,
-  })
-  email: string;
-
-  @Column({
-    type: 'varchar',
-    length: 120,
-    comment: '비밀번호',
-    nullable: true,
-  })
-  password: string;
-
-  @Column({
-    type: 'varchar',
-    length: 150,
-    comment: '소셜 토큰',
-    nullable: true,
-  })
-  token: string;
-
-  @Column({
-    type: 'enum',
-    enum: UserType,
-    comment: '로그인 종류',
+    length: 30,
+    comment: '이슈 번호',
     nullable: false,
   })
-  type: UserType;
+  number: string;
 
   @Column({
     type: 'varchar',
     length: 50,
-    comment: '닉네임',
+    comment: '제목',
     nullable: false,
   })
-  nickname: string;
+  title: string;
 
   @Column({
-    type: 'varchar',
-    length: 255,
-    comment: '프로필 이미지',
+    type: 'text',
+    comment: '문제 사항',
     nullable: false,
   })
-  profile: string;
+  asIs: string;
 
-  @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
-  teamUser: Relation<TeamUser>[];
+  @Column({
+    type: 'text',
+    comment: '기대 결과',
+    nullable: false,
+  })
+  toBe: string;
 
-  @OneToMany(() => Workspace, (workspace) => workspace.user)
-  workspace: Relation<Workspace>[];
+  @Column({
+    type: 'text',
+    comment: '메모',
+    nullable: true,
+  })
+  memo: string;
+
+  @OneToMany(() => Comment, (comment) => comment.qa)
+  comment: Relation<Comment>[];
+
+  @OneToMany(() => File, (file) => file.qa)
+  qaFile: Relation<File>[];
+
+  @ManyToOne(() => User, (user) => user.qa)
+  admin: Relation<User>;
+
+  @ManyToOne(() => User, (user) => user.qa)
+  worker: Relation<User>;
+
+  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
+  workspace: Relation<Workspace>;
 }

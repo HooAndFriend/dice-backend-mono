@@ -1,5 +1,14 @@
 // ** Nest Imports
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import QaService from '../service/qa.service';
@@ -18,6 +27,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import { QaResponse } from '../../../response/qa.response';
+import { CommentResponse } from '../../../response/comment.response';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
@@ -26,8 +36,8 @@ import {
 // ** Dto Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
-import { GetUser } from '../../../common/decorators/user.decorators';
-import Qa from '../domain/qa.entity';
+import RequestCommentSaveDto from '../dto/comment.save.dto';
+import RequestCommentUpdateDto from '../dto/comment.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -39,22 +49,19 @@ export default class QaController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
   @ApiResponse(QaResponse.findQa[200])
-  @ApiResponse(QaResponse.findQa[404])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findQa(@GetUser() user: Qa) {
-    return await this.qaService.findQa(user);
-  }
+  public async findQa() {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 상세로 리스트 조회' })
   @ApiResponse(QaResponse.findQaDetail[200])
-  @ApiResponse(QaResponse.findQaDetail[404])
   @UseGuards(JwtAccessGuard)
   @Get('/:title/:status')
-  public async findQaDetail(@Param('title') title : string, @Param('status') status : String, @GetUser() qa: Qa) {
-    return await this.qaService.findQa(qa);
-  }
+  public async findQaDetail(
+    @Param('title') title: string,
+    @Param('status') status: String,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 생성' })
@@ -62,9 +69,7 @@ export default class QaController {
   @ApiResponse(QaResponse.saveQa[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveQa(@GetUser() qa: Qa) {
-    // return await this.qaService.findQa(qa);
-  }
+  public async saveQa() {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 수정' })
@@ -73,13 +78,8 @@ export default class QaController {
   @ApiResponse(QaResponse.updateQa[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateQa(
-    @Body() dto: RequestQaUpdateDto,
-    @GetUser() qa: Qa,
-  ) {
-    // return await this.qaService.updateQa(dto, qa);
-  }
-  
+  public async updateQa(@Body() dto: RequestQaUpdateDto) {}
+
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 상태 수정' })
   @ApiBody({ type: RequestQaUpdateDto })
@@ -87,12 +87,7 @@ export default class QaController {
   @ApiResponse(QaResponse.updateStatusQa[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateStatusQa(
-    @Body() dto: RequestQaUpdateDto,
-    @GetUser() qa: Qa,
-  ) {
-    // return await this.qaService.updateQa(dto, qa);
-  }
+  public async updateStatusQa(@Body() dto: RequestQaUpdateDto) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 삭제' })
@@ -100,11 +95,45 @@ export default class QaController {
   @ApiResponse(QaResponse.deleteQa[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteQa(
-    @Param('id') id : number,
-    @GetUser() qa: Qa,
-  ) {
-    // return await this.qaService.deleteQa(dto, qa);
+  public async deleteQa(@Param('id') id: number) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 댓글 조회' })
+  @ApiResponse(CommentResponse.findComment[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/comment/:id')
+  public async findQaComment(@Param('qaId') qaId : number) {
   }
 
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 댓글 생성' })
+  @ApiBody({ type: RequestCommentSaveDto })
+  @ApiResponse(CommentResponse.saveComment[200])
+  @UseGuards(JwtAccessGuard)
+  @Post('/comment')
+  public async saveComment() {
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 댓글 수정' })
+  @ApiBody({ type: RequestCommentUpdateDto })
+  @ApiResponse(CommentResponse.updateComment[200])
+  @ApiResponse(CommentResponse.updateComment[404])
+  @UseGuards(JwtAccessGuard)
+  @Put('/comment')
+  public async updateComment(
+    @Body() dto: RequestCommentUpdateDto
+  ) {
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 댓글 삭제' })
+  @ApiResponse(CommentResponse.deleteComment[200])
+  @ApiResponse(CommentResponse.deleteComment[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/comment/:id')
+  public async deleteComment(
+    @Param('id') id : number
+  ) {
+  }
 }
