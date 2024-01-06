@@ -1,18 +1,19 @@
 // ** Swagger Imports
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsArray, IsNumber, IsString } from 'class-validator';
+import { QaStatus } from '@/src/common/enum/QaStatus.enum'
 export default class RequestQaSaveDto {
-  @ApiProperty({ example: 101 })
+  @ApiProperty({ example: 1 })
   @IsNumber()
   workspaceId: number;
 
-  @ApiProperty({ example: 10001 })
+  @ApiProperty({ example: 1 })
   @IsNumber()
   adminId: number;
 
-  @ApiProperty({ example: 10001 })
+  @ApiProperty({ example: 2 })
   @IsNumber()
   workerId: number;
 

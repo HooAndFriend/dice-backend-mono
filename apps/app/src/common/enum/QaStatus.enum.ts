@@ -1,4 +1,4 @@
-enum QaState {
+export enum QaStatus {
   ALL = 'ALL',
   WAIT = 'WAIT',
   DOING = 'DOING',
@@ -7,5 +7,3 @@ enum QaState {
   REOPEN = 'REOPEN',
   HOLD = 'HOLD',
 }
-
-export default QaState;

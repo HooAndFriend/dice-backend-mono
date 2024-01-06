@@ -1,13 +1,20 @@
 // ** Typeorm Imports
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '@/src/common/entity/BaseTime.Entity';
-import Comment from '@/src/api/qa/domain/comment.entity'
-import File from '@/src/api/qa/domain/file.entity'
+import Comment from '@/src/api/qa/domain/comment.entity';
+import File from '@/src/api/qa/domain/file.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import QaState from '@/src/common/enum/QaState.enum';
+import {QaStatus} from '@/src/common/enum/QaStatus.enum';
 
 @Entity({ name: 'TB_QA' })
 export default class Qa extends BaseTimeEntity {
@@ -24,11 +31,12 @@ export default class Qa extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: QaState,
+    enum: QaStatus,
     comment: '상태',
     nullable: false,
+    default: QaStatus.ALL,
   })
-  state: QaState;
+  status: QaStatus;
   
   @Column({
     type: 'varchar',
@@ -62,8 +70,8 @@ export default class Qa extends BaseTimeEntity {
   @OneToMany(() => Comment, (comment) => comment.qa)
   comment: Relation<Comment>[];
 
-  @OneToMany(() => File, (file) => file.qa)
-  qaFile: Relation<File>[];
+  @OneToMany(() => File, (file) => file.qa, { nullable: true })
+  file: Relation<File>[];
 
   @ManyToOne(() => User, (user) => user.qa)
   admin: Relation<User>;

@@ -12,6 +12,7 @@ import {
 
 // ** Module Imports
 import QaService from '../service/qa.service';
+import CommentService from '../service/comment.service';
 
 // ** Swagger Imports
 import {
@@ -44,7 +45,10 @@ import RequestCommentUpdateDto from '../dto/comment.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/qa', version: '1' })
 export default class QaController {
-  constructor(private readonly qaService: QaService) {}
+  constructor(
+    private readonly qaService: QaService,
+    private readonly commentService: CommentService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
@@ -69,7 +73,9 @@ export default class QaController {
   @ApiResponse(QaResponse.saveQa[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveQa() {}
+  public async saveQa(@Body() dto: RequestQaSaveDto) {
+    return await this.qaService.saveQa(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 수정' })
@@ -102,8 +108,7 @@ export default class QaController {
   @ApiResponse(CommentResponse.findComment[200])
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:id')
-  public async findQaComment(@Param('qaId') qaId : number) {
-  }
+  public async findQaComment(@Param('qaId') qaId: number) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 생성' })
@@ -111,7 +116,8 @@ export default class QaController {
   @ApiResponse(CommentResponse.saveComment[200])
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment() {
+  public async saveComment(@Body() dto: RequestCommentSaveDto) {
+    return await this.commentService.saveComment(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -121,10 +127,7 @@ export default class QaController {
   @ApiResponse(CommentResponse.updateComment[404])
   @UseGuards(JwtAccessGuard)
   @Put('/comment')
-  public async updateComment(
-    @Body() dto: RequestCommentUpdateDto
-  ) {
-  }
+  public async updateComment(@Body() dto: RequestCommentUpdateDto) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 삭제' })
@@ -132,8 +135,5 @@ export default class QaController {
   @ApiResponse(CommentResponse.deleteComment[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
-  public async deleteComment(
-    @Param('id') id : number
-  ) {
-  }
+  public async deleteComment(@Param('id') id: number) {}
 }

@@ -20,6 +20,6 @@ export default class File {
   @CreateDateColumn({ name: 'created_date' })
   createdAt: Date;
 
-  @ManyToOne(() => Qa, (qa) => qa.comment)
+  @ManyToOne(() => Qa, (qa) => qa.file)
   qa: Relation<Qa>;
 }
