@@ -8,4 +8,12 @@ import CustomRepository from '../../../repository/typeorm-ex.decorator';
 import Team from '../domain/team.entity';
 
 @CustomRepository(Team)
-export default class TeamRepository extends Repository<Team> {}
+export default class TeamRepository extends Repository<Team> {
+  public async findTeam(teamId: number) {
+    const queryBuilder = this.createQueryBuilder('team')
+      .select(['team.id', 'team.profile', 'team.name', 'team.description'])
+      .where('team.id = :teamId', { teamId });
+
+    return await queryBuilder.getOne();
+  }
+}

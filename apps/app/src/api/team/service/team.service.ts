@@ -103,4 +103,23 @@ export default class TeamService {
       await queryRunner.release();
     }
   }
+
+  /**
+   * Find Team Info
+   * @param teamId
+   * @returns
+   */
+  public async findTeam(teamId: number) {
+    const findTeam = await this.teamRepository.findTeam(teamId);
+
+    if (!findTeam) {
+      return CommonResponse.createNotFoundException('Not Found Team');
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Team',
+      data: findTeam,
+    });
+  }
 }
