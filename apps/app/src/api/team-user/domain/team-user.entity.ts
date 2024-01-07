@@ -23,7 +23,7 @@ export default class TeamUser extends BaseTimeEntity {
   @Column({
     type: 'varchar',
     length: 30,
-    comment: '팀 이름',
+    comment: '팀 역할',
     nullable: false,
   })
   role: Role;
