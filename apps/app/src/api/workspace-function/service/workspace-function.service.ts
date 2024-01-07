@@ -15,6 +15,11 @@ export default class WorkspaceFunctionService {
     private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
+  /**
+   * 다운로드 가능한 기능 리스트
+   * @param workspaceId
+   * @returns
+   */
   public async findWorkspaceFunctionList(workspaceId: number) {
     const workspaceList =
       await this.workspaceFunctionRepository.findWorkspaceFunctionList(
@@ -68,6 +73,25 @@ export default class WorkspaceFunctionService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Workspace Function',
+    });
+  }
+
+  /**
+   * Workspace의 Function List 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findFunctionList(workspaceId: number) {
+    const [data, count] =
+      await this.workspaceFunctionRepository.findFunctionList(workspaceId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Function List',
+      data: {
+        data: data,
+        count: count,
+      },
     });
   }
 

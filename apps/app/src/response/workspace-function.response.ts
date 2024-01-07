@@ -7,7 +7,43 @@ import {
 
 export const WorkspaceFunctionResponse = {
   findWorkspaceFunctionList: {
-    200: createMessageResponse({
+    200: createResponse({
+      data: {
+        data: [
+          {
+            function: 'TICKET',
+            isUse: true,
+          },
+          {
+            function: 'QA',
+            isUse: false,
+          },
+          {
+            function: 'COLLECTION',
+            isUse: false,
+          },
+          {
+            function: 'ERD',
+            isUse: false,
+          },
+        ],
+        count: 4,
+      },
+      statusCode: 200,
+      message: 'Find Workspace Function List',
+    }),
+  },
+  findFunctionList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 1,
+            function: 'TICKET',
+          },
+        ],
+        count: 1,
+      },
       statusCode: 200,
       message: 'Find Workspace Function List',
     }),

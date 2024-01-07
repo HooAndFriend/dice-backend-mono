@@ -36,7 +36,7 @@ export default class WorkspaceFunctionController {
   @ApiOperation({ summary: '워크스페이스 기능 리스트 조회' })
   @ApiResponse(WorkspaceFunctionResponse.findWorkspaceFunctionList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
+  @Get('/function/:id')
   public async findWorkspaceFunctionList(@Param('id') id: number) {
     return await this.workspaceFunctionService.findWorkspaceFunctionList(id);
   }
@@ -52,5 +52,14 @@ export default class WorkspaceFunctionController {
     @Body() dto: RequestSaveWorkspaceFunctionDto,
   ) {
     return await this.workspaceFunctionService.saveWorkspaceFunction(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스의 기능 리스트 조회' })
+  @ApiResponse(WorkspaceFunctionResponse.findFunctionList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findFunctionList(@Param('id') id: number) {
+    return await this.workspaceFunctionService.findFunctionList(id);
   }
 }
