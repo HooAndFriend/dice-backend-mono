@@ -23,7 +23,7 @@ export default class WorkspaceFunction extends BaseCreatedTimeEntity {
     comment: '기능 이름',
     nullable: false,
   })
-  role: DiceFunction;
+  function: DiceFunction;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
   workspace: Relation<Workspace>;
