@@ -9,6 +9,11 @@ import CommonResponse from '@/src/common/dto/api.response';
 export default class TeamUserService {
   constructor(private readonly teamUserRepository: TeamUserRepository) {}
 
+  /**
+   * Find Team List
+   * @param userId
+   * @returns
+   */
   public async findTeamList(userId: number) {
     const [data, count] = await this.teamUserRepository.findTeamList(userId);
 

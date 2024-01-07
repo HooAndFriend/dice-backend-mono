@@ -95,6 +95,10 @@ export default class WorkspaceFunctionService {
     });
   }
 
+  /**
+   * 기능 리스트 조회
+   * @returns
+   */
   private findDiceFunction() {
     return Object.values(DiceFunction);
   }

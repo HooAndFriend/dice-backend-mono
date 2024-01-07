@@ -7,6 +7,7 @@ import WorkspaceFunctionService from '../service/workspace-function.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -44,6 +45,7 @@ export default class WorkspaceFunctionController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiBody({ type: RequestSaveWorkspaceFunctionDto })
   @ApiOperation({ summary: '워크스페이스 기능 저장' })
   @ApiResponse(WorkspaceFunctionResponse.saveWorkspaceFunction[200])
   @ApiResponse(WorkspaceFunctionResponse.saveWorkspaceFunction[400])
