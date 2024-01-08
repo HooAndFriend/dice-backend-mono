@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import TeamUserService from '../service/team-user.service';
@@ -7,6 +7,7 @@ import TeamUserService from '../service/team-user.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -25,6 +26,7 @@ import { GetUser } from '@/src/common/decorators/user.decorators';
 
 // ** Dto, Entity Imports
 import User from '../../user/domain/user.entity';
+import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 
 @ApiTags('Team User')
 @ApiResponse(createServerExceptionResponse())
@@ -40,5 +42,16 @@ export default class TeamUserController {
   @Get()
   public async findTeamList(@GetUser() { id }: User) {
     return await this.teamUserService.findTeamList(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀 유저 초대' })
+  @ApiBody({ type: RequestTeamUserSaveDto })
+  @ApiResponse(TeamUserResponse.inviteUser[200])
+  @ApiResponse(TeamUserResponse.inviteUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Post('/')
+  public async saveTeam(@Body() dto: RequestTeamUserSaveDto) {
+    return await this.teamUserService.saveTeamUser(dto);
   }
 }

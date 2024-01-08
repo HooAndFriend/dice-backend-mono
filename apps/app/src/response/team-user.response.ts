@@ -31,4 +31,15 @@ export const TeamUserResponse = {
       message: 'Find User Team List',
     }),
   },
+  inviteUser: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Invite User',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Team',
+      error: 'NOT FOUND',
+    }),
+  },
 };
