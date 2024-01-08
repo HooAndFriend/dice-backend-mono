@@ -36,7 +36,7 @@ import {
 
 // ** Dto Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
-import RequestQaUpdateDto from '../dto/qa.status.update.dto';
+import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestCommentSaveDto from '../dto/comment.save.dto';
 import RequestCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
