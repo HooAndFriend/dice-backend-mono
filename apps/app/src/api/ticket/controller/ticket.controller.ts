@@ -123,7 +123,9 @@ export default class TicketController {
   public async saveEpic(
     @Body() dto: RequestEpicSaveDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.saveEpic(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 수정' })
