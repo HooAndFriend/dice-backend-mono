@@ -33,19 +33,25 @@ export default class QaService {
       where: { id: dto.adminId },
     });
     if (!findAdmin) {
-      return CommonResponse.createNotFoundException('관리자를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException(
+        '관리자를 찾을 수 없습니다.',
+      );
     }
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
     if (!findWorker) {
-      return CommonResponse.createNotFoundException('작업자를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException(
+        '작업자를 찾을 수 없습니다.',
+      );
     }
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: dto.workspaceId },
     });
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException('워크 스페이스를 찾을 수 없습니다.');
+      return CommonResponse.createNotFoundException(
+        '워크 스페이스를 찾을 수 없습니다.',
+      );
     }
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -69,8 +75,8 @@ export default class QaService {
         memo: dto.memo,
         admin: findAdmin,
         worker: findWorker,
-        file : files,
-        workspace : findWorkspace,
+        file: files,
+        workspace: findWorkspace,
       }),
     );
 
@@ -79,6 +85,23 @@ export default class QaService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 생성합니다.',
+    });
+  }
+  public async updateQa(dto: RequestQaUpdateDto) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: dto.qaId },
+    });
+    if (!findQa) {
+      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+    }
+
+    findQa.status = dto.status;
+    await this.qaRepository.save(
+      findQa
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 수정합니다.',
     });
   }
 }

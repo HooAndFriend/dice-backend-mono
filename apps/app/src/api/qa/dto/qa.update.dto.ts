@@ -2,9 +2,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { QaStatus } from '@/src/common/enum/QaStatus.enum'
 export default class RequestQaUpdateDto {
-  @ApiProperty({ example: 'COMPLETE' })
-  @IsString()
-  status: string;
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  qaId: number;
+
+  @ApiProperty({ example: QaStatus.COMPLETE, enum : QaStatus})
+  @IsEnum(QaStatus)
+  status: QaStatus;
 }
