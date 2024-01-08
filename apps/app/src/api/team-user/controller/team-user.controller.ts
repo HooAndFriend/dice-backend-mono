@@ -41,7 +41,7 @@ import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 @ApiTags('Team User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/team/user', version: '1' })
+@Controller({ path: '/team-user', version: '1' })
 export default class TeamUserController {
   constructor(private readonly teamUserService: TeamUserService) {}
 
@@ -84,5 +84,14 @@ export default class TeamUserController {
   @Patch()
   public async updateTeamUserRole(@Body() dto: RequestTeamUserUpdateDto) {
     return await this.teamUserService.updateTeamUserRole(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀의 유저 리스트 조회' })
+  @ApiResponse(TeamUserResponse.findTeamUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/user/:id')
+  public async findTeamUserList(@Param('id') id: number) {
+    return await this.teamUserService.findTeamUserList(id);
   }
 }

@@ -64,4 +64,24 @@ export const TeamUserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  findTeamUserList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 1,
+            role: 'ADMIN',
+            user: {
+              id: 1,
+              email: 'admin',
+              nickname: 'Pinomaker',
+            },
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Find Team User List',
+    }),
+  },
 };

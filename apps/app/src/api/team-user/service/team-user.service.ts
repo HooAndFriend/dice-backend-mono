@@ -61,4 +61,21 @@ export default class TeamUserService {
       message: 'Update Team User Role',
     });
   }
+
+  /**
+   * Find Team User List
+   * @param teamId
+   * @returns
+   */
+  public async findTeamUserList(teamId: number) {
+    const [data, count] = await this.teamUserRepository.findTeamUserList(
+      teamId,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Team User List',
+      data: { data, count },
+    });
+  }
 }
