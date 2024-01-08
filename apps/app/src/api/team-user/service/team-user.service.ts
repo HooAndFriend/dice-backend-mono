@@ -56,6 +56,16 @@ export default class TeamUserService {
    * @returns
    */
   public async updateTeamUserRole(dto: RequestTeamUserUpdateDto) {
+    const isExistTeamUser = await this.teamUserRepository.exist({
+      where: { id: dto.teamUserId },
+    });
+
+    if (!isExistTeamUser) {
+      return CommonResponse.createNotFoundException('Not Found Team User');
+    }
+
+    await this.teamUserRepository.update(dto.teamUserId, { role: dto.role });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Team User Role',
