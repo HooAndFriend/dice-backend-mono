@@ -36,9 +36,10 @@ import {
 
 // ** Dto Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
-import RequestQaUpdateDto from '../dto/qa.update.dto';
+import RequestQaUpdateDto from '../dto/qa.status.update.dto';
 import RequestCommentSaveDto from '../dto/comment.save.dto';
 import RequestCommentUpdateDto from '../dto/comment.update.dto';
+import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -85,17 +86,18 @@ export default class QaController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateQa(@Body() dto: RequestQaUpdateDto) {
-    return await this.qaService.updateQa(dto);
   }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 상태 수정' })
-  @ApiBody({ type: RequestQaUpdateDto })
+  @ApiBody({ type: RequestQaStatusUpdateDto })
   @ApiResponse(QaResponse.updateStatusQa[200])
   @ApiResponse(QaResponse.updateStatusQa[404])
   @UseGuards(JwtAccessGuard)
-  @Put('/')
-  public async updateStatusQa(@Body() dto: RequestQaUpdateDto) {}
+  @Put('/status')
+  public async updateStatusQa(@Body() dto: RequestQaStatusUpdateDto) {
+    return await this.qaService.updateQaStatus(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 삭제' })

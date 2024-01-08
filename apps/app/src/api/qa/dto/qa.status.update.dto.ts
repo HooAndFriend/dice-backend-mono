@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { QaStatus } from '@/src/common/enum/QaStatus.enum'
-export default class RequestQaUpdateDto {
+export default class RequestQaStatusUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   qaId: number;

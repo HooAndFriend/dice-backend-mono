@@ -14,7 +14,7 @@ import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
-import RequestQaUpdateDto from '../dto/qa.update.dto';
+import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import User from '@/src/api/user/domain/user.entity';
 
 @Injectable()
@@ -87,7 +87,7 @@ export default class QaService {
       message: 'Qa를 생성합니다.',
     });
   }
-  public async updateQa(dto: RequestQaUpdateDto) {
+  public async updateQaStatus(dto: RequestQaStatusUpdateDto) {
     const findQa = await this.qaRepository.findOne({
       where: { id: dto.qaId },
     });
