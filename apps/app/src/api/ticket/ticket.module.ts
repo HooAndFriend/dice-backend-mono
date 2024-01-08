@@ -10,16 +10,22 @@ import TicketController from './controller/ticket.controller';
 import TicketService from './service/ticket.service';
 import EpicRepository from './repository/epic.repository';
 import TicketRepository from './repository/ticket.repository';
+import TicketFileRepository from './repository/ticket.file.repository';
 import WorkspaceModule from '../workspace/workspace.module';
 
 // ** entity Imports
 import Epic from './domain/epic.entity';
 import Ticket from './domain/ticket.entity';
+import TicketFile from './domain/ticket.file.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Epic, Ticket]),
-    TypeOrmExModule.forCustomRepository([EpicRepository, TicketRepository]),
+    TypeOrmModule.forFeature([Epic, Ticket, TicketFile]),
+    TypeOrmExModule.forCustomRepository([
+      EpicRepository,
+      TicketRepository,
+      TicketFileRepository,
+    ]),
     WorkspaceModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],

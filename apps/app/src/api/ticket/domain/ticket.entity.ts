@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -13,6 +14,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Epic from './epic.entity';
 import { TicketStatus } from '@/src/common/enum/ticket.enum';
+import TicketFile from './ticket.file.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -88,4 +90,7 @@ export default class Ticket extends BaseTimeEntity {
 
   @ManyToOne(() => User, (user) => user.ticket)
   worker: Relation<User>;
+
+  @OneToMany(() => TicketFile, (file) => file.ticket)
+  file: Relation<TicketFile>[];
 }
