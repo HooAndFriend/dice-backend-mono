@@ -16,13 +16,14 @@ import EpicRepository from '../repository/epic.repository';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 
 // ** Response Imports
+import CommonResponse from '@/src/common/dto/api.response';
 
 // Other Imports
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
-import CommonResponse from '@/src/common/dto/api.response';
+import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -49,6 +50,12 @@ export default class TicketService {
       );
     }
 
+    if (dto.name.length > 30) {
+      return CommonResponse.createBadRequestException(
+        'Epic 이름은 최대 30자 입니다.',
+      );
+    }
+
     const findEpic = await this.epicRepository.findOne({
       where: { name: dto.name },
     });
@@ -56,12 +63,6 @@ export default class TicketService {
     if (findEpic) {
       return CommonResponse.createBadRequestException(
         '이미 존재하는 Epic 입니다.',
-      );
-    }
-
-    if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Epic 이름은 최대 30자 입니다.',
       );
     }
 
@@ -79,6 +80,44 @@ export default class TicketService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 생성합니다.',
+    });
+  }
+
+  // ** Epic 수정
+  public async updateEpic(dto: RequestEpicUpdateDto) {
+    const findEpic = await this.epicRepository.findOne({
+      where: { id: dto.epicId },
+    });
+
+    if (!findEpic) {
+      return CommonResponse.createNotFoundException(
+        'Epic 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    if (dto.name.length > 30) {
+      return CommonResponse.createBadRequestException(
+        'Epic 이름은 최대 30자 입니다.',
+      );
+    }
+
+    const findEpicName = await this.epicRepository.findOne({
+      where: { name: dto.name },
+    });
+
+    if (findEpicName) {
+      return CommonResponse.createBadRequestException(
+        '이미 존재하는 Epic 입니다.',
+      );
+    }
+
+    await this.epicRepository.update(dto.epicId, {
+      name: dto.name,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Epic을 수정합니다.',
     });
   }
 }

@@ -138,7 +138,9 @@ export default class TicketController {
   public async updateEpic(
     @Body() dto: RequestEpicUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.updateEpic(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 삭제' })
