@@ -12,6 +12,7 @@ import CommonResponse from '@/src/common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import RequestCommentSaveDto from '@/src/api/qa/dto/comment.save.dto'
+import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 
 @Injectable()
 export default class CommentService {
@@ -46,6 +47,16 @@ export default class CommentService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',
+    });
+  }
+  public async updateComment(dto : RequestQaCommentUpdateDto) {
+    await this.qacommentRepository.update(dto.commentId, {
+      content : dto.content,
+    });
+    
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 수정합니다.',
     });
   }
   public async deleteComment(commentid : number) {

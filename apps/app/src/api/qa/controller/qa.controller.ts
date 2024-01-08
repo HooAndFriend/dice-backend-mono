@@ -38,7 +38,7 @@ import {
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaCommentSaveDto from '../dto/comment.save.dto';
-import RequestCommentUpdateDto from '../dto/comment.update.dto';
+import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 
 @ApiTags('QA')
@@ -129,12 +129,14 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 수정' })
-  @ApiBody({ type: RequestCommentUpdateDto })
+  @ApiBody({ type: RequestQaCommentUpdateDto })
   @ApiResponse(CommentResponse.updateComment[200])
   @ApiResponse(CommentResponse.updateComment[404])
   @UseGuards(JwtAccessGuard)
   @Put('/comment')
-  public async updateComment(@Body() dto: RequestCommentUpdateDto) {}
+  public async updateComment(@Body() dto: RequestQaCommentUpdateDto) {
+    return await this.commentService.updateComment(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 삭제' })

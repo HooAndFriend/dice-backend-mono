@@ -3,16 +3,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsNumber, IsString } from 'class-validator';
-export default class RequestCommentUpdateDto {
-  @ApiProperty({ example: 'QA 댓글 내용입니다' })
+export default class RequestQaCommentUpdateDto {
+  @ApiProperty({ example: '수정된 QA 댓글 내용입니다' })
   @IsString()
   content: string;
 
-  @ApiProperty({ example: 101})
+  @ApiProperty({ example: 1})
   @IsNumber()
-  userId: number;
-
-  @ApiProperty({ example: 10001})
-  @IsNumber()
-  qaId: number;
+  commentId: number;
 }
