@@ -75,7 +75,9 @@ export default class TicketController {
   public async saveTicket(
     @Body() dto: RequestTicketSaveDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return this.ticketService.saveTicket(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 수정' })

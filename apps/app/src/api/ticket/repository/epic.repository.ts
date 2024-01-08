@@ -24,4 +24,13 @@ export default class EpicRepository extends Repository<Epic> {
       .where('epic.workspace = :workspaceId', { workspaceId });
     return await querybuilder.getManyAndCount();
   }
+
+  public async findEpicById(epicId: number) {
+    const querybuilder = this.createQueryBuilder('epic')
+      .select(['epic.id', 'epic.name', 'epic.code', 'workspace.id', 'admin.id'])
+      .leftJoin('epic.workspace', 'workspace')
+      .leftJoin('epic.admin', 'admin')
+      .where('epic.id = :epicId', { epicId });
+    return await querybuilder.getOne();
+  }
 }

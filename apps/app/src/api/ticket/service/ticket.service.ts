@@ -14,6 +14,7 @@ import { DataSource } from 'typeorm';
 // ** Custom Module Imports
 import EpicRepository from '../repository/epic.repository';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
+import TicketRepository from '../repository/ticket.repository';
 
 // ** Response Imports
 import CommonResponse from '@/src/common/dto/api.response';
@@ -24,21 +25,66 @@ import CommonResponse from '@/src/common/dto/api.response';
 import User from '../../user/domain/user.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
+import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
+import { TicketStatus } from '@/src/common/enum/ticket.enum';
 
 @Injectable()
 export default class TicketService {
   constructor(
     private readonly configService: ConfigService,
     private readonly epicRepository: EpicRepository,
+    private readonly ticketRepository: TicketRepository,
     private readonly workspaceReposiotry: WorkspaceRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
 
-  // ** EPIC Service
+  // ** Ticket Service
 
-  // ** EPIC 저장
+  // ** Ticket 저장
+  public async saveTicket(dto: RequestTicketSaveDto, user: User) {
+    const findEpic = await this.epicRepository.findEpicById(dto.epicId);
+
+    if (!findEpic) {
+      return CommonResponse.createNotFoundException(
+        'Epic 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    if (dto.name.length > 30) {
+      return CommonResponse.createBadRequestException(
+        'Ticket 이름은 최대 30자 입니다.',
+      );
+    }
+
+    const findTicket = await this.ticketRepository.findOne({
+      where: { name: dto.name },
+    });
+
+    if (findTicket) {
+      return CommonResponse.createBadRequestException(
+        '이미 존재하는 Ticket 입니다.',
+      );
+    }
+
+    await this.ticketRepository.save({
+      admin: user,
+      epic: findEpic,
+      workspace: findEpic.workspace,
+      name: dto.name,
+      status: TicketStatus.ToDo,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 생성합니다.',
+    });
+  }
+
+  // ** Epic Service
+
+  // ** Epic 저장
   public async saveEpic(dto: RequestEpicSaveDto, user: User) {
     const findWorkspace = await this.workspaceReposiotry.findOne({
       where: { id: dto.workspaceId },
