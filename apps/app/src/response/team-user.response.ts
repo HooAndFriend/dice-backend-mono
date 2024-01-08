@@ -42,4 +42,15 @@ export const TeamUserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  deleteUser: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete User',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found User',
+      error: 'NOT FOUND',
+    }),
+  },
 };

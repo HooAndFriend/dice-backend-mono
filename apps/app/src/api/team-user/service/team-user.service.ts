@@ -25,10 +25,27 @@ export default class TeamUserService {
     });
   }
 
+  /**
+   * Save Team User
+   * @param dto
+   * @returns
+   */
   public async saveTeamUser(dto: RequestTeamUserSaveDto) {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Invite User',
+    });
+  }
+
+  /**
+   * Delete Team User
+   * @param teamUserId
+   * @returns
+   */
+  public async deleteTeamUser(teamUserId: number) {
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Team User',
     });
   }
 }

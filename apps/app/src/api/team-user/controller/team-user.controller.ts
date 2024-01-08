@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import TeamUserService from '../service/team-user.service';
@@ -51,7 +59,17 @@ export default class TeamUserController {
   @ApiResponse(TeamUserResponse.inviteUser[404])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveTeam(@Body() dto: RequestTeamUserSaveDto) {
+  public async saveTeamUser(@Body() dto: RequestTeamUserSaveDto) {
     return await this.teamUserService.saveTeamUser(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀 유저 삭제' })
+  @ApiResponse(TeamUserResponse.deleteUser[200])
+  @ApiResponse(TeamUserResponse.deleteUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteTeamUser(@Param('id') id: number) {
+    return await this.teamUserService.deleteTeamUser(id);
   }
 }
