@@ -16,6 +16,8 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/api/qa/domain/qa.entity';
 import Comment from '@/src/api/qa/domain/comment.entity';
+import Ticket from '../../ticket/domain/ticket.entity';
+import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -79,6 +81,12 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Epic, (epic) => epic.admin)
   epic: Relation<Epic>[];
+
+  @OneToMany(() => Ticket, (ticket) => [ticket.admin, ticket.worker])
+  ticket: Relation<Ticket>[];
+
+  @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.admin)
+  ticketSetting: Relation<TicketSetting>[];
 
   @OneToMany(() => Qa, (qa) => [qa.admin, qa.worker])
   qa: Relation<Qa>[];

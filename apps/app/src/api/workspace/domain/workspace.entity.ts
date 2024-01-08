@@ -17,6 +17,8 @@ import WorkspaceFunction from '../../workspace-function/domain/workspace-functio
 import User from '../../user/domain/user.entity';
 import Team from '../../team/domain/team.entity';
 import Epic from '../../ticket/domain/epic.entity';
+import Ticket from '../../ticket/domain/ticket.entity';
+import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -63,6 +65,12 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Epic, (epic) => epic.workspace)
   epic: Relation<Epic>[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.workspace)
+  ticket: Relation<Ticket>[];
+
+  @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.workspace)
+  ticketSetting: Relation<TicketSetting>[];
 
   @ManyToOne(() => User, (user) => user.workspace, {
     nullable: true,

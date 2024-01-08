@@ -3,7 +3,6 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -12,37 +11,42 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
-import Ticket from './ticket.entity';
 
-@Entity({ name: 'TB_EPIC' })
-export default class Epic extends BaseTimeEntity {
+@Entity({ name: 'TB_TICKET_SETTING' })
+export default class TicketSetting extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'varchar',
-    length: 30,
-    name: 'name',
-    comment: '에픽 명',
+    length: 10,
+    name: 'color',
+    comment: '타입 색',
     nullable: false,
   })
-  name: string;
+  color: string;
 
   @Column({
     type: 'varchar',
-    length: 30,
-    name: 'code',
-    comment: '에픽 코드',
+    length: 20,
+    name: 'type',
+    comment: '티켓 타입 명',
     nullable: false,
   })
-  code: string;
+  type: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.epic)
+  @Column({
+    type: 'varchar',
+    length: 40,
+    name: 'description',
+    comment: '티켓 타입 설명',
+    nullable: false,
+  })
+  description: string;
+
+  @ManyToOne(() => Workspace, (workspace) => workspace.ticketSetting)
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => User, (user) => user.epic)
+  @ManyToOne(() => User, (user) => user.ticketSetting)
   admin: Relation<User>;
-
-  @OneToMany(() => Ticket, (ticket) => ticket.epic)
-  ticket: Relation<Ticket>[];
 }
