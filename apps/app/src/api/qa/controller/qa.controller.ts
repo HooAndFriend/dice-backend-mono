@@ -103,7 +103,9 @@ export default class QaController {
   @ApiResponse(QaResponse.deleteQa[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteQa(@Param('id') id: number) {}
+  public async deleteQa(@Param('id') id: number) {
+    return await this.qaService.deleteQa(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 조회' })

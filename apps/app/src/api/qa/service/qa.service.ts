@@ -104,4 +104,19 @@ export default class QaService {
       message: 'Qa를 수정합니다.',
     });
   }
+  public async deleteQa(qaId : number) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: qaId },
+    });
+    if (!findQa) {
+      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+    }
+    await this.qaRepository.remove(
+      findQa
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 삭제합니다.',
+    });
+  }
 }
