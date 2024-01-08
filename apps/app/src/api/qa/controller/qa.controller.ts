@@ -37,7 +37,7 @@ import {
 // ** Dto Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
-import RequestCommentSaveDto from '../dto/comment.save.dto';
+import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 
@@ -119,11 +119,11 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 생성' })
-  @ApiBody({ type: RequestCommentSaveDto })
+  @ApiBody({ type: RequestQaCommentSaveDto })
   @ApiResponse(CommentResponse.saveComment[200])
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment(@Body() dto: RequestCommentSaveDto) {
+  public async saveComment(@Body() dto: RequestQaCommentSaveDto) {
     return await this.commentService.saveComment(dto);
   }
 
@@ -142,5 +142,7 @@ export default class QaController {
   @ApiResponse(CommentResponse.deleteComment[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
-  public async deleteComment(@Param('id') id: number) {}
+  public async deleteComment(@Param('id') id: number) {
+    return await this.commentService.deleteComment(id);
+  }
 }

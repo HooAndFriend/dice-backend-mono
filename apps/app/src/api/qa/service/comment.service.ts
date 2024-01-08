@@ -48,4 +48,18 @@ export default class CommentService {
       message: '댓글을 생성합니다.',
     });
   }
+  public async deleteComment(commentid : number) {
+    const findComment = await this.qacommentRepository.findOne({
+      where : {id : commentid},
+    });
+    if(!findComment){
+      return CommonResponse.createNotFoundException('댓글을 찾을 수 없습니다.');
+    }
+    await this.qacommentRepository.remove(findComment);
+    
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 삭제합니다.',
+    });
+  }
 }

@@ -116,12 +116,14 @@ export default class QaService {
         }),
       ),
     );
+    
     findQa.title = dto.title;
     findQa.asIs = dto.asIs;
     findQa.toBe = dto.toBe;
     findQa.memo = dto.memo;
     findQa.worker = findWorker;
     findQa.file = files;
+    
     await queryRunner.manager.save(Qa, findQa);
     
     await queryRunner.commitTransaction();
