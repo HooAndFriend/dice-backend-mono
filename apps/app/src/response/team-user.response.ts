@@ -53,4 +53,15 @@ export const TeamUserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  updateTeamUserRole: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Update Team User Role',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Team User',
+      error: 'NOT FOUND',
+    }),
+  },
 };

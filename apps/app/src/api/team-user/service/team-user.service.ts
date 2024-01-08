@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import TeamUserRepository from '../repository/team-user.repository';
 import CommonResponse from '@/src/common/dto/api.response';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
+import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 
 @Injectable()
 export default class TeamUserService {
@@ -46,6 +47,18 @@ export default class TeamUserService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Team User',
+    });
+  }
+
+  /**
+   * Update Team User Role
+   * @param dto
+   * @returns
+   */
+  public async updateTeamUserRole(dto: RequestTeamUserUpdateDto) {
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Team User Role',
     });
   }
 }

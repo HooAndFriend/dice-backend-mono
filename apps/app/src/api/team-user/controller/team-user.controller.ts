@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -35,6 +36,7 @@ import { GetUser } from '@/src/common/decorators/user.decorators';
 // ** Dto, Entity Imports
 import User from '../../user/domain/user.entity';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
+import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 
 @ApiTags('Team User')
 @ApiResponse(createServerExceptionResponse())
@@ -58,7 +60,7 @@ export default class TeamUserController {
   @ApiResponse(TeamUserResponse.inviteUser[200])
   @ApiResponse(TeamUserResponse.inviteUser[404])
   @UseGuards(JwtAccessGuard)
-  @Post('/')
+  @Post()
   public async saveTeamUser(@Body() dto: RequestTeamUserSaveDto) {
     return await this.teamUserService.saveTeamUser(dto);
   }
@@ -71,5 +73,16 @@ export default class TeamUserController {
   @Delete('/:id')
   public async deleteTeamUser(@Param('id') id: number) {
     return await this.teamUserService.deleteTeamUser(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀 유저 권한 변경' })
+  @ApiBody({ type: RequestTeamUserUpdateDto })
+  @ApiResponse(TeamUserResponse.updateTeamUserRole[200])
+  @ApiResponse(TeamUserResponse.updateTeamUserRole[404])
+  @UseGuards(JwtAccessGuard)
+  @Patch()
+  public async updateTeamUserRole(@Body() dto: RequestTeamUserUpdateDto) {
+    return await this.teamUserService.updateTeamUserRole(dto);
   }
 }
