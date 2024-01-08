@@ -14,8 +14,10 @@ import CommonResponse from '../../../common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
+import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import User from '@/src/api/user/domain/user.entity';
+import Qa from '@/src/api/qa/domain/qa.entity';
 
 @Injectable()
 export default class QaService {
@@ -87,6 +89,48 @@ export default class QaService {
       message: 'Qa를 생성합니다.',
     });
   }
+  public async updateQa(dto: RequestQaUpdateDto) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: dto.qaId },
+    });
+    if (!findQa) {
+      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+    }
+    const findWorker = await this.userRepository.findOne({
+      where: { id: dto.workerId },
+    });
+    if (!findWorker) {
+      return CommonResponse.createNotFoundException(
+        '작업자를 찾을 수 없습니다.',
+      );
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    const files = await queryRunner.manager.save(
+      dto.fileurls.map((fileURL) =>
+        this.fileRepository.create({
+          url: fileURL.url,
+        }),
+      ),
+    );
+    findQa.title = dto.title;
+    findQa.asIs = dto.asIs;
+    findQa.toBe = dto.toBe;
+    findQa.memo = dto.memo;
+    findQa.worker = findWorker;
+    findQa.file = files;
+    await queryRunner.manager.save(Qa, findQa);
+    
+    await queryRunner.commitTransaction();
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 수정합니다.',
+    });
+  }
   public async updateQaStatus(dto: RequestQaStatusUpdateDto) {
     const findQa = await this.qaRepository.findOne({
       where: { id: dto.qaId },
@@ -96,24 +140,20 @@ export default class QaService {
     }
 
     findQa.status = dto.status;
-    await this.qaRepository.save(
-      findQa
-    );
+    await this.qaRepository.save(findQa);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 수정합니다.',
     });
   }
-  public async deleteQa(qaId : number) {
+  public async deleteQa(qaId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId },
     });
     if (!findQa) {
       return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
     }
-    await this.qaRepository.remove(
-      findQa
-    );
+    await this.qaRepository.remove(findQa);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 삭제합니다.',

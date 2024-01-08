@@ -1,10 +1,9 @@
 // ** Swagger Imports
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsArray, IsNumber, IsString } from 'class-validator';
-import { QaStatus } from '@/src/common/enum/QaStatus.enum'
-export default class RequestQaSaveDto {
+export default class RequestQaUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   qaId: number;
@@ -13,19 +12,19 @@ export default class RequestQaSaveDto {
   @IsNumber()
   workerId: number;
 
-  @ApiProperty({ example: 'QA 제목입니다.' })
+  @ApiProperty({ example: '수정된 QA 제목입니다.' })
   @IsString()
   title: string;
 
-  @ApiProperty({ example: '문제사항입니다.' })
+  @ApiProperty({ example: '수정된 문제사항입니다.' })
   @IsString()
   asIs: string;
 
-  @ApiProperty({ example: '기대결과입니다.' })
+  @ApiProperty({ example: '수정된 기대결과입니다.' })
   @IsString()
   toBe: string;
 
-  @ApiProperty({ example: '메모입니다' })
+  @ApiProperty({ example: '수정된 메모입니다' })
   @IsString()
   memo: string;
 

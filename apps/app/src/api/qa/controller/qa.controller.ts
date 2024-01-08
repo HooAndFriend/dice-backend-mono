@@ -86,6 +86,7 @@ export default class QaController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateQa(@Body() dto: RequestQaUpdateDto) {
+    return await this.qaService.updateQa(dto);
   }
 
   @ApiBearerAuth('access-token')
