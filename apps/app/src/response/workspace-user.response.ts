@@ -16,4 +16,15 @@ export const WorkspaceUserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  saveWorkspaceUser: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Invite Workspace User',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Workspace',
+      error: 'NOT FOUND',
+    }),
+  },
 };

@@ -10,11 +10,16 @@ import WorkspaceUserService from './service/workspace-user.service';
 import WorkspaceUserController from './controller/workspace-user.controller';
 import WorkspaceUser from './domain/workspace-user.entity';
 import WorkspaceUserRepository from './repository/workspace-user.repository';
+import TeamModule from '../team/team.module';
+import WorkspaceModule from '../workspace/workspace.module';
+import TeamUserModule from '../team-user/team-user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([WorkspaceUser]),
     TypeOrmExModule.forCustomRepository([WorkspaceUserRepository]),
+    forwardRef(() => WorkspaceModule),
+    TeamUserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceUserController],

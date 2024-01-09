@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
@@ -25,6 +25,7 @@ import {
 
 // ** Dto Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
+import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
@@ -44,5 +45,16 @@ export default class WorkspaceUserController {
     @Body() dto: RequestWorkspaceUpdateUpdateDto,
   ) {
     return await this.workspaceUserService.updateWorksapceUserRole(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 멤버 추가' })
+  @ApiBody({ type: RequestWorkspaceUserSaveDto })
+  @ApiResponse(WorkspaceUserResponse.saveWorkspaceUser[200])
+  @ApiResponse(WorkspaceUserResponse.saveWorkspaceUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Post('/')
+  public async saveWorkspaceUser(@Body() dto: RequestWorkspaceUserSaveDto) {
+    return await this.workspaceUserService.saveWorkspaceUser(dto);
   }
 }
