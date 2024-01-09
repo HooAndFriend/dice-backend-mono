@@ -77,6 +77,26 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * Delete Workspace User
+   * @param workspaceUserId
+   * @returns
+   */
+  public async deleteWorksapceUser(workspaceUserId: number) {
+    const workspaceUser = await this.findWorkspaceUserById(workspaceUserId);
+
+    if (!workspaceUser) {
+      return CommonResponse.createNotFoundException('Not Found Workspace User');
+    }
+
+    await this.workspaceUserRepository.delete(workspaceUser.id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Workspace User',
+    });
+  }
+
+  /**
    * Find Workspace By Id
    * @param workspaceId
    * @returns
@@ -84,6 +104,17 @@ export default class WorkspaceUserService {
   private async findWorkspaceById(workspaceId: number) {
     return await this.workspaceRepository.findOne({
       where: { id: workspaceId },
+    });
+  }
+
+  /**
+   * Find Workspace User By Id
+   * @param workspaceUserId
+   * @returns
+   */
+  private async findWorkspaceUserById(workspaceUserId: number) {
+    return await this.workspaceUserRepository.findOne({
+      where: { id: workspaceUserId },
     });
   }
 }

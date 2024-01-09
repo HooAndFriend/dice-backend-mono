@@ -27,4 +27,15 @@ export const WorkspaceUserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  deleteWorkspaceUser: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Workspace User',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Workspace User',
+      error: 'NOT FOUND',
+    }),
+  },
 };

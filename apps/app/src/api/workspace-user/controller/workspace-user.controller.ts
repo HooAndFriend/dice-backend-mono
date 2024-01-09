@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
@@ -56,5 +64,15 @@ export default class WorkspaceUserController {
   @Post('/')
   public async saveWorkspaceUser(@Body() dto: RequestWorkspaceUserSaveDto) {
     return await this.workspaceUserService.saveWorkspaceUser(dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 멤버 삭제' })
+  @ApiResponse(WorkspaceUserResponse.deleteWorkspaceUser[200])
+  @ApiResponse(WorkspaceUserResponse.deleteWorkspaceUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deletWorksapceUser(@Param('id') id: number) {
+    return await this.workspaceUserService.deleteWorksapceUser(id);
   }
 }
