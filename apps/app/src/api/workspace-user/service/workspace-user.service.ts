@@ -97,6 +97,22 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * Find Workspace User List
+   * @param workspaceId
+   * @returns
+   */
+  public async findWorkspaceUserList(workspaceId: number) {
+    const [data, count] =
+      await this.workspaceUserRepository.findWorkspaceUserList(workspaceId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace User List',
+      data: { data, count },
+    });
+  }
+
+  /**
    * Find Workspace By Id
    * @param workspaceId
    * @returns

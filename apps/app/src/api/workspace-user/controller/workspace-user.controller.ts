@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -74,5 +75,14 @@ export default class WorkspaceUserController {
   @Delete('/:id')
   public async deletWorksapceUser(@Param('id') id: number) {
     return await this.workspaceUserService.deleteWorksapceUser(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 멤버 조회' })
+  @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findWorkspaceUserList(@Param('id') id: number) {
+    return await this.workspaceUserService.findWorkspaceUserList(id);
   }
 }

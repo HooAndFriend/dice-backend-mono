@@ -2,6 +2,7 @@ import {
   createErrorResponse,
   createMessageResponse,
   createPaginationResponse,
+  createResponse,
 } from './common';
 
 export const WorkspaceUserResponse = {
@@ -36,6 +37,28 @@ export const WorkspaceUserResponse = {
       statusCode: 404,
       message: 'Not Found Workspace User',
       error: 'NOT FOUND',
+    }),
+  },
+  findWorkspaceUserList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 4,
+            role: 'VIEWER',
+            teamUser: {
+              id: 3,
+              user: {
+                email: 'admin11',
+                nickname: 'Pinomake1r',
+              },
+            },
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Find Workspace User List',
     }),
   },
 };
