@@ -16,4 +16,22 @@ export default class TicketCommentRepository extends Repository<TicketComment> {
 
     return querybuilder.getOne();
   }
+
+  public async findAllCommentByTicketId(ticketId: number) {
+    const querybuilder = this.createQueryBuilder('comment')
+      .select([
+        'comment.id',
+        'comment.content',
+        'comment.created_date',
+        'user.id',
+        'user.nickname',
+        'user.profile',
+        'ticket.id',
+      ])
+      .leftJoin('comment.ticket', 'ticket')
+      .leftJoin('comment.user', 'user')
+      .where('comment.ticket = :ticketId', { ticketId });
+
+    return querybuilder.getManyAndCount();
+  }
 }

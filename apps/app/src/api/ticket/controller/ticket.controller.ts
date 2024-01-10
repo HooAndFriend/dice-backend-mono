@@ -160,7 +160,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findComment[404])
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:ticketId')
-  public async findComment() {}
+  public async findComment(@Param('ticketId') id: number) {
+    return this.ticketService.findComment(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 생성' })

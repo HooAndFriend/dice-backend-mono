@@ -313,4 +313,24 @@ export default class TicketService {
       message: '댓글을 삭제합니다.',
     });
   }
+
+  // ** Comment 조회
+  public async findComment(id: number) {
+    const findTicket = await this.ticketRepository.findOne({ where: { id } });
+
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const findComment =
+      await this.ticketCommentRepository.findAllCommentByTicketId(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '댓글을 삭제합니다.',
+      data: findComment,
+    });
+  }
 }
