@@ -53,10 +53,12 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
-  @ApiResponse(QaResponse.findQa[200])
+  @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/')
-  public async findQa() {}
+  @Get('/:workspaceId')
+  public async findQaList(@Param('workspaceId') workspaceId : number) {
+    return await this.qaService.findQaList(workspaceId);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 상세로 리스트 조회' })

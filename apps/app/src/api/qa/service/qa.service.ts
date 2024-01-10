@@ -29,6 +29,26 @@ export default class QaService {
     private readonly configService: ConfigService,
     private readonly dataSource: DataSource,
   ) {}
+  
+  public async findQaList(workspaceId : number) {
+    const findWorkspace = await this.workspaceRepository.findOne({
+      where: { id: workspaceId },
+    });
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
+
+    const [data, count] = await this.qaRepository.findQaList(workspaceId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Qa리스트를 조회합니다.',
+      data: {data, count},
+    });
+  }
 
   public async saveQa(dto: RequestQaSaveDto) {
     const findAdmin = await this.userRepository.findOne({
