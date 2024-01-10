@@ -17,6 +17,7 @@ import WorkspaceModule from '../workspace/workspace.module';
 import Epic from './domain/epic.entity';
 import Ticket from './domain/ticket.entity';
 import TicketFile from './domain/ticket.file.entity';
+import UserModule from '../user/user.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import TicketFile from './domain/ticket.file.entity';
       TicketFileRepository,
     ]),
     WorkspaceModule,
+    UserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [TicketController],

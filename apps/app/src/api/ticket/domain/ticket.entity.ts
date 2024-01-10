@@ -53,7 +53,7 @@ export default class Ticket extends BaseTimeEntity {
     comment: 'storypoint',
     nullable: true,
   })
-  storypoint: string;
+  storypoint: number;
 
   @Column({
     type: 'date',
@@ -79,7 +79,7 @@ export default class Ticket extends BaseTimeEntity {
   })
   reopenDate: Date;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.epic)
+  @ManyToOne(() => Workspace, (workspace) => workspace.ticket)
   workspace: Relation<Workspace>;
 
   @ManyToOne(() => Epic, (epic) => epic.ticket)

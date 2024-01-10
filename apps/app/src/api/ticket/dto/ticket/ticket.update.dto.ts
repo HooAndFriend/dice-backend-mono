@@ -30,10 +30,14 @@ export default class RequestTicketUpdateDto {
   content: string;
 
   @ApiProperty({ example: '2024-01-24' })
-  @IsDate()
   dueDate: Date;
 
-  @ApiProperty({ example: [1, 2, 3, 4] })
+  @ApiProperty({
+    example: [
+      1,
+      'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E%E1%.png',
+    ],
+  })
   @IsArray()
-  file: number[];
+  file: Array<number | string>;
 }

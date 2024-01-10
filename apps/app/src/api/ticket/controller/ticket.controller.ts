@@ -90,7 +90,9 @@ export default class TicketController {
   public async updateTicket(
     @Body() dto: RequestTicketUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return this.ticketService.updateTicket(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 삭제' })
