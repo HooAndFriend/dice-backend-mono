@@ -16,6 +16,7 @@ import EpicRepository from '../repository/epic.repository';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
+import TicketCommentRepository from '../repository/ticket.comment.repository';
 
 // ** Response Imports
 import CommonResponse from '@/src/common/dto/api.response';
@@ -31,6 +32,7 @@ import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import { TicketStatus } from '@/src/common/enum/ticket.enum';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import UserRepository from '../../user/repository/user.repository';
+import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 
 @Injectable()
 export default class TicketService {
@@ -39,6 +41,7 @@ export default class TicketService {
     private readonly epicRepository: EpicRepository,
     private readonly ticketRepository: TicketRepository,
     private readonly ticketFileRepository: TicketFileRepository,
+    private readonly ticketCommentRepository: TicketCommentRepository,
     private readonly workspaceReposiotry: WorkspaceRepository,
     private readonly userRepository: UserRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
@@ -90,84 +93,71 @@ export default class TicketService {
 
   // ** Ticket 수정
   public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
-    const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
-
-    if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
-    }
-
-    if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Ticket 이름은 최대 30자 입니다.',
-      );
-    }
-
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const notChangedFile = [];
-
-      dto.file.forEach(async (item) => {
-        if (typeof item == 'string') {
-          const file = await this.ticketFileRepository.save({
-            admin: user,
-            url: item,
-            ticket: findTicket,
-          });
-        } else {
-          notChangedFile.push(item);
-        }
-      });
-
-      const [changedFile, count] =
-        await this.ticketFileRepository.findAllChangedFileByTicketId(
-          dto.ticketId,
-          notChangedFile,
-        );
-
-      changedFile.forEach(async (file) => {
-        await this.ticketFileRepository.delete({ id: file.id });
-      });
-
-      const findWorker = await this.userRepository.findOne({
-        where: { id: dto.workerId },
-      });
-
-      if (!findWorker) {
-        return CommonResponse.createNotFoundException(
-          '해당 유저를 찾을 수 없습니다.',
-        );
-      }
-
-      await this.ticketRepository.update(dto.ticketId, {
-        name: dto.name,
-        content: dto.content,
-        storypoint: dto.storypoint,
-        dueDate: dto.dueDate,
-        worker: findWorker,
-      });
-
-      queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'Ticket을 수정합니다.',
-      });
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
-    }
+    // const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
+    // if (!findTicket) {
+    //   return CommonResponse.createNotFoundException(
+    //     'Ticket 정보를 찾을 수 없습니다.',
+    //   );
+    // }
+    // if (dto.name.length > 30) {
+    //   return CommonResponse.createBadRequestException(
+    //     'Ticket 이름은 최대 30자 입니다.',
+    //   );
+    // }
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
+    // try {
+    //   const notChangedFile = [];
+    //   dto.file.forEach(async (item) => {
+    //     if (typeof item == 'string') {
+    //       const file = await this.ticketFileRepository.save({
+    //         admin: user,
+    //         url: item,
+    //         ticket: findTicket,
+    //       });
+    //     } else {
+    //       notChangedFile.push(item);
+    //     }
+    //   });
+    //   const [changedFile, count] =
+    //     await this.ticketFileRepository.findAllChangedFileByTicketId(
+    //       dto.ticketId,
+    //       notChangedFile,
+    //     );
+    //   changedFile.forEach(async (file) => {
+    //     await this.ticketFileRepository.delete({ id: file.id });
+    //   });
+    //   const findWorker = await this.userRepository.findOne({
+    //     where: { id: dto.workerId },
+    //   });
+    //   if (!findWorker) {
+    //     return CommonResponse.createNotFoundException(
+    //       '해당 유저를 찾을 수 없습니다.',
+    //     );
+    //   }
+    //   await this.ticketRepository.update(dto.ticketId, {
+    //     name: dto.name,
+    //     content: dto.content,
+    //     storypoint: dto.storypoint,
+    //     dueDate: dto.dueDate,
+    //     worker: findWorker,
+    //   });
+    //   queryRunner.commitTransaction();
+    //   return CommonResponse.createResponseMessage({
+    //     statusCode: 200,
+    //     message: 'Ticket을 수정합니다.',
+    //   });
+    // } catch (error) {
+    //   this.logger.error(error);
+    //   await queryRunner.rollbackTransaction();
+    //   if (error instanceof HttpException) {
+    //     throw new HttpException(error.message, error.getStatus());
+    //   }
+    //   throw new InternalServerErrorException('Internal Server Error');
+    // } finally {
+    //   await queryRunner.release();
+    // }
   }
 
   // ** Epic Service
@@ -252,6 +242,32 @@ export default class TicketService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 수정합니다.',
+    });
+  }
+
+  // ** Comment Service
+
+  // ** Comment  저장
+  public async saveComment(dto: RequestTicketCommentSaveDto, user: User) {
+    const findTicket = await this.ticketRepository.findOne({
+      where: { id: dto.ticketId },
+    });
+
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    await this.ticketCommentRepository.save({
+      user: user,
+      content: dto.content,
+      ticket: findTicket,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 생성합니다.',
     });
   }
 }

@@ -19,6 +19,7 @@ import Comment from '@/src/api/qa/domain/comment.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
 import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 import TicketFile from '../../ticket/domain/ticket.file.entity';
+import TicketComment from '../../ticket/domain/ticket.comment.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -88,6 +89,9 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.admin)
   ticketSetting: Relation<TicketSetting>[];
+
+  @OneToMany(() => TicketComment, (ticketComment) => ticketComment.user)
+  ticketComment: Relation<TicketComment>[];
 
   @OneToMany(() => TicketFile, (ticketFile) => ticketFile.admin)
   ticketFile: Relation<TicketFile>[];

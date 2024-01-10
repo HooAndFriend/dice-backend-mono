@@ -39,8 +39,8 @@ import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import RequestCommentSaveDto from '../dto/comment/comment.save.dto';
-import RequestCommentUpdateDto from '../dto/comment/comment.update.dto';
+import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
+import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -164,22 +164,27 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 생성' })
-  @ApiBody({ type: RequestCommentSaveDto })
+  @ApiBody({ type: RequestTicketCommentSaveDto })
   @ApiResponse(TicketResponse.saveComment[200])
   @ApiResponse(TicketResponse.saveComment[404])
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment(dto: RequestCommentSaveDto, @GetUser() user: User) {}
+  public async saveComment(
+    @Body() dto: RequestTicketCommentSaveDto,
+    @GetUser() user: User,
+  ) {
+    return this.ticketService.saveComment(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 수정' })
-  @ApiBody({ type: RequestCommentUpdateDto })
+  @ApiBody({ type: RequestTicketCommentUpdateDto })
   @ApiResponse(TicketResponse.updateComment[200])
   @ApiResponse(TicketResponse.updateComment[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/comment')
   public async updateComment(
-    dto: RequestCommentUpdateDto,
+    @Body() dto: RequestTicketCommentUpdateDto,
     @GetUser() user: User,
   ) {}
 

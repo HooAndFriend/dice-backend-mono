@@ -18,14 +18,17 @@ import Epic from './domain/epic.entity';
 import Ticket from './domain/ticket.entity';
 import TicketFile from './domain/ticket.file.entity';
 import UserModule from '../user/user.module';
+import TicketComment from './domain/ticket.comment.entity';
+import TicketCommentRepository from './repository/ticket.comment.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Epic, Ticket, TicketFile]),
+    TypeOrmModule.forFeature([Epic, Ticket, TicketFile, TicketComment]),
     TypeOrmExModule.forCustomRepository([
       EpicRepository,
       TicketRepository,
       TicketFileRepository,
+      TicketCommentRepository,
     ]),
     WorkspaceModule,
     UserModule,

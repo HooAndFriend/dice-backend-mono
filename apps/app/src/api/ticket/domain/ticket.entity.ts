@@ -15,6 +15,7 @@ import User from '../../user/domain/user.entity';
 import Epic from './epic.entity';
 import { TicketStatus } from '@/src/common/enum/ticket.enum';
 import TicketFile from './ticket.file.entity';
+import TicketComment from './ticket.comment.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -93,4 +94,7 @@ export default class Ticket extends BaseTimeEntity {
 
   @OneToMany(() => TicketFile, (file) => file.ticket)
   file: Relation<TicketFile>[];
+
+  @OneToMany(() => TicketComment, (comment) => comment.ticket)
+  comment: Relation<TicketComment>[];
 }
