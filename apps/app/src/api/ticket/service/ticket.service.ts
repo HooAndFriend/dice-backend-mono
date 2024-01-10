@@ -293,4 +293,24 @@ export default class TicketService {
       message: '댓글을 수정합니다.',
     });
   }
+
+  // ** Comment 삭제
+  public async deleteComment(id: number) {
+    const findComment = await this.ticketCommentRepository.findOne({
+      where: { id },
+    });
+
+    if (!findComment) {
+      return CommonResponse.createNotFoundException(
+        '댓글 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    await this.ticketCommentRepository.delete(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 삭제합니다.',
+    });
+  }
 }

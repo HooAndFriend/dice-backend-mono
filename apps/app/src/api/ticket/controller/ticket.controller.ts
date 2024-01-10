@@ -196,5 +196,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteComment[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:commentId')
-  public async deleteComment(@Param('commentId') id: number) {}
+  public async deleteComment(@Param('commentId') id: number) {
+    return this.ticketService.deleteComment(id);
+  }
 }
