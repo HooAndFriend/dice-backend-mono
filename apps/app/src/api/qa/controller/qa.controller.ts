@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -19,6 +20,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -40,6 +42,8 @@ import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
+// ** Emum Imports
+import { QaStatus } from '../../../common/enum/QaStatus.enum';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -53,22 +57,24 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
+  @ApiQuery({name : 'status', required : true, enum: QaStatus})
+  @ApiQuery({name : 'title', required : false, type: String})
+  @ApiQuery({name : 'qaId', required : false, type: String})
+  @ApiQuery({name : 'adminNickname', required : false, type: String})
+  @ApiQuery({name : 'workerNickname', required : false, type: String})
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
-  public async findQaList(@Param('workspaceId') workspaceId : number) {
-    return await this.qaService.findQaList(workspaceId);
+  public async findQaList(
+    @Param('workspaceId') workspaceId : number,
+    @Query('status') status?: QaStatus,
+    @Query('title') title?: string,
+    @Query('qaId') qaId?: string,
+    @Query('adminNickname') adminNickname?: string,
+    @Query('workerNickname') workerNickname?: string,
+  ) {
+    return await this.qaService.findQaList(workspaceId, status, title, qaId, adminNickname, workerNickname);
   }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 상세로 리스트 조회' })
-  @ApiResponse(QaResponse.findQaDetail[200])
-  @UseGuards(JwtAccessGuard)
-  @Get('/:title/:status')
-  public async findQaDetail(
-    @Param('title') title: string,
-    @Param('status') status: String,
-  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 생성' })

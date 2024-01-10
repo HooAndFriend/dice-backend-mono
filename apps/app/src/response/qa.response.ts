@@ -46,11 +46,11 @@ export const QaResponse = {
       message: 'qa 리스트를 조회합니다.',
     }),
   },
-  findQaDetail: {
+  findQaDetailList: {
     200: createPaginationResponse({
       data: [
         {
-          qaid: 1,
+          id: 1,
           number: 'ISSUE_01',
           status: 'DONE',
           title: 'qa 제목입니다',
@@ -66,7 +66,7 @@ export const QaResponse = {
             profile:
               'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
           },
-          files: [
+          file: [
             {
               fileid: 1,
               url: 'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',

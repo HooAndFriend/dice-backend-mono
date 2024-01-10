@@ -16,8 +16,8 @@ import CommonResponse from '../../../common/dto/api.response';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
-import User from '@/src/api/user/domain/user.entity';
 import Qa from '@/src/api/qa/domain/qa.entity';
+import { QaStatus } from '../../../common/enum/QaStatus.enum';
 
 @Injectable()
 export default class QaService {
@@ -26,11 +26,11 @@ export default class QaService {
     private readonly fileRepository: FileRepository,
     private readonly userRepository: UserRepository,
     private readonly workspaceRepository: WorkspaceRepository,
-    private readonly configService: ConfigService,
     private readonly dataSource: DataSource,
   ) {}
   
-  public async findQaList(workspaceId : number) {
+  
+  public async findQaList(workspaceId : number, status : QaStatus, title : string, qaId : string, adminNickname : string ,workerNickname : string) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: workspaceId },
     });
@@ -41,7 +41,7 @@ export default class QaService {
       );
     }
 
-    const [data, count] = await this.qaRepository.findQaList(workspaceId);
+    const [data, count] = await this.qaRepository.findQaList(workspaceId, status, title, qaId, adminNickname, workerNickname);
 
     return CommonResponse.createResponse({
       statusCode: 200,
