@@ -33,6 +33,7 @@ import { TicketStatus } from '@/src/common/enum/ticket.enum';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import UserRepository from '../../user/repository/user.repository';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
+import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -268,6 +269,28 @@ export default class TicketService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',
+    });
+  }
+
+  // ** Comment 수정
+  public async updateComment(dto: RequestTicketCommentUpdateDto, user: User) {
+    const findComment = await this.ticketCommentRepository.findOne({
+      where: { id: dto.commentId },
+    });
+
+    if (!findComment) {
+      return CommonResponse.createNotFoundException(
+        '댓글 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    await this.ticketCommentRepository.update(findComment.id, {
+      content: dto.content,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 수정합니다.',
     });
   }
 }

@@ -186,7 +186,9 @@ export default class TicketController {
   public async updateComment(
     @Body() dto: RequestTicketCommentUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return this.ticketService.updateComment(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 삭제' })
