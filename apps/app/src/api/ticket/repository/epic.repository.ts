@@ -33,4 +33,43 @@ export default class EpicRepository extends Repository<Epic> {
       .where('epic.id = :epicId', { epicId });
     return await querybuilder.getOne();
   }
+
+  public async findAllByWorkspaceId(workspaceId: number) {
+    const querybuilder = this.createQueryBuilder('epic')
+      .select([
+        'workspace.id',
+        'epic.id',
+        'epic.name',
+        'epic.code',
+        'ticket.id',
+      ])
+      .leftJoin('epic.workspace', 'workspace')
+      .leftJoin('epic.ticket', 'ticket')
+      .where('epic.workspace = :workspaceId', { workspaceId });
+    return await querybuilder.getManyAndCount();
+  }
+
+  public async findOneEpicById(epicId: number) {
+    const querybuilder = this.createQueryBuilder('epic')
+      .select([
+        'workspace.id',
+        'epic.id',
+        'epic.name',
+        'epic.code',
+        'ticket.id',
+        'ticket.name',
+        'ticket.dueDate',
+        'ticket.endDate',
+        'ticket.reopenDate',
+        'ticket.status',
+        'worker.id',
+        'worker.profile',
+        'worker.nickname',
+      ])
+      .leftJoin('epic.workspace', 'workspace')
+      .leftJoin('epic.ticket', 'ticket')
+      .leftJoin('epic.worker', 'worker')
+      .where('epic.id = :epicId', { epicId });
+    return await querybuilder.getManyAndCount();
+  }
 }

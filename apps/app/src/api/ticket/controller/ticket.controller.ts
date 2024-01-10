@@ -107,7 +107,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findAllEpic[200])
   @UseGuards(JwtAccessGuard)
   @Get('/epic/:workspaceId')
-  public async findAllEpic() {}
+  public async findAllEpic(@Param('workspaceId') id: number) {
+    return this.ticketService.findAllEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 상세조회' })
