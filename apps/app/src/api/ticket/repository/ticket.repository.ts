@@ -25,4 +25,29 @@ export default class TicketRepository extends Repository<Ticket> {
       .where('ticket.id = :ticketId', { ticketId });
     return await querybuilder.getOne();
   }
+
+  public async findAllTicketByEpicId(epicId: number) {
+    const querybuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.id',
+        'ticket.name',
+        'ticket.status',
+        'ticket.content',
+        'ticket.content',
+        'ticket.storypoint',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'workspace.id',
+        'worker.id',
+        'worker.nickname',
+        'worker.profile',
+        'epic.id',
+      ])
+      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.epic', 'epic')
+      .where('ticket.epic = :epicId', { epicId });
+    return await querybuilder.getManyAndCount();
+  }
 }

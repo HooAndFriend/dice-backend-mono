@@ -163,7 +163,7 @@ export default class TicketService {
 
   // ** Epic Service
 
-  // epic
+  // Epic 전체 조회
   public async findAllEpic(id: number) {
     const findWorkspace = await this.workspaceReposiotry.findOne({
       where: { id },
@@ -180,6 +180,28 @@ export default class TicketService {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
+      data: response,
+    });
+  }
+
+  // Epic 상세 조회
+  public async findOneEpic(id: number) {
+    console.log(id);
+    const findEpic = await this.epicRepository.findOne({
+      where: { id },
+    });
+
+    if (!findEpic) {
+      return CommonResponse.createNotFoundException(
+        'Epic 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const response = await this.ticketRepository.findAllTicketByEpicId(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Epic을 상세 조회합니다.',
       data: response,
     });
   }

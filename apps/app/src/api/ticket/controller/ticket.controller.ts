@@ -116,8 +116,10 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findOneEpic[200])
   @ApiResponse(TicketResponse.findOneEpic[404])
   @UseGuards(JwtAccessGuard)
-  @Post('/epic/detail/:epicId')
-  public async findOneEpic(@Param('epciId') id: number) {}
+  @Get('/epic/detail/:epicId')
+  public async findOneEpic(@Param('epicId') id: number) {
+    return this.ticketService.findOneEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 생성' })
