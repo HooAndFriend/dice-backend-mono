@@ -22,6 +22,22 @@ export default class CommentService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
+  public async findQaComment(qaId: number) {
+    const findQa = await this.qaRepository.findOne({
+      where : {id : qaId},
+    });
+    if(!findQa){
+      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+    }
+    console.log(qaId);
+    const [data, count] = await this.qacommentRepository.findQaComment(qaId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '댓글을 조회합니다.',
+      data: {data, count}
+    });
+  }
   public async saveComment(dto: RequestCommentSaveDto) {
     const findQa = await this.qaRepository.findOne({
       where : {id : dto.qaId},

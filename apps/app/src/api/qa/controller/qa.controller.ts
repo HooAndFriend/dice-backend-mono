@@ -122,8 +122,10 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 댓글 조회' })
   @ApiResponse(CommentResponse.findComment[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/comment/:id')
-  public async findQaComment(@Param('qaId') qaId: number) {}
+  @Get('/comment/:qaId')
+  public async findQaComment(@Param('qaId') qaId: number) {
+    return await this.commentService.findQaComment(qaId);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 생성' })
