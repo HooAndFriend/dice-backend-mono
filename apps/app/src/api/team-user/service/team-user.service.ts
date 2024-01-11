@@ -44,6 +44,14 @@ export default class TeamUserService {
    * @returns
    */
   public async deleteTeamUser(teamUserId: number) {
+    const isExistTeamUser = await this.existTeamUserById(teamUserId);
+
+    if (!isExistTeamUser) {
+      return CommonResponse.createNotFoundException('Not Found Team User');
+    }
+
+    await this.teamUserRepository.delete(teamUserId);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Team User',
@@ -56,9 +64,7 @@ export default class TeamUserService {
    * @returns
    */
   public async updateTeamUserRole(dto: RequestTeamUserUpdateDto) {
-    const isExistTeamUser = await this.teamUserRepository.exist({
-      where: { id: dto.teamUserId },
-    });
+    const isExistTeamUser = await this.existTeamUserById(dto.teamUserId);
 
     if (!isExistTeamUser) {
       return CommonResponse.createNotFoundException('Not Found Team User');
@@ -87,5 +93,14 @@ export default class TeamUserService {
       message: 'Find Team User List',
       data: { data, count },
     });
+  }
+
+  /**
+   * Exist Team User By Id
+   * @param teamUserId
+   * @returns
+   */
+  private async existTeamUserById(teamUserId: number) {
+    return await this.teamUserRepository.exist({ where: { id: teamUserId } });
   }
 }
