@@ -26,7 +26,9 @@ export default class Collection extends BaseTimeEntity {
   })
   name: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.collection)
+  @ManyToOne(() => Workspace, (workspace) => workspace.collection, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 
   @OneToMany(() => Request, (request) => request.collection)

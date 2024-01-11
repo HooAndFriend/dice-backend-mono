@@ -25,6 +25,8 @@ export default class WorkspaceFunction extends BaseCreatedTimeEntity {
   })
   function: DiceFunction;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
+  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 }

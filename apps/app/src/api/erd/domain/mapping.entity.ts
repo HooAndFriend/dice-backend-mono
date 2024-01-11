@@ -27,12 +27,18 @@ export default class Mapping extends BaseTimeEntity {
   })
   type: MappingType;
 
-  @ManyToOne(() => Table, (table) => table.mapping)
+  @ManyToOne(() => Table, (table) => table.mapping, {
+    onDelete: 'CASCADE',
+  })
   tableParent: Relation<Table>;
 
-  @ManyToOne(() => Table, (table) => table.mapping)
+  @ManyToOne(() => Table, (table) => table.mapping, {
+    onDelete: 'CASCADE',
+  })
   tableChild: Relation<Table>;
 
-  @ManyToOne(() => Columns, (column) => column.mapping)
+  @ManyToOne(() => Columns, (column) => column.mapping, {
+    onDelete: 'CASCADE',
+  })
   column: Relation<Columns>;
 }

@@ -83,7 +83,9 @@ export default class Columns extends BaseTimeEntity {
   })
   comment: string;
 
-  @ManyToOne(() => Table, (table) => table.column)
+  @ManyToOne(() => Table, (table) => table.column, {
+    onDelete: 'CASCADE',
+  })
   table: Relation<Table>;
 
   @OneToOne(() => Mapping, (mapping) => mapping.column)

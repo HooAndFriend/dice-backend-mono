@@ -46,7 +46,9 @@ export default class Table extends BaseTimeEntity {
   })
   comment: string;
 
-  @ManyToOne(() => Diagram, (diagram) => diagram.table)
+  @ManyToOne(() => Diagram, (diagram) => diagram.table, {
+    onDelete: 'CASCADE',
+  })
   diagram: Relation<Diagram>;
 
   @OneToMany(() => Columns, (column) => column.table)

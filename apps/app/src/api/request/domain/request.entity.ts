@@ -124,6 +124,8 @@ export default class Request extends BaseTimeEntity {
   })
   paramvalue: string;
 
-  @ManyToOne(() => Collection, (collection) => collection.request)
+  @ManyToOne(() => Collection, (collection) => collection.request, {
+    onDelete: 'CASCADE',
+  })
   collection: Relation<Collection>;
 }
