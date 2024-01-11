@@ -61,4 +61,60 @@ export const WorkspaceUserResponse = {
       message: 'Find Workspace User List',
     }),
   },
+  findInviteUserList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 1,
+            role: 'VIEWER',
+            user: {
+              id: 1,
+              email: 'admin',
+              nickname: 'Pinomaker',
+            },
+          },
+          {
+            id: 3,
+            role: 'VIEWER',
+            user: {
+              id: 3,
+              email: 'admin11',
+              nickname: 'Pinomake1r',
+            },
+          },
+          {
+            id: 4,
+            role: 'VIEWER',
+            user: {
+              id: 4,
+              email: 'admin33333',
+              nickname: 'Pinomaker',
+            },
+          },
+          {
+            id: 5,
+            role: 'VIEWER',
+            user: {
+              id: 5,
+              email: 'admin312123333',
+              nickname: 'Pinomaker',
+            },
+          },
+          {
+            id: 6,
+            role: 'VIEWER',
+            user: {
+              id: 6,
+              email: 'admin3121233331212',
+              nickname: 'Pinomaker',
+            },
+          },
+        ],
+        count: 5,
+      },
+      statusCode: 200,
+      message: 'Find Team List to invite workspace',
+    }),
+  },
 };

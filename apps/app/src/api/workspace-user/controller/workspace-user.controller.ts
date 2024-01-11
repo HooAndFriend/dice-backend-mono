@@ -85,4 +85,13 @@ export default class WorkspaceUserController {
   public async findWorkspaceUserList(@Param('id') id: number) {
     return await this.workspaceUserService.findWorkspaceUserList(id);
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 초대 가능한 멤버 조회' })
+  @ApiResponse(WorkspaceUserResponse.findInviteUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/invite/:id')
+  public async findInviteUserList(@Param('id') id: number) {
+    return await this.workspaceUserService.findInviteUserList(id);
+  }
 }

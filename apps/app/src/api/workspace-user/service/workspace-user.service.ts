@@ -113,6 +113,48 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * 워크스페이스에 초대 가능한 팀 유저 리스트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findInviteUserList(workspaceId: number) {
+    const findWorkspace = await this.workspaceRepository.findWorkspaceTeamId(
+      workspaceId,
+    );
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException('Not Found Worksapce');
+    }
+
+    const [teamUserList] = await this.teamUserRepository.findTeamUserList(
+      findWorkspace.team.id,
+    );
+
+    const [data] = await this.workspaceUserRepository.findWorkspaceUserList(
+      workspaceId,
+    );
+
+    const list = teamUserList
+      .map((item) => {
+        if (data.length < 1) return item;
+        for (const _ of data) {
+          if (item.id === _.teamUser.id) {
+            return null;
+          }
+
+          return item;
+        }
+      })
+      .filter((item) => item);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Team List to invite workspace',
+      data: { data: list, count: list.length },
+    });
+  }
+
+  /**
    * Find Workspace By Id
    * @param workspaceId
    * @returns
@@ -120,6 +162,18 @@ export default class WorkspaceUserService {
   private async findWorkspaceById(workspaceId: number) {
     return await this.workspaceRepository.findOne({
       where: { id: workspaceId },
+    });
+  }
+
+  /**
+   * Find Workspace By Id
+   * @param workspaceId
+   * @returns
+   */
+  private async findWorkspaceWithTeamById(workspaceId: number) {
+    return await this.workspaceRepository.findOne({
+      where: { id: workspaceId },
+      relations: ['team'],
     });
   }
 
