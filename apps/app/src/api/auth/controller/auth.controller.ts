@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -21,12 +21,17 @@ import {
 } from '../../../response/common';
 import { GetUser } from '../../../common/decorators/user.decorators';
 import User from '../../user/domain/user.entity';
+import { MailService } from '@/src/util/mail/mail.service';
+import SendMailDto from '@/src/util/mail/mail.send.dto';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
 @Controller({ path: '/auth', version: '1' })
 export default class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mailService: MailService,
+  ) {}
 
   @ApiOperation({ summary: '소셜 유저 생성' })
   @ApiBody({ type: RequestSocialUserSaveDto })
@@ -73,5 +78,15 @@ export default class AuthController {
   @Post('/reissue')
   public async reissueToken(@GetUser() user: User) {
     return await this.authService.reissueToken(user);
+  }
+
+  @Get('/')
+  public async test() {
+    const dto = new SendMailDto();
+    dto.email = 'inhoo23@naver.com';
+    dto.subject = 'Hello world';
+    dto.text = 'Hello@';
+    await this.mailService.sendMail(dto);
+    return '';
   }
 }

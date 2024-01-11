@@ -22,6 +22,7 @@
     "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.10.3",
     "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.2.6",
     "@nestjs/config": "^3.1.1",

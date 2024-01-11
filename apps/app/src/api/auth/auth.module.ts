@@ -12,6 +12,7 @@ import JwtRefreshStrategy from './passport/auth.jwt-refresh.strategy';
 import UserModule from '../user/user.module';
 import WorkspaceModule from '../workspace/workspace.module';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';
+import { MailModule } from '@/src/util/mail/mail.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
     WorkspaceModule,
     WorkspaceUserModule,
     PassportModule,
+    MailModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
