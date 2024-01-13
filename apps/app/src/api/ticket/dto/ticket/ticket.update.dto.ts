@@ -30,7 +30,7 @@ export default class RequestTicketUpdateDto {
   content: string;
 
   @ApiProperty({ example: '2024-01-24' })
-  dueDate: Date;
+  dueDate: string;
 
   @ApiProperty({
     example: [

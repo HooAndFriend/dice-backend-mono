@@ -24,7 +24,7 @@ export default class TicketFileRepository extends Repository<TicketFile> {
     const querybuilder = this.createQueryBuilder('file')
       .select(['file.id', 'file.url'])
       .where('file.ticket = :ticketId', { ticketId })
-      .andWhere('file.id NOT IN (:...file)', { file });
+      .andWhere('file.id NOT IN (:file)', { file });
 
     return querybuilder.getManyAndCount();
   }

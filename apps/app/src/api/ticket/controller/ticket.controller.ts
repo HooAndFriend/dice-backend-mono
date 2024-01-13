@@ -156,7 +156,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteEpic[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/epic/:epicId')
-  public async deleteEpic(@Param('epicId') id: number) {}
+  public async deleteEpic(@Param('epicId') id: number) {
+    return this.ticketService.deleteEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 조회' })

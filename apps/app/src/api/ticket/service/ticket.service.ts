@@ -34,6 +34,8 @@ import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import UserRepository from '../../user/repository/user.repository';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
+import Ticket from '../domain/ticket.entity';
+import Epic from '../domain/epic.entity';
 
 @Injectable()
 export default class TicketService {
@@ -94,71 +96,72 @@ export default class TicketService {
 
   // ** Ticket 수정
   public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
-    // const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
-    // if (!findTicket) {
-    //   return CommonResponse.createNotFoundException(
-    //     'Ticket 정보를 찾을 수 없습니다.',
-    //   );
-    // }
-    // if (dto.name.length > 30) {
-    //   return CommonResponse.createBadRequestException(
-    //     'Ticket 이름은 최대 30자 입니다.',
-    //   );
-    // }
-    // const queryRunner = this.dataSource.createQueryRunner();
-    // await queryRunner.connect();
-    // await queryRunner.startTransaction();
-    // try {
-    //   const notChangedFile = [];
-    //   dto.file.forEach(async (item) => {
-    //     if (typeof item == 'string') {
-    //       const file = await this.ticketFileRepository.save({
-    //         admin: user,
-    //         url: item,
-    //         ticket: findTicket,
-    //       });
-    //     } else {
-    //       notChangedFile.push(item);
-    //     }
-    //   });
-    //   const [changedFile, count] =
-    //     await this.ticketFileRepository.findAllChangedFileByTicketId(
-    //       dto.ticketId,
-    //       notChangedFile,
-    //     );
-    //   changedFile.forEach(async (file) => {
-    //     await this.ticketFileRepository.delete({ id: file.id });
-    //   });
-    //   const findWorker = await this.userRepository.findOne({
-    //     where: { id: dto.workerId },
-    //   });
-    //   if (!findWorker) {
-    //     return CommonResponse.createNotFoundException(
-    //       '해당 유저를 찾을 수 없습니다.',
-    //     );
-    //   }
-    //   await this.ticketRepository.update(dto.ticketId, {
-    //     name: dto.name,
-    //     content: dto.content,
-    //     storypoint: dto.storypoint,
-    //     dueDate: dto.dueDate,
-    //     worker: findWorker,
-    //   });
-    //   queryRunner.commitTransaction();
-    //   return CommonResponse.createResponseMessage({
-    //     statusCode: 200,
-    //     message: 'Ticket을 수정합니다.',
-    //   });
-    // } catch (error) {
-    //   this.logger.error(error);
-    //   await queryRunner.rollbackTransaction();
-    //   if (error instanceof HttpException) {
-    //     throw new HttpException(error.message, error.getStatus());
-    //   }
-    //   throw new InternalServerErrorException('Internal Server Error');
-    // } finally {
-    //   await queryRunner.release();
-    // }
+    const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
+    console.log(findTicket);
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+    if (dto.name.length > 30) {
+      return CommonResponse.createBadRequestException(
+        'Ticket 이름은 최대 30자 입니다.',
+      );
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const notChangedFile = [];
+      dto.file.forEach(async (item) => {
+        if (typeof item == 'string') {
+          const file = await this.ticketFileRepository.save({
+            admin: user,
+            url: item,
+            ticket: findTicket,
+          });
+        } else {
+          notChangedFile.push(item);
+        }
+      });
+      const [changedFile, count] =
+        await this.ticketFileRepository.findAllChangedFileByTicketId(
+          dto.ticketId,
+          notChangedFile,
+        );
+      changedFile.forEach(async (file) => {
+        await this.ticketFileRepository.delete({ id: file.id });
+      });
+      const findWorker = await this.userRepository.findOne({
+        where: { id: dto.workerId },
+      });
+      if (!findWorker) {
+        return CommonResponse.createNotFoundException(
+          '해당 유저를 찾을 수 없습니다.',
+        );
+      }
+      await this.ticketRepository.update(findTicket.id, {
+        name: dto.name,
+        content: dto.content,
+        storypoint: dto.storypoint,
+        dueDate: dto.dueDate,
+        worker: findWorker,
+      });
+      queryRunner.commitTransaction();
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: 'Ticket을 수정합니다.',
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   // ** Epic Service
@@ -287,6 +290,41 @@ export default class TicketService {
       statusCode: 200,
       message: 'Epic을 수정합니다.',
     });
+  }
+
+  // Epic 삭제
+  public async deleteEpic(id: number) {
+    // const findEpic = await this.epicRepository.findOne({
+    //   where: { id },
+    // });
+    // if (!findEpic) {
+    //   return CommonResponse.createNotFoundException(
+    //     'Epic 정보를 찾을 수 없습니다.',
+    //   );
+    // }
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
+    // try {
+    //   await queryRunner.manager.delete(Ticket, {
+    //     epic: id,
+    //   });
+    //   await queryRunner.manager.delete(Epic, { id });
+    //   await queryRunner.commitTransaction();
+    //   return CommonResponse.createResponseMessage({
+    //     statusCode: 200,
+    //     message: 'Epic을 삭제합니다.',
+    //   });
+    // } catch (error) {
+    //   this.logger.error(error);
+    //   await queryRunner.rollbackTransaction();
+    //   if (error instanceof HttpException) {
+    //     throw new HttpException(error.message, error.getStatus());
+    //   }
+    //   throw new InternalServerErrorException('Internal Server Error');
+    // } finally {
+    //   await queryRunner.release();
+    // }
   }
 
   // ** Comment Service

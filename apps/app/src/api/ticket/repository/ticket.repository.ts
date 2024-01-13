@@ -10,7 +10,15 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findTicketById(ticketId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.*',
+        'ticket.id',
+        'ticket.name',
+        'ticket.status',
+        'ticket.content',
+        'ticket.content',
+        'ticket.storypoint',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
         'workspace.id',
         'admin.id',
         'admin.nickname',
