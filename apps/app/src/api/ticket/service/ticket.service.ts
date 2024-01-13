@@ -36,6 +36,7 @@ import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import Ticket from '../domain/ticket.entity';
 import Epic from '../domain/epic.entity';
+import TicketComment from '../domain/ticket.comment.entity';
 
 @Injectable()
 export default class TicketService {
@@ -112,8 +113,13 @@ export default class TicketService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      /** file 배열에서
+       * 숫자인 경우: 이미 등록된 파일
+       * 문자열인 경우: 새로 등록된 파일
+       */
       const notChangedFile = [];
       dto.file.forEach(async (item) => {
+        // 새로 등록된 경우 저장
         if (typeof item == 'string') {
           const file = await this.ticketFileRepository.save({
             admin: user,
@@ -124,11 +130,15 @@ export default class TicketService {
           notChangedFile.push(item);
         }
       });
+
+      // 더이상 사용하지 않는 파일 조회
       const [changedFile, count] =
         await this.ticketFileRepository.findAllChangedFileByTicketId(
           dto.ticketId,
           notChangedFile,
         );
+
+      // 사용하지 않는 파일 삭제
       changedFile.forEach(async (file) => {
         await this.ticketFileRepository.delete({ id: file.id });
       });
@@ -151,6 +161,46 @@ export default class TicketService {
       return CommonResponse.createResponseMessage({
         statusCode: 200,
         message: 'Ticket을 수정합니다.',
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  // ** Ticket 삭제
+  public async deleteTicket(id: number) {
+    const findTicket = await this.ticketRepository.findTicketById(id);
+    console.log(findTicket);
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 티켓 삭제와 동시에 파일, 댓글 함께 삭제
+      await queryRunner.manager.delete(TicketFile, { ticket: id });
+
+      await queryRunner.manager.delete(TicketComment, { ticket: id });
+
+      await queryRunner.manager.delete(Ticket, { id });
+
+      await queryRunner.commitTransaction();
+
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: 'Ticket을 삭제합니다.',
       });
     } catch (error) {
       this.logger.error(error);
