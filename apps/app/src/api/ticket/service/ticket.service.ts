@@ -132,16 +132,19 @@ export default class TicketService {
       });
 
       // 더이상 사용하지 않는 파일 조회
-      const [changedFile, count] =
-        await this.ticketFileRepository.findAllChangedFileByTicketId(
-          dto.ticketId,
-          notChangedFile,
-        );
+      if (notChangedFile.length != 0) {
+        const [changedFile, count] =
+          await this.ticketFileRepository.findAllChangedFileByTicketId(
+            dto.ticketId,
+            notChangedFile,
+          );
 
-      // 사용하지 않는 파일 삭제
-      changedFile.forEach(async (file) => {
-        await this.ticketFileRepository.delete({ id: file.id });
-      });
+        // 사용하지 않는 파일 삭제
+        changedFile.forEach(async (file) => {
+          await this.ticketFileRepository.delete({ id: file.id });
+        });
+      }
+
       const findWorker = await this.userRepository.findOne({
         where: { id: dto.workerId },
       });
@@ -344,37 +347,46 @@ export default class TicketService {
 
   // Epic 삭제
   public async deleteEpic(id: number) {
-    // const findEpic = await this.epicRepository.findOne({
-    //   where: { id },
-    // });
-    // if (!findEpic) {
-    //   return CommonResponse.createNotFoundException(
-    //     'Epic 정보를 찾을 수 없습니다.',
-    //   );
-    // }
-    // const queryRunner = this.dataSource.createQueryRunner();
-    // await queryRunner.connect();
-    // await queryRunner.startTransaction();
-    // try {
-    //   await queryRunner.manager.delete(Ticket, {
-    //     epic: id,
-    //   });
-    //   await queryRunner.manager.delete(Epic, { id });
-    //   await queryRunner.commitTransaction();
-    //   return CommonResponse.createResponseMessage({
-    //     statusCode: 200,
-    //     message: 'Epic을 삭제합니다.',
-    //   });
-    // } catch (error) {
-    //   this.logger.error(error);
-    //   await queryRunner.rollbackTransaction();
-    //   if (error instanceof HttpException) {
-    //     throw new HttpException(error.message, error.getStatus());
-    //   }
-    //   throw new InternalServerErrorException('Internal Server Error');
-    // } finally {
-    //   await queryRunner.release();
-    // }
+    const findEpic = await this.epicRepository.findOne({
+      where: { id },
+    });
+    if (!findEpic) {
+      return CommonResponse.createNotFoundException(
+        'Epic 정보를 찾을 수 없습니다.',
+      );
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const [findTicket, count] =
+        await this.ticketRepository.findAllTicketByEpicId(id);
+
+      for (let i = 0; i < count; i++) {
+        let ticket = findTicket[i];
+        await queryRunner.manager.delete(TicketFile, { ticket: ticket.id });
+
+        await queryRunner.manager.delete(TicketComment, { ticket: ticket.id });
+
+        await queryRunner.manager.delete(Ticket, { id: ticket.id });
+      }
+
+      await queryRunner.manager.delete(Epic, { id });
+      await queryRunner.commitTransaction();
+      return CommonResponse.createResponseMessage({
+        statusCode: 200,
+        message: 'Epic을 삭제합니다.',
+      });
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   // ** Comment Service
