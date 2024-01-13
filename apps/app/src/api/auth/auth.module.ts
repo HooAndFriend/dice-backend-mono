@@ -20,7 +20,6 @@ import { MailModule } from '@/src/util/mail/mail.module';
     WorkspaceModule,
     WorkspaceUserModule,
     PassportModule,
-    MailModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
