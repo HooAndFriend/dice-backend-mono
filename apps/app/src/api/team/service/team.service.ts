@@ -13,6 +13,9 @@ import TeamRepository from '../repository/team.repository';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
+
 // ** enum, dto, entity Imports
 import User from '../../user/domain/user.entity';
 import { BadRequestException } from '@/src/exception/CustomException';
@@ -57,6 +60,7 @@ export default class TeamService {
           name: dto.name,
           profile: dto.profile,
           description: dto.description,
+          uuid: uuidv4(),
         }),
       );
 
