@@ -54,7 +54,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
-  public async findAllTicket(@Param('workspaceId') id: number) {}
+  public async findAllTicket(@Param('workspaceId') id: number) {
+    return this.ticketService.findAllTicket(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 상세 조회' })
@@ -62,7 +64,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findOneTicket[404])
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
-  public async findOneTicket(@Param('ticketId') id: number) {}
+  public async findOneTicket(@Param('ticketId') id: number) {
+    return this.ticketService.findOneTicket(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 생성' })

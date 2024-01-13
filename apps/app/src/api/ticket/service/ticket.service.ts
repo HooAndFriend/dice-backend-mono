@@ -55,6 +55,45 @@ export default class TicketService {
 
   // ** Ticket Service
 
+  // ** Ticket 전체 조회
+  public async findAllTicket(id: number) {
+    const findWorkspace = await this.workspaceReposiotry.findOne({
+      where: { id },
+    });
+
+    if (!findWorkspace) {
+      return CommonResponse.createNotFoundException(
+        '워크스페이스를 찾을 수 없습니다.',
+      );
+    }
+
+    const [findTicket, count] =
+      await this.ticketRepository.findAllTicketByWorkspaceId(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Ticket을 전체조회 합니다.',
+      data: { findTicket, count },
+    });
+  }
+
+  // ** Ticket 상세 조회
+  public async findOneTicket(id: number) {
+    const findTicket = await this.ticketRepository.findTicketById(id);
+
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Ticket을 조회 합니다.',
+      data: findTicket,
+    });
+  }
+
   // ** Ticket 저장
   public async saveTicket(dto: RequestTicketSaveDto, user: User) {
     const findEpic = await this.epicRepository.findEpicById(dto.epicId);
