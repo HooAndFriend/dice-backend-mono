@@ -29,7 +29,6 @@ export default class CommentService {
     if(!findQa){
       return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
     }
-    console.log(qaId);
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
     return CommonResponse.createResponse({
