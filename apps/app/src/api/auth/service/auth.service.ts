@@ -227,13 +227,11 @@ export default class AuthService {
 
       if (dto.uuid) {
         const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
-        console.log(1, redisValue);
+
         if (redisValue) {
           const findTeam = await this.teamRepository.findOne({
             where: { uuid: dto.uuid },
           });
-
-          console.log(1, findTeam);
 
           if (findTeam) {
             await queryRunner.manager.save(
