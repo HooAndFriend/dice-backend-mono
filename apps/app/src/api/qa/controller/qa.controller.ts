@@ -42,6 +42,7 @@ import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
+import RequestQaFindDto from '../dto/qa.find.dto';
 // ** Emum Imports
 import { QaStatus } from '../../../common/enum/QaStatus.enum';
 
@@ -57,23 +58,14 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
-  @ApiQuery({name : 'status', required : true, enum: QaStatus})
-  @ApiQuery({name : 'title', required : false, type: String})
-  @ApiQuery({name : 'qaId', required : false, type: String})
-  @ApiQuery({name : 'adminNickname', required : false, type: String})
-  @ApiQuery({name : 'workerNickname', required : false, type: String})
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
   public async findQaList(
-    @Param('workspaceId') workspaceId : number,
-    @Query('status') status?: QaStatus,
-    @Query('title') title?: string,
-    @Query('qaId') qaId?: string,
-    @Query('adminNickname') adminNickname?: string,
-    @Query('workerNickname') workerNickname?: string,
+    @Param('workspaceId') workspaceId: number,
+    @Query() findquery: RequestQaFindDto,
   ) {
-    return await this.qaService.findQaList(workspaceId, status, title, qaId, adminNickname, workerNickname);
+    return await this.qaService.findQaList(workspaceId, findquery);
   }
 
   @ApiBearerAuth('access-token')

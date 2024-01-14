@@ -7,11 +7,12 @@ import CustomRepository from '../../../repository/typeorm-ex.decorator';
 // ** Dto Imports
 import Qa from '../domain/qa.entity';
 // ** Emum Imports
+import RequestQaFindDto from '../dto/qa.find.dto';
 import { QaStatus } from '../../../common/enum/QaStatus.enum';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {
-  public async findQaList(workspaceId : number, status : QaStatus, title : string, qaId : string, adminNickname : string ,workerNickname : string) {
+  public async findQaList(workspaceId : number, findQuery : RequestQaFindDto) {
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
@@ -38,21 +39,22 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.worker', 'worker')
       .leftJoin('qa.file', 'file')
       .where('qa.workspaceId = :workspaceId', { workspaceId });
-
-      if(status !== QaStatus.ALL){
-        queryBuilder.andWhere('qa.status = :status', { status });
+      console.log("findstatus ")
+      console.log("findstatus " , findQuery)
+      if(findQuery.status !== QaStatus.ALL){
+        queryBuilder.andWhere('qa.status = :status', { status : findQuery.status });
       }
-      if (title) {
-        queryBuilder.andWhere('qa.title LIKE :title', { title : `%${title}%` });
+      if (findQuery.title) {
+        queryBuilder.andWhere('qa.title LIKE :title', { title : `%${findQuery.title}%` });
       }
-      if (qaId) {
-        queryBuilder.andWhere('qa.id = :qaId', { qaId });
+      if (findQuery.qaId) {
+        queryBuilder.andWhere('qa.id = :qaId', { qaId : findQuery.qaId });
       }
-      if (adminNickname) {
-        queryBuilder.andWhere('admin.nickname LIKE :adminNickname', { adminNickname : `%${adminNickname}%` });
+      if (findQuery.adminNickname) {
+        queryBuilder.andWhere('admin.nickname LIKE :adminNickname', { adminNickname : `%${findQuery.adminNickname}%` });
       }
-      if (workerNickname) {
-        queryBuilder.andWhere('worker.nickname LIKE :workerNickname', { workerNickname : `%${workerNickname}%` });
+      if (findQuery.workerNickname) {
+        queryBuilder.andWhere('worker.nickname LIKE :workerNickname', { workerNickname : `%${findQuery.workerNickname}%` });
       }
 
     return await queryBuilder.getManyAndCount();

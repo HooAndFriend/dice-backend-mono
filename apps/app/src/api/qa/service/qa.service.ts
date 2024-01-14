@@ -16,6 +16,7 @@ import CommonResponse from '../../../common/dto/api.response';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
+import RequestQaFindDto from '../dto/qa.find.dto';
 import Qa from '@/src/api/qa/domain/qa.entity';
 import { QaStatus } from '../../../common/enum/QaStatus.enum';
 
@@ -30,19 +31,16 @@ export default class QaService {
   ) {}
   
   
-  public async findQaList(workspaceId : number, status : QaStatus, title : string, qaId : string, adminNickname : string ,workerNickname : string) {
+  public async findQaList(workspaceId : number, findQuery : RequestQaFindDto) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: workspaceId },
     });
-
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(
         '워크스페이스를 찾을 수 없습니다.',
       );
     }
-
-    const [data, count] = await this.qaRepository.findQaList(workspaceId, status, title, qaId, adminNickname, workerNickname);
-
+    const [data, count] = await this.qaRepository.findQaList(workspaceId, findQuery);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
