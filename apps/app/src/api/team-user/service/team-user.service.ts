@@ -141,10 +141,22 @@ export default class TeamUserService {
     return await this.teamUserRepository.exist({ where: { id: teamUserId } });
   }
 
+  /**
+   * Get Redis Value
+   * @param email
+   * @param uuid
+   * @returns
+   */
   private async getTeamRedisValue(email: string, uuid: string) {
     return await this.redis.get(`${email}&&${uuid}`);
   }
 
+  /**
+   * Set Redis
+   * @param email
+   * @param uuid
+   * @param role
+   */
   private async setTeamRedis(email: string, uuid: string, role: Role) {
     await this.redis.set(
       `${email}&&${uuid}`,
