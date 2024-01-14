@@ -10,6 +10,7 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '@/src/common/entity/BaseTime.Entity';
+import RequestQaUpdateDto from '../dto/qa.update.dto';
 import Comment from '@/src/api/qa/domain/comment.entity';
 import File from '@/src/api/qa/domain/file.entity';
 import User from '../../user/domain/user.entity';
@@ -81,4 +82,14 @@ export default class Qa extends BaseTimeEntity {
 
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
   workspace: Relation<Workspace>;
+
+  updateQaFromDto(dto : RequestQaUpdateDto, user : User, file : File[]): void {
+    const { title, asIs, toBe, memo} = dto;
+    this.title = title;
+    this.asIs = asIs;
+    this.toBe = toBe;
+    this.memo = memo;
+    this.worker = user;
+    this.file = file;
+  }
 }
