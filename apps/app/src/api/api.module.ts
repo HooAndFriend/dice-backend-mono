@@ -4,7 +4,6 @@ import AuthModule from './auth/auth.module';
 import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
 import WorkspaceUserModule from './workspace-user/workspace-user.module';
-import ErdModule from './erd/erd.module';
 import CollectionModule from './collection/collection.module';
 import DiagramModule from './diagram/diagram.module';
 import TeamModule from './team/team.module';
@@ -18,7 +17,6 @@ import WorkspaceFunctionModule from './workspace-function/workspace-function.mod
     WorkspaceModule,
     WorkspaceUserModule,
     WorkspaceFunctionModule,
-    ErdModule,
     CollectionModule,
     DiagramModule,
     TeamModule,

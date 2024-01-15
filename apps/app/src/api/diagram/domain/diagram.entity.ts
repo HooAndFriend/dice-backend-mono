@@ -9,7 +9,7 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
-import Table from '../../erd/domain/table.entity';
+import Table from './table.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_DIAGRAM' })
