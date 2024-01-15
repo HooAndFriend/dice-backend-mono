@@ -36,11 +36,12 @@ import User from '../../user/domain/user.entity';
 
 // ** Dto Imports
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
-import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
+import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
+import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -106,6 +107,17 @@ export default class TicketController {
   @Delete('/:ticketId')
   public async deleteTicket(@Param('ticketId') id: number) {
     return this.ticketService.deleteTicket(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'TICKET 상태변경' })
+  @ApiBody({ type: RequestTicketStateUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @UseGuards(JwtAccessGuard)
+  @Post('/state/:ticketId')
+  public async updateTicketState(@Body() dto: RequestTicketStateUpdateDto) {
+    return this.ticketService.updateTicketState(dto);
   }
 
   @ApiBearerAuth('access-token')

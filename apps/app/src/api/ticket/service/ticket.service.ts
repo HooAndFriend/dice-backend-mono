@@ -37,6 +37,7 @@ import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import Ticket from '../domain/ticket.entity';
 import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
+import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -211,15 +212,12 @@ export default class TicketService {
         throw new HttpException(error.message, error.getStatus());
       }
       throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
   }
 
   // ** Ticket 삭제
   public async deleteTicket(id: number) {
     const findTicket = await this.ticketRepository.findTicketById(id);
-    console.log(findTicket);
     if (!findTicket) {
       return CommonResponse.createNotFoundException(
         'Ticket 정보를 찾을 수 없습니다.',
@@ -251,9 +249,48 @@ export default class TicketService {
         throw new HttpException(error.message, error.getStatus());
       }
       throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
+  }
+
+  // ** Ticket 상태변경
+  public async updateTicketState(dto: RequestTicketStateUpdateDto) {
+    const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
+    if (!findTicket) {
+      return CommonResponse.createNotFoundException(
+        'Ticket 정보를 찾을 수 없습니다.',
+      );
+    }
+
+    const _date = new Date();
+    const year = _date.getFullYear();
+    const month = _date.getMonth() + 1;
+    const date = _date.getDate();
+
+    switch (dto.status) {
+      case TicketStatus.Reopen:
+        await this.ticketRepository.update(findTicket.id, {
+          status: dto.status,
+          reopenDate: `${year}-${month}-${date}`,
+        });
+        break;
+
+      case TicketStatus.Solved:
+        await this.ticketRepository.update(findTicket.id, {
+          status: dto.status,
+          completeDate: `${year}-${month}-${date}`,
+        });
+        break;
+
+      default:
+        await this.ticketRepository.update(findTicket.id, {
+          status: dto.status,
+        });
+    }
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket 상태를 변경합니다.',
+    });
   }
 
   // ** Epic Service
@@ -423,8 +460,6 @@ export default class TicketService {
         throw new HttpException(error.message, error.getStatus());
       }
       throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
     }
   }
 
