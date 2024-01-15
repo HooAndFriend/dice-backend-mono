@@ -1,32 +1,26 @@
-FROM node:18-alpine as dev
-WORKDIR /app
+FROM node:18-alpine as base
 
-ENV NODE_ENV development
+RUN npm i -g pnpm
+FROM base AS dependencies
+WORKDIR /app
+COPY package.json ./
+RUN pnpm install
+
+FROM base AS build
+WORKDIR /app
 
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+RUN pnpm build
+RUN pnpm prune --prod
 
-RUN yarn --frozen-lockfile && yarn cache clean
+FROM base as prod
 
-FROM node:18-alpine as build
 WORKDIR /app
 
 ENV NODE_ENV development
 
-COPY --from=dev /app .
-
-RUN yarn build
-
-RUN yarn --frozen-lockfile --production && yarn cache clean
-
-FROM node:18-alpine as prod
-
-WORKDIR /app
-
-RUN apk add --no-cache libc6-compat
-
-ENV NODE_ENV development
-
-COPY  --from=build /app .
+COPY --from=build /app .
 
 RUN touch /app/ormlogs.log && chown node:node /app/ormlogs.log
 

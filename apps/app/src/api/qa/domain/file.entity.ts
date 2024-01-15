@@ -20,6 +20,6 @@ export default class File {
   @CreateDateColumn({ name: 'created_date' })
   createdAt: Date;
 
-  @ManyToOne(() => Qa, (qa) => qa.file)
+  @ManyToOne(() => Qa, (qa) => qa.file, {onDelete : 'CASCADE', orphanedRowAction: 'delete'})
   qa: Relation<Qa>;
 }

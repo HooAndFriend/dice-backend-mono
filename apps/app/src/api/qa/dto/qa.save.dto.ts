@@ -3,7 +3,6 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsArray, IsNumber, IsString } from 'class-validator';
-import { QaStatus } from '@/src/common/enum/QaStatus.enum'
 export default class RequestQaSaveDto {
   @ApiProperty({ example: 1 })
   @IsNumber()

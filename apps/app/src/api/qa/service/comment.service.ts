@@ -12,6 +12,7 @@ import CommonResponse from '@/src/common/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import RequestCommentSaveDto from '@/src/api/qa/dto/comment.save.dto'
+import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 
 @Injectable()
 export default class CommentService {
@@ -21,6 +22,21 @@ export default class CommentService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
+  public async findQaComment(qaId: number) {
+    const findQa = await this.qaRepository.findOne({
+      where : {id : qaId},
+    });
+    if(!findQa){
+      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+    }
+    const [data, count] = await this.qacommentRepository.findQaComment(qaId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '댓글을 조회합니다.',
+      data: {data, count}
+    });
+  }
   public async saveComment(dto: RequestCommentSaveDto) {
     const findQa = await this.qaRepository.findOne({
       where : {id : dto.qaId},
@@ -46,6 +62,30 @@ export default class CommentService {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',
+    });
+  }
+  public async updateComment(dto : RequestQaCommentUpdateDto) {
+    await this.qacommentRepository.update(dto.commentId, {
+      content : dto.content,
+    });
+    
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 수정합니다.',
+    });
+  }
+  public async deleteComment(commentid : number) {
+    const findComment = await this.qacommentRepository.findOne({
+      where : {id : commentid},
+    });
+    if(!findComment){
+      return CommonResponse.createNotFoundException('댓글을 찾을 수 없습니다.');
+    }
+    await this.qacommentRepository.remove(findComment);
+    
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 삭제합니다.',
     });
   }
 }
