@@ -10,7 +10,7 @@ import RequestApiUpdateDto from '../dto/request.update.dto';
 
 // ** Custom Module Imports
 import RequestRepository from '../repository/request.repository';
-import CollectionRepository from '../../collection/repository/collection.repository';
+import CollectionRepository from '../repository/collection.repository';
 
 @Injectable()
 export default class RequestService {
