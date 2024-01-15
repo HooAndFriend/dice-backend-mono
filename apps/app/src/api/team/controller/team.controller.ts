@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import TeamService from '../service/team.service';
@@ -47,5 +47,15 @@ export default class TeamController {
     @GetUser() user: User,
   ) {
     return await this.teamService.saveTeam(user, dto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀 조회' })
+  @ApiResponse(TeamResponse.findTeam[200])
+  @ApiResponse(TeamResponse.findTeam[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findTeam(@Param('id') teamId: number) {
+    return await this.teamService.findTeam(teamId);
   }
 }

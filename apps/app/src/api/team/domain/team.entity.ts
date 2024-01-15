@@ -36,6 +36,13 @@ export default class Team extends BaseTimeEntity {
   profile: string;
 
   @Column({
+    type: 'uuid',
+    comment: 'UUID Code',
+    nullable: false,
+  })
+  uuid: string;
+
+  @Column({
     type: 'text',
     comment: '팀 설명',
     nullable: false,

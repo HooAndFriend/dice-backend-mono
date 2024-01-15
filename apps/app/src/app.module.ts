@@ -17,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import ApiModule from '@/src/api/api.module';
 import { TypeOrmExModule } from './repository/typeorm-ex.module';
 import LoggerService from './util/logger/logger.service';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
@@ -40,6 +41,13 @@ import LoggerService from './util/logger/logger.service';
     }),
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
+    }),
+    RedisModule.forRoot({
+      readyLog: true,
+      config: {
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT,
+      },
     }),
     CacheModule.register({
       // store: redisStore,

@@ -26,9 +26,13 @@ export default class WorkspaceUser extends BaseTimeEntity {
   })
   role: Role;
 
-  @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser)
+  @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser, {
+    onDelete: 'CASCADE',
+  })
   teamUser: Relation<TeamUser>;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser)
+  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 }

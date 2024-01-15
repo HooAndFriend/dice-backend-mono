@@ -11,6 +11,8 @@ import WorkspaceUserRepository from '../../workspace-user/repository/workspace-u
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import { Redis } from 'ioredis';
 
 // ** enum, dto, entity, types Imports
 import { InternalServerErrorException } from '../../../exception/CustomException';
@@ -22,6 +24,9 @@ import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from '../../../common/enum/UserType.enum';
 import User from '../../user/domain/user.entity';
+import TeamUserRepository from '../../team-user/repository/team-user.repository';
+import TeamRepository from '../../team/repository/team.repository';
+import Role from '@/src/common/enum/Role';
 
 @Injectable()
 export default class AuthService {
@@ -32,6 +37,9 @@ export default class AuthService {
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly dataSource: DataSource,
+    private readonly teamUserRepository: TeamUserRepository,
+    private readonly teamRepository: TeamRepository,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   private logger = new Logger();
@@ -75,6 +83,26 @@ export default class AuthService {
           user: saveUser,
         }),
       );
+
+      if (dto.uuid) {
+        const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
+
+        if (redisValue) {
+          const findTeam = await this.teamRepository.findOne({
+            where: { uuid: dto.uuid },
+          });
+
+          if (findTeam) {
+            await queryRunner.manager.save(
+              this.teamUserRepository.create({
+                team: findTeam,
+                user: saveUser,
+                role: this.getRole(redisValue),
+              }),
+            );
+          }
+        }
+      }
 
       await queryRunner.commitTransaction();
 
@@ -197,6 +225,26 @@ export default class AuthService {
         }),
       );
 
+      if (dto.uuid) {
+        const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
+
+        if (redisValue) {
+          const findTeam = await this.teamRepository.findOne({
+            where: { uuid: dto.uuid },
+          });
+
+          if (findTeam) {
+            await queryRunner.manager.save(
+              this.teamUserRepository.create({
+                team: findTeam,
+                user: saveUser,
+                role: this.getRole(redisValue),
+              }),
+            );
+          }
+        }
+      }
+
       await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
@@ -276,5 +324,29 @@ export default class AuthService {
 
   public async findRefreshToken({ id }: JwtPayload) {
     return await this.userRepository.findOne({ where: { id } });
+  }
+
+  /**
+   * Get Redis Value
+   * @param email
+   * @param uuid
+   * @returns
+   */
+  private async getTeamRedisValue(email: string, uuid: string) {
+    return await this.redis.get(`${email}&&${uuid}`);
+  }
+
+  /**
+   * Parse Redis Role
+   * @param redisValue
+   * @returns
+   */
+  private getRole(redisValue: string) {
+    const role = redisValue.split('&&')[1];
+
+    if (role === 'VIEWER') return Role.VIEWER;
+    if (role === 'WRITER') return Role.WRITER;
+
+    return Role.ADMIN;
   }
 }

@@ -64,4 +64,18 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return await queryBuilder.getManyAndCount();
   }
+
+  /**
+   * Find Workspace Team Id
+   * @param workspceId
+   * @returns
+   */
+  public async findWorkspaceTeamId(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select(['workspace.id', 'team.id'])
+      .leftJoin('workspace.team', 'team')
+      .where('workspace.id = :workspaceId', { workspaceId });
+
+    return await queryBuilder.getOne();
+  }
 }

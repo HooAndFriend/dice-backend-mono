@@ -17,7 +17,9 @@ export default class Diagram extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.diagram)
+  @ManyToOne(() => Workspace, (workspace) => workspace.diagram, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 
   @OneToMany(() => Table, (table) => table.diagram)

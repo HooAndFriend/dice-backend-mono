@@ -15,4 +15,8 @@ export default class RequestDiceUserSaveDto {
   @ApiProperty({ example: 'Pinomaker' })
   @IsString()
   nickname: string;
+
+  @ApiProperty({ example: 'd5923f2f-0b78-4583-bb34-5181ee44fa60' })
+  @IsString()
+  uuid?: string;
 }
