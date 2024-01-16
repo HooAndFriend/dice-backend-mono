@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsNumber, IsString } from 'class-validator';
 
-export default class RequestCommentUpdateDto {
+export default class RequestTicketCommentUpdateDto {
   @ApiProperty({ example: 2 })
   @IsNumber()
   commentId: number;
