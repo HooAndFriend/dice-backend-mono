@@ -21,7 +21,7 @@ import Columns from '../domain/column.entity';
 import Table from '../domain/table.entity';
 
 // ** Custom Module Imports
-import DiagramRepository from '../../diagram/repository/diagram.repository';
+import DiagramRepository from '../repository/diagram.repository';
 import ColumnsRepository from '../repository/erd.column.repository';
 import TableRepository from '../repository/erd.table.repository';
 import MappingRepository from '../repository/erd.mapping.repository';

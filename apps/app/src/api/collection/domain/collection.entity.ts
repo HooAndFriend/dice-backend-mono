@@ -11,7 +11,7 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import Request from '../../request/domain/request.entity';
+import Request from './request.entity';
 
 @Entity({ name: 'TB_WORKSPACE_COLLECTION' })
 export default class Collection extends BaseTimeEntity {

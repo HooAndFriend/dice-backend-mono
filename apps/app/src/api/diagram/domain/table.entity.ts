@@ -12,7 +12,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import Columns from './column.entity';
 import Mapping from './mapping.entity';
-import Diagram from '../../diagram/domain/diagram.entity';
+import Diagram from './diagram.entity';
 
 @Entity({ name: 'TB_TABLE' })
 export default class Table extends BaseTimeEntity {

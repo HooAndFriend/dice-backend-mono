@@ -11,7 +11,7 @@ import {
 import BaseTimeEntity from '../../../common/entity/BaseTime.Entity';
 import { ApiType } from '../../../common/enum/ApiType.enum';
 import { AuthorizationType } from '../../../common/enum/AuthorizationType.enum';
-import Collection from '../../collection/domain/collection.entity';
+import Collection from './collection.entity';
 import { BodyType } from '../../../common/enum/BodyType.enum';
 
 @Entity({ name: 'TB_WORKSPACE_REQUEST' })
