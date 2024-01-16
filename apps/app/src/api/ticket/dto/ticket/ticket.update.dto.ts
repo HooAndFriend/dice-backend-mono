@@ -34,10 +34,9 @@ export default class RequestTicketUpdateDto {
 
   @ApiProperty({
     example: [
-      1,
       'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E%E1%.png',
     ],
   })
   @IsArray()
-  file: Array<number | string>;
+  file: Array<string>;
 }

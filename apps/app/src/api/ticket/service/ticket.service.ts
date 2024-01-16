@@ -153,37 +153,15 @@ export default class TicketService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      /** file 배열에서
-       * 숫자인 경우: 이미 등록된 파일
-       * 문자열인 경우: 새로 등록된 파일
-       */
-      const notChangedFile = [];
-      dto.file.forEach(async (item) => {
-        // 새로 등록된 경우 저장
-        if (typeof item == 'string') {
-          const file = await this.ticketFileRepository.save({
-            admin: user,
-            url: item,
-            ticket: findTicket,
-          });
-        } else {
-          notChangedFile.push(item);
-        }
-      });
+      await queryRunner.manager.delete(TicketFile, { ticket: dto.ticketId });
 
-      // 더이상 사용하지 않는 파일 조회
-      if (notChangedFile.length != 0) {
-        const [changedFile, count] =
-          await this.ticketFileRepository.findAllChangedFileByTicketId(
-            dto.ticketId,
-            notChangedFile,
-          );
-
-        // 사용하지 않는 파일 삭제
-        changedFile.forEach(async (file) => {
-          await this.ticketFileRepository.delete({ id: file.id });
+      dto.file.forEach(async (url) => {
+        await this.ticketFileRepository.save({
+          admin: user,
+          ticket: findTicket,
+          url,
         });
-      }
+      });
 
       const findWorker = await this.userRepository.findOne({
         where: { id: dto.workerId },
@@ -193,7 +171,7 @@ export default class TicketService {
           '해당 유저를 찾을 수 없습니다.',
         );
       }
-      await this.ticketRepository.update(findTicket.id, {
+      await this.ticketRepository.update(dto.ticketId, {
         name: dto.name,
         content: dto.content,
         storypoint: dto.storypoint,
