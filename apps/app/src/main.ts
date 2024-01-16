@@ -6,10 +6,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 // ** Swagger Config Imports
-import swaggerConfig from './config/swaggerConfig';
+import swaggerConfig from './global/config/swaggerConfig';
 
 // ** Logger Config Imports
-import LoggerService from './util/logger/logger.service';
+import LoggerService from './global/util/logger/logger.service';
 
 // ** Express Imports
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -19,10 +19,10 @@ import csurf from 'csurf';
 import helmet from 'helmet';
 
 // ** Interceptor Imports
-import { LoggingInterceptor } from './interceptor/LoggingInterceptor';
+import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 
 // ** Filter Imports
-import { CustomExceptionFilter } from './filter/CustomExceptionFilter';
+import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 
 async function bootstrap() {
   // ** Server Container 생성

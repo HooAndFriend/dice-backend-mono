@@ -14,10 +14,10 @@ import * as redisStore from 'cache-manager-redis-store';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
-import ApiModule from '@/src/api/api.module';
-import { TypeOrmExModule } from './repository/typeorm-ex.module';
-import LoggerService from './util/logger/logger.service';
+import { TypeOrmExModule } from './global/repository/typeorm-ex.module';
+import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import CoreModule from '@/src/modules/core.module';
 
 @Module({
   imports: [
@@ -56,7 +56,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
       isGlobal: true,
     }),
     TypeOrmExModule,
-    ApiModule,
+    CoreModule,
   ],
   controllers: [],
   providers: [

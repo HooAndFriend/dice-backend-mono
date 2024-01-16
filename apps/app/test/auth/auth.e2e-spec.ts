@@ -8,7 +8,7 @@ import { AppModule } from '../../src/app.module';
 import request from 'supertest';
 import { NestApplication } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { CustomExceptionFilter } from '../../src/filter/CustomExceptionFilter';
+import { CustomExceptionFilter } from '../../src/global/filter/CustomExceptionFilter';
 
 import csurf from 'csurf';
 import helmet from 'helmet';
