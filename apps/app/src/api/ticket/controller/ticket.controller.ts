@@ -56,7 +56,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
   public async findAllTicket(@Param('workspaceId') id: number) {
-    return this.ticketService.findAllTicket(id);
+    return await this.ticketService.findAllTicket(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -66,7 +66,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
-    return this.ticketService.findOneTicket(id);
+    return await this.ticketService.findOneTicket(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -81,7 +81,7 @@ export default class TicketController {
     @Body() dto: RequestTicketSaveDto,
     @GetUser() user: User,
   ) {
-    return this.ticketService.saveTicket(dto, user);
+    return await this.ticketService.saveTicket(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -96,7 +96,7 @@ export default class TicketController {
     @Body() dto: RequestTicketUpdateDto,
     @GetUser() user: User,
   ) {
-    return this.ticketService.updateTicket(dto, user);
+    return await this.ticketService.updateTicket(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -106,7 +106,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Delete('/:ticketId')
   public async deleteTicket(@Param('ticketId') id: number) {
-    return this.ticketService.deleteTicket(id);
+    return await this.ticketService.deleteTicket(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -117,7 +117,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Post('/state/:ticketId')
   public async updateTicketState(@Body() dto: RequestTicketStateUpdateDto) {
-    return this.ticketService.updateTicketState(dto);
+    return await this.ticketService.updateTicketState(dto);
   }
 
   @ApiBearerAuth('access-token')
@@ -126,7 +126,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic/:workspaceId')
   public async findAllEpic(@Param('workspaceId') id: number) {
-    return this.ticketService.findAllEpic(id);
+    return await this.ticketService.findAllEpic(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -136,7 +136,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic/detail/:epicId')
   public async findOneEpic(@Param('epicId') id: number) {
-    return this.ticketService.findOneEpic(id);
+    return await this.ticketService.findOneEpic(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -175,7 +175,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Delete('/epic/:epicId')
   public async deleteEpic(@Param('epicId') id: number) {
-    return this.ticketService.deleteEpic(id);
+    return await this.ticketService.deleteEpic(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -185,7 +185,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:ticketId')
   public async findComment(@Param('ticketId') id: number) {
-    return this.ticketService.findComment(id);
+    return await this.ticketService.findComment(id);
   }
 
   @ApiBearerAuth('access-token')
@@ -199,7 +199,7 @@ export default class TicketController {
     @Body() dto: RequestTicketCommentSaveDto,
     @GetUser() user: User,
   ) {
-    return this.ticketService.saveComment(dto, user);
+    return await this.ticketService.saveComment(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -213,7 +213,7 @@ export default class TicketController {
     @Body() dto: RequestTicketCommentUpdateDto,
     @GetUser() user: User,
   ) {
-    return this.ticketService.updateComment(dto, user);
+    return await this.ticketService.updateComment(dto, user);
   }
 
   @ApiBearerAuth('access-token')
@@ -223,6 +223,6 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:commentId')
   public async deleteComment(@Param('commentId') id: number) {
-    return this.ticketService.deleteComment(id);
+    return await this.ticketService.deleteComment(id);
   }
 }
