@@ -4,8 +4,6 @@ import AuthModule from './auth/auth.module';
 import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
 import WorkspaceUserModule from './workspace-user/workspace-user.module';
-import CollectionModule from './collection/collection.module';
-import DiagramModule from './diagram/diagram.module';
 import TeamModule from './team/team.module';
 import TeamUserModule from './team-user/team-user.module';
 import QaModule from './qa/qa.module';
@@ -19,8 +17,6 @@ import TicketModule from './ticket/ticket.module';
     WorkspaceModule,
     WorkspaceUserModule,
     WorkspaceFunctionModule,
-    CollectionModule,
-    DiagramModule,
     TeamModule,
     TeamUserModule,
     QaModule,
