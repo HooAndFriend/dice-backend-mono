@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export default class RequestTicketUpdateDto {
   @ApiProperty({ example: 2 })
@@ -30,10 +30,13 @@ export default class RequestTicketUpdateDto {
   content: string;
 
   @ApiProperty({ example: '2024-01-24' })
-  @IsDate()
-  dueDate: Date;
+  dueDate: string;
 
-  @ApiProperty({ example: [1, 2, 3, 4] })
+  @ApiProperty({
+    example: [
+      'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E%E1%.png',
+    ],
+  })
   @IsArray()
-  file: number[];
+  file: Array<string>;
 }

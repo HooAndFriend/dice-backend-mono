@@ -121,6 +121,17 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  updateTicketState: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket 상태를 변경합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Ticket 정보를 찾을 수 없습니다.',
+    }),
+  },
   findAllEpic: {
     200: createResponse({
       statusCode: 200,

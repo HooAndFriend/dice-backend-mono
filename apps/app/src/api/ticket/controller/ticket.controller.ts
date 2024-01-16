@@ -36,11 +36,12 @@ import User from '../../user/domain/user.entity';
 
 // ** Dto Imports
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
-import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import RequestCommentSaveDto from '../dto/comment/comment.save.dto';
-import RequestCommentUpdateDto from '../dto/comment/comment.update.dto';
+import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
+import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
+import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
+import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -54,7 +55,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
-  public async findAllTicket(@Param('workspaceId') id: number) {}
+  public async findAllTicket(@Param('workspaceId') id: number) {
+    return await this.ticketService.findAllTicket(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 상세 조회' })
@@ -62,7 +65,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findOneTicket[404])
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
-  public async findOneTicket(@Param('ticketId') id: number) {}
+  public async findOneTicket(@Param('ticketId') id: number) {
+    return await this.ticketService.findOneTicket(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 생성' })
@@ -75,7 +80,9 @@ export default class TicketController {
   public async saveTicket(
     @Body() dto: RequestTicketSaveDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.saveTicket(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 수정' })
@@ -88,7 +95,9 @@ export default class TicketController {
   public async updateTicket(
     @Body() dto: RequestTicketUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.updateTicket(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 삭제' })
@@ -96,22 +105,39 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteTicket[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/:ticketId')
-  public async deleteTicket(@Param('ticketId') id: number) {}
+  public async deleteTicket(@Param('ticketId') id: number) {
+    return await this.ticketService.deleteTicket(id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'TICKET 상태변경' })
+  @ApiBody({ type: RequestTicketStateUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @UseGuards(JwtAccessGuard)
+  @Post('/state/:ticketId')
+  public async updateTicketState(@Body() dto: RequestTicketStateUpdateDto) {
+    return await this.ticketService.updateTicketState(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 리스트 조회' })
   @ApiResponse(TicketResponse.findAllEpic[200])
   @UseGuards(JwtAccessGuard)
   @Get('/epic/:workspaceId')
-  public async findAllEpic() {}
+  public async findAllEpic(@Param('workspaceId') id: number) {
+    return await this.ticketService.findAllEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 상세조회' })
   @ApiResponse(TicketResponse.findOneEpic[200])
   @ApiResponse(TicketResponse.findOneEpic[404])
   @UseGuards(JwtAccessGuard)
-  @Post('/epic/detail/:epicId')
-  public async findOneEpic(@Param('epciId') id: number) {}
+  @Get('/epic/detail/:epicId')
+  public async findOneEpic(@Param('epicId') id: number) {
+    return await this.ticketService.findOneEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 생성' })
@@ -123,7 +149,9 @@ export default class TicketController {
   public async saveEpic(
     @Body() dto: RequestEpicSaveDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.saveEpic(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 수정' })
@@ -136,7 +164,9 @@ export default class TicketController {
   public async updateEpic(
     @Body() dto: RequestEpicUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.updateEpic(dto);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'EPIC 삭제' })
@@ -144,7 +174,9 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteEpic[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/epic/:epicId')
-  public async deleteEpic(@Param('epicId') id: number) {}
+  public async deleteEpic(@Param('epicId') id: number) {
+    return await this.ticketService.deleteEpic(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 조회' })
@@ -152,28 +184,37 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findComment[404])
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:ticketId')
-  public async findComment() {}
+  public async findComment(@Param('ticketId') id: number) {
+    return await this.ticketService.findComment(id);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 생성' })
-  @ApiBody({ type: RequestCommentSaveDto })
+  @ApiBody({ type: RequestTicketCommentSaveDto })
   @ApiResponse(TicketResponse.saveComment[200])
   @ApiResponse(TicketResponse.saveComment[404])
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment(dto: RequestCommentSaveDto, @GetUser() user: User) {}
+  public async saveComment(
+    @Body() dto: RequestTicketCommentSaveDto,
+    @GetUser() user: User,
+  ) {
+    return await this.ticketService.saveComment(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 수정' })
-  @ApiBody({ type: RequestCommentUpdateDto })
+  @ApiBody({ type: RequestTicketCommentUpdateDto })
   @ApiResponse(TicketResponse.updateComment[200])
   @ApiResponse(TicketResponse.updateComment[404])
   @UseGuards(JwtAccessGuard)
   @Patch('/comment')
   public async updateComment(
-    dto: RequestCommentUpdateDto,
+    @Body() dto: RequestTicketCommentUpdateDto,
     @GetUser() user: User,
-  ) {}
+  ) {
+    return await this.ticketService.updateComment(dto, user);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'COMMENT 삭제' })
@@ -181,5 +222,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.deleteComment[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:commentId')
-  public async deleteComment(@Param('commentId') id: number) {}
+  public async deleteComment(@Param('commentId') id: number) {
+    return await this.ticketService.deleteComment(id);
+  }
 }
