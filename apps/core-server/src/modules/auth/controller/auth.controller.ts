@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Inject } from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -21,7 +21,6 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
-import { MailService } from '@/src/global/util/mail/mail.service';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
