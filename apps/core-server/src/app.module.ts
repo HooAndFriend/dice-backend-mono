@@ -1,7 +1,6 @@
 // ** Nest Imports
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 // ** Cache Imports
@@ -38,9 +37,6 @@ import CoreModule from '@/src/modules/core.module';
       logger: 'file',
       charset: 'utf8mb4_unicode_ci',
       timezone: '+09:00',
-    }),
-    DevtoolsModule.register({
-      http: process.env.NODE_ENV !== 'production',
     }),
     RedisModule.forRoot({
       readyLog: true,
