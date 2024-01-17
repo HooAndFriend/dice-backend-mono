@@ -1,6 +1,6 @@
 // ** Nest Imports
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +10,8 @@ import { TypeOrmExModule } from './global/repository/typeorm-ex.module';
 import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import CoreModule from '@/src/modules/log.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -38,10 +40,27 @@ import CoreModule from '@/src/modules/log.module';
         port: +process.env.REDIS_PORT,
       },
     }),
+    ClientsModule.registerAsync([
+      {
+        name: 'RMQ_SERVICE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     TypeOrmExModule,
     CoreModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [LoggerService],
 })
 export class AppModule {}

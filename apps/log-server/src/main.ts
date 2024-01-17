@@ -23,12 +23,24 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 
 // ** Filter Imports
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
     snapshot: true,
+  });
+
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://localhost:5672'],
+      queue: 'RMQ_SERVICE',
+      queueOptions: {
+        durable: false,
+      },
+    },
   });
 
   // ** Base URL
@@ -65,6 +77,7 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
+  await app.startAllMicroservices();
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();

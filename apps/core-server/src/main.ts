@@ -1,6 +1,7 @@
 // ** Nest Imports
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
 import { AppModule } from './app.module';
@@ -40,6 +41,17 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://localhost:5672'],
+      queue: 'RMQ_SERVICE',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+
   // ** Logger
   app.useLogger(app.get(LoggerService));
 
@@ -65,6 +77,7 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
+  await app.startAllMicroservices();
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();
