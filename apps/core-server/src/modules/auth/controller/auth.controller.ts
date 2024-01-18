@@ -21,12 +21,16 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
+import { ClientProxy } from '@nestjs/microservices';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
 @Controller({ path: '/auth', version: '1' })
 export default class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
+  ) {}
 
   @ApiOperation({ summary: '소셜 유저 생성' })
   @ApiBody({ type: RequestSocialUserSaveDto })
@@ -53,7 +57,14 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
   public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
-    return await this.authService.loginDiceUser(dto);
+    const response = await this.authService.loginDiceUser(dto);
+    const pattern = { cmd: 'send-message' };
+
+    this.rmqClient
+      .send<string>(pattern, { url: '/api/v1/url', data: dto, response })
+      .toPromise();
+
+    return response;
   }
 
   @ApiOperation({ summary: '다이스 유저 생성' })

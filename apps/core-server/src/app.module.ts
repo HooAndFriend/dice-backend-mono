@@ -32,7 +32,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: ['dist/api/**/*.entity.js'],
+      entities: ['dist/modules/**/*.entity.js'],
       synchronize: true,
       logging: true,
       logger: 'file',
@@ -52,23 +52,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       // port: +process.env.REDIS_PORT,
       isGlobal: true,
     }),
-    ClientsModule.registerAsync([
-      {
-        name: 'RMQ_SERVICE',
-        imports: [ConfigModule],
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.RMQ,
-          options: {
-            urls: [configService.get<string>('RMQ_URL')],
-            queue: configService.get<string>('RMQ_QUE'),
-            queueOptions: {
-              durable: false,
-            },
-          },
-        }),
-        inject: [ConfigService],
-      },
-    ]),
     TypeOrmExModule,
     CoreModule,
   ],

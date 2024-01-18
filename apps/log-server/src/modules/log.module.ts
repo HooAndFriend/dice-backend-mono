@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import RequestLogModule from './request-log/request-log.module';
 
 @Module({
-  imports: [],
+  imports: [RequestLogModule],
   providers: [],
   exports: [],
   controllers: [],

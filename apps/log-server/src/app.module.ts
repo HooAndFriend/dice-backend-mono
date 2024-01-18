@@ -1,6 +1,7 @@
 // ** Nest Imports
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,9 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from './global/repository/typeorm-ex.module';
 import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import CoreModule from '@/src/modules/log.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AppController } from './app.controller';
+import LogModule from '@/src/modules/log.module';
 
 @Module({
   imports: [
@@ -26,7 +25,7 @@ import { AppController } from './app.controller';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: ['dist/api/**/*.entity.js'],
+      entities: ['dist/modules/**/*.entity.js'],
       synchronize: true,
       logging: true,
       logger: 'file',
@@ -58,9 +57,9 @@ import { AppController } from './app.controller';
       },
     ]),
     TypeOrmExModule,
-    CoreModule,
+    LogModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [LoggerService],
 })
 export class AppModule {}
