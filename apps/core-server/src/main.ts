@@ -62,7 +62,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // ** Interceptor
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  // app.useGlobalInterceptors(new LoggingInterceptor());
 
   // ** Cors Setting
   app.enableCors();

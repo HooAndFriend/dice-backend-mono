@@ -1,13 +1,5 @@
 // ** Nest Imports
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Get,
-  Inject,
-  Ip,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Ip } from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -29,17 +21,12 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
-import { ClientProxy } from '@nestjs/microservices';
-import RequestLogDto from '@/src/global/dto/request-log.dto';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
 @Controller({ path: '/auth', version: '1' })
 export default class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: '소셜 유저 생성' })
   @ApiBody({ type: RequestSocialUserSaveDto })
@@ -66,27 +53,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
   public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
-    const response = await this.authService.loginDiceUser(dto);
-
-    this.rmqClient
-      .send<RequestLogDto>(
-        { cmd: 'request-log' },
-        {
-          requestUrl: '/api/v1/url',
-          requestBody: dto,
-          requestMethod: 'POST',
-          responseBody: response,
-          serverName: 'core-server',
-          userId: dto.email,
-          ip,
-        },
-      )
-      .toPromise()
-      .catch((err) => {
-        console.log(err);
-      });
-
-    return response;
+    return await this.authService.loginDiceUser(dto);
   }
 
   @ApiOperation({ summary: '다이스 유저 생성' })

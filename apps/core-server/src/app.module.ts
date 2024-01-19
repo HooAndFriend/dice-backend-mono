@@ -18,6 +18,7 @@ import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 
 @Module({
   imports: [
@@ -46,6 +47,23 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         port: +process.env.REDIS_PORT,
       },
     }),
+    ClientsModule.registerAsync([
+      {
+        name: 'RMQ_SERVICE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     CacheModule.register({
       // store: redisStore,
       // host: process.env.REDIS_HOST,
@@ -61,6 +79,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
     },
   ],
 })
