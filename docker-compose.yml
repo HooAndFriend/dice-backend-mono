@@ -1,5 +1,57 @@
 version: '3'
 services:
+  auth:
+    build:
+      context: ./apps/auth-server
+    ports:
+      - 8280:8280
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
+  core:
+    build:
+      context: ./apps/core-server
+    ports:
+      - 8080:8080
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
+  log:
+    build:
+      context: ./apps/log-server
+    ports:
+      - 8180:8180
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
+  push:
+    build:
+      context: ./apps/push-server
+    ports:
+      - 8380:8380
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
   redis:
     image: redis:latest
     ports:
