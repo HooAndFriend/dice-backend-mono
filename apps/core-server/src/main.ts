@@ -65,4 +65,10 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(process.env.SERVER_PORT);
 }
-bootstrap();
+bootstrap()
+  .then((res) => {
+    console.log(`CORE SERVER START : ${process.env.SERVER_ENV}`);
+  })
+  .catch((error) => {
+    console.error(`CORE SERVER START FAILED : ${JSON.stringify(error)}`);
+  });
