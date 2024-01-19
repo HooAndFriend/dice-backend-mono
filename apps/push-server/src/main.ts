@@ -29,7 +29,7 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://localhost:5672'],
+      urls: [process.env.RMQ_URL],
       queue: 'RMQ_SERVICE',
       queueOptions: {
         durable: false,
@@ -67,8 +67,8 @@ async function bootstrap() {
 }
 bootstrap()
   .then((res) => {
-    console.log(`LOG SERVER START : ${process.env.SERVER_ENV}`);
+    console.log(`PUSH SERVER START : ${process.env.SERVER_ENV}`);
   })
   .catch((error) => {
-    console.error(`CORE SERVER START FAILED : ${JSON.stringify(error)}`);
+    console.error(`PUSH SERVER START FAILED : ${JSON.stringify(error)}`);
   });
