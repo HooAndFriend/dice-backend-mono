@@ -4,6 +4,17 @@ services:
     image: redis:latest
     ports:
       - 6379:6379
+    networks:
+      - dice-networks
+    environment:
+      - TZ=Asia/Seoul
+
+  redis-cache:
+    image: redis:latest
+    ports:
+      - 6380:6379
+    networks:
+      - dice-networks
     environment:
       - TZ=Asia/Seoul
 
@@ -12,19 +23,20 @@ services:
     ports:
       - 5672:5672
       - 15050:15672
-  # mysql-db:
-  #   image: mysql:latest
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: qwer1595
-  #     MYSQL_DATABASE: nest-test
-  #     MYSQL_USER: admin
-  #     MYSQL_PASSWORD: qwer1595
-  #   ports:
-  #     - 3306:3306
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
-  #   networks:
-  #     - my-network
 
-volumes:
-  mysql-data:
+  db:
+    image: mysql:latest
+    ports:
+      - '3307:3306'
+    networks:
+      - dice-networks
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwer1595@!
+      MYSQL_DATABASE: core
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: qwer1595@!
+
+networks:
+  dice-networks:
