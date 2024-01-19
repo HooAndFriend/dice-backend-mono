@@ -1,7 +1,7 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_FILTER, APP_PIPE } from '@nestjs/core';
 
 // ** Cache Imports
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
@@ -19,6 +19,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
+import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 
 @Module({
   imports: [
@@ -65,9 +66,9 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
       },
     ]),
     CacheModule.register({
-      // store: redisStore,
-      // host: process.env.REDIS_HOST,
-      // port: +process.env.REDIS_PORT,
+      store: redisStore,
+      host: process.env.REDIS_CACHE_HOST,
+      port: +process.env.REDIS_CACHE_PORT,
       isGlobal: true,
     }),
     TypeOrmExModule,
@@ -83,6 +84,14 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CustomExceptionFilter,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
     },
   ],
 })

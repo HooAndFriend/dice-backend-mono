@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 
@@ -18,12 +18,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
-
-// ** Interceptor Imports
-import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
-
-// ** Filter Imports
-import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 
 async function bootstrap() {
   // ** Server Container 생성
@@ -54,15 +48,6 @@ async function bootstrap() {
 
   // ** Logger
   app.useLogger(app.get(LoggerService));
-
-  // ** FIlter 개념
-  app.useGlobalFilters(new CustomExceptionFilter());
-
-  // ** Global Pipe Line
-  app.useGlobalPipes(new ValidationPipe());
-
-  // ** Interceptor
-  // app.useGlobalInterceptors(new LoggingInterceptor());
 
   // ** Cors Setting
   app.enableCors();
