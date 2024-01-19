@@ -35,7 +35,6 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         next: (response: CommonResponseType) => {
-          console.log(request.user);
           this.logger.log(`${response.statusCode} : ${response.message}`);
           this.rmqClient
             .send<RequestLogDto>(
