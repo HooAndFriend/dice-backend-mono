@@ -1,12 +1,5 @@
 // ** Typeorm Imports
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Relation,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '@/src/global/domain/BaseTime.Entity';
@@ -51,6 +44,15 @@ export default class RequestLog extends BaseTimeEntity {
     nullable: false,
   })
   requestUrl: string;
+
+  @Column({
+    type: 'varchar',
+    length: 10,
+    comment: '요청 Method',
+    name: 'request_method',
+    nullable: false,
+  })
+  requestMethod: string;
 
   @Column({
     type: 'text',

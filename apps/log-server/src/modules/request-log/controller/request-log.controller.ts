@@ -12,7 +12,13 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { MessagePattern } from '@nestjs/microservices';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
+import RequestLogDto from '../dto/request-log.dto';
 
 @ApiTags('Workspace Function')
 @ApiResponse(createServerExceptionResponse())
@@ -21,9 +27,11 @@ import { MessagePattern } from '@nestjs/microservices';
 export default class RequestLogController {
   constructor(private readonly requestLogService: RequestLogService) {}
 
-  @MessagePattern({ cmd: 'send-message' })
-  async handleMessage(data: string): Promise<string> {
-    console.log(`Received message: ${data}`);
-    return 'Message sent successfully!';
+  @MessagePattern({ cmd: 'request-log' })
+  async handleMessage(
+    @Payload() data: RequestLogDto,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    await this.requestLogService.saveRequestLog(data);
   }
 }

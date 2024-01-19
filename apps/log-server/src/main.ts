@@ -77,7 +77,7 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
-  // await app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();

@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Controller, Post, Body, UseGuards, Get, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Inject,
+  Ip,
+} from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -22,6 +30,7 @@ import {
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
 import { ClientProxy } from '@nestjs/microservices';
+import RequestLogDto from '@/src/global/dto/request-log.dto';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -56,13 +65,26 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[400])
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
-  public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
+  public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
     const response = await this.authService.loginDiceUser(dto);
-    const pattern = { cmd: 'send-message' };
 
     this.rmqClient
-      .send<string>(pattern, { url: '/api/v1/url', data: dto, response })
-      .toPromise();
+      .send<RequestLogDto>(
+        { cmd: 'request-log' },
+        {
+          requestUrl: '/api/v1/url',
+          requestBody: dto,
+          requestMethod: 'POST',
+          responseBody: response,
+          serverName: 'core-server',
+          userId: dto.email,
+          ip,
+        },
+      )
+      .toPromise()
+      .catch((err) => {
+        console.log(err);
+      });
 
     return response;
   }
