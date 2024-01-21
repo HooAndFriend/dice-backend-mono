@@ -3,7 +3,7 @@ if [ $# -eq 0 ]; then
     exit 1
 elif [ $1 = "core" ]; then
     rsync -av --exclude='node_modules' ./apps/core-server/ dice:~/dice/apps/core-server/
-    # ssh -t dice "sh ./dice/restart.sh"
+    ssh -t dice "sh ./dice/restart.sh core"
 elif [ $1 = "auth" ]; then
     rsync -av --exclude='node_modules' ./apps/auth-server/ dice:~/dice/apps/auth-server/
     ssh -t dice "sh ./dice/restart.sh auth"
