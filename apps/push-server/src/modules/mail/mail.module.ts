@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import MailService from './service/mail.service';
+import MailController from './controller/mail.controller';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import MailService from './service/mail.service';
     }),
   ],
   exports: [],
-  controllers: [],
+  controllers: [MailController],
   providers: [MailService],
 })
 export default class MailModule {}

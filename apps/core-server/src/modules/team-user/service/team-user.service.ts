@@ -1,5 +1,6 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 // ** Redis Imports
 import Redis from 'ioredis';
@@ -14,6 +15,8 @@ import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
 import dayjs from 'dayjs';
 import { MailService } from '@/src/global/util/mail/mail.service';
+
+// ** Dto Imports
 import SendMailDto from '@/src/global/util/mail/mail.send.dto';
 
 @Injectable()
@@ -22,6 +25,7 @@ export default class TeamUserService {
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
     private readonly mailService: MailService,
+    @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -66,7 +70,7 @@ export default class TeamUserService {
       'Invite Team',
     );
 
-    await this.mailService.sendMail(sendMail);
+    await this.sendMail(sendMail);
     await this.setTeamRedis(dto.email, team.uuid, dto.role);
 
     return CommonResponse.createResponseMessage({
@@ -162,5 +166,18 @@ export default class TeamUserService {
       `${email}&&${uuid}`,
       `${dayjs().format('YYYYMMDD')}&&${role}`,
     );
+  }
+
+  /**
+   * Send Mail
+   * @param dto
+   */
+  private async sendMail(dto: SendMailDto) {
+    this.rmqClient
+      .send<SendMailDto>({ cmd: 'send-single-mail' }, dto)
+      .toPromise()
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

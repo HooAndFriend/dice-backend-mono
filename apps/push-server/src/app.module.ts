@@ -9,7 +9,7 @@ import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
-import AuthModule from '@/src/modules/push.module';
+import PushModule from '@/src/modules/push.module';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import AuthModule from '@/src/modules/push.module';
         inject: [ConfigService],
       },
     ]),
-    AuthModule,
+    PushModule,
   ],
   controllers: [],
   providers: [

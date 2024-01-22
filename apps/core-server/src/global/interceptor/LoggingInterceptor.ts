@@ -36,23 +36,23 @@ export class LoggingInterceptor implements NestInterceptor {
       tap({
         next: (response: CommonResponseType) => {
           this.logger.log(`${response.statusCode} : ${response.message}`);
-          this.rmqClient
-            .send<RequestLogDto>(
-              { cmd: 'request-log' },
-              {
-                requestUrl: request.url,
-                requestBody: request.body,
-                requestMethod: request.method,
-                responseBody: response,
-                serverName: 'core-server',
-                userId: request.user ? request.user.email : '',
-                ip: request.ip,
-              },
-            )
-            .toPromise()
-            .catch((err) => {
-              console.log(err);
-            });
+          // this.rmqClient
+          //   .send<RequestLogDto>(
+          //     { cmd: 'request-log' },
+          //     {
+          //       requestUrl: request.url,
+          //       requestBody: request.body,
+          //       requestMethod: request.method,
+          //       responseBody: response,
+          //       serverName: 'core-server',
+          //       userId: request.user ? request.user.email : '',
+          //       ip: request.ip,
+          //     },
+          //   )
+          //   .toPromise()
+          //   .catch((err) => {
+          //     console.log(err);
+          //   });
         },
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         error: (error: Error) => {},
