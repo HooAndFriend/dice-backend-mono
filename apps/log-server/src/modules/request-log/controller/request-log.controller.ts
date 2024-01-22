@@ -27,7 +27,7 @@ import RequestLogDto from '../dto/request-log.dto';
 export default class RequestLogController {
   constructor(private readonly requestLogService: RequestLogService) {}
 
-  @MessagePattern({ cmd: 'request-log' })
+  @MessagePattern('request-log')
   async handleMessage(
     @Payload() data: RequestLogDto,
     @Ctx() context: RmqContext,
