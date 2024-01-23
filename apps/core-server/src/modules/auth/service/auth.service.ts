@@ -15,7 +15,10 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 // ** enum, dto, entity, types Imports
-import { InternalServerErrorException } from '../../../global/exception/CustomException';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '../../../global/exception/CustomException';
 import { JwtPayload } from '../../../global/types';
 import CommonResponse from '../../../global/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
@@ -50,14 +53,23 @@ export default class AuthService {
    * @returns
    */
   public async saveSocialUser(dto: RequestSocialUserSaveDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { token: dto.token },
+    const isExited = await this.userRepository.exist({
+      where: {
+        type: dto.type,
+        token: dto.token,
+      },
     });
 
-    if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 회원가입한 유저 입니다.',
-      );
+    if (isExited) {
+      throw new BadRequestException('이미 회원가입한 유저 입니다.');
+    }
+
+    const isExistedByEmaiil = await this.userRepository.exist({
+      where: { email: dto.email },
+    });
+
+    if (isExistedByEmaiil) {
+      throw new BadRequestException('사용 중인 이메일 입니다.');
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
