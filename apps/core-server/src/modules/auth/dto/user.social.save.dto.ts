@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { UserType } from '../../../global/enum/UserType.enum';
 
 export default class RequestSocialUserSaveDto {
@@ -23,6 +23,7 @@ export default class RequestSocialUserSaveDto {
   type: UserType;
 
   @ApiProperty({ example: 'd5923f2f-0b78-4583-bb34-5181ee44fa60' })
+  @IsOptional()
   @IsString()
   uuid?: string;
 }

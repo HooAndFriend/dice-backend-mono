@@ -70,6 +70,7 @@ export default class AuthService {
         this.userRepository.create({
           token: dto.token,
           nickname: dto.nickname,
+          email: dto.email,
           type: dto.type,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
