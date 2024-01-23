@@ -35,17 +35,6 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: [process.env.RMQ_URL],
-      queue: 'RMQ_SERVICE',
-      queueOptions: {
-        durable: false,
-      },
-    },
-  });
-
   // ** Logger
   app.useLogger(app.get(LoggerService));
 
@@ -62,7 +51,6 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
-  await app.startAllMicroservices();
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap()
