@@ -89,6 +89,6 @@ services:
       MYSQL_DATABASE: core
       MYSQL_USER: admin
       MYSQL_PASSWORD: qwer1595@!
-
+    command: --default-time-zone=Asia/Seoul
 networks:
   dice-networks:
