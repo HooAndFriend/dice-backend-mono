@@ -14,12 +14,14 @@ import TeamUserRepository from './repository/team-user.repository';
 import TeamUser from './domain/team-user.entity';
 import TeamModule from '../team/team.module';
 import { MailModule } from '@/src/global/util/mail/mail.module';
+import UserModule from '../user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TeamUser]),
     TypeOrmExModule.forCustomRepository([TeamUserRepository]),
     forwardRef(() => TeamModule),
+    UserModule,
     MailModule,
     ClientsModule.registerAsync([
       {

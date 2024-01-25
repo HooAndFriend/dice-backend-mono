@@ -18,6 +18,8 @@ import { MailService } from '@/src/global/util/mail/mail.service';
 
 // ** Dto Imports
 import SendMailDto from '@/src/global/util/mail/mail.send.dto';
+import UserRepository from '../../user/repository/user.repository';
+import { BadRequestException } from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class TeamUserService {
@@ -25,6 +27,7 @@ export default class TeamUserService {
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
     private readonly mailService: MailService,
+    private readonly userRepository: UserRepository,
     @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,
   ) {}
@@ -58,21 +61,45 @@ export default class TeamUserService {
       return CommonResponse.createNotFoundException('Not Found Team');
     }
 
-    const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
+    const findTeamUser = await this.teamUserRepository.exist({
+      where: { user: { email: dto.email } },
+    });
 
-    if (redisValue) {
-      return CommonResponse.createBadRequestException('Did Invite User');
+    if (findTeamUser) {
+      throw new BadRequestException('Did Invite User');
     }
 
-    const sendMail = new SendMailDto(
-      dto.email,
-      '[DICE] Invite Team',
-      'Invite Team',
-    );
+    const findUser = await this.userRepository.findOne({
+      where: { email: dto.email },
+    });
 
-    await this.sendMail(sendMail);
-    await this.setTeamRedis(dto.email, team.uuid, dto.role);
+    if (findUser) {
+      await this.teamUserRepository.save(
+        this.teamUserRepository.create({
+          user: findUser,
+          team,
+          role: dto.role,
+        }),
+      );
+    }
 
+    if (!findUser) {
+      const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
+
+      if (redisValue) {
+        return CommonResponse.createBadRequestException('Did Invite User');
+      }
+
+      const sendMail = new SendMailDto(
+        dto.email,
+        '[DICE] Invite Team',
+        'Invite Team',
+        `<a href="http://hi-dice.com?uuid=${team.uuid}">Click</a>`,
+      );
+
+      await this.mailService.sendMail(sendMail);
+      await this.setTeamRedis(dto.email, team.uuid, dto.role);
+    }
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Invite User',

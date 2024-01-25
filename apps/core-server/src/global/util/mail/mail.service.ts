@@ -12,6 +12,7 @@ export class MailService {
       from: process.env.MAIL_EMAIL,
       subject: dto.subject,
       text: dto.text,
+      html: dto.html,
     });
   }
 }

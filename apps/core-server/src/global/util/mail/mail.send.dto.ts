@@ -1,11 +1,12 @@
 // ** Pipe Imports
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export default class SendMailDto {
-  constructor(email: string, subject: string, text: string) {
+  constructor(email: string, subject: string, text: string, html: string) {
     this.email = email;
     this.subject = subject;
     this.text = text;
+    this.html = html;
   }
 
   @IsString()
@@ -16,4 +17,8 @@ export default class SendMailDto {
 
   @IsString()
   text: string;
+
+  @IsString()
+  @IsOptional()
+  html: string;
 }
