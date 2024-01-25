@@ -30,6 +30,10 @@ import User from '../../user/domain/user.entity';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
 import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
+import {
+  LoginResponseDto,
+  mapLoginResponse,
+} from '../dto/user.dice.login.response.dto';
 
 @Injectable()
 export default class AuthService {
@@ -158,18 +162,7 @@ export default class AuthService {
 
     const token = this.generateToken({ id: findUser.id });
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '로그인에 성공했습니다.',
-      data: {
-        token,
-        user: {
-          nickname: findUser.nickname,
-          profile: findUser.profile,
-          email: findUser.email,
-        },
-      },
-    });
+    return this.createLoginResponse(findUser, token.accessToken);
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
@@ -191,18 +184,7 @@ export default class AuthService {
 
     const token = this.generateToken({ id: findUser.id });
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '로그인에 성공했습니다.',
-      data: {
-        token,
-        user: {
-          nickname: findUser.nickname,
-          profile: findUser.profile,
-          email: findUser.email,
-        },
-      },
-    });
+    return this.createLoginResponse(findUser, token.accessToken);
   }
 
   /**
@@ -361,5 +343,10 @@ export default class AuthService {
     if (role === 'WRITER') return Role.WRITER;
 
     return Role.ADMIN;
+  }
+
+  private async createLoginResponse(user: User, token: string) {
+    const response = mapLoginResponse(user, token);
+    return response;
   }
 }
