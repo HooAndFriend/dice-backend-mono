@@ -152,9 +152,8 @@ export default class TeamUserService {
    * @returns
    */
   public async findTeamUserList(teamId: number) {
-    const [data, count] = await this.teamUserRepository.findTeamUserList(
-      teamId,
-    );
+    const [data, count] =
+      await this.teamUserRepository.findTeamUserList(teamId);
 
     return CommonResponse.createResponse({
       statusCode: 200,

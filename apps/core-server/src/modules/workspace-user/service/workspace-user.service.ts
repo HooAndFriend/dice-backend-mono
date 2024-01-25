@@ -118,9 +118,8 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async findInviteUserList(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findWorkspaceTeamId(
-      workspaceId,
-    );
+    const findWorkspace =
+      await this.workspaceRepository.findWorkspaceTeamId(workspaceId);
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException('Not Found Worksapce');
@@ -130,9 +129,8 @@ export default class WorkspaceUserService {
       findWorkspace.team.id,
     );
 
-    const [data] = await this.workspaceUserRepository.findWorkspaceUserList(
-      workspaceId,
-    );
+    const [data] =
+      await this.workspaceUserRepository.findWorkspaceUserList(workspaceId);
 
     const list = teamUserList
       .map((item) => {

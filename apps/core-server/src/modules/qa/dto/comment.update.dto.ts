@@ -8,7 +8,7 @@ export default class RequestQaCommentUpdateDto {
   @IsString()
   content: string;
 
-  @ApiProperty({ example: 1})
+  @ApiProperty({ example: 1 })
   @IsNumber()
   commentId: number;
 }

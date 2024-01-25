@@ -105,9 +105,8 @@ export default class WorkspaceService {
   }
 
   public async findWorkspace(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findWorkspace(
-      workspaceId,
-    );
+    const findWorkspace =
+      await this.workspaceRepository.findWorkspace(workspaceId);
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(
@@ -123,9 +122,8 @@ export default class WorkspaceService {
   }
 
   public async findMainWorkspace(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findMainWorkspace(
-      workspaceId,
-    );
+    const findWorkspace =
+      await this.workspaceRepository.findMainWorkspace(workspaceId);
 
     if (!findWorkspace) {
       return CommonResponse.createNotFoundException(

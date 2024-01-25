@@ -8,11 +8,11 @@ export default class RequestQaCommentSaveDto {
   @IsString()
   content: string;
 
-  @ApiProperty({ example: 1})
+  @ApiProperty({ example: 1 })
   @IsNumber()
   userId: number;
 
-  @ApiProperty({ example: 1})
+  @ApiProperty({ example: 1 })
   @IsNumber()
   qaId: number;
 }
