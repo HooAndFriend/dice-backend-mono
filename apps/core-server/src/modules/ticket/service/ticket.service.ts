@@ -5,6 +5,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -38,6 +39,7 @@ import Ticket from '../domain/ticket.entity';
 import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
 import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class TicketService {
@@ -54,56 +56,67 @@ export default class TicketService {
 
   private logger = new Logger();
 
-  // ** Ticket Service
+  // ** Find
 
-  // ** Ticket 전체 조회
-  public async findAllTicket(id: number) {
+  public async findTicketById(ticketId: number) {
+    const findTicket = this.ticketRepository.findTicketById(ticketId);
+    if (!findTicket) {
+      throw new NotFoundException('Cannot Find Ticket.');
+    }
+    return findTicket;
+  }
+
+  public async findEpicById(epicId: number) {
+    const findEpic = this.epicRepository.findEpicById(epicId);
+    if (!findEpic) {
+      throw new NotFoundException('Cannot Find Epic.');
+    }
+    return findEpic;
+  }
+
+  public async findCommentById(ticketId: number) {
+    const findComment = this.ticketCommentRepository.findCommentById(ticketId);
+    if (!findComment) {
+      throw new NotFoundException('Cannot Find Comment.');
+    }
+    return findComment;
+  }
+
+  public async findWorkspaceById(workspaceId: number) {
     const findWorkspace = await this.workspaceReposiotry.findOne({
-      where: { id },
+      where: { id: workspaceId },
     });
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Cannot Find Workspace.');
     }
+    return findWorkspace;
+  }
 
-    const [findTicket, count] =
-      await this.ticketRepository.findAllTicketByWorkspaceId(id);
+  // ** Ticket Service
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Ticket을 전체조회 합니다.',
-      data: { findTicket, count },
-    });
+  // ** Ticket 전체 조회
+  public async findAllTicketByWorkspace(workspace: Workspace) {
+    const result = await this.ticketRepository.findAllTicketByWorkspaceId(
+      workspace.id,
+    );
+    return result;
   }
 
   // ** Ticket 상세 조회
   public async findOneTicket(id: number) {
-    const findTicket = await this.ticketRepository.findTicketById(id);
+    const findTicket = await this.findTicketById(id);
 
-    if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
-    }
+    const result = await this.ticketRepository.findTicketById(findTicket.id);
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Ticket을 조회 합니다.',
-      data: findTicket,
-    });
+    return result;
   }
 
   // ** Ticket 저장
   public async saveTicket(dto: RequestTicketSaveDto, user: User) {
-    const findEpic = await this.epicRepository.findEpicById(dto.epicId);
+    const findEpic = await this.findEpicById(dto.epicId);
 
-    if (!findEpic) {
-      return CommonResponse.createNotFoundException(
-        'Epic 정보를 찾을 수 없습니다.',
-      );
-    }
+    const result = await this.epicRepository.findEpicById(findEpic.id);
 
     if (dto.name.length > 30) {
       return CommonResponse.createBadRequestException(

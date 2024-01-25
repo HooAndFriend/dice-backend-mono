@@ -42,6 +42,7 @@ import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
+import CommonResponse from '@/src/global/dto/api.response';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -56,7 +57,17 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
   public async findAllTicket(@Param('workspaceId') id: number) {
-    return await this.ticketService.findAllTicket(id);
+    const findWorkspace = await this.ticketService.findWorkspaceById(id);
+
+    const [ticket, count] = await this.ticketService.findAllTicketByWorkspace(
+      findWorkspace,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Finding Tickets',
+      data: { ticket, count },
+    });
   }
 
   @ApiBearerAuth('access-token')
@@ -66,7 +77,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
-    return await this.ticketService.findOneTicket(id);
+    const ticket = await this.ticketService.findOneTicket(id);
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Finding Tickets',
+      data: ticket,
+    });
   }
 
   @ApiBearerAuth('access-token')
