@@ -24,9 +24,12 @@ export class WorkspaceRoleGuard implements CanActivate {
         workspace: { uuid: teamCode },
         teamUser: { user: { id: user.id } },
       },
+      relations: ['workspace'],
     });
 
     if (!workspaceUser) return false;
+
+    headers['workspace'] = workspaceUser.workspace;
 
     return workspaceUser.role === requiredRole;
   }
