@@ -14,19 +14,17 @@ import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
 import dayjs from 'dayjs';
-import { MailService } from '@/src/global/util/mail/mail.service';
 
 // ** Dto Imports
-import SendMailDto from '@/src/global/util/mail/mail.send.dto';
 import UserRepository from '../../user/repository/user.repository';
 import { BadRequestException } from '@/src/global/exception/CustomException';
+import SendMailDto from '@/src/global/dto/mail-send.dto';
 
 @Injectable()
 export default class TeamUserService {
   constructor(
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
-    private readonly mailService: MailService,
     private readonly userRepository: UserRepository,
     @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,

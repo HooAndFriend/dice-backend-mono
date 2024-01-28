@@ -13,7 +13,6 @@ import TeamUserService from './service/team-user.service';
 import TeamUserRepository from './repository/team-user.repository';
 import TeamUser from './domain/team-user.entity';
 import TeamModule from '../team/team.module';
-import { MailModule } from '@/src/global/util/mail/mail.module';
 import UserModule from '../user/user.module';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 
@@ -24,7 +23,6 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
     forwardRef(() => TeamModule),
     forwardRef(() => WorkspaceUserModule),
     UserModule,
-    MailModule,
     ClientsModule.registerAsync([
       {
         name: 'RMQ_PUSH_QUE',
