@@ -19,6 +19,12 @@ export class TeamRoleGuard implements CanActivate {
     const { user, headers } = context.switchToHttp().getRequest();
     const teamCode = headers['team-code'];
 
+    if (teamCode === 'personal') {
+      headers['team'] = { id: 0 };
+
+      return true;
+    }
+
     const teamUser = await this.teamUserRepository.findOne({
       where: { team: { uuid: teamCode }, user: { id: user.id } },
       relations: ['team'],
