@@ -14,6 +14,9 @@ import TeamUserRepository from '../../team-user/repository/team-user.repository'
 // ** Response Imports
 import CommonResponse from '../../../global/dto/api.response';
 
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
+
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
@@ -44,6 +47,7 @@ export default class WorkspaceService {
       name: dto.name,
       comment: dto.comment,
       profile: dto.profile,
+      uuid: uuidv4(),
     });
 
     if (dto.teamId === 0) {

@@ -13,6 +13,7 @@ import WorkspaceUserRepository from '../../workspace-user/repository/workspace-u
 import * as bcrypt from 'bcryptjs';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
+import { v4 as uuidv4 } from 'uuid';
 
 // ** enum, dto, entity, types Imports
 import { InternalServerErrorException } from '../../../global/exception/CustomException';
@@ -81,6 +82,7 @@ export default class AuthService {
           comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           user: saveUser,
+          uuid: uuidv4(),
         }),
       );
 
@@ -251,6 +253,7 @@ export default class AuthService {
           comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           user: saveUser,
+          uuid: uuidv4(),
         }),
       );
 
@@ -271,6 +274,7 @@ export default class AuthService {
         },
       });
     } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
