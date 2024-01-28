@@ -32,8 +32,8 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: [process.env.RMQ_URL],
-      queue: 'RMQ_SERVICE',
+      urls: [configService.get('RMQ_URL')],
+      queue: configService.get('RMQ_QUE'),
       queueOptions: {
         durable: false,
       },
