@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { TEAM_ROLE_KEY } from './team-role.decorator';
 import TeamUserRepository from '@/src/modules/team-user/repository/team-user.repository';
+import RoleEnum from '../../enum/Role';
 
 @Injectable()
 export class TeamRoleGuard implements CanActivate {
@@ -36,6 +37,20 @@ export class TeamRoleGuard implements CanActivate {
     headers['team'] = teamUser.team;
     headers['team-user'] = teamUser;
 
-    return teamUser.role === requiredRole;
+    if (requiredRole === RoleEnum.ADMIN) {
+      return teamUser.role === requiredRole;
+    }
+
+    if (requiredRole === RoleEnum.WRITER) {
+      return teamUser.role === requiredRole || teamUser.role === RoleEnum.ADMIN;
+    }
+
+    if (requiredRole === RoleEnum.VIEWER) {
+      return (
+        teamUser.role === requiredRole ||
+        teamUser.role === RoleEnum.ADMIN ||
+        teamUser.role === RoleEnum.WRITER
+      );
+    }
   }
 }

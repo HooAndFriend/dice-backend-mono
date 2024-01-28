@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { WORKSPACE_ROLE_KEY } from './workspace-role.decorator';
 import WorkspaceUserRepository from '@/src/modules/workspace-user/repository/workspace-user.repository';
+import RoleEnum from '../../enum/Role';
 
 @Injectable()
 export class WorkspaceRoleGuard implements CanActivate {
@@ -31,6 +32,23 @@ export class WorkspaceRoleGuard implements CanActivate {
 
     headers['workspace'] = workspaceUser.workspace;
 
-    return workspaceUser.role === requiredRole;
+    if (requiredRole === RoleEnum.ADMIN) {
+      return workspaceUser.role === requiredRole;
+    }
+
+    if (requiredRole === RoleEnum.WRITER) {
+      return (
+        workspaceUser.role === requiredRole ||
+        workspaceUser.role === RoleEnum.ADMIN
+      );
+    }
+
+    if (requiredRole === RoleEnum.VIEWER) {
+      return (
+        workspaceUser.role === requiredRole ||
+        workspaceUser.role === RoleEnum.ADMIN ||
+        workspaceUser.role === RoleEnum.WRITER
+      );
+    }
   }
 }
