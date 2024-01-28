@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 // ** Redis Imports
@@ -58,7 +58,7 @@ export default class TeamUserService {
     });
 
     if (!team) {
-      return CommonResponse.createNotFoundException('Not Found Team');
+      throw new NotFoundException('Not Found Team');
     }
 
     const findTeamUser = await this.teamUserRepository.exist({
@@ -87,7 +87,7 @@ export default class TeamUserService {
       const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
 
       if (redisValue) {
-        return CommonResponse.createBadRequestException('Did Invite User');
+        throw new BadRequestException('Did Invite User');
       }
 
       const sendMail = new SendMailDto(
@@ -115,7 +115,7 @@ export default class TeamUserService {
     const isExistTeamUser = await this.existTeamUserById(teamUserId);
 
     if (!isExistTeamUser) {
-      return CommonResponse.createNotFoundException('Not Found Team User');
+      throw new NotFoundException('Not Found Team User');
     }
 
     await this.teamUserRepository.delete(teamUserId);
@@ -135,7 +135,7 @@ export default class TeamUserService {
     const isExistTeamUser = await this.existTeamUserById(dto.teamUserId);
 
     if (!isExistTeamUser) {
-      return CommonResponse.createNotFoundException('Not Found Team User');
+      throw new NotFoundException('Not Found Team User');
     }
 
     await this.teamUserRepository.update(dto.teamUserId, { role: dto.role });

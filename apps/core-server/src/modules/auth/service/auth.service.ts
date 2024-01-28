@@ -16,7 +16,11 @@ import { Redis } from 'ioredis';
 import { v4 as uuidv4 } from 'uuid';
 
 // ** enum, dto, entity, types Imports
-import { InternalServerErrorException } from '../../../global/exception/CustomException';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../global/exception/CustomException';
 import { JwtPayload } from '../../../global/types';
 import CommonResponse from '../../../global/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
@@ -56,9 +60,7 @@ export default class AuthService {
     });
 
     if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 회원가입한 유저 입니다.',
-      );
+      throw new BadRequestException('Existed User');
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -142,7 +144,7 @@ export default class AuthService {
     });
 
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
 
     const token = this.generateToken({ id: findUser.id });
@@ -167,15 +169,13 @@ export default class AuthService {
     });
 
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
 
     const result = await bcrypt.compare(dto.password, findUser.password);
 
     if (!result) {
-      return CommonResponse.createBadRequestException(
-        '비밀번호가 맞지 않습니다.',
-      );
+      throw new BadRequestException('Wrong Password');
     }
 
     const token = this.generateToken({ id: findUser.id });
@@ -205,9 +205,7 @@ export default class AuthService {
     });
 
     if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 회원가입한 유저 입니다.',
-      );
+      throw new BadRequestException('Existed User');
     }
 
     const hash = await bcrypt.hash(dto.password, 10);
@@ -321,7 +319,7 @@ export default class AuthService {
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
     const findUser = await this.userRepository.findOne({ where: { id } });
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
     return findUser;
   }

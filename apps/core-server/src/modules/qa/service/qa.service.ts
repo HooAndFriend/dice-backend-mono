@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -35,9 +35,7 @@ export default class QaService {
       where: { id: workspaceId },
     });
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace');
     }
     const [data, count] = await this.qaRepository.findQaList(
       workspaceId,
@@ -55,25 +53,19 @@ export default class QaService {
       where: { id: dto.adminId },
     });
     if (!findAdmin) {
-      return CommonResponse.createNotFoundException(
-        '관리자를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Admin');
     }
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
     if (!findWorker) {
-      return CommonResponse.createNotFoundException(
-        '작업자를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Worker');
     }
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: dto.workspaceId },
     });
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크 스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace');
     }
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -114,15 +106,13 @@ export default class QaService {
       where: { id: dto.qaId },
     });
     if (!findQa) {
-      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Qa');
     }
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
     if (!findWorker) {
-      return CommonResponse.createNotFoundException(
-        '작업자를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Worker');
     }
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -153,7 +143,7 @@ export default class QaService {
       where: { id: dto.qaId },
     });
     if (!findQa) {
-      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Qa');
     }
 
     findQa.status = dto.status;
@@ -168,7 +158,7 @@ export default class QaService {
       where: { id: qaId },
     });
     if (!findQa) {
-      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Qa');
     }
     await this.qaRepository.remove(findQa);
     return CommonResponse.createResponseMessage({

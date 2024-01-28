@@ -3,6 +3,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 
 // ** Typeorm Imports
@@ -119,7 +120,7 @@ export default class TeamService {
     const findTeam = await this.teamRepository.findTeam(teamId);
 
     if (!findTeam) {
-      return CommonResponse.createNotFoundException('Not Found Team');
+      throw new NotFoundException('Not Found Team');
     }
 
     return CommonResponse.createResponse({
