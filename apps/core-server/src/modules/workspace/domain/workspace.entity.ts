@@ -53,7 +53,9 @@ export default class Workspace extends BaseTimeEntity {
   })
   uuid: string;
 
-  @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace)
+  @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace, {
+    cascade: true,
+  })
   workspaceUser: Relation<WorkspaceUser>[];
 
   @OneToMany(

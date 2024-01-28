@@ -17,19 +17,21 @@ import WorkspaceService from '../service/workspace.service';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
-// ** Dto Imports
-import RequestWorkspaceSaveDto from '../dto/workspace.save.dto';
-import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
-import User from '../../user/domain/user.entity';
-
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
+import {
+  GetTeam,
+  GetTeamUser,
+  TeamRole,
+} from '@/src/global/decorators/team-role/team-role.decorator';
+import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 
 // ** Response Imports
 import { WorkspaceResponse } from '../../../global/response/workspace.response';
@@ -37,6 +39,15 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
+
+// ** Dto Imports
+import RequestWorkspaceSaveDto from '../dto/workspace.save.dto';
+import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
+import User from '../../user/domain/user.entity';
+import RoleEnum from '@/src/global/enum/Role';
+import Team from '../../team/domain/team.entity';
+import CommonResponse from '@/src/global/dto/api.response';
+import TeamUser from '../../team-user/domain/team-user.entity';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
@@ -46,17 +57,33 @@ export default class WorkspaceController {
   constructor(private readonly workspaceService: WorkspaceService) {}
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({
+    name: 'team-code',
+    required: true,
+  })
   @ApiOperation({ summary: '워크스페이스 생성' })
   @ApiBody({ type: RequestWorkspaceSaveDto })
   @ApiResponse(WorkspaceResponse.saveWorksapce[200])
   @ApiResponse(WorkspaceResponse.saveWorksapce[400])
+  @TeamRole(RoleEnum.ADMIN)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveWorkspace(
     @Body() dto: RequestWorkspaceSaveDto,
     @GetUser() user: User,
+    @GetTeamUser() teamUser: TeamUser,
   ) {
-    return await this.workspaceService.saveWorksapce(dto, user);
+    if (teamUser.team.id === 0) {
+      await this.workspaceService.savePersonalWorkspace(dto, user);
+    } else {
+      await this.workspaceService.saveTeamWorksapce(dto, teamUser);
+    }
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Workspace',
+    });
   }
 
   @ApiBearerAuth('access-token')
