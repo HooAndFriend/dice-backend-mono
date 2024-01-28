@@ -28,7 +28,7 @@ export default class TeamUserService {
     private readonly teamRepository: TeamRepository,
     private readonly mailService: MailService,
     private readonly userRepository: UserRepository,
-    @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
+    @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -97,7 +97,7 @@ export default class TeamUserService {
         `<a href="http://hi-dice.com?uuid=${team.uuid}">Click</a>`,
       );
 
-      await this.mailService.sendMail(sendMail);
+      await this.sendMail(sendMail);
       await this.setTeamRedis(dto.email, team.uuid, dto.role);
     }
     return CommonResponse.createResponseMessage({
@@ -152,8 +152,9 @@ export default class TeamUserService {
    * @returns
    */
   public async findTeamUserList(teamId: number) {
-    const [data, count] =
-      await this.teamUserRepository.findTeamUserList(teamId);
+    const [data, count] = await this.teamUserRepository.findTeamUserList(
+      teamId,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -200,7 +201,7 @@ export default class TeamUserService {
    */
   private async sendMail(dto: SendMailDto) {
     this.rmqClient
-      .send<SendMailDto>({ cmd: 'send-single-mail' }, dto)
+      .send<SendMailDto>('send-single-mail', dto)
       .toPromise()
       .catch((err) => {
         console.log(err);

@@ -2,6 +2,7 @@
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
 import { AppModule } from './app.module';
@@ -18,7 +19,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
-import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // ** Server Container 생성

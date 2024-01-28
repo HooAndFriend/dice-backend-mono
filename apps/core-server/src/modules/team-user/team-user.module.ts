@@ -27,13 +27,13 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
     MailModule,
     ClientsModule.registerAsync([
       {
-        name: 'RMQ_SERVICE',
+        name: 'RMQ_PUSH_QUE',
         imports: [ConfigModule],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('RMQ_URL')],
-            queue: configService.get<string>('RMQ_QUE'),
+            queue: configService.get<string>('RMQ_PUSH_QUE'),
             queueOptions: {
               durable: false,
             },
