@@ -1,14 +1,5 @@
 // ** Nest Imports
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceService from '../service/workspace.service';
@@ -32,6 +23,11 @@ import {
   TeamRole,
 } from '@/src/global/decorators/team-role/team-role.decorator';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
+import {
+  GetWorkspace,
+  WorkspaceRole,
+} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 
 // ** Response Imports
 import { WorkspaceResponse } from '../../../global/response/workspace.response';
@@ -48,6 +44,7 @@ import RoleEnum from '@/src/global/enum/Role';
 import Team from '../../team/domain/team.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import TeamUser from '../../team-user/domain/team-user.entity';
+import Workspace from '../domain/workspace.entity';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
@@ -88,44 +85,83 @@ export default class WorkspaceController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestWorkspaceUpdateDto })
   @ApiResponse(WorkspaceResponse.updateWorkspace[200])
   @ApiResponse(WorkspaceResponse.updateWorkspace[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateWorkspace(@Body() dto: RequestWorkspaceUpdateDto) {
-    return await this.workspaceService.updateWorkspace(dto);
+  public async updateWorkspace(
+    @Body() dto: RequestWorkspaceUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
+    await this.workspaceService.updateWorkspace(dto, id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '워크스페이스를 수정합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스 리스트 조회' })
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiResponse(WorkspaceResponse.findWorkspaceList[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/')
-  public async findWorkspaceList(
-    @GetUser() user: User,
-    @Query('teamId') teamId: string,
-  ) {
-    return await this.workspaceService.findWorkspaceList(user, Number(teamId));
+  @Get('/list')
+  public async findWorkspaceList(@GetUser() user: User, @GetTeam() team: Team) {
+    const [data, count] = await this.workspaceService.findWorkspaceList(
+      user,
+      team.id,
+    );
+
+    return CommonResponse.createPaginationResponse({
+      statusCode: 200,
+      message: '워크스페이스를 조회합니다.',
+      data,
+      count,
+    });
   }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(WorkspaceResponse.findWorkspace[200])
   @ApiResponse(WorkspaceResponse.findWorkspace[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findWorkspace(@Param('id') id: number) {
-    return await this.workspaceService.findWorkspace(id);
+  @Get('/')
+  public async findWorkspace(@GetWorkspace() { id }: Workspace) {
+    const workspace = await this.workspaceService.findWorkspace(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '워크스페이스 정보를 조회합니다.',
+      data: workspace,
+    });
   }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스 메인 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(WorkspaceResponse.findWorkspaceMain[200])
   @ApiResponse(WorkspaceResponse.findWorkspaceMain[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/home/:id')
-  public async findMainWorkspace(@Param('id') id: number) {
-    return await this.workspaceService.findMainWorkspace(id);
+  @Get('/home')
+  public async findMainWorkspace(@GetWorkspace() { id }: Workspace) {
+    const workspace = await this.workspaceService.findMainWorkspace(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '워크스페이스 정보를 조회합니다.',
+      data: workspace,
+    });
   }
 }

@@ -5,10 +5,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
 export default class RequestWorkspaceUpdateDto {
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  id: number;
-
   @ApiProperty({ example: 'HooAndFriend' })
   @IsString()
   name: string;
