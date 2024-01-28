@@ -101,7 +101,7 @@ export default class WorkspaceController {
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: '워크스페이스를 수정합니다.',
+      message: 'Update Workspace',
     });
   }
 
@@ -121,7 +121,7 @@ export default class WorkspaceController {
 
     return CommonResponse.createPaginationResponse({
       statusCode: 200,
-      message: '워크스페이스를 조회합니다.',
+      message: 'Find Workspace List',
       data,
       count,
     });
@@ -141,7 +141,7 @@ export default class WorkspaceController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: '워크스페이스 정보를 조회합니다.',
+      message: 'Find Workspace',
       data: workspace,
     });
   }
@@ -160,7 +160,7 @@ export default class WorkspaceController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: '워크스페이스 정보를 조회합니다.',
+      message: 'Find Workspace Info',
       data: workspace,
     });
   }
