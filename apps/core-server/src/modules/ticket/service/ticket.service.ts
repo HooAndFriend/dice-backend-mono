@@ -1,10 +1,12 @@
 // ** Nest Imports
 import {
+  BadRequestException,
   HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -63,9 +65,7 @@ export default class TicketService {
     });
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace');
     }
 
     const [findTicket, count] =
@@ -83,9 +83,7 @@ export default class TicketService {
     const findTicket = await this.ticketRepository.findTicketById(id);
 
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
 
     return CommonResponse.createResponse({
@@ -100,15 +98,11 @@ export default class TicketService {
     const findEpic = await this.epicRepository.findEpicById(dto.epicId);
 
     if (!findEpic) {
-      return CommonResponse.createNotFoundException(
-        'Epic 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Epic');
     }
 
     if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Ticket 이름은 최대 30자 입니다.',
-      );
+      throw new BadRequestException('Ticket name max is 30');
     }
 
     const findTicket = await this.ticketRepository.findOne({
@@ -116,9 +110,7 @@ export default class TicketService {
     });
 
     if (findTicket) {
-      return CommonResponse.createBadRequestException(
-        '이미 존재하는 Ticket 입니다.',
-      );
+      throw new BadRequestException('Existed Ticket');
     }
 
     await this.ticketRepository.save({
@@ -140,14 +132,10 @@ export default class TicketService {
     const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
     console.log(findTicket);
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
     if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Ticket 이름은 최대 30자 입니다.',
-      );
+      throw new BadRequestException('Ticket Name max is 30');
     }
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -167,9 +155,7 @@ export default class TicketService {
         where: { id: dto.workerId },
       });
       if (!findWorker) {
-        return CommonResponse.createNotFoundException(
-          '해당 유저를 찾을 수 없습니다.',
-        );
+        throw new NotFoundException('Not Found User');
       }
       await this.ticketRepository.update(dto.ticketId, {
         name: dto.name,
@@ -197,9 +183,7 @@ export default class TicketService {
   public async deleteTicket(id: number) {
     const findTicket = await this.ticketRepository.findTicketById(id);
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -234,9 +218,7 @@ export default class TicketService {
   public async updateTicketState(dto: RequestTicketStateUpdateDto) {
     const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
 
     const _date = new Date();
@@ -280,9 +262,7 @@ export default class TicketService {
     });
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace');
     }
 
     const response = await this.epicRepository.findAllByWorkspaceId(id);
@@ -302,9 +282,7 @@ export default class TicketService {
     });
 
     if (!findEpic) {
-      return CommonResponse.createNotFoundException(
-        'Epic 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Epic');
     }
 
     const response = await this.ticketRepository.findAllTicketByEpicId(id);
@@ -323,15 +301,11 @@ export default class TicketService {
     });
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace');
     }
 
     if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Epic 이름은 최대 30자 입니다.',
-      );
+      throw new BadRequestException('Epic name max is 30');
     }
 
     const findEpic = await this.epicRepository.findOne({
@@ -339,9 +313,7 @@ export default class TicketService {
     });
 
     if (findEpic) {
-      return CommonResponse.createBadRequestException(
-        '이미 존재하는 Epic 입니다.',
-      );
+      throw new BadRequestException('Existed Epic');
     }
 
     const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
@@ -368,15 +340,11 @@ export default class TicketService {
     });
 
     if (!findEpic) {
-      return CommonResponse.createNotFoundException(
-        'Epic 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Epic');
     }
 
     if (dto.name.length > 30) {
-      return CommonResponse.createBadRequestException(
-        'Epic 이름은 최대 30자 입니다.',
-      );
+      throw new BadRequestException('Epic name max is 30');
     }
 
     const findEpicName = await this.epicRepository.findOne({
@@ -384,9 +352,7 @@ export default class TicketService {
     });
 
     if (findEpicName) {
-      return CommonResponse.createBadRequestException(
-        '이미 존재하는 Epic 입니다.',
-      );
+      throw new BadRequestException('Existed Epic');
     }
 
     await this.epicRepository.update(dto.epicId, {
@@ -405,9 +371,7 @@ export default class TicketService {
       where: { id },
     });
     if (!findEpic) {
-      return CommonResponse.createNotFoundException(
-        'Epic 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Epic');
     }
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -450,9 +414,7 @@ export default class TicketService {
     });
 
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
 
     await this.ticketCommentRepository.save({
@@ -474,9 +436,7 @@ export default class TicketService {
     });
 
     if (!findComment) {
-      return CommonResponse.createNotFoundException(
-        '댓글 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Comment');
     }
 
     await this.ticketCommentRepository.update(findComment.id, {
@@ -496,9 +456,7 @@ export default class TicketService {
     });
 
     if (!findComment) {
-      return CommonResponse.createNotFoundException(
-        '댓글 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Comment');
     }
 
     await this.ticketCommentRepository.delete(id);
@@ -514,9 +472,7 @@ export default class TicketService {
     const findTicket = await this.ticketRepository.findOne({ where: { id } });
 
     if (!findTicket) {
-      return CommonResponse.createNotFoundException(
-        'Ticket 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Ticket');
     }
 
     const findComment =

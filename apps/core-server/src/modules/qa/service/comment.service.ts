@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -27,7 +27,7 @@ export default class CommentService {
       where: { id: qaId },
     });
     if (!findQa) {
-      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Qa');
     }
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
@@ -42,13 +42,13 @@ export default class CommentService {
       where: { id: dto.qaId },
     });
     if (!findQa) {
-      return CommonResponse.createNotFoundException('QA를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Qa');
     }
     const findUser = await this.userRepository.findOne({
       where: { id: dto.userId },
     });
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
 
     await this.qacommentRepository.save(
@@ -79,7 +79,7 @@ export default class CommentService {
       where: { id: commentid },
     });
     if (!findComment) {
-      return CommonResponse.createNotFoundException('댓글을 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found Comment');
     }
     await this.qacommentRepository.remove(findComment);
 

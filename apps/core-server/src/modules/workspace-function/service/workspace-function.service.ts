@@ -1,5 +1,9 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 // ** Custom Module Imports
 import WorkspaceFunctionRepository from '../repository/workspace-function.repository';
@@ -47,7 +51,7 @@ export default class WorkspaceFunctionService {
     });
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException('Not Found Workspace');
+      throw new NotFoundException('Not Found Workspace');
     }
 
     const isExistFunction = await this.workspaceFunctionRepository.exist({
@@ -58,9 +62,7 @@ export default class WorkspaceFunctionService {
     });
 
     if (isExistFunction) {
-      return CommonResponse.createBadRequestException(
-        'This Function is Existed',
-      );
+      throw new BadRequestException('This Function is Existed');
     }
 
     await this.workspaceFunctionRepository.save(

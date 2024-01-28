@@ -1,5 +1,6 @@
 import {
   BadRequestException as BadRequest,
+  ForbiddenException,
   NotFoundException as NotFound,
 } from '@nestjs/common';
 
@@ -10,6 +11,12 @@ export class NotFoundException extends NotFound {
 }
 
 export class BadRequestException extends BadRequest {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
+export class WorkspaceForbiddenException extends ForbiddenException {
   constructor(message: string) {
     super(message);
   }

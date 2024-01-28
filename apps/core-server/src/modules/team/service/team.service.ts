@@ -3,6 +3,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 
 // ** Typeorm Imports
@@ -78,6 +79,7 @@ export default class TeamService {
           profile: dto.profile,
           comment: dto.description,
           team,
+          uuid: uuidv4(),
         }),
       );
 
@@ -96,6 +98,7 @@ export default class TeamService {
         message: '팀을 생성합니다.',
       });
     } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
@@ -117,7 +120,7 @@ export default class TeamService {
     const findTeam = await this.teamRepository.findTeam(teamId);
 
     if (!findTeam) {
-      return CommonResponse.createNotFoundException('Not Found Team');
+      throw new NotFoundException('Not Found Team');
     }
 
     return CommonResponse.createResponse({

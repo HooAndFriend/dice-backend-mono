@@ -14,13 +14,16 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
+        'workspaceUser.id',
         'workspaceUser.role',
+        'teamUser.id',
         'user.nickname',
         'user.email',
         'user.profile',
       ])
       .leftJoin('workspace.workspaceUser', 'workspaceUser')
-      .leftJoin('workspaceUser.user', 'user')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .leftJoin('teamUser.user', 'user')
       .where('workspace.id = :workspaceId', { workspaceId });
 
     return await queryBuilder.getOne();
