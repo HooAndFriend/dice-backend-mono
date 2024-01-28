@@ -29,17 +29,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: [configService.get('RMQ_URL')],
-      queue: configService.get('RMQ_QUE'),
-      queueOptions: {
-        durable: false,
-      },
-    },
-  });
-
   // ** Base URL
   app.setGlobalPrefix('api');
 

@@ -1,7 +1,6 @@
 // ** Nest Imports
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -29,17 +28,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: [configService.get('RMQ_URL')],
-      queue: configService.get('RMQ_QUE'),
-      queueOptions: {
-        durable: false,
-      },
-    },
-  });
-
   // ** Base URL
   app.setGlobalPrefix('api');
 
@@ -65,7 +53,6 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
-  await app.startAllMicroservices();
   await app.listen(configService.get('SERVER_PORT'));
 }
 bootstrap()

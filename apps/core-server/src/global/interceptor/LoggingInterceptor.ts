@@ -18,7 +18,7 @@ import RequestLogDto from '../dto/request-log.dto';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(@Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy) {}
+  constructor(@Inject('RMQ_LOG_QUE') private readonly rmqClient: ClientProxy) {}
 
   private logger = new Logger();
   intercept(
@@ -37,7 +37,7 @@ export class LoggingInterceptor implements NestInterceptor {
         next: (response: CommonResponseType) => {
           this.logger.log(`${response.statusCode} : ${response.message}`);
           this.rmqClient
-            .send<RequestLogDto>('request-log', {
+            .emit<RequestLogDto>('request-log', {
               requestUrl: request.url,
               requestBody: request.body,
               requestMethod: request.method,

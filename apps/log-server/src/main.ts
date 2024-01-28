@@ -1,7 +1,6 @@
 // ** Nest Imports
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -19,6 +18,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // ** Server Container 생성
@@ -33,7 +33,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [configService.get('RMQ_URL')],
-      queue: configService.get('RMQ_QUE'),
+      queue: configService.get('RMQ_LOG_QUE'),
       queueOptions: {
         durable: false,
       },

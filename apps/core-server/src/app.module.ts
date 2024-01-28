@@ -50,13 +50,13 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
     }),
     ClientsModule.registerAsync([
       {
-        name: 'RMQ_SERVICE',
+        name: 'RMQ_LOG_QUE',
         imports: [ConfigModule],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('RMQ_URL')],
-            queue: configService.get<string>('RMQ_QUE'),
+            queue: configService.get<string>('RMQ_LOG_QUE'),
             queueOptions: {
               durable: false,
             },
