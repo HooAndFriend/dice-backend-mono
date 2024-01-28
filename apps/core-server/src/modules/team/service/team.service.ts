@@ -78,6 +78,7 @@ export default class TeamService {
           profile: dto.profile,
           comment: dto.description,
           team,
+          uuid: uuidv4(),
         }),
       );
 
@@ -96,6 +97,7 @@ export default class TeamService {
         message: '팀을 생성합니다.',
       });
     } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
