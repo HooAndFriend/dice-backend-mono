@@ -21,6 +21,7 @@ export class TeamRoleGuard implements CanActivate {
 
     if (teamCode === 'personal') {
       headers['team'] = { id: 0 };
+      headers['team-user'] = user;
 
       return true;
     }
@@ -33,6 +34,7 @@ export class TeamRoleGuard implements CanActivate {
     if (!teamUser) return false;
 
     headers['team'] = teamUser.team;
+    headers['team-user'] = teamUser;
 
     return teamUser.role === requiredRole;
   }
