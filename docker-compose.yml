@@ -52,6 +52,19 @@ services:
       - redis-cache
       - rabbitmq
 
+  admin:
+    build:
+      context: ./apps/admin-server
+    ports:
+      - 8480:8080
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
   redis:
     image: redis:latest
     ports:
