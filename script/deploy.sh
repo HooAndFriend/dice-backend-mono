@@ -13,6 +13,9 @@ elif [ $1 = "log" ]; then
 elif [ $1 = "push" ]; then
     rsync -av --exclude='node_modules' ./apps/push-server/ dice:~/dice/apps/push-server/
     ssh -t dice "cd ~/dice && sh restart.sh push"
+elif [ $1 = "admin" ]; then
+    rsync -av --exclude='node_modules' ./apps/admin-server/ dice:~/dice/apps/admin-server/
+    ssh -t dice "cd ~/dice && sh restart.sh admin"
 elif [ $1 = "all" ]; then
     rsync -av --exclude='node_modules' ./apps/core-server/ dice:~/dice/apps/core-server/
     ssh -t dice "cd ~/dice && sh restart.sh core"
