@@ -89,7 +89,7 @@ export default class AuthService {
         }),
       );
 
-      await queryRunner.manager.save(
+      const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
@@ -133,6 +133,13 @@ export default class AuthService {
             profile: saveUser.profile,
             email: saveUser.email,
           },
+          workspace: {
+            id: workspace.id,
+            name: workspace.name,
+            profile: workspace.profile,
+            uuid: workspace.uuid,
+            workspaceFunction: [],
+          },
         },
       });
     } catch (error) {
@@ -150,9 +157,10 @@ export default class AuthService {
   }
 
   public async loginSocialUser(dto: RequestSocialUserLoginDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { token: dto.token },
-    });
+    const findUser = await this.userRepository.findUserWithWorkspaceByToken(
+      dto.token,
+      dto.type,
+    );
 
     if (!findUser) {
       throw new NotFoundException('Not Found User');
@@ -170,14 +178,13 @@ export default class AuthService {
           profile: findUser.profile,
           email: findUser.email,
         },
+        workspace: findUser.workspace,
       },
     });
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { email: dto.email },
-    });
+    const findUser = await this.userRepository.findUserWithWorkspace(dto.email);
 
     if (!findUser) {
       throw new NotFoundException('Not Found User');
@@ -201,6 +208,7 @@ export default class AuthService {
           profile: findUser.profile,
           email: findUser.email,
         },
+        workspace: findUser.workspace,
       },
     });
   }
@@ -256,7 +264,7 @@ export default class AuthService {
         }
       }
 
-      await queryRunner.manager.save(
+      const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
@@ -279,6 +287,13 @@ export default class AuthService {
             nickname: saveUser.nickname,
             profile: saveUser.profile,
             email: saveUser.email,
+          },
+          workspace: {
+            id: workspace.id,
+            name: workspace.name,
+            profile: workspace.profile,
+            uuid: workspace.uuid,
+            workspaceFunction: [],
           },
         },
       });
