@@ -1,6 +1,7 @@
 // ** Nest Imports
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
@@ -26,11 +27,13 @@ async function bootstrap() {
     snapshot: true,
   });
 
+  const configService = app.get(ConfigService);
+
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: [process.env.RMQ_URL],
-      queue: 'RMQ_SERVICE',
+      urls: [configService.get('RMQ_URL')],
+      queue: configService.get('RMQ_LOG_QUE'),
       queueOptions: {
         durable: false,
       },
@@ -57,13 +60,13 @@ async function bootstrap() {
   // }
 
   // ** Swagger Setting
-  if (process.env.NODE_ENV === 'development') {
+  if (configService.get('NODE_ENV') === 'development') {
     swaggerConfig(app);
   }
 
   // ** Server ON Handler
   await app.startAllMicroservices();
-  await app.listen(process.env.SERVER_PORT);
+  await app.listen(configService.get('SERVER_PORT'));
 }
 bootstrap()
   .then((res) => {

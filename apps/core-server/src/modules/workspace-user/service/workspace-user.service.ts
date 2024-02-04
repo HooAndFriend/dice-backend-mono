@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** enum, dto, entity, types Imports
@@ -32,9 +32,7 @@ export default class WorkspaceUserService {
     });
 
     if (!findWorkspaceUser) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스에서 유저의 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found Workspace User');
     }
 
     await this.workspaceUserRepository.update(dto.id, { role: dto.role });
@@ -54,7 +52,7 @@ export default class WorkspaceUserService {
     const findWorkspace = await this.findWorkspaceById(dto.workspaceId);
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException('Not Found Workspace');
+      throw new NotFoundException('Not Found Workspace');
     }
 
     for (const item of dto.teamUserId) {
@@ -85,7 +83,7 @@ export default class WorkspaceUserService {
     const workspaceUser = await this.findWorkspaceUserById(workspaceUserId);
 
     if (!workspaceUser) {
-      return CommonResponse.createNotFoundException('Not Found Workspace User');
+      throw new NotFoundException('Not Found Workspace User');
     }
 
     await this.workspaceUserRepository.delete(workspaceUser.id);
@@ -118,21 +116,19 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async findInviteUserList(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findWorkspaceTeamId(
-      workspaceId,
-    );
+    const findWorkspace =
+      await this.workspaceRepository.findWorkspaceTeamId(workspaceId);
 
     if (!findWorkspace) {
-      return CommonResponse.createNotFoundException('Not Found Worksapce');
+      throw new NotFoundException('Not Found Workspace');
     }
 
     const [teamUserList] = await this.teamUserRepository.findTeamUserList(
       findWorkspace.team.id,
     );
 
-    const [data] = await this.workspaceUserRepository.findWorkspaceUserList(
-      workspaceId,
-    );
+    const [data] =
+      await this.workspaceUserRepository.findWorkspaceUserList(workspaceId);
 
     const list = teamUserList
       .map((item) => {

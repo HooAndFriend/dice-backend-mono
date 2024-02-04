@@ -13,9 +13,14 @@ import WorkspaceUserRepository from '../../workspace-user/repository/workspace-u
 import * as bcrypt from 'bcryptjs';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
+import { v4 as uuidv4 } from 'uuid';
 
 // ** enum, dto, entity, types Imports
-import { InternalServerErrorException } from '../../../global/exception/CustomException';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../global/exception/CustomException';
 import { JwtPayload } from '../../../global/types';
 import CommonResponse from '../../../global/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
@@ -50,16 +55,24 @@ export default class AuthService {
    * @returns
    */
   public async saveSocialUser(dto: RequestSocialUserSaveDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { token: dto.token },
+    const isExited = await this.userRepository.exist({
+      where: {
+        type: dto.type,
+        token: dto.token,
+      },
     });
 
-    if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 회원가입한 유저 입니다.',
-      );
+    if (isExited) {
+      throw new BadRequestException('이미 회원가입한 유저 입니다.');
     }
 
+    const isExistedByEmaiil = await this.userRepository.exist({
+      where: { email: dto.email },
+    });
+
+    if (isExistedByEmaiil) {
+      throw new BadRequestException('사용 중인 이메일 입니다.');
+    }
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -70,17 +83,19 @@ export default class AuthService {
         this.userRepository.create({
           token: dto.token,
           nickname: dto.nickname,
+          email: dto.email,
           type: dto.type,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         }),
       );
 
-      await queryRunner.manager.save(
+      const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           user: saveUser,
+          uuid: uuidv4(),
         }),
       );
 
@@ -118,6 +133,13 @@ export default class AuthService {
             profile: saveUser.profile,
             email: saveUser.email,
           },
+          workspace: {
+            id: workspace.id,
+            name: workspace.name,
+            profile: workspace.profile,
+            uuid: workspace.uuid,
+            workspaceFunction: [],
+          },
         },
       });
     } catch (error) {
@@ -135,12 +157,13 @@ export default class AuthService {
   }
 
   public async loginSocialUser(dto: RequestSocialUserLoginDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { token: dto.token },
-    });
+    const findUser = await this.userRepository.findUserWithWorkspaceByToken(
+      dto.token,
+      dto.type,
+    );
 
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
 
     const token = this.generateToken({ id: findUser.id });
@@ -155,25 +178,22 @@ export default class AuthService {
           profile: findUser.profile,
           email: findUser.email,
         },
+        workspace: findUser.workspace,
       },
     });
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
-    const findUser = await this.userRepository.findOne({
-      where: { email: dto.email },
-    });
+    const findUser = await this.userRepository.findUserWithWorkspace(dto.email);
 
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
 
     const result = await bcrypt.compare(dto.password, findUser.password);
 
     if (!result) {
-      return CommonResponse.createBadRequestException(
-        '비밀번호가 맞지 않습니다.',
-      );
+      throw new BadRequestException('Wrong Password');
     }
 
     const token = this.generateToken({ id: findUser.id });
@@ -188,6 +208,7 @@ export default class AuthService {
           profile: findUser.profile,
           email: findUser.email,
         },
+        workspace: findUser.workspace,
       },
     });
   }
@@ -203,9 +224,7 @@ export default class AuthService {
     });
 
     if (findUser) {
-      return CommonResponse.createBadRequestException(
-        '이미 회원가입한 유저 입니다.',
-      );
+      throw new BadRequestException('Existed User');
     }
 
     const hash = await bcrypt.hash(dto.password, 10);
@@ -245,12 +264,13 @@ export default class AuthService {
         }
       }
 
-      await queryRunner.manager.save(
+      const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           user: saveUser,
+          uuid: uuidv4(),
         }),
       );
 
@@ -268,9 +288,17 @@ export default class AuthService {
             profile: saveUser.profile,
             email: saveUser.email,
           },
+          workspace: {
+            id: workspace.id,
+            name: workspace.name,
+            profile: workspace.profile,
+            uuid: workspace.uuid,
+            workspaceFunction: [],
+          },
         },
       });
     } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
@@ -317,7 +345,7 @@ export default class AuthService {
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
     const findUser = await this.userRepository.findOne({ where: { id } });
     if (!findUser) {
-      return CommonResponse.createNotFoundException('유저를 찾을 수 없습니다.');
+      throw new NotFoundException('Not Found User');
     }
     return findUser;
   }

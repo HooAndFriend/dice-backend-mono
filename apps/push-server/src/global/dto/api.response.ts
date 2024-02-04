@@ -47,14 +47,6 @@ export default class CommonResponse<T> {
     });
   }
 
-  static createNotFoundException<T>(message: string): CommonResponse<T> {
-    throw new NotFoundException(message);
-  }
-
-  static createBadRequestException<T>(message: string): CommonResponse<T> {
-    throw new BadRequestException(message);
-  }
-
   static createPaginationResponse<T>(payload: {
     readonly statusCode: number;
     readonly message: string;

@@ -8,17 +8,19 @@ import { DataSource } from 'typeorm';
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 import WorkspaceRepository from '../repository/workspace.repository';
-import TeamRepository from '../../team/repository/team.repository';
-import TeamUserRepository from '../../team-user/repository/team-user.repository';
 
-// ** Response Imports
-import CommonResponse from '../../../global/dto/api.response';
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
+
+// ** Exception Imports
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import Role from '@/src/global/enum/Role';
+import TeamUser from '../../team-user/domain/team-user.entity';
 
 @Injectable()
 export default class WorkspaceService {
@@ -26,12 +28,28 @@ export default class WorkspaceService {
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly configService: ConfigService,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    private readonly teamRepository: TeamRepository,
-    private readonly teamUserRepository: TeamUserRepository,
     private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
+
+  /**
+   * 개인 워크스페이스 생성
+   * @param dto
+   * @param user
+   * @returns Workspace Entity
+   */
+  public async savePersonalWorkspace(dto: RequestWorksapceSaveDto, user: User) {
+    return await this.workspaceRepository.save(
+      this.workspaceRepository.create({
+        name: dto.name,
+        comment: dto.comment,
+        profile: dto.profile,
+        uuid: uuidv4(),
+        user,
+      }),
+    );
+  }
 
   /**
    * 워크스페이스 생성
@@ -39,128 +57,102 @@ export default class WorkspaceService {
    * @param user
    * @returns
    */
-  public async saveWorksapce(dto: RequestWorksapceSaveDto, user: User) {
+  public async saveTeamWorksapce(
+    dto: RequestWorksapceSaveDto,
+    teamUser: TeamUser,
+  ) {
     const workspace = this.workspaceRepository.create({
       name: dto.name,
       comment: dto.comment,
       profile: dto.profile,
-    });
-
-    if (dto.teamId === 0) {
-      workspace.user = user;
-    } else {
-      const team = await this.teamRepository.findOne({
-        where: { id: dto.teamId },
-      });
-
-      if (!team) {
-        return CommonResponse.createNotFoundException('팀을 찾을 수 없습니다.');
-      }
-
-      workspace.team = team;
-    }
-
-    await this.workspaceRepository.save(workspace);
-
-    if (dto.teamId !== 0) {
-      const findTeamUser = await this.teamUserRepository.findOne({
-        where: { user: { id: user.id } },
-      });
-      await this.workspaceUserRepository.save(
+      uuid: uuidv4(),
+      team: teamUser.team,
+      workspaceUser: [
         this.workspaceUserRepository.create({
-          workspace,
-          teamUser: findTeamUser,
+          teamUser,
           role: Role.ADMIN,
         }),
-      );
-    }
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '워크스페이스를 생성합니다.',
+      ],
     });
+
+    return await this.workspaceRepository.save(workspace);
   }
 
-  public async updateWorkspace(dto: RequestWorkspaceUpdateDto) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: dto.id },
-    });
-
-    if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
-    }
-
-    await this.workspaceRepository.update(dto.id, {
+  /**
+   * Update Workspace
+   * @param dto
+   * @param id
+   * @returns
+   */
+  public async updateWorkspace(dto: RequestWorkspaceUpdateDto, id: number) {
+    return await this.workspaceRepository.update(id, {
       name: dto.name,
       profile: dto.profile,
       comment: dto.comment,
     });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '워크스페이스를 수정합니다.',
-    });
   }
 
+  /**
+   * Find Workspace
+   * @param workspaceId
+   * @returns
+   */
   public async findWorkspace(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findWorkspace(
-      workspaceId,
-    );
+    const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
 
-    if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+    if (!workspace) {
+      throw new NotFoundException('Not Found Workspace');
     }
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '워크스페이스 정보를 조회합니다.',
-      data: findWorkspace,
-    });
+    return workspace;
   }
 
+  /**
+   * Find Workspace Main
+   * @param workspaceId
+   * @returns
+   */
   public async findMainWorkspace(workspaceId: number) {
-    const findWorkspace = await this.workspaceRepository.findMainWorkspace(
+    const workspace = await this.workspaceRepository.findMainWorkspace(
       workspaceId,
     );
 
-    if (!findWorkspace) {
-      return CommonResponse.createNotFoundException(
-        '워크스페이스를 찾을 수 없습니다.',
-      );
+    if (!workspace) {
+      throw new NotFoundException('Not Found Workspace');
     }
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '워크스페이스 정보를 조회합니다.',
-      data: findWorkspace,
-    });
+    return workspace;
   }
 
+  /**
+   * Find Workspace List
+   * @param user
+   * @param teamId
+   * @returns
+   */
   public async findWorkspaceList(user: User, teamId: number) {
-    if (teamId !== 0) {
-      const [data, count] =
-        await this.workspaceRepository.findWorkspaceListByTeamId(teamId);
-
-      return CommonResponse.createPaginationResponse({
-        statusCode: 200,
-        message: '워크스페이스를 조회합니다.',
-        data,
-        count,
-      });
+    if (teamId === 0) {
+      return await this.findPersonalWorkspaceList(user);
     }
 
-    const [data, count] =
-      await this.workspaceRepository.findWorkspaceListByUserId(user.id);
+    return await this.findTeamWorkspaceList(teamId);
+  }
 
-    return CommonResponse.createPaginationResponse({
-      statusCode: 200,
-      message: '워크스페이스를 조회합니다.',
-      data,
-      count,
-    });
+  /**
+   * Find Workspace List at Team
+   * @param teamId
+   * @returns
+   */
+  private async findTeamWorkspaceList(teamId: number) {
+    return await this.workspaceRepository.findWorkspaceListByTeamId(teamId);
+  }
+
+  /**
+   * Find Workspace List at Personal
+   * @param user
+   * @returns
+   */
+  private async findPersonalWorkspaceList(user: User) {
+    return await this.workspaceRepository.findWorkspaceListByUserId(user.id);
   }
 }

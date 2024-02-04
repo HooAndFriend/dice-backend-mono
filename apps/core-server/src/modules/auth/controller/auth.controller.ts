@@ -21,6 +21,13 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
+import RequestLogDto from '@/src/global/dto/request-log.dto';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -73,5 +80,14 @@ export default class AuthController {
   @Post('/reissue')
   public async reissueToken(@GetUser() user: User) {
     return await this.authService.reissueToken(user);
+  }
+
+  @MessagePattern('request-log')
+  async handleMessage(
+    @Payload() data: RequestLogDto,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    console.log(data);
+    // await this.requestLogService.saveRequestLog(data);
   }
 }

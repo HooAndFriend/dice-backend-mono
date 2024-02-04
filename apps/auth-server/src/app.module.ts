@@ -26,13 +26,13 @@ import AuthModule from '@/src/modules/auth.module';
     }),
     ClientsModule.registerAsync([
       {
-        name: 'RMQ_SERVICE',
+        name: 'RMQ_LOG_QUE',
         imports: [ConfigModule],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('RMQ_URL')],
-            queue: configService.get<string>('RMQ_QUE'),
+            queue: configService.get<string>('RMQ_LOG_QUE'),
             queueOptions: {
               durable: false,
             },
@@ -46,10 +46,10 @@ import AuthModule from '@/src/modules/auth.module';
   controllers: [],
   providers: [
     LoggerService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: LoggingInterceptor,
+    // },
     {
       provide: APP_FILTER,
       useClass: CustomExceptionFilter,

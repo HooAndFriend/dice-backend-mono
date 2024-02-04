@@ -13,23 +13,25 @@ import TeamUserService from './service/team-user.service';
 import TeamUserRepository from './repository/team-user.repository';
 import TeamUser from './domain/team-user.entity';
 import TeamModule from '../team/team.module';
-import { MailModule } from '@/src/global/util/mail/mail.module';
+import UserModule from '../user/user.module';
+import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TeamUser]),
     TypeOrmExModule.forCustomRepository([TeamUserRepository]),
     forwardRef(() => TeamModule),
-    MailModule,
+    forwardRef(() => WorkspaceUserModule),
+    UserModule,
     ClientsModule.registerAsync([
       {
-        name: 'RMQ_SERVICE',
+        name: 'RMQ_PUSH_QUE',
         imports: [ConfigModule],
         useFactory: (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('RMQ_URL')],
-            queue: configService.get<string>('RMQ_QUE'),
+            queue: configService.get<string>('RMQ_PUSH_QUE'),
             queueOptions: {
               durable: false,
             },

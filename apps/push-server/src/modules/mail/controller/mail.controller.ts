@@ -29,12 +29,11 @@ import SendMailDto from '../dto/mail.send.dto';
 export default class MailController {
   constructor(private readonly mailService: MailService) {}
 
-  @MessagePattern({ cmd: 'send-single-mail' })
+  @MessagePattern('send-single-mail')
   async handleMessage(
     @Payload() data: SendMailDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log(data);
     await this.mailService.sendMail(data);
   }
 }

@@ -52,6 +52,19 @@ services:
       - redis-cache
       - rabbitmq
 
+  admin:
+    build:
+      context: ./apps/admin-server
+    ports:
+      - 8480:8080
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
   redis:
     image: redis:latest
     ports:
@@ -89,6 +102,43 @@ services:
       MYSQL_DATABASE: core
       MYSQL_USER: admin
       MYSQL_PASSWORD: qwer1595@!
+    command: --default-time-zone=Asia/Seoul
+
+  db-master:
+    image: mysql:8.0
+    restart: always
+    networks:
+      - dice-networks
+    ports:
+      - '3308:3306'
+    volumes:
+      - ./db-master:/var/lib/mysql
+      - ./db-master:/var/lib/mysql-files
+      - ./config/master.cnf:/etc/mysql/my.cnf
+    environment:
+      MYSQL_DATABASE: core
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: qwer1595@!
+      MYSQL_ROOT_PASSWORD: qwer1595@!
+    command: --default-time-zone=Asia/Seoul
+
+  db-slave:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - '3309:3306'
+    volumes:
+      - ./db-slave:/var/lib/mysql
+      - ./db-slave:/var/lib/mysql-files
+      - ./config/slave.cnf:/etc/mysql/my.cnf
+    networks:
+      - dice-networks
+    environment:
+      MYSQL_DATABASE: core
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: qwer1595@!
+      MYSQL_ROOT_PASSWORD: qwer1595@!
+    command: --default-time-zone=Asia/Seoul
 
 networks:
   dice-networks:

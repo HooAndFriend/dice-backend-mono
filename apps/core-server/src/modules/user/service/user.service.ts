@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -35,9 +35,7 @@ export default class UserService {
     const findUser = await this.userRepository.findUser(user.id);
 
     if (!findUser) {
-      return CommonResponse.createNotFoundException(
-        '유저 정보를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('Not Found User');
     }
 
     return CommonResponse.createResponse({

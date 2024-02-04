@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 // ** Redis Imports
@@ -14,18 +14,19 @@ import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
 import dayjs from 'dayjs';
-import { MailService } from '@/src/global/util/mail/mail.service';
 
 // ** Dto Imports
-import SendMailDto from '@/src/global/util/mail/mail.send.dto';
+import UserRepository from '../../user/repository/user.repository';
+import { BadRequestException } from '@/src/global/exception/CustomException';
+import SendMailDto from '@/src/global/dto/mail-send.dto';
 
 @Injectable()
 export default class TeamUserService {
   constructor(
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
-    private readonly mailService: MailService,
-    @Inject('RMQ_SERVICE') private readonly rmqClient: ClientProxy,
+    private readonly userRepository: UserRepository,
+    @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -55,24 +56,48 @@ export default class TeamUserService {
     });
 
     if (!team) {
-      return CommonResponse.createNotFoundException('Not Found Team');
+      throw new NotFoundException('Not Found Team');
     }
 
-    const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
+    const findTeamUser = await this.teamUserRepository.exist({
+      where: { user: { email: dto.email } },
+    });
 
-    if (redisValue) {
-      return CommonResponse.createBadRequestException('Did Invite User');
+    if (findTeamUser) {
+      throw new BadRequestException('Did Invite User');
     }
 
-    const sendMail = new SendMailDto(
-      dto.email,
-      '[DICE] Invite Team',
-      'Invite Team',
-    );
+    const findUser = await this.userRepository.findOne({
+      where: { email: dto.email },
+    });
 
-    await this.sendMail(sendMail);
-    await this.setTeamRedis(dto.email, team.uuid, dto.role);
+    if (findUser) {
+      await this.teamUserRepository.save(
+        this.teamUserRepository.create({
+          user: findUser,
+          team,
+          role: dto.role,
+        }),
+      );
+    }
 
+    if (!findUser) {
+      const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
+
+      if (redisValue) {
+        throw new BadRequestException('Did Invite User');
+      }
+
+      const sendMail = new SendMailDto(
+        dto.email,
+        '[DICE] Invite Team',
+        'Invite Team',
+        `<a href="http://hi-dice.com?uuid=${team.uuid}">Click</a>`,
+      );
+
+      await this.sendMail(sendMail);
+      await this.setTeamRedis(dto.email, team.uuid, dto.role);
+    }
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Invite User',
@@ -88,7 +113,7 @@ export default class TeamUserService {
     const isExistTeamUser = await this.existTeamUserById(teamUserId);
 
     if (!isExistTeamUser) {
-      return CommonResponse.createNotFoundException('Not Found Team User');
+      throw new NotFoundException('Not Found Team User');
     }
 
     await this.teamUserRepository.delete(teamUserId);
@@ -108,7 +133,7 @@ export default class TeamUserService {
     const isExistTeamUser = await this.existTeamUserById(dto.teamUserId);
 
     if (!isExistTeamUser) {
-      return CommonResponse.createNotFoundException('Not Found Team User');
+      throw new NotFoundException('Not Found Team User');
     }
 
     await this.teamUserRepository.update(dto.teamUserId, { role: dto.role });
@@ -174,7 +199,7 @@ export default class TeamUserService {
    */
   private async sendMail(dto: SendMailDto) {
     this.rmqClient
-      .send<SendMailDto>({ cmd: 'send-single-mail' }, dto)
+      .send<SendMailDto>('send-single-mail', dto)
       .toPromise()
       .catch((err) => {
         console.log(err);

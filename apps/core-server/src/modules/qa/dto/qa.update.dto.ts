@@ -7,7 +7,7 @@ export default class RequestQaUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   qaId: number;
-  
+
   @ApiProperty({ example: 2 })
   @IsNumber()
   workerId: number;
@@ -28,7 +28,14 @@ export default class RequestQaUpdateDto {
   @IsString()
   memo: string;
 
-  @ApiProperty({ type: [Object], example: [{ url: "https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg" }] })
+  @ApiProperty({
+    type: [Object],
+    example: [
+      {
+        url: 'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+      },
+    ],
+  })
   @IsArray()
-  fileurls: {url : string}[];
+  fileurls: { url: string }[];
 }

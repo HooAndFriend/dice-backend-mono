@@ -1,6 +1,7 @@
 // ** Nest Imports
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
@@ -26,6 +27,8 @@ async function bootstrap() {
     snapshot: true,
   });
 
+  const configService = app.get(ConfigService);
+
   // ** Base URL
   app.setGlobalPrefix('api');
 
@@ -46,12 +49,12 @@ async function bootstrap() {
   // }
 
   // ** Swagger Setting
-  if (process.env.NODE_ENV === 'development') {
+  if (configService.get('NODE_ENV') === 'development') {
     swaggerConfig(app);
   }
 
   // ** Server ON Handler
-  await app.listen(process.env.SERVER_PORT);
+  await app.listen(configService.get('SERVER_PORT'));
 }
 bootstrap()
   .then((res) => {
