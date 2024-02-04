@@ -32,6 +32,8 @@ import User from '../../user/domain/user.entity';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
 import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
+import WorkspaceFunctionRepository from '../../workspace-function/repository/workspace-function.repository';
+import DiceFunction from '@/src/global/enum/DiceFunction';
 
 @Injectable()
 export default class AuthService {
@@ -41,6 +43,7 @@ export default class AuthService {
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
+    private readonly workspaceFunctionRepository: WorkspaceFunctionRepository,
     private readonly dataSource: DataSource,
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
@@ -96,6 +99,14 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           user: saveUser,
           uuid: uuidv4(),
+          workspaceFunction: [],
+        }),
+      );
+
+      const workspaceFunction = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.DASHBOARD,
         }),
       );
 
@@ -138,7 +149,12 @@ export default class AuthService {
             name: workspace.name,
             profile: workspace.profile,
             uuid: workspace.uuid,
-            workspaceFunction: [],
+            workspaceFunction: [
+              {
+                id: workspaceFunction.id,
+                function: workspaceFunction.function,
+              },
+            ],
           },
         },
       });
@@ -274,6 +290,13 @@ export default class AuthService {
         }),
       );
 
+      const workspaceFunction = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.DASHBOARD,
+        }),
+      );
+
       await queryRunner.commitTransaction();
 
       const token = this.generateToken({ id: saveUser.id });
@@ -293,7 +316,12 @@ export default class AuthService {
             name: workspace.name,
             profile: workspace.profile,
             uuid: workspace.uuid,
-            workspaceFunction: [],
+            workspaceFunction: [
+              {
+                id: workspaceFunction.id,
+                function: workspaceFunction.function,
+              },
+            ],
           },
         },
       });
