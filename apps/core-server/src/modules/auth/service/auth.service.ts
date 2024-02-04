@@ -7,7 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import UserRepository from '../../user/repository/user.repository';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
+import TeamUserRepository from '../../team-user/repository/team-user.repository';
+import TeamRepository from '../../team/repository/team.repository';
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
@@ -29,11 +30,7 @@ import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from '../../../global/enum/UserType.enum';
 import User from '../../user/domain/user.entity';
-import TeamUserRepository from '../../team-user/repository/team-user.repository';
-import TeamRepository from '../../team/repository/team.repository';
 import Role from '@/src/global/enum/Role';
-import WorkspaceFunctionRepository from '../../workspace-function/repository/workspace-function.repository';
-import DiceFunction from '@/src/global/enum/DiceFunction';
 
 @Injectable()
 export default class AuthService {
@@ -42,8 +39,6 @@ export default class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
-    private readonly workspaceUserRepository: WorkspaceUserRepository,
-    private readonly workspaceFunctionRepository: WorkspaceFunctionRepository,
     private readonly dataSource: DataSource,
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
@@ -103,13 +98,6 @@ export default class AuthService {
         }),
       );
 
-      const workspaceFunction = await queryRunner.manager.save(
-        this.workspaceFunctionRepository.create({
-          workspace,
-          function: DiceFunction.DASHBOARD,
-        }),
-      );
-
       if (dto.uuid) {
         const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
 
@@ -149,12 +137,7 @@ export default class AuthService {
             name: workspace.name,
             profile: workspace.profile,
             uuid: workspace.uuid,
-            workspaceFunction: [
-              {
-                id: workspaceFunction.id,
-                function: workspaceFunction.function,
-              },
-            ],
+            workspaceFunction: [],
           },
         },
       });
@@ -290,13 +273,6 @@ export default class AuthService {
         }),
       );
 
-      const workspaceFunction = await queryRunner.manager.save(
-        this.workspaceFunctionRepository.create({
-          workspace,
-          function: DiceFunction.DASHBOARD,
-        }),
-      );
-
       await queryRunner.commitTransaction();
 
       const token = this.generateToken({ id: saveUser.id });
@@ -316,12 +292,7 @@ export default class AuthService {
             name: workspace.name,
             profile: workspace.profile,
             uuid: workspace.uuid,
-            workspaceFunction: [
-              {
-                id: workspaceFunction.id,
-                function: workspaceFunction.function,
-              },
-            ],
+            workspaceFunction: [],
           },
         },
       });

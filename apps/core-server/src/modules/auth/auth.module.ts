@@ -14,14 +14,12 @@ import WorkspaceModule from '../workspace/workspace.module';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 import TeamUserModule from '../team-user/team-user.module';
 import TeamModule from '../team/team.module';
-import WorkspaceFunctionModule from '../workspace-function/workspace-function.module';
 
 @Module({
   imports: [
     UserModule,
     WorkspaceModule,
     WorkspaceUserModule,
-    WorkspaceFunctionModule,
     PassportModule,
     forwardRef(() => TeamModule),
     forwardRef(() => TeamUserModule),
