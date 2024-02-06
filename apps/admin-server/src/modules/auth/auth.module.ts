@@ -7,15 +7,13 @@ import { PassportModule } from '@nestjs/passport';
 // ** Custom Module Imports
 import AuthController from './controller/auth.controller';
 import AuthService from './service/auth.service';
-import UserModule from '../user/user.module';
-import WorkspaceModule from '../workspace/workspace.module';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
-import TeamUserModule from '../team-user/team-user.module';
-import TeamModule from '../team/team.module';
+import AdminModule from '../admin/admin.module';
+import JwtRefreshStrategy from './passport/auth.jwt-refresh.strategy';
+import JwtAccessStrategy from './passport/auth.jwt-access.strategy';
 
 @Module({
   imports: [
-    UserModule,
+    AdminModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -29,6 +27,6 @@ import TeamModule from '../team/team.module';
   ],
   exports: [],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtAccessStrategy, JwtRefreshStrategy],
 })
 export default class AuthModule {}
