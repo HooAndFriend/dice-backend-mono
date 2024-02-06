@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -84,7 +85,7 @@ export default class AdminController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Admin 리스트 조회' })
+  @ApiOperation({ summary: 'Admin 조회' })
   @ApiResponse(AdminResponse.findAdmin[200])
   @ApiResponse(AdminResponse.findAdmin[404])
   @UseGuards(JwtAccessGuard)
@@ -96,6 +97,22 @@ export default class AdminController {
       data: admin,
       statusCode: 200,
       message: 'Admin을 조회했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Admin 삭제' })
+  @ApiResponse(AdminResponse.findAdmin[200])
+  @ApiResponse(AdminResponse.findAdmin[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteAdmin(@Param('id') id: number) {
+    const admin = await this.adminService.findAdmin(id);
+    await this.adminService.deleteAdmin(admin.id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Admin을 삭제했습니다.',
     });
   }
 }

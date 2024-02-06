@@ -54,6 +54,14 @@ export default class AdminService {
   }
 
   /**
+   * Delete Admin
+   * @param id
+   */
+  public async deleteAdmin(id: number) {
+    await this.adminRepository.delete(id);
+  }
+
+  /**
    * Find Admin List
    * @param dto
    * @returns
