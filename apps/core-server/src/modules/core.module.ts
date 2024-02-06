@@ -9,6 +9,7 @@ import TeamUserModule from './team-user/team-user.module';
 import QaModule from './qa/qa.module';
 import WorkspaceFunctionModule from './workspace-function/workspace-function.module';
 import TicketModule from './ticket/ticket.module';
+import CsModule from './cs/cs.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import TicketModule from './ticket/ticket.module';
     TeamUserModule,
     QaModule,
     TicketModule,
+    CsModule,
   ],
   providers: [],
   exports: [],
