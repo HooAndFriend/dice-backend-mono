@@ -8,6 +8,7 @@ import FaqRepository from '../repository/faq.repository';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
+import RequestFaqUpdateDto from '../dto/faq.update.dto';
 
 // ** Custom Module Imports
 
@@ -70,5 +71,21 @@ export default class FaqService {
    */
   public async deleteFaq(id: number) {
     await this.faqRepository.delete(id);
+  }
+
+  /**
+   * Faq Update
+   * @param dto
+   * @param adminEmail
+   */
+  public async updateFaq(dto: RequestFaqUpdateDto, adminEmail: string) {
+    await this.faqRepository.update(dto.faqId, {
+      question: dto.question,
+      answer: dto.answer,
+      category: dto.category,
+      file: dto.file,
+      modifiedId: adminEmail,
+      isEnabled: dto.isEnabled,
+    });
   }
 }

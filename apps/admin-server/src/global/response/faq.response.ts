@@ -56,7 +56,18 @@ export const FaqResponse = {
   deleteFaq: {
     200: createMessageResponse({
       statusCode: 200,
-      message: 'Faq를 삭제합니다..',
+      message: 'Faq를 삭제합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Faq를 찾을 수 없습니다.',
+      error: 'NOT FOUND',
+    }),
+  },
+  updateFaq: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Faq를 수정합니다.',
     }),
     404: createErrorResponse({
       statusCode: 404,

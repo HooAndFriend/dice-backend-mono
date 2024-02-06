@@ -40,6 +40,7 @@ import CommonResponse from '@/src/global/dto/api.response';
 import Admin from '../../admin/domain/admin.entity';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
+import RequestFaqUpdateDto from '../dto/faq.update.dto';
 
 // ** Dto Imports
 
@@ -113,6 +114,26 @@ export default class FaqController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Faq를 삭제합니다..',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Faq 수정' })
+  @ApiBody({ type: RequestFaqUpdateDto })
+  @ApiResponse(FaqResponse.updateFaq[200])
+  @ApiResponse(FaqResponse.updateFaq[404])
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateFaq(
+    @Body() dto: RequestFaqUpdateDto,
+    @GetAdmin() { email }: Admin,
+  ) {
+    await this.faqService.findFaq(dto.faqId);
+    await this.faqService.updateFaq(dto, email);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Faq를 수정했습니다.',
     });
   }
 }
