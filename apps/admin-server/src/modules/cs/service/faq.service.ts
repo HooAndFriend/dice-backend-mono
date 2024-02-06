@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import FaqRepository from '../repository/faq.repository';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
+import RequestFaqFindDto from '../dto/faq.find.dto';
 
 // ** Custom Module Imports
 
@@ -38,5 +39,14 @@ export default class FaqService {
         isEnabled: true,
       }),
     );
+  }
+
+  /**
+   * Find Faq List
+   * @param dto
+   * @returns
+   */
+  public async findFaqList(dto: RequestFaqFindDto) {
+    return await this.faqRepository.findFaqList(dto);
   }
 }

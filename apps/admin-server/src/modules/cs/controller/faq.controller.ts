@@ -1,5 +1,14 @@
 // ** Nest Imports
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
 // ** Module Imports
 import FaqService from '../service/faq.service';
@@ -28,6 +37,7 @@ import { FaqResponse } from '@/src/global/response/faq.response';
 import CommonResponse from '@/src/global/dto/api.response';
 import Admin from '../../admin/domain/admin.entity';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
+import RequestFaqFindDto from '../dto/faq.find.dto';
 
 // ** Dto Imports
 
@@ -39,12 +49,12 @@ export default class FaqController {
   constructor(private readonly faqService: FaqService) {}
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '유저 정보 수정' })
+  @ApiOperation({ summary: 'Faq 저장' })
   @ApiBody({ type: RequestFaqSaveDto })
   @ApiResponse(FaqResponse.saveFaq[200])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveSocialUser(
+  public async saveFaq(
     @Body() dto: RequestFaqSaveDto,
     @GetAdmin() { email }: Admin,
   ) {
@@ -53,6 +63,21 @@ export default class FaqController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Faq를 생성했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Faq List 조회' })
+  @ApiResponse(FaqResponse.findFaqList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findFaqList(@Query() query: RequestFaqFindDto) {
+    const [data, count] = await this.faqService.findFaqList(query);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Faq 리스트를 조회합니다.',
     });
   }
 }
