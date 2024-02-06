@@ -26,6 +26,14 @@ export default class Faq extends BaseTimeEntity {
   answer: string;
 
   @Column({
+    type: 'varchar',
+    length: 255,
+    comment: '파일',
+    nullable: false,
+  })
+  file: string;
+
+  @Column({
     type: 'enum',
     enum: CsCategoryEnum,
     comment: '카테고리',

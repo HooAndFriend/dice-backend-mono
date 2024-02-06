@@ -34,9 +34,10 @@ export default class FaqService {
         question: dto.question,
         answer: dto.answer,
         category: dto.category,
+        file: dto.file,
         createdId: adminEmail,
         modifiedId: adminEmail,
-        isEnabled: true,
+        isEnabled: dto.isEnabled,
       }),
     );
   }
