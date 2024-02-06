@@ -12,14 +12,18 @@ import FaqService from './service/faq.service';
 import FaqController from './controller/faq.controller';
 import Faq from './domain/faq.entity';
 import FaqRepository from './repository/faq.repository';
+import Qna from './domain/qna.entity';
+import QnaRepository from './repository/qna.repository';
+import QnaController from './controller/qna.controller';
+import QnaService from './service/qna.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Faq]),
-    TypeOrmExModule.forCustomRepository([FaqRepository]),
+    TypeOrmModule.forFeature([Faq, Qna]),
+    TypeOrmExModule.forCustomRepository([FaqRepository, QnaRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
-  controllers: [FaqController],
-  providers: [FaqService],
+  controllers: [FaqController, QnaController],
+  providers: [FaqService, QnaService],
 })
 export default class CsModule {}
