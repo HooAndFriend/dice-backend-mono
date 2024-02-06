@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
 // ** Module Imports
 import AdminService from '../service/admin.service';
@@ -28,6 +36,7 @@ import { AdminResponse } from '@/src/global/response/admin.response';
 import RequestAdminSaveDto from '../dto/admin.save.dto';
 import Admin from '../domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
+import RequestAdminFindDto from '../dto/admin.find.dto';
 
 @ApiTags('Admin')
 @ApiResponse(createServerExceptionResponse())
@@ -53,6 +62,23 @@ export default class AdminController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Admin을 생성했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Admin 리스트 조회' })
+  @ApiResponse(AdminResponse.findAdminList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findAdminList(
+    @Query(ValidationPipe) query: RequestAdminFindDto,
+  ) {
+    const [data, count] = await this.adminService.findAdminList(query);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Admin 리스트를 조회했습니다.',
     });
   }
 }

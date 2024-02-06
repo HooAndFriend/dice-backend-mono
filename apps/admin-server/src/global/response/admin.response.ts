@@ -16,4 +16,31 @@ export const AdminResponse = {
       error: 'BAD REQUEST',
     }),
   },
+  findAdminList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdAt: '2024-02-06T09:57:47.956Z',
+            id: 2,
+            email: 'subAdmin',
+            role: 'MASTER',
+            nickname: '피노키오',
+            profile: 'https://s3.bucket.com/123.png',
+          },
+          {
+            createdAt: '2024-02-06T05:49:57.188Z',
+            id: 1,
+            email: 'admin',
+            role: 'MASTER',
+            nickname: 'ADMIN',
+            profile: '',
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: 'Admin 리스트를 조회했습니다.',
+    }),
+  },
 };

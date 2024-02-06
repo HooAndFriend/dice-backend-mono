@@ -9,6 +9,7 @@ import * as bcrypt from 'bcryptjs';
 import AdminRepository from '../repository/admin.repository';
 import RequestAdminSaveDto from '../dto/admin.save.dto';
 import { BadRequestException } from '@/src/global/exception/CustomException';
+import RequestAdminFindDto from '../dto/admin.find.dto';
 
 @Injectable()
 export default class AdminService {
@@ -32,6 +33,15 @@ export default class AdminService {
         createdId: adminEmail,
       }),
     );
+  }
+
+  /**
+   * Find Admin List
+   * @param dto
+   * @returns
+   */
+  public async findAdminList(dto: RequestAdminFindDto) {
+    return await this.adminRepository.findAdminList(dto);
   }
 
   /**
