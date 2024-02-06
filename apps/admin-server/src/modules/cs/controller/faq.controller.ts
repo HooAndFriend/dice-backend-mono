@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -95,6 +96,23 @@ export default class FaqController {
       data: faq,
       statusCode: 200,
       message: 'Faq를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Faq 삭제' })
+  @ApiResponse(FaqResponse.deleteFaq[200])
+  @ApiResponse(FaqResponse.deleteFaq[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteFaq(@Param('id') id: number) {
+    const faq = await this.faqService.findFaq(id);
+
+    await this.faqService.deleteFaq(faq.id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Faq를 삭제합니다..',
     });
   }
 }

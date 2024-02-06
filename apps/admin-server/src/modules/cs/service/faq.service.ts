@@ -63,4 +63,12 @@ export default class FaqService {
 
     return faq;
   }
+
+  /**
+   * Delete Faq
+   * @param id
+   */
+  public async deleteFaq(id: number) {
+    await this.faqRepository.delete(id);
+  }
 }
