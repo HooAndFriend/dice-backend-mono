@@ -50,11 +50,34 @@ export default class Qna extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
+    length: 255,
+    comment: '파일',
+    nullable: true,
+  })
+  file: string;
+
+  @Column({
+    type: 'text',
+    comment: '답변 내용',
+    nullable: true,
+  })
+  answer: string;
+
+  @Column({
+    type: 'varchar',
     length: 50,
     comment: '답변자 ID',
-    nullable: false,
+    nullable: true,
   })
   answerId: string;
+
+  @Column({
+    type: 'datetime',
+    comment: '답변 시간',
+    name: 'answer_date',
+    nullable: true,
+  })
+  answerDate: Date;
 
   @Column({
     type: 'boolean',

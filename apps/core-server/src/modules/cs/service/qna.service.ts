@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
 import QnaRepository from '../repository/qna.repository';
+import RequestQnaSaveDto from '../dto/qna.save.dto';
 
 // ** Custom Module Imports
 
@@ -19,4 +20,17 @@ export default class QnaService {
   ) {}
 
   private logger = new Logger();
+
+  /**
+   * Save Qna
+   * @param dto
+   */
+  public async saveQna(dto: RequestQnaSaveDto) {
+    await this.qnaRepository.save(
+      this.qnaRepository.create({
+        ...dto,
+        isAnswer: false,
+      }),
+    );
+  }
 }
