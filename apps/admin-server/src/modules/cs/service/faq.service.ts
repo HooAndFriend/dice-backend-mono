@@ -7,6 +7,7 @@ import { DataSource } from 'typeorm';
 import FaqRepository from '../repository/faq.repository';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 // ** Custom Module Imports
 
@@ -49,5 +50,17 @@ export default class FaqService {
    */
   public async findFaqList(dto: RequestFaqFindDto) {
     return await this.faqRepository.findFaqList(dto);
+  }
+
+  /**
+   * Find Faq
+   */
+  public async findFaq(id: number) {
+    const faq = await this.faqRepository.findOne({ where: { id } });
+    if (!faq) {
+      throw new NotFoundException('Faq를 찾을 수 없습니다.');
+    }
+
+    return faq;
   }
 }

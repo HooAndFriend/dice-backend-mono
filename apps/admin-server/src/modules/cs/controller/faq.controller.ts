@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Query,
@@ -78,6 +79,22 @@ export default class FaqController {
       data: { data, count },
       statusCode: 200,
       message: 'Faq 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Faq 조회' })
+  @ApiResponse(FaqResponse.findFaq[200])
+  @ApiResponse(FaqResponse.findFaq[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findFaq(@Param('id') id: number) {
+    const faq = await this.faqService.findFaq(id);
+
+    return CommonResponse.createResponse({
+      data: faq,
+      statusCode: 200,
+      message: 'Faq를 조회합니다.',
     });
   }
 }
