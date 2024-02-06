@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -81,7 +81,7 @@ export default class AuthService {
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
     const findUser = await this.adminRepository.findOne({ where: { id } });
     if (!findUser) {
-      throw new NotFoundException('Not Found User');
+      throw new UnauthorizedException('Not Found User');
     }
     return findUser;
   }
