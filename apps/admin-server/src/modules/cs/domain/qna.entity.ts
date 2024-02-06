@@ -77,7 +77,7 @@ export default class Qna extends BaseTimeEntity {
     name: 'answer_date',
     nullable: true,
   })
-  answerDate: boolean;
+  answerDate: Date;
 
   @Column({
     type: 'boolean',

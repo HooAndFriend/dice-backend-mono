@@ -11,6 +11,7 @@ import QnaRepository from '../repository/qna.repository';
 // ** enum, dto, entity, types Imports
 import RequestQnaFindDto from '../dto/qna.find.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
+import RequestQnaAnswerDto from '../dto/qna.answer.dto';
 
 @Injectable()
 export default class QnaService {
@@ -44,5 +45,20 @@ export default class QnaService {
     }
 
     return qna;
+  }
+
+  /**
+   * Answer Qna
+   * @param dto
+   * @param adminEmail
+   */
+  public async answerQna(dto: RequestQnaAnswerDto, adminEmail: string) {
+    await this.qnaRepository.update(dto.qnaId, {
+      isAnswer: true,
+      answer: dto.answer,
+      file: dto.file,
+      answerDate: new Date(),
+      answerId: adminEmail,
+    });
   }
 }

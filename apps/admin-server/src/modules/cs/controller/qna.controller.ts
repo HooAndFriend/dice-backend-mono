@@ -1,8 +1,10 @@
 // ** Nest Imports
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Post,
   Query,
   UseGuards,
   ValidationPipe,
@@ -14,6 +16,7 @@ import QnaService from '../service/qna.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -32,8 +35,9 @@ import { QnaResponse } from '@/src/global/response/qna.response';
 // ** Dto Imports
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestQnaFindDto from '../dto/qna.find.dto';
-
-// ** Dto Imports
+import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
+import Admin from '../../admin/domain/admin.entity';
+import RequestQnaAnswerDto from '../dto/qna.answer.dto';
 
 @ApiTags('Qna')
 @ApiResponse(createServerExceptionResponse())
@@ -70,6 +74,26 @@ export default class QnaController {
       data: qna,
       statusCode: 200,
       message: 'Qna를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Qna 답변' })
+  @ApiBody({ type: RequestQnaAnswerDto })
+  @ApiResponse(QnaResponse.answerQna[200])
+  @ApiResponse(QnaResponse.answerQna[404])
+  @UseGuards(JwtAccessGuard)
+  @Post('/')
+  public async saveFaq(
+    @Body() dto: RequestQnaAnswerDto,
+    @GetAdmin() { email }: Admin,
+  ) {
+    await this.qnaService.findQna(dto.qnaId);
+    await this.qnaService.answerQna(dto, email);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qna에 답변했습니다.',
     });
   }
 }

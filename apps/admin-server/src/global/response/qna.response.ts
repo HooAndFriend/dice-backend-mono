@@ -52,4 +52,15 @@ export const QnaResponse = {
       error: 'NOT FOUND',
     }),
   },
+  answerQna: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Qna에 답변했습니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Qna를 찾을 수 없습니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };
