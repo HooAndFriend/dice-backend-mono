@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
 import FaqRepository from '../repository/faq.repository';
+import RequestFaqSaveDto from '../dto/faq.save.dto';
 
 // ** Custom Module Imports
 
@@ -19,4 +20,23 @@ export default class FaqService {
   ) {}
 
   private logger = new Logger();
+
+  /**
+   * Save Faq
+   * @param dto
+   * @param adminEmail
+   * @returns
+   */
+  public async saveFaq(dto: RequestFaqSaveDto, adminEmail: string) {
+    await this.faqRepository.save(
+      this.faqRepository.create({
+        question: dto.question,
+        answer: dto.answer,
+        category: dto.category,
+        createdId: adminEmail,
+        modifiedId: adminEmail,
+        isEnabled: true,
+      }),
+    );
+  }
 }
