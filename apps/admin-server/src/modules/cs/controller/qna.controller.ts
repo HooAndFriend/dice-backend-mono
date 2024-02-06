@@ -2,6 +2,7 @@
 import {
   Controller,
   Get,
+  Param,
   Query,
   UseGuards,
   ValidationPipe,
@@ -53,6 +54,22 @@ export default class QnaController {
       data: { data, count },
       statusCode: 200,
       message: 'Qna 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Qna 조회' })
+  @ApiResponse(QnaResponse.findQna[200])
+  @ApiResponse(QnaResponse.findQna[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findQna(@Param('id') id: number) {
+    const qna = await this.qnaService.findQna(id);
+
+    return CommonResponse.createResponse({
+      data: qna,
+      statusCode: 200,
+      message: 'Qna를 조회합니다.',
     });
   }
 }
