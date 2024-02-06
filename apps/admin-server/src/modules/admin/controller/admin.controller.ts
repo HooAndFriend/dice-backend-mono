@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -79,6 +80,22 @@ export default class AdminController {
       data: { data, count },
       statusCode: 200,
       message: 'Admin 리스트를 조회했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Admin 리스트 조회' })
+  @ApiResponse(AdminResponse.findAdmin[200])
+  @ApiResponse(AdminResponse.findAdmin[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findAdmin(@Param('id') id: number) {
+    const admin = await this.adminService.findAdmin(id);
+
+    return CommonResponse.createResponse({
+      data: admin,
+      statusCode: 200,
+      message: 'Admin을 조회했습니다.',
     });
   }
 }

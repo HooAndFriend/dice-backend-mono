@@ -43,4 +43,27 @@ export const AdminResponse = {
       message: 'Admin 리스트를 조회했습니다.',
     }),
   },
+  findAdmin: {
+    200: createResponse({
+      data: {
+        createdAt: '2024-02-06T05:49:57.188Z',
+        updatedAt: '2024-02-06T05:49:57.188Z',
+        id: 1,
+        email: 'admin',
+        password:
+          '$2a$10$iM8h/1wR.hW/5t9cuvu5Ju8SP6Ya7L0JQve3WB2TCqVOYy.fZVEeO',
+        role: 'MASTER',
+        nickname: 'ADMIN',
+        profile: '',
+        createdId: '',
+      },
+      statusCode: 200,
+      message: 'Admin을 조회했습니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '존재하지 않는 관리자입니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };

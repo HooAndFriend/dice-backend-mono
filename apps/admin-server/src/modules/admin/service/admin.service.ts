@@ -8,8 +8,12 @@ import * as bcrypt from 'bcryptjs';
 // ** enum, dto, entity, types Imports
 import AdminRepository from '../repository/admin.repository';
 import RequestAdminSaveDto from '../dto/admin.save.dto';
-import { BadRequestException } from '@/src/global/exception/CustomException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 import RequestAdminFindDto from '../dto/admin.find.dto';
+import { Not } from 'typeorm';
 
 @Injectable()
 export default class AdminService {
@@ -33,6 +37,20 @@ export default class AdminService {
         createdId: adminEmail,
       }),
     );
+  }
+
+  /**
+   *
+   * @param id Find Admin
+   * @returns
+   */
+  public async findAdmin(id: number) {
+    const admin = await this.adminRepository.findOne({ where: { id } });
+    if (!admin) {
+      throw new NotFoundException('존재하지 않는 관리자입니다.');
+    }
+
+    return admin;
   }
 
   /**
