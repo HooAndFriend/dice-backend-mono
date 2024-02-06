@@ -1,5 +1,8 @@
+import AdminRoleEnum from '@/src/modules/admin/domain/admin-role.enum';
+
 export interface JwtPayload {
   id: number;
+  role: AdminRoleEnum;
   iat?: number;
   exp?: number;
 }
