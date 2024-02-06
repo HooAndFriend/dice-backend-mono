@@ -81,6 +81,7 @@ export default class QnaController {
   @ApiOperation({ summary: 'Qna 답변' })
   @ApiBody({ type: RequestQnaAnswerDto })
   @ApiResponse(QnaResponse.answerQna[200])
+  @ApiResponse(QnaResponse.answerQna[400])
   @ApiResponse(QnaResponse.answerQna[404])
   @UseGuards(JwtAccessGuard)
   @Post('/')
@@ -88,8 +89,10 @@ export default class QnaController {
     @Body() dto: RequestQnaAnswerDto,
     @GetAdmin() { email }: Admin,
   ) {
-    await this.qnaService.findQna(dto.qnaId);
+    const faq = await this.qnaService.findQna(dto.qnaId);
+    await this.qnaService.validationQnaAnswer(faq);
     await this.qnaService.answerQna(dto, email);
+    await this.qnaService.sendMail(faq.email, dto.answer);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

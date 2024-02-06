@@ -57,6 +57,11 @@ export const QnaResponse = {
       statusCode: 200,
       message: 'Qna에 답변했습니다.',
     }),
+    400: createErrorResponse({
+      statusCode: 400,
+      message: '답변할 수 없습니다.',
+      error: 'BAD REQUEST',
+    }),
     404: createErrorResponse({
       statusCode: 404,
       message: 'Qna를 찾을 수 없습니다.',

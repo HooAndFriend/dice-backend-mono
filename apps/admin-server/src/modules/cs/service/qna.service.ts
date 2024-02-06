@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
@@ -10,14 +10,21 @@ import QnaRepository from '../repository/qna.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQnaFindDto from '../dto/qna.find.dto';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 import RequestQnaAnswerDto from '../dto/qna.answer.dto';
+import { ClientProxy } from '@nestjs/microservices';
+import SendMailDto from '@/src/global/dto/mail-send.dto';
+import Qna from '../domain/qna.entity';
 
 @Injectable()
 export default class QnaService {
   constructor(
     private readonly configService: ConfigService,
     private readonly qnaRepository: QnaRepository,
+    @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -60,5 +67,36 @@ export default class QnaService {
       answerDate: new Date(),
       answerId: adminEmail,
     });
+  }
+
+  /**
+   * Send Answe Mail
+   * @param email
+   * @param text
+   */
+  public async sendMail(email: string, text: string) {
+    const sendMail = new SendMailDto(
+      email,
+      '[DICE] 문의 답변 드립니다.',
+      text,
+      '',
+    );
+
+    this.rmqClient
+      .send<SendMailDto>('send-single-mail', sendMail)
+      .toPromise()
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  /**
+   * Validation Answer Qna
+   * @param qna
+   */
+  public async validationQnaAnswer(qna: Qna) {
+    if (qna.isAnswer) {
+      throw new BadRequestException('이미 답변된 Qna 입니다.');
+    }
   }
 }
