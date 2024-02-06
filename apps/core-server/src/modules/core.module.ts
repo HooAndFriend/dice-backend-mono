@@ -10,6 +10,7 @@ import QaModule from './qa/qa.module';
 import WorkspaceFunctionModule from './workspace-function/workspace-function.module';
 import TicketModule from './ticket/ticket.module';
 import CsModule from './cs/cs.module';
+import AdminModule from './admin/admin.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import CsModule from './cs/cs.module';
     QaModule,
     TicketModule,
     CsModule,
+    AdminModule,
   ],
   providers: [],
   exports: [],
