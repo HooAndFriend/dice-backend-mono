@@ -16,7 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from './global/repository/typeorm-ex.module';
 import LoggerService from './global/util/logger/logger.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import CoreModule from '@/src/modules/core.module';
+import CoreModule from '@/src/modules/admin-core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
