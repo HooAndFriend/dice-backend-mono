@@ -23,7 +23,6 @@ import {
   NotFoundException,
 } from '../../../global/exception/CustomException';
 import { JwtPayload } from '../../../global/types';
-import CommonResponse from '../../../global/dto/api.response';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
@@ -122,25 +121,7 @@ export default class AuthService {
 
       const token = this.generateToken({ id: saveUser.id });
 
-      return CommonResponse.createResponse({
-        statusCode: 200,
-        message: '회원가입 했습니다.',
-        data: {
-          token,
-          user: {
-            nickname: saveUser.nickname,
-            profile: saveUser.profile,
-            email: saveUser.email,
-          },
-          workspace: {
-            id: workspace.id,
-            name: workspace.name,
-            profile: workspace.profile,
-            uuid: workspace.uuid,
-            workspaceFunction: [],
-          },
-        },
-      });
+      return { token, saveUser, workspace };
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -156,60 +137,36 @@ export default class AuthService {
   }
 
   public async loginSocialUser(dto: RequestSocialUserLoginDto) {
-    const findUser = await this.userRepository.findUserWithWorkspaceByToken(
+    const User = await this.userRepository.findUserWithWorkspaceByToken(
       dto.token,
       dto.type,
     );
 
-    if (!findUser) {
+    if (!User) {
       throw new NotFoundException('Not Found User');
     }
 
-    const token = this.generateToken({ id: findUser.id });
+    const token = this.generateToken({ id: User.id });
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '로그인에 성공했습니다.',
-      data: {
-        token,
-        user: {
-          nickname: findUser.nickname,
-          profile: findUser.profile,
-          email: findUser.email,
-        },
-        workspace: findUser.workspace,
-      },
-    });
+    return { token, User };
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
-    const findUser = await this.userRepository.findUserWithWorkspace(dto.email);
+    const User = await this.userRepository.findUserWithWorkspace(dto.email);
 
-    if (!findUser) {
+    if (!User) {
       throw new NotFoundException('Not Found User');
     }
 
-    const result = await bcrypt.compare(dto.password, findUser.password);
+    const result = await bcrypt.compare(dto.password, User.password);
 
     if (!result) {
       throw new BadRequestException('Wrong Password');
     }
 
-    const token = this.generateToken({ id: findUser.id });
+    const token = this.generateToken({ id: User.id });
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '로그인에 성공했습니다.',
-      data: {
-        token,
-        user: {
-          nickname: findUser.nickname,
-          profile: findUser.profile,
-          email: findUser.email,
-        },
-        workspace: findUser.workspace,
-      },
-    });
+    return { token, User };
   }
 
   /**
@@ -277,25 +234,7 @@ export default class AuthService {
 
       const token = this.generateToken({ id: saveUser.id });
 
-      return CommonResponse.createResponse({
-        statusCode: 200,
-        message: '회원가입 했습니다.',
-        data: {
-          token,
-          user: {
-            nickname: saveUser.nickname,
-            profile: saveUser.profile,
-            email: saveUser.email,
-          },
-          workspace: {
-            id: workspace.id,
-            name: workspace.name,
-            profile: workspace.profile,
-            uuid: workspace.uuid,
-            workspaceFunction: [],
-          },
-        },
-      });
+      return { token, saveUser, workspace };
     } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();
@@ -318,11 +257,8 @@ export default class AuthService {
         expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
       },
     );
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '토큰을 재발급합니다.',
-      data: { accessToken },
-    });
+
+    return accessToken;
   }
 
   public generateToken(payload: JwtPayload): {

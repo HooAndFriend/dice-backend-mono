@@ -16,9 +16,17 @@ export const AuthResponse = {
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
           email: 'inhoo987654321@gmail.com',
         },
+        workspace: {
+          id: 5,
+          name: 'Pinomaker',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          uuid: '83247d2d-4610-49ea-bd87-a5941a816fb3',
+          workspaceFunction: [],
+        },
       },
       statusCode: 200,
-      message: '로그인에 성공했습니다.',
+      message: '회원가입에 성공했습니다.',
     }),
     400: createErrorResponse({
       statusCode: 400,
@@ -96,9 +104,17 @@ export const AuthResponse = {
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
           email: 'inhoo987654321@gmail.com',
         },
+        workspace: {
+          id: 5,
+          name: 'Pinomaker',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
+          uuid: '83247d2d-4610-49ea-bd87-a5941a816fb3',
+          workspaceFunction: [],
+        },
       },
       statusCode: 200,
-      message: '로그인에 성공했습니다.',
+      message: '회원가입에 성공했습니다.',
     }),
     400: createErrorResponse({
       statusCode: 400,
