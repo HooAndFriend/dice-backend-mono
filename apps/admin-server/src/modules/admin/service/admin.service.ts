@@ -14,6 +14,7 @@ import {
 } from '@/src/global/exception/CustomException';
 import RequestAdminFindDto from '../dto/admin.find.dto';
 import { Not } from 'typeorm';
+import RequestAdminUpdateDto from '../dto/admin.update.dto';
 
 @Injectable()
 export default class AdminService {
@@ -46,6 +47,7 @@ export default class AdminService {
    */
   public async findAdmin(id: number) {
     const admin = await this.adminRepository.findOne({ where: { id } });
+
     if (!admin) {
       throw new NotFoundException('존재하지 않는 관리자입니다.');
     }
@@ -59,6 +61,18 @@ export default class AdminService {
    */
   public async deleteAdmin(id: number) {
     await this.adminRepository.delete(id);
+  }
+
+  /**
+   * Update Admin
+   * @param dto
+   */
+  public async updateAdmin(dto: RequestAdminUpdateDto) {
+    await this.adminRepository.update(dto.adminId, {
+      nickname: dto.nickname,
+      profile: dto.profile,
+      role: dto.role,
+    });
   }
 
   /**

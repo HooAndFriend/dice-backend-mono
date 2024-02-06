@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
   ValidationPipe,
@@ -39,6 +40,7 @@ import RequestAdminSaveDto from '../dto/admin.save.dto';
 import Admin from '../domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestAdminFindDto from '../dto/admin.find.dto';
+import RequestAdminUpdateDto from '../dto/admin.update.dto';
 
 @ApiTags('Admin')
 @ApiResponse(createServerExceptionResponse())
@@ -54,7 +56,7 @@ export default class AdminController {
   @ApiResponse(AdminResponse.saveAdmin[400])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveFaq(
+  public async saveAdmin(
     @Body() dto: RequestAdminSaveDto,
     @GetAdmin() { email }: Admin,
   ) {
@@ -113,6 +115,23 @@ export default class AdminController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Admin을 삭제했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Admin 수정' })
+  @ApiBody({ type: RequestAdminUpdateDto })
+  @ApiResponse(AdminResponse.updateAdmin[200])
+  @ApiResponse(AdminResponse.updateAdmin[404])
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateAdmin(@Body() dto: RequestAdminUpdateDto) {
+    await this.adminService.findAdmin(dto.adminId);
+    await this.adminService.updateAdmin(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Admin을 수정했습니다.',
     });
   }
 }

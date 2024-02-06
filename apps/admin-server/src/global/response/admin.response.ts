@@ -77,4 +77,15 @@ export const AdminResponse = {
       error: 'NOT FOUND',
     }),
   },
+  updateAdmin: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Admin을 수정했습니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '존재하지 않는 관리자입니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };
