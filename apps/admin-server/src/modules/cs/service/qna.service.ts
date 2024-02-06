@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
 import QnaRepository from '../repository/qna.repository';
+import RequestQnaFindDto from '../dto/qna.find.dto';
 
 // ** Custom Module Imports
 
@@ -19,4 +20,13 @@ export default class QnaService {
   ) {}
 
   private logger = new Logger();
+
+  /**
+   * Find Faq List
+   * @param dto
+   * @returns
+   */
+  public async findQnaList(dto: RequestQnaFindDto) {
+    return await this.qnaRepository.findQnaList(dto);
+  }
 }
