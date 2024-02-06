@@ -23,30 +23,30 @@ export default class FaqRepository extends Repository<Faq> {
       'faq.isEnabled',
     ]);
 
-    // if (dto.isExpose) {
-    //   queryBuilder.where('faq.isExpose = :isExpose', {
-    //     isExpose: dto.isExpose,
-    //   });
-    // }
+    if (dto.isExpose) {
+      queryBuilder.where('faq.isExpose = :isExpose', {
+        isExpose: dto.isExpose,
+      });
+    }
 
-    // if (dto.startDate && dto.endDate) {
-    //   queryBuilder.andWhere('faq.createdDate BETWEEN :startDate AND :endDate', {
-    //     startDate: dto.startDate,
-    //     endDate: dto.endDate,
-    //   });
-    // }
+    if (dto.startDate && dto.endDate) {
+      queryBuilder.andWhere('faq.createdDate BETWEEN :startDate AND :endDate', {
+        startDate: dto.startDate,
+        endDate: dto.endDate,
+      });
+    }
 
-    // if (dto.category) {
-    //   queryBuilder.andWhere('faq.category = :category', {
-    //     category: dto.category,
-    //   });
-    // }
+    if (dto.category) {
+      queryBuilder.andWhere('faq.category = :category', {
+        category: dto.category,
+      });
+    }
 
-    // if (dto.question) {
-    //   queryBuilder.andWhere('faq.title LIKE :question', {
-    //     question: `%${dto.question}%`,
-    //   });
-    // }
+    if (dto.question) {
+      queryBuilder.andWhere('faq.title LIKE :question', {
+        question: `%${dto.question}%`,
+      });
+    }
 
     if (dto.page && dto.pageSize) {
       queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);

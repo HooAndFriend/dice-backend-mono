@@ -74,7 +74,7 @@ export default class FaqController {
   @ApiResponse(FaqResponse.findFaqList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findFaqList(@Query() query: RequestFaqFindDto) {
+  public async findFaqList(@Query(ValidationPipe) query: RequestFaqFindDto) {
     const [data, count] = await this.faqService.findFaqList(query);
 
     return CommonResponse.createResponse({
