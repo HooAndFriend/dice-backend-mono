@@ -83,61 +83,55 @@ export default class TicketService {
     return findComment;
   }
 
-  public async findWorkspaceById(workspaceId: number) {
-    const findWorkspace = await this.workspaceReposiotry.findOne({
-      where: { id: workspaceId },
-    });
-
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
+  // Ticket name 확인
+  public async ticketNameValidation(name: string, workspaceId: number) {
+    if (name.length > 30) {
+      throw new BadRequestException('Max length of ticket name is 30');
     }
 
-    const [findTicket, count] =
-      await this.ticketRepository.findAllTicketByWorkspaceId(id);
+    const findTicketByName =
+      await this.ticketRepository.findONeByNameAndWorkspaceId(
+        name,
+        workspaceId,
+      );
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Ticket을 전체조회 합니다.',
-      data: { findTicket, count },
-    });
+    if (findTicketByName) {
+      throw new BadRequestException('Ticket is already exist');
+    }
   }
 
-  // ** Ticket 상세 조회
+  // ** Ticket 전체 조회
+  public async findAllTicket(workspaceId: number) {
+    const [ticket, count] =
+      await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+
+    return { ticket, count };
+  }
+
+  // ** Ticket 상세조회
   public async findOneTicket(id: number) {
-    const findTicket = await this.ticketRepository.findTicketById(id);
-
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Ticket을 조회 합니다.',
-      data: findTicket,
-    });
+    const ticket = await this.findTicketById(id);
+    const file = await this.ticketFileRepository.findAllFileByTicketId(id);
+    return { ticket, file };
   }
 
   // ** Ticket 저장
   public async saveTicket(dto: RequestTicketSaveDto, user: User) {
     const findEpic = await this.findEpicById(dto.epicId);
 
-    if (!findEpic) {
-      throw new NotFoundException('Not Found Epic');
-    }
-
     if (dto.name.length > 30) {
-      throw new BadRequestException('Ticket name max is 30');
+      throw new BadRequestException('Max length of ticket name is 30');
     }
 
-    const findTicket = await this.ticketRepository.findOne({
+    const findTicketByName = await this.ticketRepository.findOne({
       where: { name: dto.name },
     });
 
-    if (findTicket) {
-      throw new BadRequestException('Existed Ticket');
+    if (findTicketByName) {
+      throw new BadRequestException('Ticket is already exist');
     }
 
-    await this.ticketRepository.save({
+    const ticket = this.ticketRepository.create({
       admin: user,
       epic: findEpic,
       workspace: findEpic.workspace,
@@ -145,22 +139,15 @@ export default class TicketService {
       status: TicketStatus.ToDo,
     });
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Ticket을 생성합니다.',
-    });
+    return await this.ticketRepository.save(ticket);
   }
 
   // ** Ticket 수정
   public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
-    const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
-    console.log(findTicket);
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
-    if (dto.name.length > 30) {
-      throw new BadRequestException('Ticket Name max is 30');
-    }
+    const findTicket = await this.findTicketById(dto.ticketId);
+
+    await this.ticketNameValidation(dto.name, findTicket.workspace.id);
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -189,10 +176,6 @@ export default class TicketService {
         worker: findWorker,
       });
       queryRunner.commitTransaction();
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'Ticket을 수정합니다.',
-      });
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -205,10 +188,7 @@ export default class TicketService {
 
   // ** Ticket 삭제
   public async deleteTicket(id: number) {
-    const findTicket = await this.ticketRepository.findTicketById(id);
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
+    const findTicket = await this.findTicketById(id);
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -223,11 +203,6 @@ export default class TicketService {
       await queryRunner.manager.delete(Ticket, { id });
 
       await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'Ticket을 삭제합니다.',
-      });
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -240,10 +215,7 @@ export default class TicketService {
 
   // ** Ticket 상태변경
   public async updateTicketState(dto: RequestTicketStateUpdateDto) {
-    const findTicket = await this.ticketRepository.findTicketById(dto.ticketId);
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
+    const findTicket = await this.findTicketById(dto.ticketId);
 
     const _date = new Date();
     const year = _date.getFullYear();
@@ -270,133 +242,76 @@ export default class TicketService {
           status: dto.status,
         });
     }
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Ticket 상태를 변경합니다.',
-    });
   }
 
   // ** Epic Service
 
-  // Epic 전체 조회
-  public async findAllEpic(id: number) {
-    const findWorkspace = await this.workspaceReposiotry.findOne({
-      where: { id },
-    });
-
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
+  // Epic name 확인
+  public async epicNameValidation(name: string, workspaceId: number) {
+    if (name.length > 30) {
+      throw new BadRequestException('Epic name max is 30');
     }
 
-    const response = await this.epicRepository.findAllByWorkspaceId(id);
+    const findEpicName = await this.epicRepository.findOneByNameAndWorkspaceId(
+      name,
+      workspaceId,
+    );
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Epic을 전체 조회합니다.',
-      data: response,
-    });
+    if (findEpicName) {
+      throw new BadRequestException('Epic is already exist');
+    }
+  }
+
+  // Epic 전체 조회
+  public async findAllEpic(id: number) {
+    return await this.epicRepository.findAllByWorkspaceId(id);
   }
 
   // Epic 상세 조회
   public async findOneEpic(id: number) {
-    console.log(id);
-    const findEpic = await this.epicRepository.findOne({
-      where: { id },
-    });
-
-    if (!findEpic) {
-      throw new NotFoundException('Not Found Epic');
-    }
-
-    const response = await this.ticketRepository.findAllTicketByEpicId(id);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Epic을 상세 조회합니다.',
-      data: response,
-    });
+    const findEpic = await this.findEpicById(id);
+    return await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
   }
 
   // ** Epic 저장
-  public async saveEpic(dto: RequestEpicSaveDto, user: User) {
-    const findWorkspace = await this.workspaceReposiotry.findOne({
-      where: { id: dto.workspaceId },
-    });
+  public async saveEpic(
+    dto: RequestEpicSaveDto,
+    workspaceId: number,
+    user: User,
+  ) {
+    const workspace = await this.workspaceReposiotry.findWorkspace(workspaceId);
 
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
-
-    if (dto.name.length > 30) {
-      throw new BadRequestException('Epic name max is 30');
-    }
-
-    const findEpic = await this.epicRepository.findOne({
-      where: { name: dto.name },
-    });
-
-    if (findEpic) {
-      throw new BadRequestException('Existed Epic');
-    }
+    await this.epicNameValidation(dto.name, workspace.id);
 
     const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-      dto.workspaceId,
+      workspaceId,
     );
 
-    await this.epicRepository.save({
+    const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
-      workspace: findWorkspace,
-      code: `${findWorkspace.name}-${count + 1}`,
+      workspace: workspace,
+      code: `${workspace.name}-${count + 1}`,
     });
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Epic을 생성합니다.',
-    });
+    return await this.epicRepository.save(epic);
   }
 
   // ** Epic 수정
   public async updateEpic(dto: RequestEpicUpdateDto) {
-    const findEpic = await this.epicRepository.findOne({
-      where: { id: dto.epicId },
-    });
+    const findEpic = await this.findEpicById(dto.epicId);
 
-    if (!findEpic) {
-      throw new NotFoundException('Not Found Epic');
-    }
-
-    if (dto.name.length > 30) {
-      throw new BadRequestException('Epic name max is 30');
-    }
-
-    const findEpicName = await this.epicRepository.findOne({
-      where: { name: dto.name },
-    });
-
-    if (findEpicName) {
-      throw new BadRequestException('Existed Epic');
-    }
+    await this.epicNameValidation(dto.name, findEpic.id);
 
     await this.epicRepository.update(dto.epicId, {
       name: dto.name,
-    });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Epic을 수정합니다.',
     });
   }
 
   // Epic 삭제
   public async deleteEpic(id: number) {
-    const findEpic = await this.epicRepository.findOne({
-      where: { id },
-    });
-    if (!findEpic) {
-      throw new NotFoundException('Not Found Epic');
-    }
+    const findEpic = await this.findEpicById(id);
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -415,10 +330,6 @@ export default class TicketService {
 
       await queryRunner.manager.delete(Epic, { id });
       await queryRunner.commitTransaction();
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: 'Epic을 삭제합니다.',
-      });
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -433,79 +344,37 @@ export default class TicketService {
 
   // ** Comment  저장
   public async saveComment(dto: RequestTicketCommentSaveDto, user: User) {
-    const findTicket = await this.ticketRepository.findOne({
-      where: { id: dto.ticketId },
-    });
+    const findTicket = await this.findTicketById(dto.ticketId);
 
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
-
-    await this.ticketCommentRepository.save({
+    const comment = this.ticketCommentRepository.create({
       user: user,
       content: dto.content,
       ticket: findTicket,
     });
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 생성합니다.',
-    });
+    return await this.ticketCommentRepository.save(comment);
   }
 
   // ** Comment 수정
   public async updateComment(dto: RequestTicketCommentUpdateDto, user: User) {
-    const findComment = await this.ticketCommentRepository.findOne({
-      where: { id: dto.commentId },
-    });
-
-    if (!findComment) {
-      throw new NotFoundException('Not Found Comment');
-    }
+    const findComment = await this.findCommentById(dto.commentId);
 
     await this.ticketCommentRepository.update(findComment.id, {
       content: dto.content,
-    });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 수정합니다.',
     });
   }
 
   // ** Comment 삭제
   public async deleteComment(id: number) {
-    const findComment = await this.ticketCommentRepository.findOne({
-      where: { id },
-    });
-
-    if (!findComment) {
-      throw new NotFoundException('Not Found Comment');
-    }
+    const findComment = await this.findCommentById(id);
 
     await this.ticketCommentRepository.delete(id);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 삭제합니다.',
-    });
   }
 
   // ** Comment 조회
   public async findComment(id: number) {
-    const findTicket = await this.ticketRepository.findOne({ where: { id } });
+    const findTicket = await this.findTicketById(id);
 
-    if (!findTicket) {
-      throw new NotFoundException('Not Found Ticket');
-    }
-
-    const findComment =
-      await this.ticketCommentRepository.findAllCommentByTicketId(id);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '댓글을 삭제합니다.',
-      data: findComment,
-    });
+    return await this.ticketCommentRepository.findAllCommentByTicketId(id);
   }
 }

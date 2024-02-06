@@ -20,6 +20,7 @@ import TicketFile from './domain/ticket.file.entity';
 import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketCommentRepository from './repository/ticket.comment.repository';
+import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import TicketCommentRepository from './repository/ticket.comment.repository';
     ]),
     WorkspaceModule,
     UserModule,
+    WorkspaceUserModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [TicketController],
