@@ -8,10 +8,17 @@ import AuthService from '../service/auth.service';
 import { ApiTags, ApiResponse, ApiOperation, ApiBody } from '@nestjs/swagger';
 
 // ** Response Imports
-import { createServerExceptionResponse } from '../../../global/response/common';
+import {
+  createServerExceptionResponse,
+  createUnauthorizedResponse,
+} from '../../../global/response/common';
 import RequestAdminLoginDto from '../dto/admin.login.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import { AuthResponse } from '@/src/global/response/auth.response';
+import RequestAdminReissueDto from '../dto/admin.reissue.dto';
+import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
+import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
+import Admin from '../../admin/domain/admin.entity';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -39,6 +46,22 @@ export default class AuthController {
       },
       statusCode: 200,
       message: 'Success Admin Login',
+    });
+  }
+
+  @ApiOperation({ summary: '관리자 토큰 재발급' })
+  @ApiBody({ type: RequestAdminReissueDto })
+  @UseGuards(JwtRefreshGuard)
+  @ApiResponse(AuthResponse.reissueToken[200])
+  @ApiResponse(createUnauthorizedResponse())
+  @Post('/reissue')
+  public async reissueToken(@GetAdmin() { id, role }: Admin) {
+    const token = this.authService.generateToken({ id, role });
+
+    return CommonResponse.createResponse({
+      data: token,
+      statusCode: 200,
+      message: 'Success Reissued Token',
     });
   }
 }
