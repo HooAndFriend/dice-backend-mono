@@ -12,14 +12,15 @@ export default class Qna extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 100,
+    length: 50,
     comment: '질문자 이름',
     nullable: false,
   })
   name: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
+    length: 120,
     comment: '질문자 이메일',
     nullable: false,
   })
