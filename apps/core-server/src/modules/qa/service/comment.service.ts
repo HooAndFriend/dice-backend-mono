@@ -14,6 +14,7 @@ import CommonResponse from '@/src/global/dto/api.response';
 import RequestCommentSaveDto from '@/src/modules/qa/dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import QaService from './qa.service';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class CommentService {
