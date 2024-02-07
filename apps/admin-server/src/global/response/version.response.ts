@@ -35,4 +35,26 @@ export const VersionResponse = {
       message: 'Version 리스트를 조회합니다.',
     }),
   },
+  findVersion: {
+    200: createResponse({
+      data: {
+        createdAt: '2024-02-07T03:37:55.334Z',
+        updatedAt: '2024-02-07T03:37:55.334Z',
+        id: 1,
+        version: '1.0.5',
+        program: 'https://s3.bucket.com/123.pdf',
+        type: 'MAC',
+        memo: '메모할 것',
+        createdId: 'admin',
+        modifiedId: 'admin',
+      },
+      statusCode: 200,
+      message: 'Version 리스트를 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '존재하지 않는 버전입니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };

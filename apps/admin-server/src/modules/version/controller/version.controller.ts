@@ -82,4 +82,20 @@ export default class VersionController {
       message: 'Version 리스트를 조회합니다.',
     });
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Version 조회' })
+  @ApiResponse(VersionResponse.findVersion[200])
+  @ApiResponse(VersionResponse.findVersion[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findVersion(@Param('id') id: number) {
+    const version = await this.versionService.findVersion(id);
+
+    return CommonResponse.createResponse({
+      data: version,
+      statusCode: 200,
+      message: 'Version을 조회합니다.',
+    });
+  }
 }

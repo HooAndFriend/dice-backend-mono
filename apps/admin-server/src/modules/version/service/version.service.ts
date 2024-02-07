@@ -51,4 +51,18 @@ export default class VersionService {
       throw new BadRequestException('이미 존재하는 버전입니다.');
     }
   }
+
+  /**
+   * Find Version
+   * @param id
+   * @returns
+   */
+  public async findVersion(id: number) {
+    const version = await this.versionRepository.findOne({ where: { id } });
+    if (!version) {
+      throw new BadRequestException('존재하지 않는 버전입니다.');
+    }
+
+    return version;
+  }
 }
