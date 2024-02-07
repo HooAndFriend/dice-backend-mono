@@ -16,11 +16,23 @@ export const TeamUserResponse = {
             team: {
               id: 1,
               name: 'HooAndFriend',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '9340973d-f19d-470c-a4bc-782cda89f234',
+            },
+          },
+          {
+            id: 3,
+            role: 'ADMIN',
+            team: {
+              id: 2,
+              name: 'Aiaracorp',
               profile: '이 워크스페이스는..',
+              uuid: 'cfa3b284-a000-4b09-a06f-1794cdb0a22e',
             },
           },
         ],
-        count: 1,
+        count: 2,
       },
       statusCode: 200,
       message: 'Find User Team List',

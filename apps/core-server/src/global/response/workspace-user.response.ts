@@ -47,24 +47,36 @@ export const WorkspaceUserResponse = {
             id: 1,
             role: 'ADMIN',
             workspace: {
-              id: 1,
+              id: 2,
               name: 'HooAndFriend',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: 'a4a6ab31-86fd-4560-80c5-45dcb45e9775',
             },
           },
           {
             id: 2,
             role: 'ADMIN',
             workspace: {
-              id: 2,
+              id: 3,
               name: 'HooAndFriend',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '8d873b0e-9c86-498a-b36f-8e9eb712bbcb',
+            },
+          },
+          {
+            id: 4,
+            role: 'ADMIN',
+            workspace: {
+              id: 6,
+              name: 'Aiaracorp',
+              profile: '이 워크스페이스는..',
+              uuid: '36dd6796-10e9-4164-94da-1bfe71b517bc',
             },
           },
         ],
-        count: 2,
+        count: 3,
       },
       statusCode: 200,
       message: 'Find User Workspace List',
