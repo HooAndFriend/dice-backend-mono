@@ -78,12 +78,12 @@ export default class QaController {
     @Query() findquery: RequestQaFindDto,
   ) {
     const qalist = await this.qaService.findQaList(workspaceId, findquery)
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
       data: qalist,
     });
-    // return await this.qaService.findQaList(workspaceId, findquery);
   }
 
   @ApiBearerAuth('access-token')
@@ -91,7 +91,7 @@ export default class QaController {
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaSaveDto })
   @ApiResponse(QaResponse.saveQa[200])
-  @WorkspaceRole(RoleEnum.WRITER)
+  @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
