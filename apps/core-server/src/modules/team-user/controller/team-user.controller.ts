@@ -17,6 +17,7 @@ import TeamUserService from '../service/team-user.service';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -37,6 +38,14 @@ import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
+import CommonResponse from '@/src/global/dto/api.response';
+import {
+  GetTeam,
+  TeamRole,
+} from '@/src/global/decorators/team-role/team-role.decorator';
+import RoleEnum from '@/src/global/enum/Role';
+import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
+import Team from '../../team/domain/team.entity';
 
 @ApiTags('Team User')
 @ApiResponse(createServerExceptionResponse())
@@ -51,47 +60,92 @@ export default class TeamUserController {
   @UseGuards(JwtAccessGuard)
   @Get()
   public async findTeamList(@GetUser() { id }: User) {
-    return await this.teamUserService.findTeamList(id);
+    const [data, count] = await this.teamUserService.findTeamList(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find User Team List',
+      data: { data, count },
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '팀 유저 초대' })
   @ApiBody({ type: RequestTeamUserSaveDto })
   @ApiResponse(TeamUserResponse.inviteUser[200])
   @ApiResponse(TeamUserResponse.inviteUser[404])
+  @TeamRole(RoleEnum.ADMIN)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post()
-  public async saveTeamUser(@Body() dto: RequestTeamUserSaveDto) {
-    return await this.teamUserService.saveTeamUser(dto);
+  public async saveTeamUser(
+    @Body() dto: RequestTeamUserSaveDto,
+    @GetTeam() team: Team,
+  ) {
+    await this.teamUserService.isExistedTeamUserByEmail(dto.email);
+    await this.teamUserService.inviteTeamUser(team, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Invite User',
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '팀 유저 삭제' })
   @ApiResponse(TeamUserResponse.deleteUser[200])
   @ApiResponse(TeamUserResponse.deleteUser[404])
+  @TeamRole(RoleEnum.ADMIN)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
   public async deleteTeamUser(@Param('id') id: number) {
-    return await this.teamUserService.deleteTeamUser(id);
+    await this.teamUserService.existTeamUserById(id);
+    await this.teamUserService.deleteTeamUser(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Team User',
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '팀 유저 권한 변경' })
   @ApiBody({ type: RequestTeamUserUpdateDto })
   @ApiResponse(TeamUserResponse.updateTeamUserRole[200])
   @ApiResponse(TeamUserResponse.updateTeamUserRole[404])
+  @TeamRole(RoleEnum.ADMIN)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch()
   public async updateTeamUserRole(@Body() dto: RequestTeamUserUpdateDto) {
-    return await this.teamUserService.updateTeamUserRole(dto);
+    await this.teamUserService.existTeamUserById(dto.teamUserId);
+    await this.teamUserService.updateTeamUserRole(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Team User Role',
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '팀의 유저 리스트 조회' })
   @ApiResponse(TeamUserResponse.findTeamUserList[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/user/:id')
   public async findTeamUserList(@Param('id') id: number) {
-    return await this.teamUserService.findTeamUserList(id);
+    const [data, count] = await this.teamUserService.findTeamUserList(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Team User List',
+      data: { data, count },
+    });
   }
 }

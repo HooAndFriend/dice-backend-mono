@@ -19,6 +19,9 @@ import dayjs from 'dayjs';
 import UserRepository from '../../user/repository/user.repository';
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import SendMailDto from '@/src/global/dto/mail-send.dto';
+import Team from '../../team/domain/team.entity';
+import RoleEnum from '@/src/global/enum/Role';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class TeamUserService {
@@ -36,13 +39,7 @@ export default class TeamUserService {
    * @returns
    */
   public async findTeamList(userId: number) {
-    const [data, count] = await this.teamUserRepository.findTeamList(userId);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find User Team List',
-      data: { data, count },
-    });
+    return await this.teamUserRepository.findTeamList(userId);
   }
 
   /**
@@ -50,58 +47,16 @@ export default class TeamUserService {
    * @param dto
    * @returns
    */
-  public async saveTeamUser(dto: RequestTeamUserSaveDto) {
-    const team = await this.teamRepository.findOne({
-      where: { id: dto.teamId },
-    });
-
-    if (!team) {
-      throw new NotFoundException('Not Found Team');
-    }
-
-    const findTeamUser = await this.teamUserRepository.exist({
-      where: { user: { email: dto.email } },
-    });
-
-    if (findTeamUser) {
-      throw new BadRequestException('Did Invite User');
-    }
-
-    const findUser = await this.userRepository.findOne({
-      where: { email: dto.email },
-    });
+  public async inviteTeamUser(team: Team, dto: RequestTeamUserSaveDto) {
+    const findUser = await this.findUser(dto.email);
 
     if (findUser) {
-      await this.teamUserRepository.save(
-        this.teamUserRepository.create({
-          user: findUser,
-          team,
-          role: dto.role,
-        }),
-      );
+      await this.saveTeamUser(findUser, team, dto.role);
+
+      return;
     }
 
-    if (!findUser) {
-      const redisValue = await this.getTeamRedisValue(dto.email, team.uuid);
-
-      if (redisValue) {
-        throw new BadRequestException('Did Invite User');
-      }
-
-      const sendMail = new SendMailDto(
-        dto.email,
-        '[DICE] Invite Team',
-        'Invite Team',
-        `<a href="http://hi-dice.com?uuid=${team.uuid}">Click</a>`,
-      );
-
-      await this.sendMail(sendMail);
-      await this.setTeamRedis(dto.email, team.uuid, dto.role);
-    }
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Invite User',
-    });
+    await this.inviteUser(dto.email, team.uuid, dto.role);
   }
 
   /**
@@ -110,18 +65,7 @@ export default class TeamUserService {
    * @returns
    */
   public async deleteTeamUser(teamUserId: number) {
-    const isExistTeamUser = await this.existTeamUserById(teamUserId);
-
-    if (!isExistTeamUser) {
-      throw new NotFoundException('Not Found Team User');
-    }
-
     await this.teamUserRepository.delete(teamUserId);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Delete Team User',
-    });
   }
 
   /**
@@ -130,18 +74,7 @@ export default class TeamUserService {
    * @returns
    */
   public async updateTeamUserRole(dto: RequestTeamUserUpdateDto) {
-    const isExistTeamUser = await this.existTeamUserById(dto.teamUserId);
-
-    if (!isExistTeamUser) {
-      throw new NotFoundException('Not Found Team User');
-    }
-
     await this.teamUserRepository.update(dto.teamUserId, { role: dto.role });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Update Team User Role',
-    });
   }
 
   /**
@@ -150,15 +83,7 @@ export default class TeamUserService {
    * @returns
    */
   public async findTeamUserList(teamId: number) {
-    const [data, count] = await this.teamUserRepository.findTeamUserList(
-      teamId,
-    );
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Team User List',
-      data: { data, count },
-    });
+    return await this.teamUserRepository.findTeamUserList(teamId);
   }
 
   /**
@@ -166,8 +91,13 @@ export default class TeamUserService {
    * @param teamUserId
    * @returns
    */
-  private async existTeamUserById(teamUserId: number) {
-    return await this.teamUserRepository.exist({ where: { id: teamUserId } });
+  public async existTeamUserById(teamUserId: number) {
+    const existedTeamUser = await this.teamUserRepository.exist({
+      where: { id: teamUserId },
+    });
+    if (!existedTeamUser) {
+      throw new NotFoundException('Not Found Team User');
+    }
   }
 
   /**
@@ -204,5 +134,68 @@ export default class TeamUserService {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  /**
+   * Find Team User By Email
+   * @param email
+   */
+  public async isExistedTeamUserByEmail(email: string) {
+    const teamUser = await this.teamUserRepository.exist({
+      where: { user: { email } },
+    });
+
+    if (teamUser) {
+      throw new BadRequestException('Did Invite User');
+    }
+  }
+
+  /**
+   * Find User By Email
+   * @param email
+   * @returns
+   */
+  private async findUser(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
+  /**
+   * Save Team User
+   * @param user
+   * @param team
+   * @param role
+   */
+  private async saveTeamUser(user: User, team: Team, role: RoleEnum) {
+    await this.teamUserRepository.save(
+      this.teamUserRepository.create({
+        user,
+        team,
+        role,
+      }),
+    );
+  }
+
+  /**
+   * Invite User
+   * @param email
+   * @param uuid
+   * @param role
+   */
+  private async inviteUser(email: string, uuid: string, role: RoleEnum) {
+    const redisValue = await this.getTeamRedisValue(email, uuid);
+
+    if (redisValue) {
+      throw new BadRequestException('Did Invite User');
+    }
+
+    const sendMail = new SendMailDto(
+      email,
+      '[DICE] Invite Team',
+      'Invite Team',
+      `<a href="http://hi-dice.com?uuid=${uuid}">Click</a>`,
+    );
+
+    await this.sendMail(sendMail);
+    await this.setTeamRedis(email, uuid, role);
   }
 }
