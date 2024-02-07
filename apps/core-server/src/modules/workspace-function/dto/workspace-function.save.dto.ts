@@ -9,8 +9,4 @@ export default class RequestSaveWorkspaceFunctionDto {
   @ApiProperty({ example: DiceFunction.TICKET, enum: DiceFunction })
   @IsEnum(DiceFunction)
   function: DiceFunction;
-
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  workspaceId: number;
 }
