@@ -14,6 +14,7 @@ export const TeamUserResponse = {
             id: 1,
             role: 'ADMIN',
             team: {
+              id: 1,
               name: 'HooAndFriend',
               profile: '이 워크스페이스는..',
             },

@@ -16,7 +16,13 @@ export default class TeamUserRepository extends Repository<TeamUser> {
    */
   public async findTeamList(userId: number) {
     const queryBuilder = this.createQueryBuilder('userTeam')
-      .select(['userTeam.id', 'userTeam.role', 'team.name', 'team.profile'])
+      .select([
+        'userTeam.id',
+        'userTeam.role',
+        'team.id',
+        'team.name',
+        'team.profile',
+      ])
       .leftJoin('userTeam.team', 'team')
       .where('userTeam.userId = :userId', { userId });
 

@@ -47,6 +47,7 @@ export const WorkspaceUserResponse = {
             id: 1,
             role: 'ADMIN',
             workspace: {
+              id: 1,
               name: 'HooAndFriend',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
@@ -56,6 +57,7 @@ export const WorkspaceUserResponse = {
             id: 2,
             role: 'ADMIN',
             workspace: {
+              id: 2,
               name: 'HooAndFriend',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
