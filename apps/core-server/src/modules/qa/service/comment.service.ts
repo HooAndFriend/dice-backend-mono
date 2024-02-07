@@ -54,15 +54,11 @@ export default class CommentService {
 
     return 
   }
-  public async updateComment(dto: RequestQaCommentUpdateDto) {
-    await this.qacommentRepository.update(dto.commentId, {
+  public async updateComment(dto: RequestQaCommentUpdateDto, user : User) {
+    await this.qacommentRepository.update({ id : dto.commentId, user : { id : user.id}}, {
       content: dto.content,
     });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 수정합니다.',
-    });
+    return 
   }
   public async deleteComment(commentid: number) {
     const findComment = await this.qacommentRepository.findOne({

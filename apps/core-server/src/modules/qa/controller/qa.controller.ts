@@ -193,6 +193,7 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaCommentUpdateDto })
   @ApiResponse(CommentResponse.updateComment[200])
   @ApiResponse(CommentResponse.updateComment[404])
@@ -200,8 +201,12 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/comment')
-  public async updateComment(@Body() dto: RequestQaCommentUpdateDto) {
-    return await this.commentService.updateComment(dto);
+  public async updateComment(@Body() dto: RequestQaCommentUpdateDto, @GetUser() user :User) {
+    await this.commentService.updateComment(dto, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 수정합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')
