@@ -37,13 +37,14 @@ import Admin from '../../admin/domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestVersionSaveDto from '../dto/version.save.dto';
 import { VersionResponse } from '@/src/global/response/version.response';
+import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 // ** Dto Imports
 
 @ApiTags('Version')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/admin/version', version: '1' })
+@Controller({ path: '/version', version: '1' })
 export default class VersionController {
   constructor(private readonly versionService: VersionService) {}
 
@@ -64,6 +65,21 @@ export default class VersionController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Version을 생성했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Version List 조회' })
+  @ApiResponse(VersionResponse.findVersionList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findVersionList(@Query(ValidationPipe) query: RequestPagingDto) {
+    const [data, count] = await this.versionService.findVersionList(query);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Version 리스트를 조회합니다.',
     });
   }
 }

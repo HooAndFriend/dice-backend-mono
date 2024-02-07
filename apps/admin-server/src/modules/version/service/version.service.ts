@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import VersionRepository from '../repository/version.repository';
 import RequestVersionSaveDto from '../dto/version.save.dto';
 import { BadRequestException } from '@/src/global/exception/CustomException';
+import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 // ** Utils Imports
 
@@ -31,6 +32,10 @@ export default class VersionService {
         modifiedId: adminEmail,
       }),
     );
+  }
+
+  public async findVersionList(dto: RequestPagingDto) {
+    return await this.versionRepository.findVersionList(dto);
   }
 
   /**
