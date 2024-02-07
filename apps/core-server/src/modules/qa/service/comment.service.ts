@@ -22,20 +22,16 @@ export default class CommentService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
-  public async findQaComment(qaId: number) {
+  public async findQaComment(qaId: number, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId },
+      where: { id: qaId, workspace : { id : workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '댓글을 조회합니다.',
-      data: { data, count },
-    });
+    return { data, count }
   }
   public async saveComment(dto: RequestCommentSaveDto) {
     const findQa = await this.qaRepository.findOne({

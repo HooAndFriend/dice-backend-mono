@@ -159,13 +159,19 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(CommentResponse.findComment[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:qaId')
-  public async findQaComment(@Param('qaId') qaId: number) {
-    return await this.commentService.findQaComment(qaId);
+  public async findQaComment(@Param('qaId') qaId: number, @GetWorkspace() {id} : Workspace) {
+    const qaComment = await this.commentService.findQaComment(qaId, id);
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '댓글을 조회합니다.',
+      data: qaComment,
+    });
   }
 
   @ApiBearerAuth('access-token')
