@@ -4,17 +4,13 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsArray, IsNumber, IsString } from 'class-validator';
 export default class RequestQaSaveDto {
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  workspaceId: number;
+  @ApiProperty({ example: "ddd1234@google.com" })
+  @IsString()
+  adminId: string;
 
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  adminId: number;
-
-  @ApiProperty({ example: 2 })
-  @IsNumber()
-  workerId: number;
+  @ApiProperty({ example: "aaa4444@google.com" })
+  @IsString()
+  workerId: string;
 
   @ApiProperty({ example: 'ISSUE-01' })
   @IsString()
