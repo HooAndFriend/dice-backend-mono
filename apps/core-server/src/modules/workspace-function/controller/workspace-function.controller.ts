@@ -8,6 +8,7 @@ import WorkspaceFunctionService from '../service/workspace-function.service';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -15,6 +16,11 @@ import {
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import {
+  GetWorkspace,
+  WorkspaceRole,
+} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 
 // ** Response Imports
 import {
@@ -25,6 +31,9 @@ import { WorkspaceFunctionResponse } from '@/src/global/response/workspace-funct
 
 // ** Dto Imports
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
+import RoleEnum from '@/src/global/enum/Role';
+import Workspace from '../../workspace/domain/workspace.entity';
+import CommonResponse from '@/src/global/dto/api.response';
 
 @ApiTags('Workspace Function')
 @ApiResponse(createServerExceptionResponse())
@@ -36,34 +45,76 @@ export default class WorkspaceFunctionController {
   ) {}
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: '워크스페이스 기능 리스트 조회' })
   @ApiResponse(WorkspaceFunctionResponse.findWorkspaceFunctionList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/function/:id')
-  public async findWorkspaceFunctionList(@Param('id') id: number) {
-    return await this.workspaceFunctionService.findWorkspaceFunctionList(id);
+  @Get('/function')
+  public async findWorkspaceFunctionList(@GetWorkspace() { id }: Workspace) {
+    const list = await this.workspaceFunctionService.findWorkspaceFunctionList(
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Function List',
+      data: {
+        data: list,
+        count: list.length,
+      },
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestSaveWorkspaceFunctionDto })
   @ApiOperation({ summary: '워크스페이스 기능 저장' })
   @ApiResponse(WorkspaceFunctionResponse.saveWorkspaceFunction[200])
   @ApiResponse(WorkspaceFunctionResponse.saveWorkspaceFunction[400])
   @ApiResponse(WorkspaceFunctionResponse.saveWorkspaceFunction[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post()
   public async saveWorkspaceFunction(
     @Body() dto: RequestSaveWorkspaceFunctionDto,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    return await this.workspaceFunctionService.saveWorkspaceFunction(dto);
+    await this.workspaceFunctionService.isExistedWorksapceFunction(
+      workspace.id,
+      dto.function,
+    );
+
+    await this.workspaceFunctionService.saveWorkspaceFunction(workspace, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Workspace Function',
+    });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: '워크스페이스의 기능 리스트 조회' })
   @ApiResponse(WorkspaceFunctionResponse.findFunctionList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findFunctionList(@Param('id') id: number) {
-    return await this.workspaceFunctionService.findFunctionList(id);
+    const [data, count] = await this.workspaceFunctionService.findFunctionList(
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Function List',
+      data: {
+        data: data,
+        count: count,
+      },
+    });
   }
 }

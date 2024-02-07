@@ -11,6 +11,7 @@ import DiceFunction from '@/src/global/enum/DiceFunction';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class WorkspaceFunctionService {
@@ -30,52 +31,27 @@ export default class WorkspaceFunctionService {
         workspaceId,
       );
 
-    const list = this.findDiceFunction().map((item) => ({
+    return this.findDiceFunction().map((item) => ({
       function: item,
       isUse: workspaceList.some((_) => _.function === item),
     }));
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Workspace Function List',
-      data: {
-        data: list,
-        count: list.length,
-      },
-    });
   }
 
-  public async saveWorkspaceFunction(dto: RequestSaveWorkspaceFunctionDto) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: dto.workspaceId },
-    });
-
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
-
-    const isExistFunction = await this.workspaceFunctionRepository.exist({
-      where: {
-        function: dto.function,
-        workspace: { id: dto.workspaceId },
-      },
-    });
-
-    if (isExistFunction) {
-      throw new BadRequestException('This Function is Existed');
-    }
-
+  /**
+   * Save Workspace Function
+   * @param workspace
+   * @param dto
+   */
+  public async saveWorkspaceFunction(
+    workspace: Workspace,
+    dto: RequestSaveWorkspaceFunctionDto,
+  ) {
     await this.workspaceFunctionRepository.save(
       this.workspaceFunctionRepository.create({
         function: dto.function,
-        workspace: findWorkspace,
+        workspace,
       }),
     );
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Save Workspace Function',
-    });
   }
 
   /**
@@ -84,17 +60,7 @@ export default class WorkspaceFunctionService {
    * @returns
    */
   public async findFunctionList(workspaceId: number) {
-    const [data, count] =
-      await this.workspaceFunctionRepository.findFunctionList(workspaceId);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Workspace Function List',
-      data: {
-        data: data,
-        count: count,
-      },
-    });
+    return await this.workspaceFunctionRepository.findFunctionList(workspaceId);
   }
 
   /**
@@ -103,5 +69,26 @@ export default class WorkspaceFunctionService {
    */
   private findDiceFunction() {
     return Object.values(DiceFunction);
+  }
+
+  /**
+   * Existed Workspace Function
+   * @param workspaceId
+   * @param diceFunction
+   */
+  public async isExistedWorksapceFunction(
+    workspaceId: number,
+    diceFunction: DiceFunction,
+  ) {
+    const isExistFunction = await this.workspaceFunctionRepository.exist({
+      where: {
+        function: diceFunction,
+        workspace: { id: workspaceId },
+      },
+    });
+
+    if (isExistFunction) {
+      throw new BadRequestException('This Function is Existed');
+    }
   }
 }
