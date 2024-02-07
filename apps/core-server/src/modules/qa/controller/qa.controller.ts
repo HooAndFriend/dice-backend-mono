@@ -105,6 +105,7 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaUpdateDto })
   @ApiResponse(QaResponse.updateQa[200])
   @ApiResponse(QaResponse.updateQa[404])
@@ -112,8 +113,13 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateQa(@Body() dto: RequestQaUpdateDto) {
-    return await this.qaService.updateQa(dto);
+  public async updateQa(@Body() dto: RequestQaUpdateDto, @GetWorkspace() {id} : Workspace) {
+    await this.qaService.updateQa(dto, id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 수정합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')

@@ -91,9 +91,9 @@ export default class QaService {
 
     return;
   }
-  public async updateQa(dto: RequestQaUpdateDto) {
+  public async updateQa(dto: RequestQaUpdateDto, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId },
+      where: { id: dto.qaId, workspace : { id : workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -101,9 +101,7 @@ export default class QaService {
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
-    if (!findWorker) {
-      throw new NotFoundException('Not Found Worker');
-    }
+    this.validationQaUser(findWorker, workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -123,10 +121,7 @@ export default class QaService {
 
     await queryRunner.commitTransaction();
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 수정합니다.',
-    });
+    return
   }
   public async updateQaStatus(dto: RequestQaStatusUpdateDto) {
     const findQa = await this.qaRepository.findOne({
