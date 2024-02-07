@@ -57,4 +57,15 @@ export const VersionResponse = {
       error: 'NOT FOUND',
     }),
   },
+  deleteVersion: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Version을 삭제했습니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '존재하지 않는 버전입니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };

@@ -25,21 +25,21 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
+import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
+import { VersionResponse } from '@/src/global/response/version.response';
+
+// ** Dto Imports
 import Admin from '../../admin/domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestVersionSaveDto from '../dto/version.save.dto';
-import { VersionResponse } from '@/src/global/response/version.response';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
-
-// ** Dto Imports
 
 @ApiTags('Version')
 @ApiResponse(createServerExceptionResponse())
@@ -96,6 +96,22 @@ export default class VersionController {
       data: version,
       statusCode: 200,
       message: 'Version을 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Version 삭제' })
+  @ApiResponse(VersionResponse.deleteVersion[200])
+  @ApiResponse(VersionResponse.deleteVersion[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteVersion(@Param('id') id: number) {
+    await this.versionService.existedVersionById(id);
+    await this.versionService.deleteVersion(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Version을 삭제합니다.',
     });
   }
 }

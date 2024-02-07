@@ -65,4 +65,26 @@ export default class VersionService {
 
     return version;
   }
+
+  /**
+   * Delete Version
+   * @param id
+   */
+  public async deleteVersion(id: number) {
+    await this.versionRepository.delete(id);
+  }
+
+  /**
+   * Existed Version By Id
+   * @param id
+   */
+  public async existedVersionById(id: number) {
+    const existedVersion = await this.versionRepository.exist({
+      where: { id },
+    });
+
+    if (!existedVersion) {
+      throw new BadRequestException('존재하지 않는 버전입니다.');
+    }
+  }
 }
