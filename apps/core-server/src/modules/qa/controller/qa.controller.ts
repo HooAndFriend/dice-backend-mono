@@ -142,14 +142,19 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(QaResponse.deleteQa[200])
   @ApiResponse(QaResponse.deleteQa[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteQa(@Param('id') id: number) {
-    return await this.qaService.deleteQa(id);
+  public async deleteQa(@Param('id') qaid: number, @GetWorkspace() {id} : Workspace) {
+    await this.qaService.deleteQa(qaid, id);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 삭제합니다.',
+    })
   }
 
   @ApiBearerAuth('access-token')

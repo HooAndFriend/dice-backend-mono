@@ -136,18 +136,15 @@ export default class QaService {
 
     return
   }
-  public async deleteQa(qaId: number) {
+  public async deleteQa(qaId: number, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId },
+      where: { id: qaId, workspace : {id : workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
     await this.qaRepository.remove(findQa);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 삭제합니다.',
-    });
+    return 
   }
   // workspace 소속 확인
   public async validationQaUser(user: User, workspaceId: number) {
