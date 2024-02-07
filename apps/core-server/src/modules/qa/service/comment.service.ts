@@ -60,18 +60,15 @@ export default class CommentService {
     });
     return 
   }
-  public async deleteComment(commentid: number) {
+  public async deleteComment(commentid: number, user : User) {
     const findComment = await this.qacommentRepository.findOne({
-      where: { id: commentid },
+      where: { id: commentid , user : { id : user.id }},
     });
     if (!findComment) {
       throw new NotFoundException('Not Found Comment');
     }
     await this.qacommentRepository.remove(findComment);
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 삭제합니다.',
-    });
+    return 
   }
 }

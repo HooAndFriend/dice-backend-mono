@@ -211,13 +211,18 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(CommentResponse.deleteComment[200])
   @ApiResponse(CommentResponse.deleteComment[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
-  public async deleteComment(@Param('id') id: number) {
-    return await this.commentService.deleteComment(id);
+  public async deleteComment(@Param('id') id: number, @GetUser() user :User) {
+    await this.commentService.deleteComment(id, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 삭제합니다.',
+    });
   }
 }
