@@ -79,19 +79,23 @@ export const WorkspaceResponse = {
     200: createPaginationResponse({
       data: [
         {
-          id: 1,
-          role: 'OWNER',
-          workspace: {
-            id: 1,
-            name: 'Pinomaker',
-            profile: null,
-            isPersonal: false,
-          },
+          id: 2,
+          name: 'HooAndFriend',
+          comment: '이 워크스페이스는..',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+        },
+        {
+          id: 3,
+          name: 'HooAndFriend',
+          comment: '이 워크스페이스는..',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
         },
       ],
-      count: 1,
       statusCode: 200,
-      message: '워크스페이스를 조회합니다.',
+      message: 'Find Workspace List',
+      count: 2,
     }),
   },
 };

@@ -11,7 +11,13 @@ import Team from '../domain/team.entity';
 export default class TeamRepository extends Repository<Team> {
   public async findTeam(teamId: number) {
     const queryBuilder = this.createQueryBuilder('team')
-      .select(['team.id', 'team.profile', 'team.name', 'team.description'])
+      .select([
+        'team.id',
+        'team.profile',
+        'team.name',
+        'team.description',
+        'team.uuid',
+      ])
       .where('team.id = :teamId', { teamId });
 
     return await queryBuilder.getOne();

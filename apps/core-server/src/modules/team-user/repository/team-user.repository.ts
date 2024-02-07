@@ -22,6 +22,7 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'team.id',
         'team.name',
         'team.profile',
+        'team.uuid',
       ])
       .leftJoin('userTeam.team', 'team')
       .where('userTeam.userId = :userId', { userId });

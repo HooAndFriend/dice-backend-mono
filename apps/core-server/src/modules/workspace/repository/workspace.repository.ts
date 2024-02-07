@@ -49,6 +49,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
+        'workspace.uuid',
       ])
       .where('workspace.userId = :userId', { userId });
 
@@ -62,6 +63,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
+        'workspace.uuid',
       ])
       .where('workspace.teamId = :teamId', { teamId });
 
