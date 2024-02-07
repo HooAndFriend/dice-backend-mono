@@ -6,10 +6,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEnum, IsNumber } from 'class-validator';
 
 export default class RequestWorkspaceUserSaveDto {
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  workspaceId: number;
-
   @ApiProperty({ example: [1, 2, 3] })
   @IsArray()
   teamUserId: number[];

@@ -2,15 +2,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-// ** enum, dto, entity, types Imports
-import CommonResponse from '../../../global/dto/api.response';
-import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
-
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
+
+// ** enum, dto, entity, types Imports
+import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -27,20 +27,7 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async updateWorksapceUserRole(dto: RequestWorkspaceUpdateUpdateDto) {
-    const findWorkspaceUser = await this.workspaceUserRepository.findOne({
-      where: { id: dto.id },
-    });
-
-    if (!findWorkspaceUser) {
-      throw new NotFoundException('Not Found Workspace User');
-    }
-
     await this.workspaceUserRepository.update(dto.id, { role: dto.role });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '워크스페이스에서 유저의 권한을 수정합니다.',
-    });
   }
 
   /**
@@ -48,13 +35,10 @@ export default class WorkspaceUserService {
    * @param dto
    * @returns
    */
-  public async saveWorkspaceUser(dto: RequestWorkspaceUserSaveDto) {
-    const findWorkspace = await this.findWorkspaceById(dto.workspaceId);
-
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
-
+  public async saveWorkspaceUser(
+    workspace: Workspace,
+    dto: RequestWorkspaceUserSaveDto,
+  ) {
     for (const item of dto.teamUserId) {
       const teamUser = await this.teamUserRepository.findOne({
         where: { id: item },
@@ -62,16 +46,11 @@ export default class WorkspaceUserService {
 
       await this.workspaceUserRepository.save(
         this.workspaceUserRepository.create({
-          workspace: findWorkspace,
+          workspace,
           teamUser,
         }),
       );
     }
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Invite Worksapce User',
-    });
   }
 
   /**
@@ -80,18 +59,7 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async deleteWorksapceUser(workspaceUserId: number) {
-    const workspaceUser = await this.findWorkspaceUserById(workspaceUserId);
-
-    if (!workspaceUser) {
-      throw new NotFoundException('Not Found Workspace User');
-    }
-
-    await this.workspaceUserRepository.delete(workspaceUser.id);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Delete Workspace User',
-    });
+    await this.workspaceUserRepository.delete(workspaceUserId);
   }
 
   /**
@@ -100,14 +68,9 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async findWorkspaceUserList(workspaceId: number) {
-    const [data, count] =
-      await this.workspaceUserRepository.findWorkspaceUserList(workspaceId);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Workspace User List',
-      data: { data, count },
-    });
+    return await this.workspaceUserRepository.findWorkspaceUserList(
+      workspaceId,
+    );
   }
 
   /**
@@ -115,22 +78,16 @@ export default class WorkspaceUserService {
    * @param workspaceId
    * @returns
    */
-  public async findInviteUserList(workspaceId: number) {
-    const findWorkspace =
-      await this.workspaceRepository.findWorkspaceTeamId(workspaceId);
-
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
-
+  public async findInviteUserList(workspace: Workspace) {
     const [teamUserList] = await this.teamUserRepository.findTeamUserList(
-      findWorkspace.team.id,
+      workspace.team.id,
     );
 
-    const [data] =
-      await this.workspaceUserRepository.findWorkspaceUserList(workspaceId);
+    const [data] = await this.workspaceUserRepository.findWorkspaceUserList(
+      workspace.id,
+    );
 
-    const list = teamUserList
+    return teamUserList
       .map((item) => {
         if (data.length < 1) return item;
         for (const _ of data) {
@@ -142,35 +99,6 @@ export default class WorkspaceUserService {
         }
       })
       .filter((item) => item);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Team List to invite workspace',
-      data: { data: list, count: list.length },
-    });
-  }
-
-  /**
-   * Find Workspace By Id
-   * @param workspaceId
-   * @returns
-   */
-  private async findWorkspaceById(workspaceId: number) {
-    return await this.workspaceRepository.findOne({
-      where: { id: workspaceId },
-    });
-  }
-
-  /**
-   * Find Workspace By Id
-   * @param workspaceId
-   * @returns
-   */
-  private async findWorkspaceWithTeamById(workspaceId: number) {
-    return await this.workspaceRepository.findOne({
-      where: { id: workspaceId },
-      relations: ['team'],
-    });
   }
 
   /**
@@ -178,9 +106,13 @@ export default class WorkspaceUserService {
    * @param workspaceUserId
    * @returns
    */
-  private async findWorkspaceUserById(workspaceUserId: number) {
-    return await this.workspaceUserRepository.findOne({
+  public async existedWorksapceUserById(workspaceUserId: number) {
+    const workspaceUser = await this.workspaceUserRepository.exist({
       where: { id: workspaceUserId },
     });
+
+    if (!workspaceUser) {
+      throw new NotFoundException('Not Found Workspace User');
+    }
   }
 }
