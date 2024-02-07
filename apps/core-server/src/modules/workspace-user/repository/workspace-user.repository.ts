@@ -27,4 +27,24 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
 
     return await queryBuilder.getManyAndCount();
   }
+
+  /**
+   * Find User Workspace List
+   * @param workspaceId
+   * @returns
+   */
+  public async findUserWorkspaceList(userId: number) {
+    const queryBuilder = this.createQueryBuilder('workspaceUser')
+      .select([
+        'workspaceUser.id',
+        'workspaceUser.role',
+        'workspace.name',
+        'workspace.profile',
+      ])
+      .leftJoin('workspaceUser.workspace', 'workspace')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .where('teamUser.userId = :userId', { userId });
+
+    return await queryBuilder.getManyAndCount();
+  }
 }

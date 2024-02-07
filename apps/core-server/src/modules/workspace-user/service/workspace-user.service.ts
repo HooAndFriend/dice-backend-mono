@@ -74,6 +74,15 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * Find User Workspace List
+   * @param userId
+   * @returns
+   */
+  public async findUserWorkspaceList(userId: number) {
+    return await this.workspaceUserRepository.findUserWorkspaceList(userId);
+  }
+
+  /**
    * 워크스페이스에 초대 가능한 팀 유저 리스트 조회
    * @param workspaceId
    * @returns

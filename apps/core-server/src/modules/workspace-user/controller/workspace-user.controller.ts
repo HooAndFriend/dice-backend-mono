@@ -30,6 +30,7 @@ import {
   WorkspaceRole,
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
+import { GetUser } from '@/src/global/decorators/user/user.decorators';
 
 // ** Response Imports
 import { WorkspaceUserResponse } from '../../../global/response/workspace-user.response';
@@ -44,6 +45,7 @@ import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 import RoleEnum from '@/src/global/enum/Role';
 import CommonResponse from '@/src/global/dto/api.response';
 import Workspace from '../../workspace/domain/workspace.entity';
+import User from '../../user/domain/user.entity';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
@@ -114,6 +116,23 @@ export default class WorkspaceUserController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Workspace User',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저의 워크스페이스 리스트 조회' })
+  @ApiResponse(WorkspaceUserResponse.findUserWorkspaceList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/my')
+  public async findUserWorkspaceList(@GetUser() { id }: User) {
+    const [data, count] = await this.workspaceUserService.findUserWorkspaceList(
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find User Workspace List',
+      data: { data, count },
     });
   }
 
