@@ -27,6 +27,7 @@ import { TeamResponse } from '@/src/global/response/team.response';
 // ** Dto Imports
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import User from '../../user/domain/user.entity';
+import CommonResponse from '@/src/global/dto/api.response';
 
 @ApiTags('Team')
 @ApiResponse(createServerExceptionResponse())
@@ -46,7 +47,13 @@ export default class TeamController {
     @Body() dto: RequestTeamSaveDto,
     @GetUser() user: User,
   ) {
-    return await this.teamService.saveTeam(user, dto);
+    await this.teamService.isExistTeamByName(dto.name);
+    await this.teamService.saveTeam(user, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '팀을 생성합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')
@@ -56,6 +63,12 @@ export default class TeamController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findTeam(@Param('id') teamId: number) {
-    return await this.teamService.findTeam(teamId);
+    const team = await this.teamService.findTeam(teamId);
+
+    return CommonResponse.createResponse({
+      data: team,
+      statusCode: 200,
+      message: 'Find Team',
+    });
   }
 }

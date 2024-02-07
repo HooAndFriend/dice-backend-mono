@@ -42,14 +42,6 @@ export default class TeamService {
    * @returns
    */
   public async saveTeam(user: User, dto: RequestTeamSaveDto) {
-    const findTeam = await this.teamRepository.exist({
-      where: { name: dto.name },
-    });
-
-    if (findTeam) {
-      throw new BadRequestException('이미 같은 이름의 팀이 존재합니다.');
-    }
-
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -92,11 +84,6 @@ export default class TeamService {
       );
 
       await queryRunner.commitTransaction();
-
-      return CommonResponse.createResponseMessage({
-        statusCode: 200,
-        message: '팀을 생성합니다.',
-      });
     } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();
@@ -117,16 +104,24 @@ export default class TeamService {
    * @returns
    */
   public async findTeam(teamId: number) {
-    const findTeam = await this.teamRepository.findTeam(teamId);
+    const team = await this.teamRepository.findTeam(teamId);
 
-    if (!findTeam) {
+    if (!team) {
       throw new NotFoundException('Not Found Team');
     }
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Find Team',
-      data: findTeam,
-    });
+    return team;
+  }
+
+  /**
+   * Existed Team By Name
+   * @param name
+   */
+  public async isExistTeamByName(name: string) {
+    const team = await this.teamRepository.exist({ where: { name } });
+
+    if (team) {
+      throw new BadRequestException('Exist Team Name');
+    }
   }
 }
