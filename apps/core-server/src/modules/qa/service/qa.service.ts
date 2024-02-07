@@ -123,9 +123,9 @@ export default class QaService {
 
     return
   }
-  public async updateQaStatus(dto: RequestQaStatusUpdateDto) {
+  public async updateQaStatus(dto: RequestQaStatusUpdateDto, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId },
+      where: { id: dto.qaId, workspace : { id: workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -133,10 +133,8 @@ export default class QaService {
 
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 수정합니다.',
-    });
+
+    return
   }
   public async deleteQa(qaId: number) {
     const findQa = await this.qaRepository.findOne({
