@@ -72,12 +72,12 @@ export default class QaController {
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/:workspaceId')
+  @Get('/')
   public async findQaList(
-    @Param('workspaceId') workspaceId: number,
     @Query() findquery: RequestQaFindDto,
+    @GetWorkspace() { id } : Workspace
   ) {
-    const qalist = await this.qaService.findQaList(workspaceId, findquery)
+    const qalist = await this.qaService.findQaList(id, findquery)
 
     return CommonResponse.createResponse({
       statusCode: 200,

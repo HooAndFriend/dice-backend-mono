@@ -45,12 +45,6 @@ export default class QaService {
       workspaceId,
       findQuery,
     );
-
-    // return CommonResponse.createResponse({
-    //   statusCode: 200,
-    //   message: 'Qa리스트를 조회합니다.',
-    //   data: { data, count },
-    // });
   }
 
   public async saveQa(dto: RequestQaSaveDto, workspaceid : number) {
