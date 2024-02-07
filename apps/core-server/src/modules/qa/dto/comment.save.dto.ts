@@ -10,9 +10,5 @@ export default class RequestQaCommentSaveDto {
 
   @ApiProperty({ example: 1 })
   @IsNumber()
-  userId: number;
-
-  @ApiProperty({ example: 1 })
-  @IsNumber()
   qaId: number;
 }

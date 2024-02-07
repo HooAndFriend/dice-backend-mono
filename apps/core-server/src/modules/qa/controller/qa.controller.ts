@@ -176,14 +176,19 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 생성' })
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaCommentSaveDto })
   @ApiResponse(CommentResponse.saveComment[200])
-  @WorkspaceRole(RoleEnum.ADMIN)
+  @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment(@Body() dto: RequestQaCommentSaveDto) {
-    return await this.commentService.saveComment(dto);
+  public async saveComment(@Body() dto: RequestQaCommentSaveDto, @GetWorkspace() {id} : Workspace, @GetUser() user : User) {
+    await this.commentService.saveComment(dto, id, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '댓글을 생성합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')
