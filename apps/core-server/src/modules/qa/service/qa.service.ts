@@ -48,18 +48,18 @@ export default class QaService {
     return {qa, count}
   }
 
-  public async saveQa(dto: RequestQaSaveDto, workspaceid : number) {
+  public async saveQa(dto: RequestQaSaveDto, workspaceId : number) {
     const findAdmin = await this.userRepository.findOne({
       where : { email : dto.adminId }
     });
-    this.validationQaUser(findAdmin, workspaceid);
+    this.validationQaUser(findAdmin, workspaceId);
 
     const findWorker = await this.userRepository.findOne({
       where : { email : dto.workerId }
     });
-    this.validationQaUser(findWorker, workspaceid);
+    this.validationQaUser(findWorker, workspaceId);
 
-    const workspace = await this.workspaceRepository.findWorkspace(workspaceid);
+    const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
