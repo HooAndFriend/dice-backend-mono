@@ -16,6 +16,22 @@ export const VersionResponse = {
       error: 'BAD REQUEST',
     }),
   },
+  updateVersion: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Version을 생성했습니다.',
+    }),
+    400: createErrorResponse({
+      statusCode: 400,
+      message: '이미 존재하는 버전입니다.',
+      error: 'BAD REQUEST',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '존재하지 않는 버전입니다.',
+      error: 'NOT FOUND',
+    }),
+  },
   findVersionList: {
     200: createResponse({
       data: {

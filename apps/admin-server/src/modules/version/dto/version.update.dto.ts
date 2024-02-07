@@ -2,12 +2,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 
 // ** Enum Imports
 import VersionTypeEnum from '../domain/version-type.enum';
 
-export default class RequestVersionSaveDto {
+export default class RequestVersionUpdateDto {
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  versionId: number;
+
   @ApiProperty({ example: '1.0.5' })
   @IsString()
   version: string;

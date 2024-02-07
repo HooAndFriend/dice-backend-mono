@@ -7,6 +7,7 @@ import VersionRepository from '../repository/version.repository';
 import RequestVersionSaveDto from '../dto/version.save.dto';
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
+import RequestVersionUpdateDto from '../dto/version.update.dto';
 
 // ** Utils Imports
 
@@ -34,6 +35,26 @@ export default class VersionService {
     );
   }
 
+  /**
+   * Update Version
+   * @param dto
+   * @param adminEmail
+   */
+  public async updateVersion(dto: RequestVersionUpdateDto, adminEmail: string) {
+    await this.versionRepository.update(dto.versionId, {
+      version: dto.version,
+      memo: dto.memo,
+      program: dto.program,
+      type: dto.type,
+      modifiedId: adminEmail,
+    });
+  }
+
+  /**
+   * Find Version List
+   * @param dto
+   * @returns
+   */
   public async findVersionList(dto: RequestPagingDto) {
     return await this.versionRepository.findVersionList(dto);
   }

@@ -40,6 +40,7 @@ import Admin from '../../admin/domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestVersionSaveDto from '../dto/version.save.dto';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
+import RequestVersionUpdateDto from '../dto/version.update.dto';
 
 @ApiTags('Version')
 @ApiResponse(createServerExceptionResponse())
@@ -112,6 +113,28 @@ export default class VersionController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Version을 삭제합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Version 수정' })
+  @ApiBody({ type: RequestVersionUpdateDto })
+  @ApiResponse(VersionResponse.updateVersion[200])
+  @ApiResponse(VersionResponse.updateVersion[400])
+  @ApiResponse(VersionResponse.updateVersion[404])
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateVersion(
+    @Body() dto: RequestVersionUpdateDto,
+    @GetAdmin() { email }: Admin,
+  ) {
+    await this.versionService.existedVersion(dto.version);
+    await this.versionService.existedVersionById(dto.versionId);
+    await this.versionService.updateVersion(dto, email);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Version을 수정했습니다.',
     });
   }
 }
