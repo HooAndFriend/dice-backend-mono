@@ -77,12 +77,12 @@ export default class QaController {
     @Query() findquery: RequestQaFindDto,
     @GetWorkspace() { id } : Workspace
   ) {
-    const qalist = await this.qaService.findQaList(id, findquery)
+    const qa = await this.qaService.findQaList(id, findquery)
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
-      data: qalist,
+      data: qa,
     });
   }
 
