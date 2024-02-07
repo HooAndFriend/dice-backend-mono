@@ -11,6 +11,7 @@ import WorkspaceFunctionModule from './workspace-function/workspace-function.mod
 import TicketModule from './ticket/ticket.module';
 import AdminModule from './admin/admin.module';
 import CsModule from './cs/cs.module';
+import VersionModule from './version/version.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import CsModule from './cs/cs.module';
     TicketModule,
     AdminModule,
     CsModule,
+    VersionModule,
   ],
   providers: [],
   exports: [],
