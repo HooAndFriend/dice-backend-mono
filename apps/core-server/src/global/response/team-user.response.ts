@@ -12,20 +12,14 @@ export const TeamUserResponse = {
         data: [
           {
             id: 1,
+            role: 'ADMIN',
             team: {
               name: 'HooAndFriend',
               profile: '이 워크스페이스는..',
             },
           },
-          {
-            id: 2,
-            team: {
-              name: '123',
-              profile: '이 워크스페이스는..',
-            },
-          },
         ],
-        count: 2,
+        count: 1,
       },
       statusCode: 200,
       message: 'Find User Team List',
