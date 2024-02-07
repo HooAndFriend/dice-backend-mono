@@ -19,6 +19,7 @@ import CommentService from '../service/comment.service';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -27,6 +28,8 @@ import {
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 
 // ** Response Imports
 import { QaResponse } from '../../../global/response/qa.response';
@@ -45,6 +48,7 @@ import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
 // ** Emum Imports
 import { QaStatus } from '../../../global/enum/QaStatus.enum';
+import RoleEnum from '@/src/global/enum/Role';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -58,7 +62,10 @@ export default class QaController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiResponse(QaResponse.findQaList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:workspaceId')
   public async findQaList(
@@ -72,6 +79,8 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 생성' })
   @ApiBody({ type: RequestQaSaveDto })
   @ApiResponse(QaResponse.saveQa[200])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveQa(@Body() dto: RequestQaSaveDto) {
@@ -83,6 +92,8 @@ export default class QaController {
   @ApiBody({ type: RequestQaUpdateDto })
   @ApiResponse(QaResponse.updateQa[200])
   @ApiResponse(QaResponse.updateQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateQa(@Body() dto: RequestQaUpdateDto) {
@@ -94,6 +105,8 @@ export default class QaController {
   @ApiBody({ type: RequestQaStatusUpdateDto })
   @ApiResponse(QaResponse.updateStatusQa[200])
   @ApiResponse(QaResponse.updateStatusQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/status')
   public async updateStatusQa(@Body() dto: RequestQaStatusUpdateDto) {
@@ -104,6 +117,8 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 삭제' })
   @ApiResponse(QaResponse.deleteQa[200])
   @ApiResponse(QaResponse.deleteQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
   public async deleteQa(@Param('id') id: number) {
@@ -113,6 +128,8 @@ export default class QaController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 조회' })
   @ApiResponse(CommentResponse.findComment[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:qaId')
   public async findQaComment(@Param('qaId') qaId: number) {
@@ -123,6 +140,8 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 댓글 생성' })
   @ApiBody({ type: RequestQaCommentSaveDto })
   @ApiResponse(CommentResponse.saveComment[200])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
   public async saveComment(@Body() dto: RequestQaCommentSaveDto) {
@@ -134,6 +153,8 @@ export default class QaController {
   @ApiBody({ type: RequestQaCommentUpdateDto })
   @ApiResponse(CommentResponse.updateComment[200])
   @ApiResponse(CommentResponse.updateComment[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/comment')
   public async updateComment(@Body() dto: RequestQaCommentUpdateDto) {
@@ -144,6 +165,8 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 댓글 삭제' })
   @ApiResponse(CommentResponse.deleteComment[200])
   @ApiResponse(CommentResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
   public async deleteComment(@Param('id') id: number) {
