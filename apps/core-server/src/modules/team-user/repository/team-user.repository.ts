@@ -43,6 +43,7 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'user.id',
         'user.email',
         'user.nickname',
+        'user.profile',
       ])
       .leftJoin('userTeam.user', 'user')
       .where('userTeam.teamId = :teamId', { teamId });
