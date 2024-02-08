@@ -1,5 +1,6 @@
 export default class RequestLogDto {
   requestUrl: string;
+  requestParams: string;
   requestBody: string;
   requestMethod: string;
   responseBody: string;

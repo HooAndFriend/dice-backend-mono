@@ -56,6 +56,14 @@ export default class RequestLog extends BaseTimeEntity {
 
   @Column({
     type: 'text',
+    comment: '요청 헤더 파라미터',
+    name: 'request_params',
+    nullable: false,
+  })
+  requestParams: string;
+
+  @Column({
+    type: 'text',
     comment: '요청 바디',
     name: 'request_body',
     nullable: false,

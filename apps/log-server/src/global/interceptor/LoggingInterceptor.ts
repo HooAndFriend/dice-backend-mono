@@ -11,6 +11,9 @@ import { Observable, tap } from 'rxjs';
 
 // ** Type Imports
 import type { CommonResponseType } from '../types';
+
+// ** Utils Imports
+import { parse } from 'url';
 import { ClientProxy } from '@nestjs/microservices';
 import RequestLogDto from '@/src/modules/request-log/dto/request-log.dto';
 
@@ -24,8 +27,10 @@ export class LoggingInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
+    const { pathname } = parse(request.url);
+
     this.logger.log(
-      `${request.method} : ${request.url} ${JSON.stringify(
+      `${request.method} : ${pathname} ${JSON.stringify(
         request.query,
       )} ${JSON.stringify(request.body)}`,
     );
@@ -34,15 +39,21 @@ export class LoggingInterceptor implements NestInterceptor {
       tap({
         next: (response: CommonResponseType) => {
           this.logger.log(`${response.statusCode} : ${response.message}`);
-          this.rmqClient.emit<RequestLogDto>('request-log', {
-            requestUrl: request.url,
-            requestBody: request.body,
-            requestMethod: request.method,
-            responseBody: response,
-            serverName: 'core-server',
-            userId: request.user ? request.user.email : '',
-            ip: request.ip,
-          });
+          this.rmqClient
+            .emit<RequestLogDto>('request-log', {
+              requestUrl: pathname,
+              requestBody: request.body,
+              requestParams: request.query,
+              requestMethod: request.method,
+              responseBody: response,
+              serverName: 'core-server',
+              userId: request.user ? request.user.email : '',
+              ip: request.ip,
+            })
+            .toPromise()
+            .catch((err) => {
+              console.log(err);
+            });
         },
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         error: (error: Error) => {},

@@ -13,6 +13,7 @@ import { Observable, tap } from 'rxjs';
 import type { CommonResponseType } from '../types';
 
 // ** Utils Imports
+import { parse } from 'url';
 import { ClientProxy } from '@nestjs/microservices';
 import RequestLogDto from '../dto/request-log.dto';
 
@@ -26,8 +27,10 @@ export class LoggingInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
+    const { pathname } = parse(request.url);
+
     this.logger.log(
-      `${request.method} : ${request.url} ${JSON.stringify(
+      `${request.method} : ${pathname} ${JSON.stringify(
         request.query,
       )} ${JSON.stringify(request.body)}`,
     );
@@ -38,8 +41,9 @@ export class LoggingInterceptor implements NestInterceptor {
           this.logger.log(`${response.statusCode} : ${response.message}`);
           this.rmqClient
             .emit<RequestLogDto>('request-log', {
-              requestUrl: request.url,
+              requestUrl: pathname,
               requestBody: request.body,
+              requestParams: request.query,
               requestMethod: request.method,
               responseBody: response,
               serverName: 'core-server',

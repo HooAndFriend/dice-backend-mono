@@ -39,8 +39,7 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.worker', 'worker')
       .leftJoin('qa.file', 'file')
       .where('qa.workspaceId = :workspaceId', { workspaceId });
-    console.log('findstatus ');
-    console.log('findstatus ', findQuery);
+
     if (findQuery.status !== QaStatus.ALL) {
       queryBuilder.andWhere('qa.status = :status', {
         status: findQuery.status,
