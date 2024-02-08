@@ -17,6 +17,22 @@ export const TeamResponse = {
       error: 'BAD REQUEST',
     }),
   },
+  updateTeam: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '팀을 생성합니다.',
+    }),
+    400: createErrorResponse({
+      statusCode: 400,
+      message: '같은 이름의 팀이 있습니다.',
+      error: 'BAD REQUEST',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Team',
+      error: 'NOT FOUND',
+    }),
+  },
   findTeam: {
     200: createResponse({
       data: {

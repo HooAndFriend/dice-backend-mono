@@ -24,6 +24,7 @@ import RequestTeamSaveDto from '../dto/team.save.dto';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
 import Role from '@/src/global/enum/Role';
 import CommonResponse from '@/src/global/dto/api.response';
+import RequestTeamUpdateDto from '../dto/team.update.dto';
 
 @Injectable()
 export default class TeamService {
@@ -96,6 +97,17 @@ export default class TeamService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  /**
+   * Update Team
+   * @param teamId
+   * @param dto
+   */
+  public async updateTeam(teamId: number, dto: RequestTeamUpdateDto) {
+    await this.teamRepository.update(teamId, {
+      ...dto,
+    });
   }
 
   /**
