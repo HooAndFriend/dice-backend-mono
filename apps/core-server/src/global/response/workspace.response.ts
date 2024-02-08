@@ -76,7 +76,7 @@ export const WorkspaceResponse = {
     }),
   },
   findWorkspaceList: {
-    200: createPaginationResponse({
+    200: createResponse({
       data: [
         {
           id: 2,
@@ -95,7 +95,35 @@ export const WorkspaceResponse = {
       ],
       statusCode: 200,
       message: 'Find Workspace List',
-      count: 2,
+    }),
+  },
+  findWorkspaceListWithCount: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            workspace_id: 2,
+            workspace_name: 'HooAndFriend',
+            workspace_comment: '이 워크스페이스는..',
+            workspace_profile:
+              'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            workspace_uuid: 'a4a6ab31-86fd-4560-80c5-45dcb45e9775',
+            workspaceUserCount: '1',
+          },
+          {
+            workspace_id: 3,
+            workspace_name: 'HooAndFriend',
+            workspace_comment: '이 워크스페이스는..',
+            workspace_profile:
+              'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            workspace_uuid: '8d873b0e-9c86-498a-b36f-8e9eb712bbcb',
+            workspaceUserCount: '2',
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: 'Find Workspace List',
     }),
   },
 };

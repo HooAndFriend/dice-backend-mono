@@ -65,6 +65,20 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.comment',
         'workspace.uuid',
       ])
+      .where('workspace.teamId = :teamId', { teamId });
+
+    return await queryBuilder.getManyAndCount();
+  }
+
+  public async findTeamWorkspaceListWithCount(teamId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+        'workspace.uuid',
+      ])
       .addSelect('COUNT(workspaceUser.id)', 'workspaceUserCount')
       .leftJoin('workspace.workspaceUser', 'workspaceUser')
       .where('workspace.teamId = :teamId', { teamId })
