@@ -138,8 +138,8 @@ export default class TeamUserController {
   @TeamRole(RoleEnum.VIEWER)
   @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/user/:id')
-  public async findTeamUserList(@Param('id') id: number) {
+  @Get('/user')
+  public async findTeamUserList(@GetTeam() { id }: Team) {
     const [data, count] = await this.teamUserService.findTeamUserList(id);
 
     return CommonResponse.createResponse({
