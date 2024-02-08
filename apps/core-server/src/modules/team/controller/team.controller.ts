@@ -8,6 +8,7 @@ import TeamService from '../service/team.service';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -16,6 +17,11 @@ import {
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '@/src/global/decorators/user/user.decorators';
+import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
+import {
+  GetTeam,
+  TeamRole,
+} from '@/src/global/decorators/team-role/team-role.decorator';
 
 // ** Response Imports
 import {
@@ -28,6 +34,8 @@ import { TeamResponse } from '@/src/global/response/team.response';
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import User from '../../user/domain/user.entity';
 import CommonResponse from '@/src/global/dto/api.response';
+import RoleEnum from '@/src/global/enum/Role';
+import Team from '../domain/team.entity';
 
 @ApiTags('Team')
 @ApiResponse(createServerExceptionResponse())
@@ -57,13 +65,16 @@ export default class TeamController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '팀 조회' })
   @ApiResponse(TeamResponse.findTeam[200])
   @ApiResponse(TeamResponse.findTeam[404])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findTeam(@Param('id') teamId: number) {
-    const team = await this.teamService.findTeam(teamId);
+  @Get('/')
+  public async findTeam(@GetTeam() { id }: Team) {
+    const team = await this.teamService.findTeam(id);
 
     return CommonResponse.createResponse({
       data: team,
