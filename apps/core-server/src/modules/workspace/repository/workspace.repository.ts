@@ -50,7 +50,10 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.profile',
         'workspace.comment',
         'workspace.uuid',
+        'workspaceFunction.id',
+        'workspaceFunction.function',
       ])
+      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
       .where('workspace.userId = :userId', { userId });
 
     return await queryBuilder.getManyAndCount();
@@ -64,7 +67,10 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.profile',
         'workspace.comment',
         'workspace.uuid',
+        'workspaceFunction.id',
+        'workspaceFunction.function',
       ])
+      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
       .where('workspace.teamId = :teamId', { teamId });
 
     return await queryBuilder.getManyAndCount();

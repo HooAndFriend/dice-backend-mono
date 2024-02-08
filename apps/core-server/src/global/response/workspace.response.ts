@@ -77,22 +77,29 @@ export const WorkspaceResponse = {
   },
   findWorkspaceList: {
     200: createResponse({
-      data: [
-        {
-          id: 2,
-          name: 'HooAndFriend',
-          comment: '이 워크스페이스는..',
-          profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-        },
-        {
-          id: 3,
-          name: 'HooAndFriend',
-          comment: '이 워크스페이스는..',
-          profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-        },
-      ],
+      data: {
+        data: [
+          {
+            id: 1,
+            name: 'admin',
+            comment: '',
+            profile:
+              'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            uuid: '05699c8c-de14-4d3d-b745-e67a40e39ac0',
+            workspaceFunction: [
+              {
+                id: 2,
+                function: 'QA',
+              },
+              {
+                id: 1,
+                function: 'TICKET',
+              },
+            ],
+          },
+        ],
+        count: 1,
+      },
       statusCode: 200,
       message: 'Find Workspace List',
     }),
