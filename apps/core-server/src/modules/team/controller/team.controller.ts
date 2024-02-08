@@ -86,9 +86,12 @@ export default class TeamController {
   @Put('/')
   public async updateTeam(
     @Body() dto: RequestTeamUpdateDto,
-    @GetTeam() { id }: Team,
+    @GetTeam() { id, name }: Team,
   ) {
-    await this.teamService.isExistTeamByName(dto.name);
+    if (name !== dto.name) {
+      await this.teamService.isExistTeamByName(dto.name);
+    }
+
     await this.teamService.updateTeam(id, dto);
 
     return CommonResponse.createResponseMessage({
