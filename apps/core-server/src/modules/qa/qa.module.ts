@@ -16,6 +16,7 @@ import CommentService from './service/comment.service';
 import Qa from './domain/qa.entity';
 import Comment from './domain/comment.entity';
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
+import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
       FileRepository,
       WorkspaceRepository,
     ]),
+    WorkspaceUserModule
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [QaController],

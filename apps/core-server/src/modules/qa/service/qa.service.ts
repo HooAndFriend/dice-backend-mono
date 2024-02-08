@@ -1,13 +1,14 @@
 // ** Nest Imports
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
-import { DataSource } from 'typeorm';
+import { Admin, DataSource } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
 import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
+import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 
 // ** Response Imports
 import CommonResponse from '../../../global/dto/api.response';
@@ -19,6 +20,8 @@ import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
 import Qa from '@/src/modules/qa/domain/qa.entity';
 import { QaStatus } from '../../../global/enum/QaStatus.enum';
+import User from '../../user/domain/user.entity';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class QaService {
@@ -27,6 +30,7 @@ export default class QaService {
     private readonly fileRepository: FileRepository,
     private readonly userRepository: UserRepository,
     private readonly workspaceRepository: WorkspaceRepository,
+    private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -37,36 +41,25 @@ export default class QaService {
     if (!findWorkspace) {
       throw new NotFoundException('Not Found Workspace');
     }
-    const [data, count] = await this.qaRepository.findQaList(
+    const [qa, count] = await this.qaRepository.findQaList(
       workspaceId,
       findQuery,
     );
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Qa리스트를 조회합니다.',
-      data: { data, count },
-    });
+    return {qa, count}
   }
 
-  public async saveQa(dto: RequestQaSaveDto) {
+  public async saveQa(dto: RequestQaSaveDto, workspaceId : number) {
     const findAdmin = await this.userRepository.findOne({
-      where: { id: dto.adminId },
+      where : { email : dto.adminId }
     });
-    if (!findAdmin) {
-      throw new NotFoundException('Not Found Admin');
-    }
+    this.validationQaUser(findAdmin, workspaceId);
+
     const findWorker = await this.userRepository.findOne({
-      where: { id: dto.workerId },
+      where : { email : dto.workerId }
     });
-    if (!findWorker) {
-      throw new NotFoundException('Not Found Worker');
-    }
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: dto.workspaceId },
-    });
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
+    this.validationQaUser(findWorker, workspaceId);
+
+    const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -90,20 +83,17 @@ export default class QaService {
         admin: findAdmin,
         worker: findWorker,
         file: files,
-        workspace: findWorkspace,
+        workspace: workspace,
       }),
     );
 
     await queryRunner.commitTransaction();
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 생성합니다.',
-    });
+    return;
   }
-  public async updateQa(dto: RequestQaUpdateDto) {
+  public async updateQa(dto: RequestQaUpdateDto, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId },
+      where: { id: dto.qaId, workspace : { id : workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -111,9 +101,7 @@ export default class QaService {
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
-    if (!findWorker) {
-      throw new NotFoundException('Not Found Worker');
-    }
+    this.validationQaUser(findWorker, workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -133,14 +121,11 @@ export default class QaService {
 
     await queryRunner.commitTransaction();
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 수정합니다.',
-    });
+    return
   }
-  public async updateQaStatus(dto: RequestQaStatusUpdateDto) {
+  public async updateQaStatus(dto: RequestQaStatusUpdateDto, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId },
+      where: { id: dto.qaId, workspace : { id: workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -148,22 +133,33 @@ export default class QaService {
 
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 수정합니다.',
-    });
+
+    return
   }
-  public async deleteQa(qaId: number) {
+  public async deleteQa(qaId: number, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId },
+      where: { id: qaId, workspace : {id : workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
     await this.qaRepository.remove(findQa);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 삭제합니다.',
+    return 
+  }
+  // workspace 소속 확인
+  public async validationQaUser(user: User, workspaceId: number) {
+    if(!user) {
+      throw new NotFoundException('Not Found User')
+    }
+    const findworkspaceUser = await this.workspaceUserRepository.findOne({
+      where: {
+        workspace: { id: workspaceId },
+        teamUser: { user: { id : user.id } },
+      }
     });
+    console.log(user);
+    if (!findworkspaceUser) {
+      throw new BadRequestException('User is not in the workspace');
+    }
   }
 }

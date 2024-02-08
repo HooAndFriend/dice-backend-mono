@@ -13,6 +13,8 @@ import CommonResponse from '@/src/global/dto/api.response';
 // ** enum, dto, entity, types Imports
 import RequestCommentSaveDto from '@/src/modules/qa/dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
+import QaService from './qa.service';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class CommentService {
@@ -21,71 +23,52 @@ export default class CommentService {
     private readonly qaRepository: QaRepository,
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
+    private readonly qaService: QaService,
   ) {}
-  public async findQaComment(qaId: number) {
+  public async findQaComment(qaId: number, workspaceId : number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId },
+      where: { id: qaId, workspace : { id : workspaceId}},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '댓글을 조회합니다.',
-      data: { data, count },
-    });
+    return { data, count }
   }
-  public async saveComment(dto: RequestCommentSaveDto) {
+  public async saveComment(dto: RequestCommentSaveDto, workspaceId : number, user : User) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId },
+      where: { id: dto.qaId, workspace : { id : workspaceId }},
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
-    }
-    const findUser = await this.userRepository.findOne({
-      where: { id: dto.userId },
-    });
-    if (!findUser) {
-      throw new NotFoundException('Not Found User');
     }
 
     await this.qacommentRepository.save(
       this.qacommentRepository.create({
         content: dto.content,
-        user: findUser,
+        user: user,
         qa: findQa,
       }),
     );
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 생성합니다.',
-    });
+    return 
   }
-  public async updateComment(dto: RequestQaCommentUpdateDto) {
-    await this.qacommentRepository.update(dto.commentId, {
+  public async updateComment(dto: RequestQaCommentUpdateDto, user : User) {
+    await this.qacommentRepository.update({ id : dto.commentId, user : { id : user.id}}, {
       content: dto.content,
     });
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 수정합니다.',
-    });
+    return 
   }
-  public async deleteComment(commentid: number) {
+  public async deleteComment(commentid: number, user : User) {
     const findComment = await this.qacommentRepository.findOne({
-      where: { id: commentid },
+      where: { id: commentid , user : { id : user.id }},
     });
     if (!findComment) {
       throw new NotFoundException('Not Found Comment');
     }
     await this.qacommentRepository.remove(findComment);
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 삭제합니다.',
-    });
+    return 
   }
 }
