@@ -119,11 +119,10 @@ export default class WorkspaceController {
       team.id,
     );
 
-    return CommonResponse.createPaginationResponse({
+    return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace List',
-      data,
-      count,
+      data: { data, count },
     });
   }
 
