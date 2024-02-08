@@ -65,9 +65,12 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.comment',
         'workspace.uuid',
       ])
-      .where('workspace.teamId = :teamId', { teamId });
+      .addSelect('COUNT(workspaceUser.id)', 'workspaceUserCount')
+      .leftJoin('workspace.workspaceUser', 'workspaceUser')
+      .where('workspace.teamId = :teamId', { teamId })
+      .groupBy('workspace.id');
 
-    return await queryBuilder.getManyAndCount();
+    return await queryBuilder.getRawMany();
   }
 
   /**
