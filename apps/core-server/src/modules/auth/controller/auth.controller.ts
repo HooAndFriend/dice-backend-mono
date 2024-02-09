@@ -28,6 +28,8 @@ import {
   RmqContext,
 } from '@nestjs/microservices';
 import RequestLogDto from '@/src/global/dto/request-log.dto';
+import CommonResponse from '@/src/global/dto/api.response';
+import { response } from 'express';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -41,7 +43,27 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveSocialUser[400])
   @Post('/social/user')
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
-    return await this.authService.saveSocialUser(dto);
+    const response = await this.authService.saveSocialUser(dto);
+    const responseData = {
+      token: response.token,
+      user: {
+        nickname: response.saveUser.nickname,
+        profile: response.saveUser.profile,
+        email: response.saveUser.email,
+      },
+      workspace: {
+        id: response.workspace.id,
+        name: response.workspace.name,
+        profile: response.workspace.profile,
+        uuid: response.workspace.uuid,
+        workspaceFunction: [],
+      },
+    };
+    return CommonResponse.createResponse({
+      data: responseData,
+      statusCode: 200,
+      message: '회원가입 했습니다.',
+    });
   }
 
   @ApiOperation({ summary: '소셜 유저 로그인' })
@@ -50,7 +72,28 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginSocialUser[404])
   @Post('/social')
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
-    return await this.authService.loginSocialUser(dto);
+    try {
+      const response = await this.authService.loginSocialUser(dto);
+      const responseData = {
+        token: response.token,
+        user: {
+          nickname: response.User.nickname,
+          profile: response.User.profile,
+          email: response.User.email,
+        },
+      };
+      return CommonResponse.createResponse({
+        data: responseData,
+        statusCode: 200,
+        message: 'Login Successed',
+      });
+    } catch (error) {
+      return CommonResponse.createResponse({
+        statusCode: 500,
+        message: 'Internal Server Error',
+        data: null,
+      });
+    }
   }
 
   @ApiOperation({ summary: '다이스 유저 로그인' })
@@ -60,7 +103,28 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
   public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
-    return await this.authService.loginDiceUser(dto);
+    try {
+      const response = await this.authService.loginDiceUser(dto);
+      const responseData = {
+        token: response.token,
+        user: {
+          nickname: response.User.nickname,
+          profile: response.User.profile,
+          email: response.User.email,
+        },
+      };
+      return CommonResponse.createResponse({
+        data: responseData,
+        statusCode: 200,
+        message: 'Login Successed',
+      });
+    } catch (error) {
+      return CommonResponse.createResponse({
+        statusCode: 500,
+        message: 'Internal Server Error',
+        data: null,
+      });
+    }
   }
 
   @ApiOperation({ summary: '다이스 유저 생성' })
@@ -69,7 +133,27 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveDiceUser[400])
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
-    return await this.authService.saveDiceUser(dto);
+    const response = await this.authService.saveDiceUser(dto);
+    const responseData = {
+      token: response.token,
+      user: {
+        nickname: response.saveUser.nickname,
+        profile: response.saveUser.profile,
+        email: response.saveUser.email,
+      },
+      workspace: {
+        id: response.workspace.id,
+        name: response.workspace.name,
+        profile: response.workspace.profile,
+        uuid: response.workspace.uuid,
+        workspaceFunction: [],
+      },
+    };
+    return CommonResponse.createResponse({
+      data: responseData,
+      statusCode: 200,
+      message: '회원가입 했습니다.',
+    });
   }
 
   @ApiOperation({ summary: '유저 토큰 재발급' })
@@ -79,7 +163,12 @@ export default class AuthController {
   @ApiResponse(createUnauthorizedResponse())
   @Post('/reissue')
   public async reissueToken(@GetUser() user: User) {
-    return await this.authService.reissueToken(user);
+    const accessToken = await this.authService.reissueToken(user);
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '토큰을 재발급합니다.',
+      data: { accessToken },
+    });
   }
 
   @MessagePattern('request-log')
