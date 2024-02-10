@@ -12,7 +12,6 @@ import {
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import { UserType } from '../../../global/enum/UserType.enum';
 import TeamUser from '../../team-user/domain/team-user.entity';
-import Workspace from '../../workspace/domain/workspace.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';
 import Comment from '@/src/modules/qa/domain/comment.entity';
@@ -77,9 +76,6 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teamUser: Relation<TeamUser>[];
-
-  @OneToMany(() => Workspace, (workspace) => workspace.user)
-  workspace: Relation<Workspace>[];
 
   @OneToMany(() => Epic, (epic) => epic.admin)
   epic: Relation<Epic>[];

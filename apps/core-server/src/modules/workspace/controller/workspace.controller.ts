@@ -71,11 +71,7 @@ export default class WorkspaceController {
     @GetUser() user: User,
     @GetTeamUser() teamUser: TeamUser,
   ) {
-    if (teamUser.team.id === 0) {
-      await this.workspaceService.savePersonalWorkspace(dto, user);
-    } else {
-      await this.workspaceService.saveTeamWorksapce(dto, teamUser);
-    }
+    await this.workspaceService.saveTeamWorksapce(dto, teamUser);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

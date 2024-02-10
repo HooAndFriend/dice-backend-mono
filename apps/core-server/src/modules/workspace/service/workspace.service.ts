@@ -34,24 +34,6 @@ export default class WorkspaceService {
   private logger = new Logger();
 
   /**
-   * 개인 워크스페이스 생성
-   * @param dto
-   * @param user
-   * @returns Workspace Entity
-   */
-  public async savePersonalWorkspace(dto: RequestWorksapceSaveDto, user: User) {
-    return await this.workspaceRepository.save(
-      this.workspaceRepository.create({
-        name: dto.name,
-        comment: dto.comment,
-        profile: dto.profile,
-        uuid: uuidv4(),
-        user,
-      }),
-    );
-  }
-
-  /**
    * 워크스페이스 생성
    * @param dto
    * @param user

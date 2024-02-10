@@ -12,7 +12,6 @@ import {
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
 import WorkspaceFunction from '../../workspace-function/domain/workspace-function.entity';
-import User from '../../user/domain/user.entity';
 import Team from '../../team/domain/team.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
@@ -73,14 +72,8 @@ export default class Workspace extends BaseTimeEntity {
   @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.workspace)
   ticketSetting: Relation<TicketSetting>[];
 
-  @ManyToOne(() => User, (user) => user.workspace, {
-    nullable: true,
-    onDelete: 'CASCADE',
-  })
-  user: Relation<User>;
-
   @ManyToOne(() => Team, (team) => team.workspace, {
-    nullable: true,
+    nullable: false,
     onDelete: 'CASCADE',
   })
   team: Relation<Team>;

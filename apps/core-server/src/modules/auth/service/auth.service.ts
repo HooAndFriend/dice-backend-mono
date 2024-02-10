@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
 import TeamRepository from '../../team/repository/team.repository';
+import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
@@ -41,6 +42,7 @@ export default class AuthService {
     private readonly dataSource: DataSource,
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
+    private readonly workspaceUserRepository: WorkspaceUserRepository,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -86,17 +88,6 @@ export default class AuthService {
         }),
       );
 
-      const workspace = await queryRunner.manager.save(
-        this.workspaceRepository.create({
-          name: dto.nickname,
-          comment: '',
-          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          user: saveUser,
-          uuid: uuidv4(),
-          workspaceFunction: [],
-        }),
-      );
-
       if (dto.uuid) {
         const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
 
@@ -116,6 +107,42 @@ export default class AuthService {
           }
         }
       }
+
+      const team = await queryRunner.manager.save(
+        this.teamRepository.create({
+          name: dto.nickname,
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          description: '',
+          isPersonal: true,
+          uuid: uuidv4(),
+        }),
+      );
+
+      const teamUser = await queryRunner.manager.save(
+        this.teamUserRepository.create({
+          user: saveUser,
+          team,
+          role: Role.ADMIN,
+        }),
+      );
+
+      const workspace = await queryRunner.manager.save(
+        this.workspaceRepository.create({
+          name: dto.nickname,
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          comment: '',
+          team,
+          uuid: uuidv4(),
+        }),
+      );
+
+      await queryRunner.manager.save(
+        this.workspaceUserRepository.create({
+          workspace,
+          teamUser,
+          role: Role.ADMIN,
+        }),
+      );
 
       await queryRunner.commitTransaction();
 
@@ -220,13 +247,39 @@ export default class AuthService {
         }
       }
 
+      const team = await queryRunner.manager.save(
+        this.teamRepository.create({
+          name: dto.nickname,
+          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          description: '',
+          isPersonal: true,
+          uuid: uuidv4(),
+        }),
+      );
+
+      const teamUser = await queryRunner.manager.save(
+        this.teamUserRepository.create({
+          user: saveUser,
+          team,
+          role: Role.ADMIN,
+        }),
+      );
+
       const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
-          comment: '',
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          user: saveUser,
+          comment: '',
+          team,
           uuid: uuidv4(),
+        }),
+      );
+
+      await queryRunner.manager.save(
+        this.workspaceUserRepository.create({
+          workspace,
+          teamUser,
+          role: Role.ADMIN,
         }),
       );
 
