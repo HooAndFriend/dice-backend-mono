@@ -114,6 +114,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
+          createdId: saveUser.id,
           uuid: uuidv4(),
         }),
       );
@@ -179,21 +180,21 @@ export default class AuthService {
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
-    const User = await this.userRepository.findUserWithWorkspace(dto.email);
+    const user = await this.userRepository.findUserWithWorkspace(dto.email);
 
-    if (!User) {
+    if (!user) {
       throw new NotFoundException('Not Found User');
     }
 
-    const result = await bcrypt.compare(dto.password, User.password);
+    const result = await bcrypt.compare(dto.password, user.password);
 
     if (!result) {
       throw new BadRequestException('Wrong Password');
     }
 
-    const token = this.generateToken({ id: User.id });
+    const token = this.generateToken({ id: user.id });
 
-    return { token, User };
+    return { token, user };
   }
 
   /**
@@ -253,6 +254,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
+          createdId: saveUser.id,
           uuid: uuidv4(),
         }),
       );
@@ -350,6 +352,15 @@ export default class AuthService {
    */
   private async getTeamRedisValue(email: string, uuid: string) {
     return await this.redis.get(`${email}&&${uuid}`);
+  }
+
+  /**
+   * Find Workspace List By UserId
+   * @param userId
+   * @returns
+   */
+  public async findPersonalWorkspaceList(userId: number) {
+    return await this.workspaceRepository.findWorkspaceByUserId(userId);
   }
 
   /**

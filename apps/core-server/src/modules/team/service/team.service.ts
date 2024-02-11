@@ -55,6 +55,7 @@ export default class TeamService {
           profile: dto.profile,
           description: dto.description,
           isPersonal: false,
+          createdId: user.id,
           uuid: uuidv4(),
         }),
       );

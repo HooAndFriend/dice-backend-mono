@@ -23,8 +23,10 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'team.name',
         'team.profile',
         'team.uuid',
+        'team.isPersonal',
       ])
       .leftJoin('userTeam.team', 'team')
+      .orderBy('team.isPersonal', 'DESC')
       .where('userTeam.userId = :userId', { userId });
 
     return await queryBuilder.getManyAndCount();

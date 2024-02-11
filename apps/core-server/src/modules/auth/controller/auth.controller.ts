@@ -21,15 +21,7 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
-import RequestLogDto from '@/src/global/dto/request-log.dto';
 import CommonResponse from '@/src/global/dto/api.response';
-import { response } from 'express';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -72,28 +64,20 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginSocialUser[404])
   @Post('/social')
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
-    try {
-      const response = await this.authService.loginSocialUser(dto);
-      const responseData = {
-        token: response.token,
-        user: {
-          nickname: response.User.nickname,
-          profile: response.User.profile,
-          email: response.User.email,
-        },
-      };
-      return CommonResponse.createResponse({
-        data: responseData,
-        statusCode: 200,
-        message: 'Login Successed',
-      });
-    } catch (error) {
-      return CommonResponse.createResponse({
-        statusCode: 500,
-        message: 'Internal Server Error',
-        data: null,
-      });
-    }
+    const response = await this.authService.loginSocialUser(dto);
+    const responseData = {
+      token: response.token,
+      user: {
+        nickname: response.User.nickname,
+        profile: response.User.profile,
+        email: response.User.email,
+      },
+    };
+    return CommonResponse.createResponse({
+      data: responseData,
+      statusCode: 200,
+      message: 'Login Successed',
+    });
   }
 
   @ApiOperation({ summary: '다이스 유저 로그인' })
@@ -103,28 +87,21 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
   public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
-    try {
-      const response = await this.authService.loginDiceUser(dto);
-      const responseData = {
-        token: response.token,
+    const { user, token } = await this.authService.loginDiceUser(dto);
+    const workspace = await this.authService.findPersonalWorkspaceList(user.id);
+    return CommonResponse.createResponse({
+      data: {
+        token: token,
         user: {
-          nickname: response.User.nickname,
-          profile: response.User.profile,
-          email: response.User.email,
+          nickname: user.nickname,
+          profile: user.profile,
+          email: user.email,
         },
-      };
-      return CommonResponse.createResponse({
-        data: responseData,
-        statusCode: 200,
-        message: 'Login Successed',
-      });
-    } catch (error) {
-      return CommonResponse.createResponse({
-        statusCode: 500,
-        message: 'Internal Server Error',
-        data: null,
-      });
-    }
+        workspace,
+      },
+      statusCode: 200,
+      message: 'Login Successed',
+    });
   }
 
   @ApiOperation({ summary: '다이스 유저 생성' })
@@ -169,14 +146,5 @@ export default class AuthController {
       message: '토큰을 재발급합니다.',
       data: { accessToken },
     });
-  }
-
-  @MessagePattern('request-log')
-  async handleMessage(
-    @Payload() data: RequestLogDto,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
-    console.log(data);
-    // await this.requestLogService.saveRequestLog(data);
   }
 }
