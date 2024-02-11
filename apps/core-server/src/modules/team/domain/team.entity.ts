@@ -14,7 +14,6 @@ import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_TEAM' })
-@Unique(['name'])
 export default class Team extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;

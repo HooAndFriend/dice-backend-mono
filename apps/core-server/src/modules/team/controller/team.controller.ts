@@ -64,7 +64,6 @@ export default class TeamController {
     @Body() dto: RequestTeamSaveDto,
     @GetUser() user: User,
   ) {
-    await this.teamService.isExistTeamByName(dto.name);
     await this.teamService.saveTeam(user, dto);
 
     return CommonResponse.createResponseMessage({
@@ -88,10 +87,6 @@ export default class TeamController {
     @Body() dto: RequestTeamUpdateDto,
     @GetTeam() { id, name }: Team,
   ) {
-    if (name !== dto.name) {
-      await this.teamService.isExistTeamByName(dto.name);
-    }
-
     await this.teamService.updateTeam(id, dto);
 
     return CommonResponse.createResponseMessage({
