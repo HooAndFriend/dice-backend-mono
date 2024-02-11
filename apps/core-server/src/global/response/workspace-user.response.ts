@@ -87,13 +87,16 @@ export const WorkspaceUserResponse = {
       data: {
         data: [
           {
-            id: 4,
-            role: 'VIEWER',
+            id: 3,
+            role: 'ADMIN',
             teamUser: {
               id: 3,
               user: {
-                email: 'admin11',
-                nickname: 'Pinomake1r',
+                id: 3,
+                email: 'admin',
+                nickname: 'admin',
+                profile:
+                  'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
               },
             },
           },
