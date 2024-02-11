@@ -6,27 +6,38 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDc2NTkzMDR9.qEzz11nqTZCP1el-HIsr0PePKgUXbHgiW4Tnaqw7pmQ',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDgyNjA1MDR9.W4dG8Bcis1VrRqgcWzTArShh1xdQ8ey2ekY61ce1FTA',
         },
         user: {
-          nickname: '피노피노얍',
+          nickname: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          email: 'inhoo987654321@gmail.com',
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          email: 'admin',
         },
-        workspace: {
-          id: 5,
-          name: 'Pinomaker',
+        team: {
+          id: 3,
+          name: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          uuid: '83247d2d-4610-49ea-bd87-a5941a816fb3',
-          workspaceFunction: [],
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          uuid: 'd1e6e485-7504-40da-bf81-1299840fedb9',
+          description: '',
+          workspace: [
+            {
+              id: 3,
+              name: 'admin',
+              comment: '',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '88c03bbf-ca24-4e32-a689-4c4e508caad4',
+              workspaceFunction: [],
+            },
+          ],
         },
       },
       statusCode: 200,
-      message: '회원가입에 성공했습니다.',
+      message: 'Login Successed',
     }),
     400: createErrorResponse({
       statusCode: 400,
@@ -39,19 +50,38 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDc2NTkzMDR9.qEzz11nqTZCP1el-HIsr0PePKgUXbHgiW4Tnaqw7pmQ',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDgyNjA1MDR9.W4dG8Bcis1VrRqgcWzTArShh1xdQ8ey2ekY61ce1FTA',
         },
         user: {
-          nickname: '피노피노얍',
+          nickname: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          email: 'inhoo987654321@gmail.com',
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          email: 'admin',
+        },
+        team: {
+          id: 3,
+          name: 'admin',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          uuid: 'd1e6e485-7504-40da-bf81-1299840fedb9',
+          description: '',
+          workspace: [
+            {
+              id: 3,
+              name: 'admin',
+              comment: '',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '88c03bbf-ca24-4e32-a689-4c4e508caad4',
+              workspaceFunction: [],
+            },
+          ],
         },
       },
       statusCode: 200,
-      message: '로그인에 성공했습니다.',
+      message: 'Login Successed',
     }),
     404: createErrorResponse({
       statusCode: 404,
@@ -64,19 +94,38 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDc2NTkzMDR9.qEzz11nqTZCP1el-HIsr0PePKgUXbHgiW4Tnaqw7pmQ',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDgyNjA1MDR9.W4dG8Bcis1VrRqgcWzTArShh1xdQ8ey2ekY61ce1FTA',
         },
         user: {
-          nickname: '피노피노얍',
+          nickname: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          email: 'inhoo987654321@gmail.com',
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          email: 'admin',
+        },
+        team: {
+          id: 3,
+          name: 'admin',
+          profile:
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          uuid: 'd1e6e485-7504-40da-bf81-1299840fedb9',
+          description: '',
+          workspace: [
+            {
+              id: 3,
+              name: 'admin',
+              comment: '',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '88c03bbf-ca24-4e32-a689-4c4e508caad4',
+              workspaceFunction: [],
+            },
+          ],
         },
       },
       statusCode: 200,
-      message: '로그인에 성공했습니다.',
+      message: 'Login Successed',
     }),
     400: createErrorResponse({
       statusCode: 400,
@@ -94,27 +143,38 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTU2NjQwMzZ9.HBA68et_DGrV4wOuZzDx0b5IB9QMxIMTz9ydcIzD-pY',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDc2NTkzMDR9.qEzz11nqTZCP1el-HIsr0PePKgUXbHgiW4Tnaqw7pmQ',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjk1NjYwNDM2LCJleHAiOjE2OTYyNjUyMzZ9.mDrmKQNp7f8e-hztcF13bJSWr9Q8JbnzjI6vYOG84BA',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA3NjU1NzA0LCJleHAiOjE3MDgyNjA1MDR9.W4dG8Bcis1VrRqgcWzTArShh1xdQ8ey2ekY61ce1FTA',
         },
         user: {
-          nickname: '피노피노얍',
+          nickname: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          email: 'inhoo987654321@gmail.com',
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          email: 'admin',
         },
-        workspace: {
-          id: 5,
-          name: 'Pinomaker',
+        team: {
+          id: 3,
+          name: 'admin',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
-          uuid: '83247d2d-4610-49ea-bd87-a5941a816fb3',
-          workspaceFunction: [],
+            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          uuid: 'd1e6e485-7504-40da-bf81-1299840fedb9',
+          description: '',
+          workspace: [
+            {
+              id: 3,
+              name: 'admin',
+              comment: '',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: '88c03bbf-ca24-4e32-a689-4c4e508caad4',
+              workspaceFunction: [],
+            },
+          ],
         },
       },
       statusCode: 200,
-      message: '회원가입에 성공했습니다.',
+      message: 'Login Successed',
     }),
     400: createErrorResponse({
       statusCode: 400,

@@ -35,24 +35,35 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveSocialUser[400])
   @Post('/social/user')
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
-    const response = await this.authService.saveSocialUser(dto);
-    const responseData = {
-      token: response.token,
-      user: {
-        nickname: response.saveUser.nickname,
-        profile: response.saveUser.profile,
-        email: response.saveUser.email,
-      },
-      workspace: {
-        id: response.workspace.id,
-        name: response.workspace.name,
-        profile: response.workspace.profile,
-        uuid: response.workspace.uuid,
-        workspaceFunction: [],
-      },
-    };
+    const { token, user, workspace, team } =
+      await this.authService.saveSocialUser(dto);
+
     return CommonResponse.createResponse({
-      data: responseData,
+      data: {
+        token: token,
+        user: {
+          nickname: user.nickname,
+          profile: user.profile,
+          email: user.email,
+        },
+        team: {
+          id: team.id,
+          name: team.name,
+          profile: team.profile,
+          uuid: team.uuid,
+          description: team.description,
+          workspace: [
+            {
+              id: workspace.id,
+              name: workspace.name,
+              comment: workspace.comment,
+              profile: workspace.profile,
+              uuid: workspace.uuid,
+              workspaceFunction: [],
+            },
+          ],
+        },
+      },
       statusCode: 200,
       message: '회원가입 했습니다.',
     });
@@ -117,24 +128,35 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveDiceUser[400])
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
-    const response = await this.authService.saveDiceUser(dto);
-    const responseData = {
-      token: response.token,
-      user: {
-        nickname: response.saveUser.nickname,
-        profile: response.saveUser.profile,
-        email: response.saveUser.email,
-      },
-      workspace: {
-        id: response.workspace.id,
-        name: response.workspace.name,
-        profile: response.workspace.profile,
-        uuid: response.workspace.uuid,
-        workspaceFunction: [],
-      },
-    };
+    const { token, user, workspace, team } =
+      await this.authService.saveDiceUser(dto);
+
     return CommonResponse.createResponse({
-      data: responseData,
+      data: {
+        token: token,
+        user: {
+          nickname: user.nickname,
+          profile: user.profile,
+          email: user.email,
+        },
+        team: {
+          id: team.id,
+          name: team.name,
+          profile: team.profile,
+          uuid: team.uuid,
+          description: team.description,
+          workspace: [
+            {
+              id: workspace.id,
+              name: workspace.name,
+              comment: workspace.comment,
+              profile: workspace.profile,
+              uuid: workspace.uuid,
+              workspaceFunction: [],
+            },
+          ],
+        },
+      },
       statusCode: 200,
       message: '회원가입 했습니다.',
     });

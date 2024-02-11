@@ -78,7 +78,7 @@ export default class AuthService {
     await queryRunner.startTransaction();
 
     try {
-      const saveUser = await queryRunner.manager.save(
+      const user = await queryRunner.manager.save(
         this.userRepository.create({
           token: dto.token,
           nickname: dto.nickname,
@@ -100,7 +100,7 @@ export default class AuthService {
             await queryRunner.manager.save(
               this.teamUserRepository.create({
                 team: findTeam,
-                user: saveUser,
+                user,
                 role: this.getRole(redisValue),
               }),
             );
@@ -114,14 +114,14 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
-          createdId: saveUser.id,
+          createdId: user.id,
           uuid: uuidv4(),
         }),
       );
 
       const teamUser = await queryRunner.manager.save(
         this.teamUserRepository.create({
-          user: saveUser,
+          user,
           team,
           role: Role.ADMIN,
         }),
@@ -147,9 +147,9 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: saveUser.id });
+      const token = this.generateToken({ id: user.id });
 
-      return { token, saveUser, workspace };
+      return { token, user, workspace, team };
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -218,7 +218,7 @@ export default class AuthService {
     await queryRunner.startTransaction();
 
     try {
-      const saveUser = await queryRunner.manager.save(
+      const user = await queryRunner.manager.save(
         this.userRepository.create({
           email: dto.email,
           password: hash,
@@ -240,7 +240,7 @@ export default class AuthService {
             await queryRunner.manager.save(
               this.teamUserRepository.create({
                 team: findTeam,
-                user: saveUser,
+                user,
                 role: this.getRole(redisValue),
               }),
             );
@@ -254,14 +254,14 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
-          createdId: saveUser.id,
+          createdId: user.id,
           uuid: uuidv4(),
         }),
       );
 
       const teamUser = await queryRunner.manager.save(
         this.teamUserRepository.create({
-          user: saveUser,
+          user,
           team,
           role: Role.ADMIN,
         }),
@@ -287,9 +287,9 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: saveUser.id });
+      const token = this.generateToken({ id: user.id });
 
-      return { token, saveUser, workspace };
+      return { token, user, workspace, team };
     } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();
