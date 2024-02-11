@@ -7,25 +7,6 @@ import Workspace from '../domain/workspace.entity';
 
 @CustomRepository(Workspace)
 export default class WorkspaceRepository extends Repository<Workspace> {
-  public async findWorkspaceByUserId(userId: number) {
-    const queryBuilder = this.createQueryBuilder('workspace')
-      .select([
-        'workspace.id',
-        'workspace.name',
-        'workspace.profile',
-        'workspace.comment',
-        'workspace.uuid',
-        'workspaceFunction.id',
-        'workspaceFunction.function',
-      ])
-      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      .leftJoin('workspace.team', 'team')
-      .where('team.createdId = :userId', { userId })
-      .andWhere('team.isPersonal = true');
-
-    return await queryBuilder.getManyAndCount();
-  }
-
   public async findWorkspace(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([

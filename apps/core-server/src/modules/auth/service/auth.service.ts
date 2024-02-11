@@ -165,18 +165,18 @@ export default class AuthService {
   }
 
   public async loginSocialUser(dto: RequestSocialUserLoginDto) {
-    const User = await this.userRepository.findUserWithWorkspaceByToken(
+    const user = await this.userRepository.findUserWithWorkspaceByToken(
       dto.token,
       dto.type,
     );
 
-    if (!User) {
+    if (!user) {
       throw new NotFoundException('Not Found User');
     }
 
-    const token = this.generateToken({ id: User.id });
+    const token = this.generateToken({ id: user.id });
 
-    return { token, User };
+    return { token, user };
   }
 
   public async loginDiceUser(dto: RequestDiceUserLoginDto) {
@@ -355,12 +355,12 @@ export default class AuthService {
   }
 
   /**
-   * Find Workspace List By UserId
+   * Find Personal Team With Workspace List
    * @param userId
    * @returns
    */
-  public async findPersonalWorkspaceList(userId: number) {
-    return await this.workspaceRepository.findWorkspaceByUserId(userId);
+  public async findPersonalTeamAndWorkspaceList(userId: number) {
+    return await this.teamRepository.findPersonalTeamWithWorkspace(userId);
   }
 
   /**

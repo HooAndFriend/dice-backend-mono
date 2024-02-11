@@ -64,17 +64,21 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginSocialUser[404])
   @Post('/social')
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
-    const response = await this.authService.loginSocialUser(dto);
-    const responseData = {
-      token: response.token,
-      user: {
-        nickname: response.User.nickname,
-        profile: response.User.profile,
-        email: response.User.email,
-      },
-    };
+    const { user, token } = await this.authService.loginSocialUser(dto);
+    const team = await this.authService.findPersonalTeamAndWorkspaceList(
+      user.id,
+    );
+
     return CommonResponse.createResponse({
-      data: responseData,
+      data: {
+        token: token,
+        user: {
+          nickname: user.nickname,
+          profile: user.profile,
+          email: user.email,
+        },
+        team,
+      },
       statusCode: 200,
       message: 'Login Successed',
     });
@@ -88,7 +92,10 @@ export default class AuthController {
   @Post('/')
   public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
     const { user, token } = await this.authService.loginDiceUser(dto);
-    const workspace = await this.authService.findPersonalWorkspaceList(user.id);
+    const team = await this.authService.findPersonalTeamAndWorkspaceList(
+      user.id,
+    );
+
     return CommonResponse.createResponse({
       data: {
         token: token,
@@ -97,7 +104,7 @@ export default class AuthController {
           profile: user.profile,
           email: user.email,
         },
-        workspace,
+        team,
       },
       statusCode: 200,
       message: 'Login Successed',
