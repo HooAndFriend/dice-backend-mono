@@ -113,10 +113,6 @@ export default class WorkspaceService {
    * @returns
    */
   public async findWorkspaceList(user: User, teamId: number) {
-    if (teamId === 0) {
-      return await this.findPersonalWorkspaceList(user);
-    }
-
     return await this.findTeamWorkspaceList(teamId);
   }
 
@@ -148,14 +144,5 @@ export default class WorkspaceService {
     return await this.workspaceRepository.findTeamWorkspaceListWithCount(
       teamId,
     );
-  }
-
-  /**
-   * Find Workspace List at Personal
-   * @param user
-   * @returns
-   */
-  private async findPersonalWorkspaceList(user: User) {
-    return await this.workspaceRepository.findWorkspaceListByUserId(user.id);
   }
 }
