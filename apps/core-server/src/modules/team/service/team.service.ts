@@ -126,16 +126,4 @@ export default class TeamService {
 
     return team;
   }
-
-  /**
-   * Existed Team By Name
-   * @param name
-   */
-  public async isExistTeamByName(name: string) {
-    const team = await this.teamRepository.exist({ where: { name } });
-
-    if (team) {
-      throw new BadRequestException('Exist Team Name');
-    }
-  }
 }
