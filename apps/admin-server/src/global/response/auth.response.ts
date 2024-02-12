@@ -5,8 +5,8 @@ export const AuthResponse = {
     200: createResponse({
       data: {
         admin: {
-          createdAt: '2024-02-06T05:49:57.188Z',
-          updatedAt: '2024-02-06T05:49:57.188Z',
+          createdDate: '2024-02-06T05:49:57.188Z',
+          modifiedDate: '2024-02-06T05:49:57.188Z',
           id: 1,
           email: 'admin',
           password:

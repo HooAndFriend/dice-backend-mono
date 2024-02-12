@@ -21,7 +21,7 @@ export const AdminResponse = {
       data: {
         data: [
           {
-            createdAt: '2024-02-06T09:57:47.956Z',
+            createdDate: '2024-02-06T09:57:47.956Z',
             id: 2,
             email: 'subAdmin',
             role: 'MASTER',
@@ -29,7 +29,7 @@ export const AdminResponse = {
             profile: 'https://s3.bucket.com/123.png',
           },
           {
-            createdAt: '2024-02-06T05:49:57.188Z',
+            createdDate: '2024-02-06T05:49:57.188Z',
             id: 1,
             email: 'admin',
             role: 'MASTER',
@@ -46,8 +46,8 @@ export const AdminResponse = {
   findAdmin: {
     200: createResponse({
       data: {
-        createdAt: '2024-02-06T05:49:57.188Z',
-        updatedAt: '2024-02-06T05:49:57.188Z',
+        createdDate: '2024-02-06T05:49:57.188Z',
+        modifiedDate: '2024-02-06T05:49:57.188Z',
         id: 1,
         email: 'admin',
         password:

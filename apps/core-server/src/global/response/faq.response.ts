@@ -11,7 +11,7 @@ export const FaqResponse = {
       data: {
         data: [
           {
-            createdAt: '2024-02-06T06:34:36.422Z',
+            createdDate: '2024-02-06T06:34:36.422Z',
             id: 2,
             question: '이거는 어떻게 해요?123123123123',
             answer: '이렇게 합니다.',

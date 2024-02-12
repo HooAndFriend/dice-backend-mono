@@ -32,8 +32,8 @@ export default class QaRepository extends Repository<Qa> {
         'worker.profile',
         'file.id',
         'file.url',
-        'qa.createdAt',
-        'qa.updatedAt',
+        'qa.createdDate',
+        'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.worker', 'worker')

@@ -19,7 +19,7 @@ export default class FaqRepository extends Repository<Faq> {
       'faq.question',
       'faq.category',
       'faq.answer',
-      'faq.createdAt',
+      'faq.createdDate',
     ]);
 
     if (dto.question) {
@@ -32,6 +32,6 @@ export default class FaqRepository extends Repository<Faq> {
       queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
-    return queryBuilder.orderBy('faq.createdAt', 'DESC').getManyAndCount();
+    return queryBuilder.orderBy('faq.createdDate', 'DESC').getManyAndCount();
   }
 }

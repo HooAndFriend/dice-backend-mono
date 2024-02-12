@@ -37,8 +37,8 @@ export const VersionResponse = {
       data: {
         data: [
           {
-            createdAt: '2024-02-07T03:37:55.334Z',
-            updatedAt: '2024-02-07T03:37:55.334Z',
+            createdDate: '2024-02-07T03:37:55.334Z',
+            modifiedDate: '2024-02-07T03:37:55.334Z',
             id: 1,
             version: '1.0.5',
             memo: '메모할 것',
@@ -54,8 +54,8 @@ export const VersionResponse = {
   findVersion: {
     200: createResponse({
       data: {
-        createdAt: '2024-02-07T03:37:55.334Z',
-        updatedAt: '2024-02-07T03:37:55.334Z',
+        createdDate: '2024-02-07T03:37:55.334Z',
+        modifiedDate: '2024-02-07T03:37:55.334Z',
         id: 1,
         version: '1.0.5',
         program: 'https://s3.bucket.com/123.pdf',

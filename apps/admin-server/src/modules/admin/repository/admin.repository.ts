@@ -22,7 +22,7 @@ export default class AdminRepository extends Repository<Admin> {
       'admin.nickname',
       'admin.profile',
       'admin.role',
-      'admin.createdAt',
+      'admin.createdDate',
     ]);
 
     if (dto.email) {
@@ -47,6 +47,6 @@ export default class AdminRepository extends Repository<Admin> {
       queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
-    return queryBuilder.orderBy('admin.createdAt', 'DESC').getManyAndCount();
+    return queryBuilder.orderBy('admin.createdDate', 'DESC').getManyAndCount();
   }
 }

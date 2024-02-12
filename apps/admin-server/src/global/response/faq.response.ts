@@ -16,7 +16,7 @@ export const FaqResponse = {
       data: {
         data: [
           {
-            createdAt: '2024-02-06T06:10:25.464Z',
+            createdDate: '2024-02-06T06:10:25.464Z',
             id: 1,
             question: '이거는 어떻게 해요?',
             category: 'BASIC',
@@ -33,8 +33,8 @@ export const FaqResponse = {
   findFaq: {
     200: createResponse({
       data: {
-        createdAt: '2024-02-06T06:10:25.464Z',
-        updatedAt: '2024-02-06T06:10:25.464Z',
+        createdDate: '2024-02-06T06:10:25.464Z',
+        modifiedDate: '2024-02-06T06:10:25.464Z',
         id: 1,
         question: '이거는 어떻게 해요?',
         answer: '이렇게 합니다.',

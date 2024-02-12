@@ -18,8 +18,8 @@ export default class CommentRepository extends Repository<Comment> {
         'user.email',
         'user.nickname',
         'user.profile',
-        'comment.createdAt',
-        'comment.updatedAt',
+        'comment.createdDate',
+        'comment.modifiedDate',
       ])
       .leftJoin('comment.user', 'user')
       .where('comment.qaId = :qaId', { qaId });

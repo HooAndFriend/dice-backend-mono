@@ -22,7 +22,7 @@ export default class QnaRepository extends Repository<Qna> {
       'qna.email',
       'qna.isAnswer',
       'qna.answerDate',
-      'qna.createdAt',
+      'qna.createdDate',
     ]);
 
     if (dto.isAnswer) {
@@ -54,6 +54,6 @@ export default class QnaRepository extends Repository<Qna> {
       queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
-    return queryBuilder.orderBy('qna.createdAt', 'DESC').getManyAndCount();
+    return queryBuilder.orderBy('qna.createdDate', 'DESC').getManyAndCount();
   }
 }

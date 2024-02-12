@@ -25,7 +25,7 @@ export default class File {
   url: string;
 
   @CreateDateColumn({ name: 'created_date' })
-  createdAt: Date;
+  createdDate: Date;
 
   @ManyToOne(() => Qa, (qa) => qa.file, {
     onDelete: 'CASCADE',

@@ -10,7 +10,7 @@ export const QnaResponse = {
       data: {
         data: [
           {
-            createdAt: '2024-02-06T08:48:35.085Z',
+            createdDate: '2024-02-06T08:48:35.085Z',
             id: 1,
             name: '이가인',
             email: 'asd@asd.com',
@@ -29,8 +29,8 @@ export const QnaResponse = {
   findQna: {
     200: createResponse({
       data: {
-        createdAt: '2024-02-06T08:48:35.085Z',
-        updatedAt: '2024-02-06T08:48:35.085Z',
+        createdDate: '2024-02-06T08:48:35.085Z',
+        modifiedDate: '2024-02-06T08:48:35.085Z',
         id: 1,
         name: '이가인',
         email: 'asd@asd.com',

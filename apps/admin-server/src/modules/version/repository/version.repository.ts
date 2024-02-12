@@ -16,8 +16,8 @@ export default class VersionRepository extends Repository<Version> {
       'version.version',
       'version.memo',
       'version.createdId',
-      'version.createdAt',
-      'version.updatedAt',
+      'version.createdDate',
+      'version.modifiedDate',
     ]);
 
     if (dto.page && dto.pageSize) {
@@ -25,7 +25,7 @@ export default class VersionRepository extends Repository<Version> {
     }
 
     return await queryBuilder
-      .orderBy('version.createdAt', 'DESC')
+      .orderBy('version.createdDate', 'DESC')
       .getManyAndCount();
   }
 }
