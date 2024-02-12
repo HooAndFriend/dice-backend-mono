@@ -46,6 +46,12 @@ import RoleEnum from '@/src/global/enum/Role';
 import CommonResponse from '@/src/global/dto/api.response';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
+import {
+  GetTeam,
+  TeamRole,
+} from '@/src/global/decorators/team-role/team-role.decorator';
+import Team from '../../team/domain/team.entity';
+import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
@@ -132,6 +138,25 @@ export default class WorkspaceUserController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find User Workspace List',
+      data: { data, count },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
+  @ApiOperation({ summary: '워크스페이스 리스트 조회 조회 By Team' })
+  @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/team')
+  public async findMyWorkspaceList(@GetTeam() { id }: Team) {
+    const [data, count] =
+      await this.workspaceUserService.findWorkspaceUserListByTeam(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace List',
       data: { data, count },
     });
   }

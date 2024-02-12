@@ -74,6 +74,17 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * Find Workspace List
+   * @param teamId
+   * @returns
+   */
+  public async findWorkspaceUserListByTeam(teamId: number) {
+    return await this.workspaceUserRepository.findWorkspaceUserListByTeam(
+      teamId,
+    );
+  }
+
+  /**
    * Find User Workspace List
    * @param userId
    * @returns
