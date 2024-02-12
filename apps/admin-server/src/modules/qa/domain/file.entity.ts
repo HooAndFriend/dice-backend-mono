@@ -1,7 +1,6 @@
 // ** Typeorm Imports
 import {
   Column,
-  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -10,9 +9,10 @@ import {
 
 // ** enum, dto, entity Imports
 import Qa from '@/src/modules/qa/domain/qa.entity';
+import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
 
 @Entity({ name: 'TB_QA_FILE' })
-export default class File {
+export default class File extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,9 +23,6 @@ export default class File {
     nullable: false,
   })
   url: string;
-
-  @CreateDateColumn({ name: 'created_date' })
-  createdDate: Date;
 
   @ManyToOne(() => Qa, (qa) => qa.file, {
     onDelete: 'CASCADE',
