@@ -72,11 +72,12 @@ export default class TicketController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: ticket,
+      data: { ticket },
     });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 상세 조회' })
   @ApiResponse(TicketResponse.findOneTicket[200])
   @ApiResponse(TicketResponse.findOneTicket[404])
@@ -85,15 +86,16 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
-    const result = await this.ticketService.findOneTicket(id);
+    const ticket = await this.ticketService.findOneTicket(id);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: result,
+      data: { ticket },
     });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 생성' })
   @ApiBody({ type: RequestTicketSaveDto })
   @ApiResponse(TicketResponse.saveTicket[200])
@@ -115,6 +117,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 수정' })
   @ApiBody({ type: RequestTicketUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
@@ -136,6 +139,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 삭제' })
   @ApiResponse(TicketResponse.deleteTicket[200])
   @ApiResponse(TicketResponse.deleteTicket[404])
@@ -152,6 +156,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 상태변경' })
   @ApiBody({ type: RequestTicketStateUpdateDto })
   @ApiResponse(TicketResponse.updateTicketState[200])
@@ -169,8 +174,8 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'EPIC 리스트 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC 리스트 조회' })
   @ApiResponse(TicketResponse.findAllEpic[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
@@ -181,11 +186,12 @@ export default class TicketController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find All Epic',
-      data: epic,
+      data: { epic },
     });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 상세조회' })
   @ApiResponse(TicketResponse.findOneEpic[200])
   @ApiResponse(TicketResponse.findOneEpic[404])
@@ -198,13 +204,13 @@ export default class TicketController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find All Epic',
-      data: epic,
+      data: { epic },
     });
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'EPIC 생성' })
   @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC 생성' })
   @ApiBody({ type: RequestEpicSaveDto })
   @ApiResponse(TicketResponse.saveEpic[200])
   @ApiResponse(TicketResponse.saveEpic[400])
@@ -225,6 +231,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 수정' })
   @ApiBody({ type: RequestEpicUpdateDto })
   @ApiResponse(TicketResponse.updateEpic[200])
@@ -243,6 +250,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 삭제' })
   @ApiResponse(TicketResponse.deleteEpic[200])
   @ApiResponse(TicketResponse.deleteEpic[404])
@@ -259,6 +267,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'COMMENT 조회' })
   @ApiResponse(TicketResponse.findComment[200])
   @ApiResponse(TicketResponse.findComment[404])
@@ -271,11 +280,12 @@ export default class TicketController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Comment',
-      data: commet,
+      data: { commet },
     });
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'COMMENT 생성' })
   @ApiBody({ type: RequestTicketCommentSaveDto })
   @ApiResponse(TicketResponse.saveComment[200])
@@ -296,6 +306,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'COMMENT 수정' })
   @ApiBody({ type: RequestTicketCommentUpdateDto })
   @ApiResponse(TicketResponse.updateComment[200])
@@ -316,6 +327,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'COMMENT 삭제' })
   @ApiResponse(TicketResponse.deleteComment[200])
   @ApiResponse(TicketResponse.deleteComment[404])

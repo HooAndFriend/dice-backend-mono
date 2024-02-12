@@ -111,8 +111,11 @@ export default class TicketService {
   // ** Ticket 상세조회
   public async findOneTicket(id: number) {
     const ticket = await this.findTicketById(id);
-    const file = await this.ticketFileRepository.findAllFileByTicketId(id);
-    return { ticket, file };
+    const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
+      id,
+    );
+    ticket.file = file;
+    return ticket;
   }
 
   // ** Ticket 저장
