@@ -192,7 +192,7 @@ export default class TeamUserService {
       email,
       '[DICE] Invite Team',
       'Invite Team',
-      `<a href="http://hi-dice.com?uuid=${uuid}">Click</a>`,
+      `<a href="http://app.hi-dice.com?uuid=${uuid}">Click</a>`,
     );
 
     await this.sendMail(sendMail);
