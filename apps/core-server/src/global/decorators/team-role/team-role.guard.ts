@@ -29,7 +29,7 @@ export class TeamRoleGuard implements CanActivate {
 
     const teamUser = await this.teamUserRepository.findOne({
       where: { team: { uuid: teamCode }, user: { id: user.id } },
-      relations: ['team'],
+      relations: ['team', 'user'],
     });
 
     if (!teamUser) return false;
