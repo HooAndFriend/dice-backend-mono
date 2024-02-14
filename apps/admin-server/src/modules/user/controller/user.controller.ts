@@ -33,6 +33,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import RequestUserFindDto from '../dto/user.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import TeamUserService from '../../team-user/service/team-user.service';
+import WorkspaceUserService from '../../workspace-user/service/workspace-user.service';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -42,6 +43,7 @@ export default class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly teamUserService: TeamUserService,
+    private readonly workspaceUserService: WorkspaceUserService,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -87,6 +89,23 @@ export default class UserController {
       data: { data, count },
       statusCode: 200,
       message: '유저의 팀 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저의 워크스페이스 리스트 조회' })
+  @ApiResponse(UserResponse.findWorksapceUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/workspace/:id')
+  public async findWorkspaceUserList(@Param('id') id: number) {
+    const [data, count] = await this.workspaceUserService.findWorkspaceUserList(
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: '유저의 워크스페이스 리스트를 조회합니다.',
     });
   }
 }

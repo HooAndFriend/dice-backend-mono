@@ -16,7 +16,7 @@ import WorkspaceUserRepository from './repository/workspace-user.repository';
     TypeOrmModule.forFeature([WorkspaceUser]),
     TypeOrmExModule.forCustomRepository([WorkspaceUserRepository]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, WorkspaceUserService],
   controllers: [WorkspaceUserController],
   providers: [WorkspaceUserService],
 })

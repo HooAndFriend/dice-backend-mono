@@ -164,4 +164,23 @@ export const UserResponse = {
       message: '유저의 팀 리스트를 조회합니다.',
     }),
   },
+  findWorksapceUserList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2024-02-14T00:57:33.382Z',
+            id: 1,
+            role: 'ADMIN',
+            workspace: {
+              name: 'Pinomaker',
+            },
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: '유저의 워크스페이스 리스트를 조회합니다.',
+    }),
+  },
 };
