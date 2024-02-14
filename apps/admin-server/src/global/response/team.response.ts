@@ -143,4 +143,22 @@ export const TeamResponse = {
       message: '팀의 워크스페이스 리스트를 조회합니다.',
     }),
   },
+  findTeam: {
+    200: createResponse({
+      data: {
+        createdDate: '2024-02-14T00:57:33.299Z',
+        id: 1,
+        name: 'Pinomaker',
+        createdId: '',
+        description: '',
+      },
+      statusCode: 200,
+      message: '팀을 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Team',
+      error: 'NOT FOUND',
+    }),
+  },
 };

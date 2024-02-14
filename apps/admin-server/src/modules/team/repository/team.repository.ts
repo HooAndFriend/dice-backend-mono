@@ -65,4 +65,23 @@ export default class TeamRepository extends Repository<Team> {
 
     return await queryBuilder.getRawMany();
   }
+
+  /**
+   * Team 조회
+   * @param teamId
+   * @returns Team
+   */
+  public async findTeamByTeamId(teamId: number) {
+    const queryBuilder = this.createQueryBuilder('team')
+      .select([
+        'team.id',
+        'team.name',
+        'team.description',
+        'team.createdId',
+        'team.createdDate',
+      ])
+      .where('team.id = :teamId', { teamId });
+
+    return await queryBuilder.getOne();
+  }
 }

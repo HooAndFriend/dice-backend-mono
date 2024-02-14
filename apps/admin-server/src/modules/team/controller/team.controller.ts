@@ -60,6 +60,22 @@ export default class TeamController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '팀 조회' })
+  @ApiResponse(TeamResponse.findTeam[200])
+  @ApiResponse(TeamResponse.findTeam[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findTeam(@Param('id') id: number) {
+    const data = await this.teamService.findTeam(id);
+
+    return CommonResponse.createResponse({
+      data,
+      statusCode: 200,
+      message: '팀을 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '팀의 워크스페이스 리스트 조회' })
   @ApiResponse(TeamResponse.findWorkspaceListByTeamId[200])
   @UseGuards(JwtAccessGuard)
