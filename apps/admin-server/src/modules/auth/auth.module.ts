@@ -1,8 +1,9 @@
 // ** Nest Imports
 import { Module, forwardRef } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
 import AuthController from './controller/auth.controller';
@@ -24,6 +25,23 @@ import JwtAccessStrategy from './passport/auth.jwt-access.strategy';
         },
       }),
     }),
+    ClientsModule.registerAsync([
+      {
+        name: 'RMQ_PUSH_QUE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_PUSH_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
   ],
   exports: [],
   controllers: [AuthController],

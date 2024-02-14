@@ -19,6 +19,7 @@ import RequestAdminReissueDto from '../dto/admin.reissue.dto';
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 import Admin from '../../admin/domain/admin.entity';
+import RequestAdminFindPasswordDto from '../dto/admin.find-password.dto';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -62,6 +63,19 @@ export default class AuthController {
       data: token,
       statusCode: 200,
       message: 'Success Reissued Token',
+    });
+  }
+
+  @ApiOperation({ summary: '비밀번호 변경 메일' })
+  @ApiBody({ type: RequestAdminFindPasswordDto })
+  @ApiResponse(AuthResponse.reissueToken[200])
+  @Post('/password')
+  public async findPassword(@Body() dto: RequestAdminFindPasswordDto) {
+    await this.authService.resetPasswordSendEmail(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Success Find Password',
     });
   }
 }
