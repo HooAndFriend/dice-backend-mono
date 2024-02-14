@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import WorkspaceRepository from '../repository/workspace.repository';
+import RequestWorkspaceFindDto from '../dto/workspace.find.dto';
 
 // ** Custom Module Imports
 
@@ -17,7 +18,16 @@ export default class WorkspaceService {
    * @param teamId
    * @returns
    */
-  public async findWOrksapceListByTeamId(teamId: number) {
+  public async findWorksapceListByTeamId(teamId: number) {
     return await this.workspaceRepository.findWorkspaceListByTeamId(teamId);
+  }
+
+  /**
+   * Find Workspace List
+   * @param dto
+   * @returns Workspace[]
+   */
+  public async findWorkspaceList(dto: RequestWorkspaceFindDto) {
+    return await this.workspaceRepository.findWorkspaceList(dto);
   }
 }

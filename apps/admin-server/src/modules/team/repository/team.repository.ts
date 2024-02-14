@@ -22,7 +22,6 @@ export default class TeamRepository extends Repository<Team> {
         'team.name',
         'team.description',
         'team.createdId',
-        'team.uuid',
         'team.createdDate',
       ])
       .addSelect('COUNT(teamUser.id)', 'teamUserCount')

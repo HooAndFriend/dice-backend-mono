@@ -81,7 +81,7 @@ export default class TeamController {
   @UseGuards(JwtAccessGuard)
   @Get('/workspace/:id')
   public async findWorkspaceListByTeamId(@Param('id') id: number) {
-    const [data, count] = await this.workspaceService.findWOrksapceListByTeamId(
+    const [data, count] = await this.workspaceService.findWorksapceListByTeamId(
       id,
     );
 
