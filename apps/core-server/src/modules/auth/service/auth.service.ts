@@ -85,6 +85,7 @@ export default class AuthService {
           email: dto.email,
           type: dto.type,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          lastLoginDate: new Date(),
         }),
       );
 
@@ -174,6 +175,10 @@ export default class AuthService {
       throw new NotFoundException('Not Found User');
     }
 
+    await this.userRepository.update(user.id, {
+      lastLoginDate: new Date(),
+    });
+
     const token = this.generateToken({ id: user.id });
 
     return { token, user };
@@ -191,6 +196,10 @@ export default class AuthService {
     if (!result) {
       throw new BadRequestException('Wrong Password');
     }
+
+    await this.userRepository.update(user.id, {
+      lastLoginDate: new Date(),
+    });
 
     const token = this.generateToken({ id: user.id });
 
@@ -225,6 +234,7 @@ export default class AuthService {
           nickname: dto.nickname,
           type: UserType.DICE,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+          lastLoginDate: new Date(),
         }),
       );
 

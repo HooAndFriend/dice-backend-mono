@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
+import RequestUserFindDto from '../dto/user.find.dto';
 
 @Injectable()
 export default class UserService {
@@ -11,4 +12,13 @@ export default class UserService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
+
+  /**
+   * Find User List
+   * @param dto
+   * @returns
+   */
+  public async findUserList(dto: RequestUserFindDto) {
+    return await this.userRepository.findUserList(dto);
+  }
 }
