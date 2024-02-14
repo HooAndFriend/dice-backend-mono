@@ -31,6 +31,7 @@ import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import { UserType } from '../../../global/enum/UserType.enum';
 import User from '../../user/domain/user.entity';
 import Role from '@/src/global/enum/Role';
+import UserStatusEnum from '../../user/domain/user-status.enum';
 
 @Injectable()
 export default class AuthService {
@@ -86,6 +87,7 @@ export default class AuthService {
           type: dto.type,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           lastLoginDate: new Date(),
+          status: UserStatusEnum.ACTIVE,
         }),
       );
 
@@ -235,6 +237,7 @@ export default class AuthService {
           type: UserType.DICE,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           lastLoginDate: new Date(),
+          status: UserStatusEnum.ACTIVE,
         }),
       );
 

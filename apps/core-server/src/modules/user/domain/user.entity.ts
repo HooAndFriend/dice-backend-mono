@@ -19,6 +19,7 @@ import Ticket from '../../ticket/domain/ticket.entity';
 import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 import TicketFile from '../../ticket/domain/ticket.file.entity';
 import TicketComment from '../../ticket/domain/ticket.comment.entity';
+import UserStatusEnum from './user-status.enum';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -57,6 +58,14 @@ export default class User extends BaseTimeEntity {
     nullable: false,
   })
   type: UserType;
+
+  @Column({
+    type: 'enum',
+    enum: UserStatusEnum,
+    comment: '유저 상태',
+    nullable: false,
+  })
+  status: UserStatusEnum;
 
   @Column({
     type: 'varchar',
