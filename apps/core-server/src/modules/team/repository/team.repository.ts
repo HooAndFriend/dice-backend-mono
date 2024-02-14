@@ -9,7 +9,7 @@ import Team from '../domain/team.entity';
 
 @CustomRepository(Team)
 export default class TeamRepository extends Repository<Team> {
-  public async findPersonalTeamWithWorkspace(userId: number) {
+  public async findPersonalTeamWithWorkspace(userEmail: string) {
     const queryBuilder = this.createQueryBuilder('team')
       .select([
         'team.id',
@@ -27,7 +27,7 @@ export default class TeamRepository extends Repository<Team> {
       ])
       .leftJoin('team.workspace', 'workspace')
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      .where('team.createdId = :userId', { userId })
+      .where('team.createdId = :userEmail', { userEmail })
       .andWhere('team.isPersonal = true');
 
     return await queryBuilder.getOne();

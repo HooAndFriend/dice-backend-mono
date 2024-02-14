@@ -117,7 +117,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
-          createdId: user.id,
+          createdId: user.email,
           uuid: uuidv4(),
         }),
       );
@@ -267,7 +267,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
-          createdId: user.id,
+          createdId: user.email,
           uuid: uuidv4(),
         }),
       );
@@ -372,8 +372,8 @@ export default class AuthService {
    * @param userId
    * @returns
    */
-  public async findPersonalTeamAndWorkspaceList(userId: number) {
-    return await this.teamRepository.findPersonalTeamWithWorkspace(userId);
+  public async findPersonalTeamAndWorkspaceList(userEmail: string) {
+    return await this.teamRepository.findPersonalTeamWithWorkspace(userEmail);
   }
 
   /**

@@ -49,11 +49,12 @@ export default class Team extends BaseTimeEntity {
   isPersonal: boolean;
 
   @Column({
-    type: 'bigint',
+    type: 'varchar',
+    length: 120,
     comment: '생성 유저 ID',
     nullable: false,
   })
-  createdId: number;
+  createdId: string;
 
   @Column({
     type: 'text',

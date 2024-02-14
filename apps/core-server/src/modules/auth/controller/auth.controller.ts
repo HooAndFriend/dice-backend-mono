@@ -77,7 +77,7 @@ export default class AuthController {
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
     const { user, token } = await this.authService.loginSocialUser(dto);
     const team = await this.authService.findPersonalTeamAndWorkspaceList(
-      user.id,
+      user.email,
     );
 
     return CommonResponse.createResponse({
@@ -104,7 +104,7 @@ export default class AuthController {
   public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
     const { user, token } = await this.authService.loginDiceUser(dto);
     const team = await this.authService.findPersonalTeamAndWorkspaceList(
-      user.id,
+      user.email,
     );
 
     return CommonResponse.createResponse({
