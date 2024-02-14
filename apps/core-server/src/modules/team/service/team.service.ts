@@ -19,11 +19,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 // ** enum, dto, entity Imports
 import User from '../../user/domain/user.entity';
-import { BadRequestException } from '@/src/global/exception/CustomException';
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import TeamUserRepository from '../../team-user/repository/team-user.repository';
 import Role from '@/src/global/enum/Role';
-import CommonResponse from '@/src/global/dto/api.response';
 import RequestTeamUpdateDto from '../dto/team.update.dto';
 
 @Injectable()
