@@ -13,6 +13,7 @@ import AdminModule from './admin/admin.module';
 import CsModule from './cs/cs.module';
 import VersionModule from './version/version.module';
 import AuthorityModule from './authority/authority.module';
+import StateModule from './state/state.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import AuthorityModule from './authority/authority.module';
     CsModule,
     VersionModule,
     AuthorityModule,
+    StateModule,
   ],
   providers: [],
   exports: [],
