@@ -67,4 +67,24 @@ export default class UserRepository extends Repository<User> {
 
     return await queryBuilder.getRawMany();
   }
+
+  /**
+   * Find User By Id
+   * @param id
+   * @returns
+   */
+  public async findUser(id: number) {
+    const queryBuilder = this.createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.email',
+        'user.nickname',
+        'user.createdDate',
+        'user.lastLoginDate',
+        'user.type',
+      ])
+      .where('user.id = :id', { id });
+
+    return queryBuilder.getOne();
+  }
 }

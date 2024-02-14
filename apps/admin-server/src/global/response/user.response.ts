@@ -126,4 +126,23 @@ export const UserResponse = {
       message: '유저 리스트를 조회합니다.',
     }),
   },
+  findUser: {
+    200: createResponse({
+      data: {
+        createdDate: '2024-02-14T00:57:33.265Z',
+        id: 1,
+        email: 'admin',
+        type: 'DICE',
+        nickname: 'Pinomaker',
+        lastLoginDate: '2024-02-14T00:57:33.000Z',
+      },
+      statusCode: 200,
+      message: '유저를 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found User',
+      error: 'NOT FOUND',
+    }),
+  },
 };

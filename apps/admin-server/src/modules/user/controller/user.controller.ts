@@ -2,6 +2,7 @@
 import {
   Controller,
   Get,
+  Param,
   Query,
   UseGuards,
   ValidationPipe,
@@ -44,13 +45,29 @@ export default class UserController {
   @ApiResponse(UserResponse.findUserList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async saveAdmin(@Query(ValidationPipe) dto: RequestUserFindDto) {
+  public async findUserList(@Query(ValidationPipe) dto: RequestUserFindDto) {
     const data = await this.userService.findUserList(dto);
 
     return CommonResponse.createResponse({
       data: { data, count: data.length },
       statusCode: 200,
       message: '유저 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저 조회' })
+  @ApiResponse(UserResponse.findUser[200])
+  @ApiResponse(UserResponse.findUser[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findUser(@Param('id') id: number) {
+    const data = await this.userService.findUser(id);
+
+    return CommonResponse.createResponse({
+      data,
+      statusCode: 200,
+      message: '유저를 조회합니다.',
     });
   }
 }
