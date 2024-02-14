@@ -31,7 +31,7 @@ import { TeamResponse } from '@/src/global/response/team.response';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Dto Imports
-import RequestTeamFindDto from '../dto/user.find.dto';
+import RequestTeamFindDto from '../dto/team.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 
 @ApiTags('Team')

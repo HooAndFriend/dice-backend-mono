@@ -8,7 +8,7 @@ import { DataSource } from 'typeorm';
 import TeamRepository from '../repository/team.repository';
 
 // ** enum, dto, entity Imports
-import RequestTeamFindDto from '../dto/user.find.dto';
+import RequestTeamFindDto from '../dto/team.find.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 
 @Injectable()

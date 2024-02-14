@@ -6,7 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import Team from '../domain/team.entity';
-import RequestTeamFindDto from '../dto/user.find.dto';
+import RequestTeamFindDto from '../dto/team.find.dto';
 
 @CustomRepository(Team)
 export default class TeamRepository extends Repository<Team> {
