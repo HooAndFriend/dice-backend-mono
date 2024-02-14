@@ -74,6 +74,13 @@ export default class User extends BaseTimeEntity {
   })
   profile: string;
 
+  @Column({
+    type: 'datetime',
+    comment: '마지막 로그인 시간',
+    nullable: false,
+  })
+  lastLoginDate: Date;
+
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teamUser: Relation<TeamUser>[];
 
