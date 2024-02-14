@@ -32,13 +32,17 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 // ** Dto Imports
 import RequestUserFindDto from '../dto/user.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
+import TeamUserService from '../../team-user/service/team-user.service';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/user', version: '1' })
 export default class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly teamUserService: TeamUserService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '유저 리스트 조회' })
@@ -68,6 +72,21 @@ export default class UserController {
       data,
       statusCode: 200,
       message: '유저를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저의 팀 리스트 조회' })
+  @ApiResponse(UserResponse.findTeamUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/team/:id')
+  public async findTeamUserList(@Param('id') id: number) {
+    const [data, count] = await this.teamUserService.findTeamUserList(id);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: '유저의 팀 리스트를 조회합니다.',
     });
   }
 }

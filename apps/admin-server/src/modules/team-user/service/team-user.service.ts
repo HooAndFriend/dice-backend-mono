@@ -11,4 +11,13 @@ export default class TeamUserService {
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
   ) {}
+
+  /**
+   * 유저의 팀 리스트 조회
+   * @param userId
+   * @returns
+   */
+  public async findTeamUserList(userId: number) {
+    return await this.teamUserRepository.findTeamUserList(userId);
+  }
 }

@@ -18,7 +18,7 @@ import TeamModule from '../team/team.module';
     TypeOrmExModule.forCustomRepository([TeamUserRepository]),
     forwardRef(() => TeamModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, TeamUserService],
   controllers: [TeamUserController],
   providers: [TeamUserService],
 })

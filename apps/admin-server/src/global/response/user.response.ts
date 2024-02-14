@@ -145,4 +145,23 @@ export const UserResponse = {
       error: 'NOT FOUND',
     }),
   },
+  findTeamUserList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2024-02-14T00:57:33.322Z',
+            id: 1,
+            role: 'ADMIN',
+            team: {
+              name: 'Pinomaker',
+            },
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: '유저의 팀 리스트를 조회합니다.',
+    }),
+  },
 };
