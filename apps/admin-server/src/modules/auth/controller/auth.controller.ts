@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Controller, Post, Body, UseGuards, Get, Ip } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Ip,
+  Patch,
+} from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
@@ -20,6 +28,7 @@ import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 import Admin from '../../admin/domain/admin.entity';
 import RequestAdminFindPasswordDto from '../dto/admin.find-password.dto';
+import RequestAdminUpdatePasswordDto from '../dto/admin.update-password';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
@@ -68,7 +77,8 @@ export default class AuthController {
 
   @ApiOperation({ summary: '비밀번호 변경 메일' })
   @ApiBody({ type: RequestAdminFindPasswordDto })
-  @ApiResponse(AuthResponse.reissueToken[200])
+  @ApiResponse(AuthResponse.findPassword[200])
+  @ApiResponse(AuthResponse.findPassword[404])
   @Post('/password')
   public async findPassword(@Body() dto: RequestAdminFindPasswordDto) {
     await this.authService.resetPasswordSendEmail(dto);
@@ -76,6 +86,21 @@ export default class AuthController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Success Find Password',
+    });
+  }
+
+  @ApiOperation({ summary: '비밀번호 변경' })
+  @ApiBody({ type: RequestAdminUpdatePasswordDto })
+  @ApiResponse(AuthResponse.updatePassword[200])
+  @ApiResponse(AuthResponse.updatePassword[404])
+  @Patch('/password')
+  public async updatePassword(@Body() dto: RequestAdminUpdatePasswordDto) {
+    await this.authService.existedAdminById(dto.id);
+    await this.authService.updatePassword(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Success Update Password',
     });
   }
 }

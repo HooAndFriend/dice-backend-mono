@@ -1,4 +1,8 @@
-import { createErrorResponse, createResponse } from './common';
+import {
+  createErrorResponse,
+  createMessageResponse,
+  createResponse,
+} from './common';
 
 export const AuthResponse = {
   adminLogin: {
@@ -37,7 +41,6 @@ export const AuthResponse = {
       error: 'NOT FOUND',
     }),
   },
-
   reissueToken: {
     200: createResponse({
       data: {
@@ -46,6 +49,28 @@ export const AuthResponse = {
       },
       statusCode: 200,
       message: '토큰을 재발급합니다.',
+    }),
+  },
+  findPassword: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Success Find Password',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '관리자를 찾을 수 없습니다.',
+      error: 'NOT FOUND',
+    }),
+  },
+  updatePassword: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '비밀번호가 변경되었습니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '관리자를 찾을 수 없습니다.',
+      error: 'NOT FOUND',
     }),
   },
 };

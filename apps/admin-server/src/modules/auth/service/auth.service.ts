@@ -24,6 +24,7 @@ import { JwtPayload } from '@/src/global/types';
 import RequestAdminFindPasswordDto from '../dto/admin.find-password.dto';
 import SendMailDto from '@/src/global/dto/mail-send.dto';
 import { waitForDebugger } from 'inspector';
+import RequestAdminUpdatePasswordDto from '../dto/admin.update-password';
 
 @Injectable()
 export default class AuthService {
@@ -107,9 +108,32 @@ export default class AuthService {
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
     const findUser = await this.adminRepository.findOne({ where: { id } });
     if (!findUser) {
-      throw new UnauthorizedException('Not Found User');
+      throw new UnauthorizedException('관리자를 찾을 수 없습니다.');
     }
     return findUser;
+  }
+
+  /**
+   * Update Password
+   * @param dto
+   */
+  public async updatePassword(dto: RequestAdminUpdatePasswordDto) {
+    await this.adminRepository.update(
+      { id: dto.id },
+      { password: dto.password },
+    );
+  }
+
+  /**
+   * Existed Admin
+   * @param id
+   */
+  public async existedAdminById(id: number) {
+    const admin = await this.adminRepository.exist({ where: { id } });
+
+    if (!admin) {
+      throw new NotFoundException('관리자를 찾을 수 없습니다.');
+    }
   }
 
   /**
@@ -130,7 +154,22 @@ export default class AuthService {
     const admin = await this.adminRepository.findOne({ where: { email } });
 
     if (!admin) {
-      throw new NotFoundException('Not Found Admin');
+      throw new NotFoundException('관리자를 찾을 수 없습니다.');
+    }
+
+    return admin;
+  }
+
+  /**
+   * Find Admin
+   * @param id
+   * @returns Admin
+   */
+  private async findAdminById(id: number) {
+    const admin = await this.adminRepository.findOne({ where: { id } });
+
+    if (!admin) {
+      throw new NotFoundException('관리자를 찾을 수 없습니다.');
     }
 
     return admin;
