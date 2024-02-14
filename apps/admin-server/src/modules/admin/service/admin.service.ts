@@ -16,6 +16,7 @@ import RequestAdminFindDto from '../dto/admin.find.dto';
 import { Not } from 'typeorm';
 import RequestAdminUpdateDto from '../dto/admin.update.dto';
 import RequestAdminPasswordUpdateDto from '../dto/admin.update-password.dto';
+import RequestAdminProfileUpdateDto from '../dto/admin.update-profile.dto';
 
 @Injectable()
 export default class AdminService {
@@ -98,6 +99,20 @@ export default class AdminService {
 
     await this.adminRepository.update(adminId, {
       password: hash,
+    });
+  }
+
+  /**
+   * Update Profile
+   * @param adminId
+   * @param dto
+   */
+  public async updateProfile(
+    adminId: number,
+    dto: RequestAdminProfileUpdateDto,
+  ) {
+    await this.adminRepository.update(adminId, {
+      profile: dto.profile,
     });
   }
 

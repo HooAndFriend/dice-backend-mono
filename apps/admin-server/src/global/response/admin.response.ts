@@ -94,4 +94,10 @@ export const AdminResponse = {
       message: '비밀번호가 변경되었습니다.',
     }),
   },
+  updateProfile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '프로필 이미지를 변경했습니다.',
+    }),
+  },
 };

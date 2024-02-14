@@ -43,6 +43,7 @@ import CommonResponse from '@/src/global/dto/api.response';
 import RequestAdminFindDto from '../dto/admin.find.dto';
 import RequestAdminUpdateDto from '../dto/admin.update.dto';
 import RequestAdminPasswordUpdateDto from '../dto/admin.update-password.dto';
+import RequestAdminProfileUpdateDto from '../dto/admin.update-profile.dto';
 
 @ApiTags('Admin')
 @ApiResponse(createServerExceptionResponse())
@@ -152,6 +153,24 @@ export default class AdminController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '비밀번호를 변경했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '프로필 이미지 수정' })
+  @ApiBody({ type: RequestAdminProfileUpdateDto })
+  @ApiResponse(AdminResponse.updateProfile[200])
+  @UseGuards(JwtAccessGuard)
+  @Patch('/profile')
+  public async updateProfile(
+    @GetAdmin() { id }: Admin,
+    @Body() dto: RequestAdminProfileUpdateDto,
+  ) {
+    await this.adminService.updateProfile(id, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '프로필 이미지를 변경했습니다.',
     });
   }
 }
