@@ -10,6 +10,7 @@ import {
 
 // ** Module Imports
 import TeamService from '../service/team.service';
+import WorkspaceService from '../../workspace/service/workspace.service';
 
 // ** Swagger Imports
 import {
@@ -32,7 +33,6 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 // ** Dto Imports
 import RequestTeamFindDto from '../dto/user.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
-import WorkspaceService from '../../workspace/service/workspace.service';
 
 @ApiTags('Team')
 @ApiResponse(createServerExceptionResponse())
