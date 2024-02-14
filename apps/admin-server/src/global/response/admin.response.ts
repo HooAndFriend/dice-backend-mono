@@ -88,4 +88,10 @@ export const AdminResponse = {
       error: 'NOT FOUND',
     }),
   },
+  updatePassword: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '비밀번호가 변경되었습니다.',
+    }),
+  },
 };

@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -41,6 +42,7 @@ import Admin from '../domain/admin.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestAdminFindDto from '../dto/admin.find.dto';
 import RequestAdminUpdateDto from '../dto/admin.update.dto';
+import RequestAdminPasswordUpdateDto from '../dto/admin.update-password.dto';
 
 @ApiTags('Admin')
 @ApiResponse(createServerExceptionResponse())
@@ -61,7 +63,7 @@ export default class AdminController {
     @GetAdmin() { email }: Admin,
   ) {
     await this.adminService.isExistAdmin(dto.email);
-    await this.adminService.saveAdmin(dto, email);
+    await this.adminService.saveAdmin(dto, '123');
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -132,6 +134,24 @@ export default class AdminController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Admin을 수정했습니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Admin 비밀번호 수정' })
+  @ApiBody({ type: RequestAdminPasswordUpdateDto })
+  @ApiResponse(AdminResponse.updatePassword[200])
+  @UseGuards(JwtAccessGuard)
+  @Patch('/password')
+  public async updatePassword(
+    @GetAdmin() { id }: Admin,
+    @Body() dto: RequestAdminPasswordUpdateDto,
+  ) {
+    await this.adminService.updatePassword(id, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '비밀번호를 변경했습니다.',
     });
   }
 }
