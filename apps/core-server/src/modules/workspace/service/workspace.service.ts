@@ -16,7 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
-import User from '../../user/domain/user.entity';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import Role from '@/src/global/enum/Role';
@@ -49,6 +48,7 @@ export default class WorkspaceService {
       profile: dto.profile,
       uuid: uuidv4(),
       team: teamUser.team,
+      createdId: teamUser.user.email,
       workspaceUser: [
         this.workspaceUserRepository.create({
           teamUser,

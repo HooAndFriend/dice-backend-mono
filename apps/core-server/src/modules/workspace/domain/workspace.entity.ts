@@ -52,6 +52,14 @@ export default class Workspace extends BaseTimeEntity {
   })
   uuid: string;
 
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '생성 유저 ID',
+    nullable: false,
+  })
+  createdId: string;
+
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace, {
     cascade: true,
   })

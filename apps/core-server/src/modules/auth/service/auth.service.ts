@@ -137,6 +137,7 @@ export default class AuthService {
           comment: '',
           team,
           uuid: uuidv4(),
+          createdId: user.email,
         }),
       );
 
@@ -286,6 +287,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           comment: '',
           team,
+          createdId: user.email,
           uuid: uuidv4(),
         }),
       );
