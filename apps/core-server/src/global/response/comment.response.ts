@@ -11,14 +11,14 @@ export const CommentResponse = {
       data: [
         {
           commentId: 1,
+          content: '댓글 내용입니다.',
           user: {
             profile:
               'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
             nickname: '임동현',
-            content: '댓글 내용입니다.',
-            createdDate: '2023-11-20 13:23:10',
-            modifiedDate: '2023-11-20 13:23:10',
           },
+          createdDate: '2023-11-20 13:23:10',
+          modifiedDate: '2023-11-20 13:23:10',
         },
       ],
       count: 1,
