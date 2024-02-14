@@ -10,10 +10,12 @@ import TeamService from './service/team.service';
 import TeamController from './controller/team.controller';
 import Team from './domain/team.entity';
 import TeamRepository from './repository/team.repository';
+import WorkspaceModule from '../workspace/workspace.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Team]),
     TypeOrmExModule.forCustomRepository([TeamRepository]),
+    WorkspaceModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [TeamController],

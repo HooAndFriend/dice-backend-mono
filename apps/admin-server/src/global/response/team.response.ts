@@ -126,4 +126,21 @@ export const TeamResponse = {
       message: '팀 리스트를 조회합니다.',
     }),
   },
+  findWorkspaceListByTeamId: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2024-02-14T00:57:33.346Z',
+            id: 1,
+            name: 'Pinomaker',
+            createdId: '',
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: '팀의 워크스페이스 리스트를 조회합니다.',
+    }),
+  },
 };
