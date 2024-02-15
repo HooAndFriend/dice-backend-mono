@@ -21,12 +21,20 @@ export default class TeamUser extends BaseTimeEntity {
   id: number;
 
   @Column({
-    type: 'varchar',
-    length: 30,
+    type: 'enum',
+    enum: Role,
     comment: '팀 역할',
     nullable: false,
   })
   role: Role;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '초대자 ID',
+    nullable: false,
+  })
+  invitedId: string;
 
   @ManyToOne(() => User, (user) => user.teamUser, {
     onDelete: 'CASCADE',

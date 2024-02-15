@@ -47,16 +47,20 @@ export default class TeamUserService {
    * @param dto
    * @returns
    */
-  public async inviteTeamUser(team: Team, dto: RequestTeamUserSaveDto) {
+  public async inviteTeamUser(
+    team: Team,
+    dto: RequestTeamUserSaveDto,
+    userEmail: string,
+  ) {
     const findUser = await this.findUser(dto.email);
 
     if (findUser) {
-      await this.saveTeamUser(findUser, team, dto.role);
+      await this.saveTeamUser(findUser, team, dto.role, userEmail);
 
       return;
     }
 
-    await this.inviteUser(dto.email, team.uuid, dto.role);
+    await this.inviteUser(dto.email, team.uuid, dto.role, userEmail);
   }
 
   /**
@@ -116,10 +120,15 @@ export default class TeamUserService {
    * @param uuid
    * @param role
    */
-  private async setTeamRedis(email: string, uuid: string, role: Role) {
+  private async setTeamRedis(
+    email: string,
+    uuid: string,
+    role: Role,
+    createdId: string,
+  ) {
     await this.redis.set(
       `${email}&&${uuid}`,
-      `${dayjs().format('YYYYMMDD')}&&${role}`,
+      `${dayjs().format('YYYYMMDD')}&&${role}&&${createdId}`,
     );
   }
 
@@ -165,12 +174,18 @@ export default class TeamUserService {
    * @param team
    * @param role
    */
-  private async saveTeamUser(user: User, team: Team, role: RoleEnum) {
+  private async saveTeamUser(
+    user: User,
+    team: Team,
+    role: RoleEnum,
+    invitedId: string,
+  ) {
     await this.teamUserRepository.save(
       this.teamUserRepository.create({
         user,
         team,
         role,
+        invitedId,
       }),
     );
   }
@@ -181,7 +196,12 @@ export default class TeamUserService {
    * @param uuid
    * @param role
    */
-  private async inviteUser(email: string, uuid: string, role: RoleEnum) {
+  private async inviteUser(
+    email: string,
+    uuid: string,
+    role: RoleEnum,
+    createdId: string,
+  ) {
     const redisValue = await this.getTeamRedisValue(email, uuid);
 
     if (redisValue) {
@@ -196,6 +216,6 @@ export default class TeamUserService {
     );
 
     await this.sendMail(sendMail);
-    await this.setTeamRedis(email, uuid, role);
+    await this.setTeamRedis(email, uuid, role, createdId);
   }
 }

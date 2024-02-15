@@ -82,9 +82,10 @@ export default class TeamUserController {
   public async saveTeamUser(
     @Body() dto: RequestTeamUserSaveDto,
     @GetTeam() team: Team,
+    @GetUser() { email }: User,
   ) {
     await this.teamUserService.isExistedTeamUserByEmail(dto.email);
-    await this.teamUserService.inviteTeamUser(team, dto);
+    await this.teamUserService.inviteTeamUser(team, dto, email);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

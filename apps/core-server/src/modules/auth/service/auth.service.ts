@@ -105,6 +105,7 @@ export default class AuthService {
                 team: findTeam,
                 user,
                 role: this.getRole(redisValue),
+                invitedId: this.getInviteId(redisValue),
               }),
             );
           }
@@ -127,6 +128,7 @@ export default class AuthService {
           user,
           team,
           role: Role.ADMIN,
+          invitedId: user.email,
         }),
       );
 
@@ -256,6 +258,7 @@ export default class AuthService {
                 team: findTeam,
                 user,
                 role: this.getRole(redisValue),
+                invitedId: this.getInviteId(redisValue),
               }),
             );
           }
@@ -278,6 +281,7 @@ export default class AuthService {
           user,
           team,
           role: Role.ADMIN,
+          invitedId: user.email,
         }),
       );
 
@@ -390,5 +394,14 @@ export default class AuthService {
     if (role === 'WRITER') return Role.WRITER;
 
     return Role.ADMIN;
+  }
+
+  /**
+   * Parse Redis InviteId
+   * @param redisValue
+   * @returns
+   */
+  private getInviteId(redisValue: string) {
+    return redisValue.split('&&')[2];
   }
 }
