@@ -23,7 +23,7 @@ export default class Admin extends BaseTimeEntity {
     type: 'varchar',
     length: 120,
     comment: '비밀번호',
-    nullable: true,
+    nullable: false,
   })
   password: string;
 
