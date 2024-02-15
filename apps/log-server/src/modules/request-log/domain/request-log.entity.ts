@@ -2,10 +2,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from '@/src/global/domain/BaseTime.Entity';
+import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
 
 @Entity({ name: 'TB_REQUEST_LOG' })
-export default class RequestLog extends BaseTimeEntity {
+export default class RequestLog extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
