@@ -43,7 +43,7 @@ export default class Faq extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 120,
     comment: '생성자 ID',
     nullable: false,
   })
