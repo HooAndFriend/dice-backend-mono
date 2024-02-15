@@ -29,7 +29,7 @@ export default class RequestLog extends BaseCreatedTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 120,
     comment: '유저 ID',
     name: 'user_id',
     nullable: false,
