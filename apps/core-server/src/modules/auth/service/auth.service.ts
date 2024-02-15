@@ -32,6 +32,9 @@ import { UserType } from '../../../global/enum/UserType.enum';
 import User from '../../user/domain/user.entity';
 import Role from '@/src/global/enum/Role';
 import UserStatusEnum from '../../user/domain/user-status.enum';
+import { waitForDebugger } from 'inspector';
+import WorkspaceFunctionRepository from '../../workspace-function/repository/workspace-function.repository';
+import DiceFunction from '@/src/global/enum/DiceFunction';
 
 @Injectable()
 export default class AuthService {
@@ -44,6 +47,7 @@ export default class AuthService {
     private readonly teamUserRepository: TeamUserRepository,
     private readonly teamRepository: TeamRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
+    private readonly workspaceFunctionRepository: WorkspaceFunctionRepository,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -143,6 +147,19 @@ export default class AuthService {
         }),
       );
 
+      const workspaceFunctionTicket = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.TICKET,
+        }),
+      );
+      const workspaceFunctionQa = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.QA,
+        }),
+      );
+
       await queryRunner.manager.save(
         this.workspaceUserRepository.create({
           workspace,
@@ -156,7 +173,22 @@ export default class AuthService {
 
       const token = this.generateToken({ id: user.id });
 
-      return { token, user, workspace, team };
+      return {
+        token,
+        user,
+        workspace,
+        team,
+        workspaceFunction: [
+          {
+            id: workspaceFunctionTicket.id,
+            function: workspaceFunctionTicket.function,
+          },
+          {
+            id: workspaceFunctionQa.id,
+            function: workspaceFunctionQa.function,
+          },
+        ],
+      };
     } catch (error) {
       this.logger.error(error);
       await queryRunner.rollbackTransaction();
@@ -297,6 +329,19 @@ export default class AuthService {
         }),
       );
 
+      const workspaceFunctionTicket = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.TICKET,
+        }),
+      );
+      const workspaceFunctionQa = await queryRunner.manager.save(
+        this.workspaceFunctionRepository.create({
+          workspace,
+          function: DiceFunction.QA,
+        }),
+      );
+
       await queryRunner.manager.save(
         this.workspaceUserRepository.create({
           workspace,
@@ -310,7 +355,22 @@ export default class AuthService {
 
       const token = this.generateToken({ id: user.id });
 
-      return { token, user, workspace, team };
+      return {
+        token,
+        user,
+        workspace,
+        team,
+        workspaceFunction: [
+          {
+            id: workspaceFunctionTicket.id,
+            function: workspaceFunctionTicket.function,
+          },
+          {
+            id: workspaceFunctionQa.id,
+            function: workspaceFunctionQa.function,
+          },
+        ],
+      };
     } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();

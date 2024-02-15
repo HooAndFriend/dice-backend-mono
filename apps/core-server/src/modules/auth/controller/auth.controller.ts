@@ -35,7 +35,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveSocialUser[400])
   @Post('/social/user')
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
-    const { token, user, workspace, team } =
+    const { token, user, workspace, team, workspaceFunction } =
       await this.authService.saveSocialUser(dto);
 
     return CommonResponse.createResponse({
@@ -59,7 +59,7 @@ export default class AuthController {
               comment: workspace.comment,
               profile: workspace.profile,
               uuid: workspace.uuid,
-              workspaceFunction: [],
+              workspaceFunction,
             },
           ],
         },
@@ -128,7 +128,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveDiceUser[400])
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
-    const { token, user, workspace, team } =
+    const { token, user, workspace, team, workspaceFunction } =
       await this.authService.saveDiceUser(dto);
 
     return CommonResponse.createResponse({
@@ -152,7 +152,7 @@ export default class AuthController {
               comment: workspace.comment,
               profile: workspace.profile,
               uuid: workspace.uuid,
-              workspaceFunction: [],
+              workspaceFunction,
             },
           ],
         },
