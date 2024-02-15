@@ -96,8 +96,9 @@ export default class WorkspaceUserController {
   public async saveWorkspaceUser(
     @Body() dto: RequestWorkspaceUserSaveDto,
     @GetWorkspace() workspace: Workspace,
+    @GetUser() { email }: User,
   ) {
-    await this.workspaceUserService.saveWorkspaceUser(workspace, dto);
+    await this.workspaceUserService.saveWorkspaceUser(workspace, dto, email);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

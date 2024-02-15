@@ -148,6 +148,7 @@ export default class AuthService {
           workspace,
           teamUser,
           role: Role.ADMIN,
+          invitedId: user.email,
         }),
       );
 
@@ -301,6 +302,7 @@ export default class AuthService {
           workspace,
           teamUser,
           role: Role.ADMIN,
+          invitedId: user.email,
         }),
       );
 

@@ -38,6 +38,7 @@ export default class WorkspaceUserService {
   public async saveWorkspaceUser(
     workspace: Workspace,
     dto: RequestWorkspaceUserSaveDto,
+    invitedId: string,
   ) {
     for (const item of dto.teamUserId) {
       const teamUser = await this.teamUserRepository.findOne({
@@ -48,6 +49,7 @@ export default class WorkspaceUserService {
         this.workspaceUserRepository.create({
           workspace,
           teamUser,
+          invitedId,
         }),
       );
     }

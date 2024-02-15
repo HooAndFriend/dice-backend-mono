@@ -26,6 +26,14 @@ export default class WorkspaceUser extends BaseTimeEntity {
   })
   role: Role;
 
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '초대자 ID',
+    nullable: false,
+  })
+  invitedId: string;
+
   @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser, {
     onDelete: 'CASCADE',
   })
