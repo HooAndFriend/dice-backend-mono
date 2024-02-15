@@ -56,7 +56,7 @@ services:
     build:
       context: ./apps/admin-server
     ports:
-      - 8480:8080
+      - 8480:8480
     networks:
       - dice-networks
     depends_on:
