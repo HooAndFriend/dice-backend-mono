@@ -342,4 +342,15 @@ export default class TicketController {
       message: 'Delete Comment',
     });
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'COMMENT 삭제' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/setting')
+  public async saveSetting(@GetWorkspace() { id }: Workspace) {}
 }
