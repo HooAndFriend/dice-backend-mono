@@ -66,7 +66,7 @@ export default class Qna extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 120,
     comment: '답변자 ID',
     nullable: true,
   })
