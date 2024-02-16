@@ -35,7 +35,7 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: ['dist/modules/**/*.entity.js'],
-      synchronize: true,
+      synchronize: false,
       logging: true,
       logger: 'file',
       charset: 'utf8mb4_unicode_ci',
