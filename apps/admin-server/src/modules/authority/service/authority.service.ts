@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Module Imports
 import AuthorityRepository from '../repository/authority.repository';
-import AdminRepository from '../../admin/repository/admin.repository';
 import RequestAuthorityUpdateDto from '../dto/authority.update.dto';
 
 // ** Utils Imports
@@ -14,7 +13,6 @@ import RequestAuthorityUpdateDto from '../dto/authority.update.dto';
 @Injectable()
 export default class AuthorityService {
   constructor(
-    private readonly adminRepository: AdminRepository,
     private readonly authorityRepository: AuthorityRepository,
     private readonly configService: ConfigService,
   ) {}

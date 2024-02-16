@@ -15,7 +15,7 @@ import AdminRepository from '../admin/repository/admin.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Authority]),
-    TypeOrmExModule.forCustomRepository([AuthorityRepository, AdminRepository]),
+    TypeOrmExModule.forCustomRepository([AuthorityRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [AuthorityController],
