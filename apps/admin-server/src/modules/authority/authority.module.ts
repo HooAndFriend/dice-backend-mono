@@ -10,11 +10,12 @@ import AuthorityController from './controller/authority.controller';
 import AuthorityService from './service/authority.service';
 import Authority from './domain/authority.entity';
 import AuthorityRepository from './repository/authority.repository';
+import AdminRepository from '../admin/repository/admin.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Authority]),
-    TypeOrmExModule.forCustomRepository([AuthorityRepository]),
+    TypeOrmExModule.forCustomRepository([AuthorityRepository, AdminRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [AuthorityController],
