@@ -7,6 +7,7 @@ import StateRepository from '../repository/state.repository';
 import RequestStateSaveDto from '../dto/state.save.dto';
 import RequestStateUpdateDto from '../dto/state.update.dto';
 import { Not } from 'typeorm';
+import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 // ** Utils Imports
 
@@ -25,6 +26,20 @@ export default class StateService {
         ...dto,
       }),
     );
+  }
+
+  public async findStateList(dto: RequestPagingDto) {
+    return await this.stateRepository.findStateList(dto);
+  }
+
+  public async findState(id: number) {
+    const state = await this.stateRepository.findOne({ where: { id } });
+
+    if (!state) {
+      throw new BadRequestException('존재하지 않는 상태값입니다.');
+    }
+
+    return state;
   }
 
   public async deleteState(id: number) {

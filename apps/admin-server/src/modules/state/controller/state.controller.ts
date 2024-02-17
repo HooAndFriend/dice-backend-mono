@@ -3,10 +3,13 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 
 // ** Module Imports
@@ -35,6 +38,7 @@ import RequestStateSaveDto from '../dto/state.save.dto';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 import Admin from '../../admin/domain/admin.entity';
 import RequestStateUpdateDto from '../dto/state.update.dto';
+import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 // ** Dto Imports
 
@@ -57,9 +61,40 @@ export default class StateController {
     const adminAuthority = await this.stateService.saveState(dto);
 
     return CommonResponse.createResponse({
-      data: adminAuthority,
       statusCode: 200,
       message: '새로운 상태값을 생성했습니다.',
+      data: adminAuthority,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'State List 조회' })
+  @ApiResponse(StateResponse.findStateList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findVersionList(@Query(ValidationPipe) query: RequestPagingDto) {
+    const [data, count] = await this.stateService.findStateList(query);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '상태값 리스트를 조회합니다.',
+      data: { data, count },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'State 조회' })
+  @ApiResponse(StateResponse.findState[200])
+  @ApiResponse(StateResponse.findState[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findVersion(@Param('id') id: number) {
+    const version = await this.stateService.findState(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '상태값을 조회합니다.',
+      data: version,
     });
   }
 
