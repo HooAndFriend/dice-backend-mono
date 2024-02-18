@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -31,11 +31,11 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
       TicketFileRepository,
       TicketCommentRepository,
     ]),
-    WorkspaceModule,
-    UserModule,
-    WorkspaceUserModule,
+    forwardRef(() => WorkspaceModule),
+    forwardRef(() => UserModule),
+    forwardRef(() => WorkspaceUserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, TicketService],
   controllers: [TicketController],
   providers: [TicketService],
 })

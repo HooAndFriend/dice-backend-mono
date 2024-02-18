@@ -247,6 +247,17 @@ export default class TicketService {
     }
   }
 
+  /**
+   * Find Ticket Count
+   * @param userId
+   * @returns
+   */
+  public async findMyTicketCount(userId: number) {
+    return await this.ticketRepository.count({
+      where: { worker: { id: userId } },
+    });
+  }
+
   // ** Epic Service
 
   // Epic name 확인

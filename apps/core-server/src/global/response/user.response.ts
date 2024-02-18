@@ -33,4 +33,14 @@ export const UserResponse = {
       message: '유저 정보를 찾을 수 없습니다.',
     }),
   },
+  findDashboardInfo: {
+    200: createResponse({
+      data: {
+        teamCount: 1,
+        ticketCount: 0,
+      },
+      statusCode: 200,
+      message: '유저의 대시보드 정보를 조회합니다.',
+    }),
+  },
 };
