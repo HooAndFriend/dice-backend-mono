@@ -16,7 +16,7 @@ export default class StateRepository extends Repository<State> {
       'state.name',
       'state.color',
       'state.description',
-      'state.expose_yn',
+      'state.exposeYn',
     ]);
 
     if (dto.page && dto.pageSize) {
@@ -24,7 +24,7 @@ export default class StateRepository extends Repository<State> {
     }
 
     return await queryBuilder
-      .orderBy('state.created_date', 'DESC')
+      .orderBy('state.createdDate', 'DESC')
       .getManyAndCount();
   }
 }
