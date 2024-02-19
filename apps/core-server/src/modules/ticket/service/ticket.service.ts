@@ -391,4 +391,14 @@ export default class TicketService {
 
     return await this.ticketCommentRepository.findAllCommentByTicketId(id);
   }
+
+  /**
+   * Find My Ticket
+   * @param teamId
+   * @param month
+   * @returns
+   */
+  public async findMyTeamTicketList(teamId: number, month: string) {
+    return await this.ticketRepository.findMyTeamTicketList(teamId, month);
+  }
 }

@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
@@ -95,7 +95,31 @@ export default class UserController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'team-code', required: true })
-  @ApiOperation({ summary: '유저의 대시보드 조회' })
+  @ApiOperation({ summary: '유저의 티켓 대시보드 조회' })
+  @ApiResponse(UserResponse.findDashboardInfo[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/dashboard/ticket')
+  public async dashboardTicketInfo(
+    @GetTeam() { id }: Team,
+    @Query('month') month: string,
+  ) {
+    const [data, count] = await this.ticketService.findMyTeamTicketList(
+      id,
+      month,
+    );
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: '유저의 대시보드 정보를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
+  @ApiOperation({ summary: '유저의 워크스페이스 대시보드 조회' })
   @ApiResponse(UserResponse.findDashboardInfo[200])
   @TeamRole(RoleEnum.VIEWER)
   @UseGuards(TeamRoleGuard)

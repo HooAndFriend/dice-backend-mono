@@ -115,4 +115,20 @@ export default class TicketRepository extends Repository<Ticket> {
       .andWhere('ticket.name = :name', { name });
     return await querybuilder.getOne();
   }
+
+  public async findMyTeamTicketList(teamId: number, month: string) {
+    const [year, monthStr] = month.split('-');
+    const startDate = new Date(parseInt(year), parseInt(monthStr) - 1, 1);
+    const endDate = new Date(parseInt(year), parseInt(monthStr), 0);
+
+    const querybuilder = this.createQueryBuilder('ticket')
+      .select(['ticket.id', 'ticket.name', 'ticket.status', 'ticket.dueDate'])
+      .leftJoin('ticket.workspace', 'workspace')
+      .where('workspace.teamId = :teamId', { teamId })
+      .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      });
+    return await querybuilder.getManyAndCount();
+  }
 }
