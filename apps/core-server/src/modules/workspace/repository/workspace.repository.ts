@@ -72,4 +72,45 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return await queryBuilder.getOne();
   }
+
+  /**
+   * Find Workspace Count And Member Count
+   * @param teamId
+   * @returns
+   */
+  public async findWorkspaceCountAndMemberCount(teamId: number) {
+    const workspaceCount = await this.createQueryBuilder('workspace')
+      .where('workspace.teamId = :teamId', { teamId })
+      .getCount();
+
+    const workspaceUserCount = await this.createQueryBuilder('workspace')
+      .innerJoin('workspace.workspaceUser', 'workspaceUser')
+      .where('workspace.teamId = :teamId', { teamId })
+      .getCount();
+
+    return { workspaceCount, workspaceUserCount };
+  }
+
+  /**
+   * Get Workspace Ticket Count
+   * @param teamId
+   * @param userId
+   * @returns
+   */
+  public async findWorkspaceTicketCount(teamId: number, userId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'COUNT(CASE WHEN ticket.status = "COMPLETED" THEN ticket.id ELSE NULL END) AS completedCount',
+        'COUNT(CASE WHEN ticket.status != "COMPLETED" THEN ticket.id ELSE NULL END) AS otherStatusCount',
+      ])
+      .leftJoin('workspace.ticket', 'ticket', 'ticket.workerId = :userId', {
+        userId,
+      })
+      .where('workspace.teamId = :teamId', { teamId })
+      .groupBy('workspace.id');
+
+    return await queryBuilder.getRawMany();
+  }
 }

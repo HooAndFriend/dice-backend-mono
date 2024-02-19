@@ -12,6 +12,7 @@ import User from './domain/user.entity';
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 import TeamUserModule from '../team-user/team-user.module';
 import TicketModule from '../ticket/ticket.module';
+import WorkspaceModule from '../workspace/workspace.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import TicketModule from '../ticket/ticket.module';
     TypeOrmExModule.forCustomRepository([UserRepository]),
     forwardRef(() => TeamUserModule),
     forwardRef(() => TicketModule),
+    forwardRef(() => WorkspaceModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [AuthController],

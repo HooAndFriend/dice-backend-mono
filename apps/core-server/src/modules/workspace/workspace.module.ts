@@ -24,7 +24,7 @@ import TeamUserModule from '../team-user/team-user.module';
     forwardRef(() => TeamModule),
     forwardRef(() => TeamUserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, WorkspaceService],
   controllers: [WorkspaceController],
   providers: [WorkspaceService],
 })

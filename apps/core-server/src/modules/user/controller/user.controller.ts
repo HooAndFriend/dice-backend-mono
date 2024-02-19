@@ -5,11 +5,13 @@ import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import UserService from '../service/user.service';
 import TeamUserService from '../../team-user/service/team-user.service';
 import TicketService from '../../ticket/service/ticket.service';
+import WorkspaceService from '../../workspace/service/workspace.service';
 
 // ** Swagger Imports
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -25,11 +27,20 @@ import {
   createUnauthorizedResponse,
 } from '../../../global/response/common';
 
+// ** Utils Imports
+import {
+  GetTeam,
+  TeamRole,
+} from '@/src/global/decorators/team-role/team-role.decorator';
+import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
+import { GetUser } from '../../../global/decorators/user/user.decorators';
+
 // ** Dto Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
-import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../domain/user.entity';
 import CommonResponse from '@/src/global/dto/api.response';
+import Team from '../../team/domain/team.entity';
+import RoleEnum from '@/src/global/enum/Role';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -40,6 +51,7 @@ export default class UserController {
     private readonly userService: UserService,
     private readonly ticketService: TicketService,
     private readonly teamUserService: TeamUserService,
+    private readonly workspaceService: WorkspaceService,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -76,6 +88,31 @@ export default class UserController {
 
     return CommonResponse.createResponse({
       data: { teamCount, ticketCount },
+      statusCode: 200,
+      message: '유저의 대시보드 정보를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
+  @ApiOperation({ summary: '유저의 대시보드 조회' })
+  @ApiResponse(UserResponse.findDashboardInfo[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/dashboard/workspace')
+  public async dashboardWorkspaceInfo(
+    @GetTeam() { id }: Team,
+    @GetUser() { id: userId }: User,
+  ) {
+    const data = await this.workspaceService.findWorkspaceCountAndUserCount(id);
+    const ticket = await this.workspaceService.findWorkspaceTicketCount(
+      id,
+      userId,
+    );
+
+    return CommonResponse.createResponse({
+      data: { ...data, ticket },
       statusCode: 200,
       message: '유저의 대시보드 정보를 조회합니다.',
     });

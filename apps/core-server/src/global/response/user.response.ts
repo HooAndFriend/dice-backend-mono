@@ -43,4 +43,14 @@ export const UserResponse = {
       message: '유저의 대시보드 정보를 조회합니다.',
     }),
   },
+  findDashboardWorkspaceInfo: {
+    200: createResponse({
+      data: {
+        workspaceCount: 1,
+        workspaceUserCount: 1,
+      },
+      statusCode: 200,
+      message: '유저의 대시보드 정보를 조회합니다.',
+    }),
+  },
 };
