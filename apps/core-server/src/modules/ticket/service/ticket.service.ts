@@ -398,7 +398,7 @@ export default class TicketService {
   // ** Setting validation
   public async settingTypeValidation(type: string, workspaceId) {
     const findSetting =
-      this.ticketSettingRepository.findOneByTypeAndWorkspaceId(
+      await this.ticketSettingRepository.findOneByTypeAndWorkspaceId(
         type,
         workspaceId,
       );
@@ -416,7 +416,7 @@ export default class TicketService {
     workspaceId: number,
     user: User,
   ) {
-    const findSetting = this.settingTypeValidation(dto.type, workspaceId);
+    await this.settingTypeValidation(dto.type, workspaceId);
 
     const workspace = await this.workspaceReposiotry.findOne({
       where: { id: workspaceId },

@@ -423,7 +423,7 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 전체조회' })
+  @ApiOperation({ summary: 'Setting 단일 조회' })
   @ApiResponse(TicketResponse.deleteComment[200])
   @ApiResponse(TicketResponse.deleteComment[404])
   @WorkspaceRole(RoleEnum.ADMIN)

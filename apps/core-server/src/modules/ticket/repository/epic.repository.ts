@@ -78,10 +78,9 @@ export default class EpicRepository extends Repository<Epic> {
       .select(['workspace.id', 'epic.id', 'epic.name', 'epic.code'])
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.ticket', 'ticket')
-      .leftJoin('epic.worker', 'worker')
       .where('epic.name = :name', { name })
       .andWhere('workspace.id = :workspaceId', { workspaceId });
 
-    return await querybuilder.getManyAndCount();
+    return await querybuilder.getOne();
   }
 }

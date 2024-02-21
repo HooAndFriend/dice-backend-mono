@@ -3,10 +3,9 @@ import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
-import Ticket from '../domain/ticket.entity';
 import TicketSetting from '../domain/ticket.setting.entity';
 
-@CustomRepository(Ticket)
+@CustomRepository(TicketSetting)
 export default class TicketSettingRepository extends Repository<TicketSetting> {
   public async findSettingByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('setting')
@@ -19,7 +18,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('setting.admin', 'admin')
       .where('setting.workspace = :workspaceId', { workspaceId });
     return await querybuilder.getManyAndCount();
   }
@@ -35,10 +34,10 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('setting.admin', 'admin')
       .where('setting.workspace = :workspaceId', { workspaceId })
-      .andWhere('setting.type = :type', { type })
-      .getOne();
+      .andWhere('setting.type = :type', { type });
+    return querybuilder.getOne();
   }
 
   public async findSettingById(settingId: number) {
@@ -52,7 +51,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('setting.admin', 'admin')
       .where('setting.id = :settingId', { settingId });
     return await querybuilder.getOne();
   }
