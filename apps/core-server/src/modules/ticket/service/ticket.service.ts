@@ -19,6 +19,7 @@ import WorkspaceRepository from '../../workspace/repository/workspace.repository
 import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
+import TicketSettingRepository from '../repository/ticket.setting.repository';
 
 // ** Response Imports
 import CommonResponse from '@/src/global/dto/api.response';
@@ -41,6 +42,8 @@ import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
 import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
+import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -50,6 +53,7 @@ export default class TicketService {
     private readonly ticketRepository: TicketRepository,
     private readonly ticketFileRepository: TicketFileRepository,
     private readonly ticketCommentRepository: TicketCommentRepository,
+    private readonly ticketSettingRepository: TicketSettingRepository,
     private readonly workspaceReposiotry: WorkspaceRepository,
     private readonly userRepository: UserRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
@@ -83,6 +87,14 @@ export default class TicketService {
     return findComment;
   }
 
+  public async findSettingById(settingId: number) {
+    const findSetting = this.ticketSettingRepository.findSettingById(settingId);
+    if (!findSetting) {
+      throw new NotFoundException('Cannot Find Setting.');
+    }
+    return findSetting;
+  }
+
   // Ticket name 확인
   public async ticketNameValidation(name: string, workspaceId: number) {
     if (name.length > 30) {
@@ -90,7 +102,7 @@ export default class TicketService {
     }
 
     const findTicketByName =
-      await this.ticketRepository.findONeByNameAndWorkspaceId(
+      await this.ticketRepository.findOneByNameAndWorkspaceId(
         name,
         workspaceId,
       );
@@ -379,5 +391,73 @@ export default class TicketService {
     const findTicket = await this.findTicketById(id);
 
     return await this.ticketCommentRepository.findAllCommentByTicketId(id);
+  }
+
+  // ** Setting Service
+
+  // ** Setting validation
+  public async settingTypeValidation(type: string, workspaceId) {
+    const findSetting =
+      this.ticketSettingRepository.findOneByTypeAndWorkspaceId(
+        type,
+        workspaceId,
+      );
+
+    if (findSetting) {
+      throw new BadRequestException('Setting is already exist');
+    }
+
+    return findSetting;
+  }
+
+  // ** Setting 저장
+  public async saveSetting(
+    dto: RequestSettingSaveDto,
+    workspaceId: number,
+    user: User,
+  ) {
+    const findSetting = this.settingTypeValidation(dto.type, workspaceId);
+
+    const workspace = await this.workspaceReposiotry.findOne({
+      where: { id: workspaceId },
+    });
+
+    const setting = this.ticketSettingRepository.create({
+      color: dto.color,
+      description: dto.description,
+      type: dto.type,
+      admin: user,
+      workspace,
+    });
+
+    return await this.ticketSettingRepository.save(setting);
+  }
+
+  // ** Setting 수정
+  public async updateSetting(
+    dto: RequestSettingUpdateDto,
+    workspaceId: number,
+  ) {
+    const findSetting = await this.findSettingById(dto.settingId);
+
+    await this.settingTypeValidation(dto.type, workspaceId);
+
+    return this.ticketSettingRepository.update(dto.settingId, {
+      type: dto.type,
+      color: dto.color,
+      description: dto.description,
+    });
+  }
+
+  // ** Setting 삭제
+  public async deleteSetting(id: number) {
+    await this.findSettingById(id);
+
+    return this.ticketSettingRepository.delete(id);
+  }
+
+  // ** Setting 조회
+  public async findAllSetting(workspaceId: number) {
+    return this.ticketSettingRepository.findSettingByWorkspaceId(workspaceId);
   }
 }
