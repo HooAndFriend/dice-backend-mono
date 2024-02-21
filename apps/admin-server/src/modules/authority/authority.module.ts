@@ -10,6 +10,7 @@ import AuthorityController from './controller/authority.controller';
 import AuthorityService from './service/authority.service';
 import Authority from './domain/authority.entity';
 import AuthorityRepository from './repository/authority.repository';
+import AdminRepository from '../admin/repository/admin.repository';
 
 @Module({
   imports: [

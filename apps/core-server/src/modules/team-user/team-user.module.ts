@@ -22,7 +22,7 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
     TypeOrmExModule.forCustomRepository([TeamUserRepository]),
     forwardRef(() => TeamModule),
     forwardRef(() => WorkspaceUserModule),
-    UserModule,
+    forwardRef(() => UserModule),
     ClientsModule.registerAsync([
       {
         name: 'RMQ_PUSH_QUE',
@@ -41,7 +41,7 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
       },
     ]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, TeamUserService],
   controllers: [TeamUserController],
   providers: [TeamUserService],
 })

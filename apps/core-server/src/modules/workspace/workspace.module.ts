@@ -22,9 +22,9 @@ import TeamUserModule from '../team-user/team-user.module';
     TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
     forwardRef(() => WorkspaceUserModule),
     forwardRef(() => TeamModule),
-    TeamUserModule,
+    forwardRef(() => TeamUserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, WorkspaceService],
   controllers: [WorkspaceController],
   providers: [WorkspaceService],
 })

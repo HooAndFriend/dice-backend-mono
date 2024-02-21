@@ -82,6 +82,17 @@ export default class TeamUserService {
   }
 
   /**
+   *
+   * @param userId
+   * @returns
+   */
+  public async findTeamUserCount(userId: number) {
+    return await this.teamUserRepository.count({
+      where: { user: { id: userId } },
+    });
+  }
+
+  /**
    * Find Team User List
    * @param teamId
    * @returns

@@ -116,6 +116,32 @@ export default class WorkspaceService {
     return await this.findTeamWorkspaceListWithCount(teamId);
   }
 
+  //   /**
+  //  * Find My Ticket By Status
+  //  * @param userId
+  //  * @param status
+  //  * @returns
+  //  */
+  //   public async findMyTicketByStatus(userId: number, status: TicketStatus) {
+  //     return await this.workspaceRepository.find({
+  //       where: { worker: { id: userId }, status },
+  //     });
+  //   }
+
+  public async findWorkspaceCountAndUserCount(teamId: number) {
+    const data =
+      await this.workspaceRepository.findWorkspaceCountAndMemberCount(teamId);
+
+    return data;
+  }
+
+  public async findWorkspaceTicketCount(teamId: number, userId: number) {
+    return await this.workspaceRepository.findWorkspaceTicketCount(
+      teamId,
+      userId,
+    );
+  }
+
   /**
    * Find Workspace List at Team With User Count
    * @param teamId

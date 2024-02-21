@@ -259,6 +259,17 @@ export default class TicketService {
     }
   }
 
+  /**
+   * Find Ticket Count
+   * @param userId
+   * @returns
+   */
+  public async findMyTicketCount(userId: number) {
+    return await this.ticketRepository.count({
+      where: { worker: { id: userId } },
+    });
+  }
+
   // ** Epic Service
 
   // Epic name 확인
@@ -391,6 +402,16 @@ export default class TicketService {
     const findTicket = await this.findTicketById(id);
 
     return await this.ticketCommentRepository.findAllCommentByTicketId(id);
+  }
+
+  /**
+   * Find My Ticket
+   * @param teamId
+   * @param month
+   * @returns
+   */
+  public async findMyTeamTicketList(teamId: number, month: string) {
+    return await this.ticketRepository.findMyTeamTicketList(teamId, month);
   }
 
   // ** Setting Service
