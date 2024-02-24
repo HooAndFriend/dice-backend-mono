@@ -20,8 +20,13 @@ export default class QaService {
     private readonly dataSource: DataSource,
   ) {}
 
-  public async findQaList(findQuery: RequestQaFindDto) {
-    const [qa, count] = await this.qaRepository.findQaList(
+  public async findQaList() {
+    const [qa, count] = await this.qaRepository.findQaList();
+    return {qa, count}
+  }
+  
+  public async findQaListByQuery(findQuery: RequestQaFindDto) {
+    const [qa, count] = await this.qaRepository.findQaListByQuery(
       findQuery,
     );
     return {qa, count}

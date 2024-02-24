@@ -12,7 +12,31 @@ import RequestQaFindDto from '../dto/qa.find.dto';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {
-    public async findQaList(findQuery: RequestQaFindDto) {
+    public async findQaList() {
+        const queryBuilder = this.createQueryBuilder('qa')
+            .select([
+                'qa.id',
+                'qa.number',
+                'qa.status',
+                'qa.title',
+                'qa.asIs',
+                'qa.toBe',
+                'qa.memo',
+                'qa.adminId',
+                'admin.email',
+                'admin.nickname',
+                'admin.profile',
+                'file.id',
+                'file.url',
+                'qa.createdDate',
+                'qa.modifiedDate',
+            ])
+            .leftJoin('qa.admin', 'admin')
+            .leftJoin('qa.file', 'file');
+        return await queryBuilder.getManyAndCount();
+    }
+
+    public async findQaListByQuery(findQuery: RequestQaFindDto) {
         const queryBuilder = this.createQueryBuilder('qa')
             .select([
                 'qa.id',
