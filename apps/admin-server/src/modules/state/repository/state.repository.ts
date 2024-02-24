@@ -10,6 +10,11 @@ import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 @CustomRepository(State)
 export default class StateRepository extends Repository<State> {
+  /**
+   * Find State List
+   * @param dto
+   * @returns
+   */
   public async findStateList(dto: RequestPagingDto) {
     const queryBuilder = this.createQueryBuilder('state').select([
       'state.id',
