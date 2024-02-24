@@ -4,11 +4,11 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Module Imports
 import AuthorityRepository from '../repository/authority.repository';
-import RequestAuthorityUpdateDto from '../dto/authority.update.dto';
 
 // ** Utils Imports
 
 // ** enum, dto, entity, types Imports
+import RequestAuthorityUpdateDto from '../dto/authority.update.dto';
 
 @Injectable()
 export default class AuthorityService {
@@ -17,6 +17,11 @@ export default class AuthorityService {
     private readonly configService: ConfigService,
   ) {}
 
+  /**
+   *
+   * @param id Find Authority
+   * @returns
+   */
   public async findAuthority(id: number) {
     const authority = await this.authorityRepository.findOne({ where: { id } });
 
@@ -27,18 +32,11 @@ export default class AuthorityService {
     return { authority };
   }
 
+  /**
+   * Update Authority
+   * @param dto
+   */
   public async updateAuthority(dto: RequestAuthorityUpdateDto) {
-    await this.authorityRepository.update(dto.adminId, {
-      dashboardYn: dto.dashboard,
-      userYn: dto.user,
-      inactiveUserYn: dto.inactiveUser,
-      teamYn: dto.team,
-      workspaceYn: dto.workspace,
-      qnaYn: dto.qna,
-      faqYn: dto.faq,
-      programYn: dto.program,
-      stateYn: dto.state,
-      adminYn: dto.admin,
-    });
+    await this.authorityRepository.update(dto.id, { ...dto });
   }
 }

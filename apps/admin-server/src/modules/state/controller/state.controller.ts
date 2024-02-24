@@ -120,7 +120,7 @@ export default class StateController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateState(@Body() dto: RequestStateUpdateDto) {
-    await this.stateService.existedStateById(dto.stateId);
+    await this.stateService.existedStateById(dto.id);
     await this.stateService.updateState(dto);
 
     return CommonResponse.createResponseMessage({
