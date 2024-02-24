@@ -58,7 +58,7 @@ export default class AuthorityController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateAdmin(@Body() dto: RequestAuthorityUpdateDto) {
-    await this.authorityService.findAuthority(dto.adminId);
+    await this.authorityService.findAuthority(dto.id);
     await this.authorityService.updateAuthority(dto);
 
     return CommonResponse.createResponseMessage({

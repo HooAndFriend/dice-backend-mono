@@ -7,45 +7,45 @@ import { IsBoolean, IsNumber } from 'class-validator';
 export default class RequestAuthorityUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
-  adminId: number;
+  id: number;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  dashboard: boolean;
+  dashboardYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  user: boolean;
+  userYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  inactiveUser: boolean;
+  inactiveUserYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  team: boolean;
+  teamYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  workspace: boolean;
+  workspaceYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  qna: boolean;
+  qnaYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  faq: boolean;
+  faqYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  program: boolean;
+  programYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  state: boolean;
+  stateYn: boolean;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()
-  admin: boolean;
+  adminYn: boolean;
 }
