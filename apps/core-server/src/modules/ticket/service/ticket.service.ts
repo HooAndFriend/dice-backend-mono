@@ -479,6 +479,8 @@ export default class TicketService {
 
   // ** Setting 조회
   public async findAllSetting(workspaceId: number) {
-    return this.ticketSettingRepository.findSettingByWorkspaceId(workspaceId);
+    const [setting, count] = await this.ticketSettingRepository.findSettingByWorkspaceId(workspaceId);
+    return {setting, count};
+    
   }
 }
