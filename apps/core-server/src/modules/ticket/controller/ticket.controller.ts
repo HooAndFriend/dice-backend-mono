@@ -51,6 +51,8 @@ import {
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
+import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -340,6 +342,100 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Comment',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 생성' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/setting')
+  public async saveSetting(
+    @GetWorkspace() { id }: Workspace,
+    @GetUser() user: User,
+    @Body() dto: RequestSettingSaveDto,
+  ) {
+    await this.ticketService.saveSetting(dto, id, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Setting',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 수정' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/setting')
+  public async updateSetting(
+    @GetWorkspace() { id }: Workspace,
+    @Body() dto: RequestSettingUpdateDto,
+  ) {
+    await this.ticketService.updateSetting(dto, id);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Setting',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 삭제' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/setting/:settingId')
+  public async deleteSetting(@Param('settingId') id: number) {
+    await this.ticketService.deleteSetting(id);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Setting',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 전체조회' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/setting')
+  public async findAllSetting(@GetWorkspace() { id }: Workspace) {
+    const setting = await this.ticketService.findAllSetting(id);
+    return CommonResponse.createResponse({
+      data: setting,
+      message: 'Find Settings',
+      statusCode: 200,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 단일 조회' })
+  @ApiResponse(TicketResponse.deleteComment[200])
+  @ApiResponse(TicketResponse.deleteComment[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/setting/:settingId')
+  public async findSetting(@Param('settingId') id: number) {
+    const setting = await this.ticketService.findSettingById(id);
+    return CommonResponse.createResponse({
+      data: setting,
+      message: 'Find Setting',
+      statusCode: 200,
     });
   }
 }
