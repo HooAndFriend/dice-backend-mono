@@ -1,16 +1,26 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
-import QaService from '../service/qa.service';
-import CommentService from '../service/comment.service';
 
 // ** Swagger Imports
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+// ** Swagger Imports
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 // ** Utils Imports
+import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
+import { QaResponse } from '../../../global/response/qa.response';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
@@ -24,7 +34,12 @@ import {
 @Controller({ path: '/qa', version: '1' })
 export default class QaController {
   constructor(
-    private readonly qaService: QaService,
-    private readonly commentService: CommentService,
   ) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 리스트 조회' })
+  @ApiResponse(QaResponse.findQaList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findQaList() {}
 }
