@@ -35,8 +35,6 @@ import { StateResponse } from '@/src/global/response/state.response';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestStateSaveDto from '../dto/state.save.dto';
-import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
-import Admin from '../../admin/domain/admin.entity';
 import RequestStateUpdateDto from '../dto/state.update.dto';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 
@@ -72,7 +70,7 @@ export default class StateController {
   @ApiResponse(StateResponse.findStateList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findVersionList(@Query(ValidationPipe) query: RequestPagingDto) {
+  public async findStateList(@Query(ValidationPipe) query: RequestPagingDto) {
     const [data, count] = await this.stateService.findStateList(query);
 
     return CommonResponse.createResponse({
@@ -88,7 +86,7 @@ export default class StateController {
   @ApiResponse(StateResponse.findState[404])
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
-  public async findVersion(@Param('id') id: number) {
+  public async findState(@Param('id') id: number) {
     const version = await this.stateService.findState(id);
 
     return CommonResponse.createResponse({
@@ -104,7 +102,7 @@ export default class StateController {
   @ApiResponse(StateResponse.deleteState[404])
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteVersion(@Param('id') id: number) {
+  public async deleteState(@Param('id') id: number) {
     await this.stateService.existedStateById(id);
     await this.stateService.deleteState(id);
 
@@ -121,8 +119,8 @@ export default class StateController {
   @ApiResponse(StateResponse.updateState[404])
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateVersion(@Body() dto: RequestStateUpdateDto) {
-    await this.stateService.existedStateById(dto.stateId);
+  public async updateState(@Body() dto: RequestStateUpdateDto) {
+    await this.stateService.existedStateById(dto.id);
     await this.stateService.updateState(dto);
 
     return CommonResponse.createResponseMessage({

@@ -7,7 +7,7 @@ import { IsBoolean, IsNumber, IsString } from 'class-validator';
 export default class RequestStateUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
-  stateId: number;
+  id: number;
 
   @ApiProperty({ example: '진행중' })
   @IsString()

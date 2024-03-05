@@ -20,6 +20,10 @@ export default class StateService {
     private readonly configService: ConfigService,
   ) {}
 
+  /**
+   * Save State
+   * @param dto
+   */
   public async saveState(dto: RequestStateSaveDto) {
     await this.stateRepository.save(
       this.stateRepository.create({
@@ -28,10 +32,20 @@ export default class StateService {
     );
   }
 
+  /**
+   * Find State List
+   * @param dto
+   * @returns
+   */
   public async findStateList(dto: RequestPagingDto) {
     return await this.stateRepository.findStateList(dto);
   }
 
+  /**
+   *
+   * @param id Find State
+   * @returns
+   */
   public async findState(id: number) {
     const state = await this.stateRepository.findOne({ where: { id } });
 
@@ -42,13 +56,21 @@ export default class StateService {
     return state;
   }
 
+  /**
+   * Delete State
+   * @param id
+   */
   public async deleteState(id: number) {
     await this.stateRepository.delete(id);
   }
 
+  /**
+   * Update State
+   * @param dto
+   */
   public async updateState(dto: RequestStateUpdateDto) {
     const isDuplicateName = await this.stateRepository.findOne({
-      where: { name: dto.name, id: Not(dto.stateId) },
+      where: { name: dto.name, id: Not(dto.id) },
     });
 
     if (isDuplicateName) {
@@ -57,14 +79,15 @@ export default class StateService {
       );
     }
 
-    await this.stateRepository.update(dto.stateId, {
-      name: dto.name,
-      color: dto.color,
-      description: dto.description,
-      exposeYn: dto.exposeYn,
+    await this.stateRepository.update(dto.id, {
+      ...dto,
     });
   }
 
+  /**
+   * Existed State
+   * @param name
+   */
   public async existedState(name: string) {
     const existedState = await this.stateRepository.exist({
       where: { name },
@@ -75,6 +98,10 @@ export default class StateService {
     }
   }
 
+  /**
+   * Existed State By Id
+   * @param id
+   */
   public async existedStateById(id: number) {
     const existedState = await this.stateRepository.exist({
       where: { id },
