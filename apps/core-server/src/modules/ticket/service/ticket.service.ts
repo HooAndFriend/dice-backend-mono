@@ -114,10 +114,7 @@ export default class TicketService {
 
   // ** Ticket 전체 조회
   public async findAllTicket(workspaceId: number) {
-    const [ticket, count] =
-      await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
-
-    return { ticket, count };
+    return await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
   }
 
   // ** Ticket 상세조회
@@ -479,8 +476,8 @@ export default class TicketService {
 
   // ** Setting 조회
   public async findAllSetting(workspaceId: number) {
-    const [setting, count] = await this.ticketSettingRepository.findSettingByWorkspaceId(workspaceId);
-    return {setting, count};
-    
+    return await this.ticketSettingRepository.findSettingByWorkspaceId(
+      workspaceId,
+    );
   }
 }

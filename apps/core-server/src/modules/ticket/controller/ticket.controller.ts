@@ -70,11 +70,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const ticket = await this.ticketService.findAllTicket(id);
+    const [data, count] = await this.ticketService.findAllTicket(id);
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: { ticket },
+      data: { data, count },
     });
   }
 
@@ -184,11 +185,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
   public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const epic = await this.ticketService.findAllEpic(id);
+    const [data, count] = await this.ticketService.findAllEpic(id);
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find All Epic',
-      data: { epic },
+      data: { data, count },
     });
   }
 
@@ -203,6 +205,7 @@ export default class TicketController {
   @Get('/epic/detail/:epicId')
   public async findOneEpic(@Param('epicId') id: number) {
     const epic = await this.ticketService.findOneEpic(id);
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find All Epic',
@@ -278,11 +281,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:ticketId')
   public async findComment(@Param('ticketId') id: number) {
-    const commet = await this.ticketService.findComment(id);
+    const [data, count] = await this.ticketService.findComment(id);
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Comment',
-      data: { commet },
+      data: { data, count },
     });
   }
 
@@ -405,7 +409,7 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 전체조회' })
+  @ApiOperation({ summary: 'Setting 전체 조회' })
   @ApiResponse(TicketResponse.deleteComment[200])
   @ApiResponse(TicketResponse.deleteComment[404])
   @WorkspaceRole(RoleEnum.ADMIN)
@@ -413,9 +417,10 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/setting')
   public async findAllSetting(@GetWorkspace() { id }: Workspace) {
-    const setting = await this.ticketService.findAllSetting(id);
+    const [data, count] = await this.ticketService.findAllSetting(id);
+
     return CommonResponse.createResponse({
-      data: setting,
+      data: { data, count },
       message: 'Find Settings',
       statusCode: 200,
     });
