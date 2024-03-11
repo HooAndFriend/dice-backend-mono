@@ -20,7 +20,6 @@ import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
