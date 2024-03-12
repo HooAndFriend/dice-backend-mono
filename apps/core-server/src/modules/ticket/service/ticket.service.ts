@@ -114,7 +114,8 @@ export default class TicketService {
 
   // ** Ticket 전체 조회
   public async findAllTicket(workspaceId: number) {
-    return await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    const [ticket, count] = await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    return {ticket, count}
   }
 
   // ** Ticket 상세조회
@@ -272,7 +273,7 @@ export default class TicketService {
   // Epic name 확인
   public async epicNameValidation(name: string, workspaceId: number) {
     if (name.length > 30) {
-      throw new BadRequestException('Epic name max is 30');
+      throw new BadRequestException('Epic 이름은 최대 30자 입니다.');
     }
 
     const findEpicName = await this.epicRepository.findOneByNameAndWorkspaceId(
@@ -281,19 +282,21 @@ export default class TicketService {
     );
 
     if (findEpicName) {
-      throw new BadRequestException('Epic is already exist');
+      throw new BadRequestException('Epic 이 이미 존재합니다');
     }
   }
 
   // Epic 전체 조회
   public async findAllEpic(id: number) {
-    return await this.epicRepository.findAllByWorkspaceId(id);
+    const [epic, count] = await this.epicRepository.findAllByWorkspaceId(id);
+    return {epic, count}
   }
 
   // Epic 상세 조회
   public async findOneEpic(id: number) {
     const findEpic = await this.findEpicById(id);
-    return await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
+    const [epic, count] = await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
+    return {epic, count}
   }
 
   // ** Epic 저장

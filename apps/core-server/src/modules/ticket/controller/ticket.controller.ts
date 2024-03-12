@@ -70,12 +70,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllTicket(id);
+    const ticket = await this.ticketService.findAllTicket(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Finding Tickets',
-      data: { data, count },
+      message: 'Ticket을 전체 조회합니다.',
+      data: ticket,
     });
   }
 
@@ -115,7 +115,7 @@ export default class TicketController {
     await this.ticketService.saveTicket(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Save Ticket',
+      message: 'Ticket을 생성합니다.',
     });
   }
 
@@ -137,7 +137,7 @@ export default class TicketController {
     await this.ticketService.updateTicket(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Ticket',
+      message: 'Ticket을 수정합니다.',
     });
   }
 
@@ -154,7 +154,7 @@ export default class TicketController {
     await this.ticketService.deleteTicket(id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Delete Ticket',
+      message: 'Ticket을 삭제합니다.',
     });
   }
 
@@ -172,7 +172,7 @@ export default class TicketController {
     await this.ticketService.updateTicketState(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Ticket State',
+      message: 'Ticket 상태를 변경합니다.',
     });
   }
 
@@ -185,12 +185,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
   public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllEpic(id);
+    const epic = await this.ticketService.findAllEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Find All Epic',
-      data: { data, count },
+      message: 'Epic을 전체 조회합니다.',
+      data: epic,
     });
   }
 
@@ -208,8 +208,8 @@ export default class TicketController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Find All Epic',
-      data: { epic },
+      message: 'Epic을 상세 조회합니다.',
+      data: epic,
     });
   }
 
@@ -231,7 +231,7 @@ export default class TicketController {
     await this.ticketService.saveEpic(dto, id, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Save Epic',
+      message: 'Epic을 생성합니다.',
     });
   }
 
@@ -250,7 +250,7 @@ export default class TicketController {
     await this.ticketService.updateEpic(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Epic',
+      message: 'Epic을 수정합니다.',
     });
   }
 
@@ -267,7 +267,7 @@ export default class TicketController {
     await this.ticketService.deleteEpic(id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Delete Epic',
+      message: 'Epic을 삭제합니다.',
     });
   }
 
