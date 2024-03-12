@@ -89,7 +89,7 @@ export default class TicketRepository extends Repository<Ticket> {
     return await querybuilder.getManyAndCount();
   }
 
-  public async findONeByNameAndWorkspaceId(name: string, workspaceId: number) {
+  public async findOneByNameAndWorkspaceId(name: string, workspaceId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
         'ticket.id',
