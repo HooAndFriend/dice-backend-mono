@@ -41,23 +41,14 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.id',
         'ticket.name',
         'ticket.status',
-        'ticket.content',
-        'ticket.storypoint',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
-        'workspace.id',
         'worker.id',
-        'worker.nickname',
         'worker.profile',
-        'admin.id',
-        'admin.nickname',
-        'admin.profile',
         'epic.id',
       ])
-      .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.epic = :epicId', { epicId });
     return await querybuilder.getManyAndCount();
