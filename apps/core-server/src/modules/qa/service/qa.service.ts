@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -14,6 +14,11 @@ import WorkspaceUserRepository from '../../workspace-user/repository/workspace-u
 import CommonResponse from '../../../global/dto/api.response';
 
 // ** enum, dto, entity, types Imports
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../global/exception/CustomException';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
@@ -52,43 +57,56 @@ export default class QaService {
     const findAdmin = await this.userRepository.findOne({
       where : { email : dto.adminId }
     });
-    this.validationQaUser(findAdmin, workspaceId);
+    await this.validationQaUser(findAdmin, workspaceId);
 
     const findWorker = await this.userRepository.findOne({
       where : { email : dto.workerId }
     });
-    this.validationQaUser(findWorker, workspaceId);
+    await this.validationQaUser(findWorker, workspaceId);
 
     const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
-    const files = await queryRunner.manager.save(
-      dto.fileurls.map((fileURL) =>
-        this.fileRepository.create({
-          url: fileURL.url,
+    try{
+      const files = await queryRunner.manager.save(
+        dto.fileurls.map((fileURL) =>
+          this.fileRepository.create({
+            url: fileURL.url,
+          }),
+        ),
+      );
+  
+      await queryRunner.manager.save(
+        this.qaRepository.create({
+          number: dto.number,
+          title: dto.title,
+          asIs: dto.asIs,
+          toBe: dto.toBe,
+          memo: dto.memo,
+          admin: findAdmin,
+          worker: findWorker,
+          file: files,
+          workspace: workspace,
         }),
-      ),
-    );
+      );
+  
+      await queryRunner.commitTransaction();
+    }
+    catch (error){
+      console.log(error);
+      await queryRunner.rollbackTransaction();
 
-    await queryRunner.manager.save(
-      this.qaRepository.create({
-        number: dto.number,
-        title: dto.title,
-        asIs: dto.asIs,
-        toBe: dto.toBe,
-        memo: dto.memo,
-        admin: findAdmin,
-        worker: findWorker,
-        file: files,
-        workspace: workspace,
-      }),
-    );
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
 
-    await queryRunner.commitTransaction();
-
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+    finally{
+      await queryRunner.release();
+    }
     return;
   }
   public async updateQa(dto: RequestQaUpdateDto, workspaceId : number) {
@@ -101,26 +119,40 @@ export default class QaService {
     const findWorker = await this.userRepository.findOne({
       where: { id: dto.workerId },
     });
-    this.validationQaUser(findWorker, workspaceId);
+    await this.validationQaUser(findWorker, workspaceId);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    const files = await queryRunner.manager.save(
-      dto.fileurls.map((fileURL) =>
-        this.fileRepository.create({
-          url: fileURL.url,
-        }),
-      ),
-    );
+    try{
+      const files = await queryRunner.manager.save(
+        dto.fileurls.map((fileURL) =>
+          this.fileRepository.create({
+            url: fileURL.url,
+          }),
+        ),
+      );
+  
+      findQa.updateQaFromDto(dto, findWorker, files);
+  
+      await queryRunner.manager.save(Qa, findQa);
+  
+      await queryRunner.commitTransaction();
+    }
+    catch (error){
+      console.log(error);
+      await queryRunner.rollbackTransaction();
 
-    findQa.updateQaFromDto(dto, findWorker, files);
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
 
-    await queryRunner.manager.save(Qa, findQa);
-
-    await queryRunner.commitTransaction();
-
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+    finally{
+      await queryRunner.release();
+    }
     return
   }
   public async updateQaStatus(dto: RequestQaStatusUpdateDto, workspaceId : number) {

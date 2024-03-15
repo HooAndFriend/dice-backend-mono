@@ -288,7 +288,10 @@ export default class TicketService {
 
   // Epic 전체 조회
   public async findAllEpic(id: number) {
-    const [epic, count] = await this.epicRepository.findAllByWorkspaceId(id);
+    const epic = await this.epicRepository.findAllByWorkspaceId(id);
+
+    const count = epic.length
+    
     return {epic, count}
   }
 

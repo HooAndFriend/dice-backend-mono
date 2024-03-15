@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Epic from '../domain/epic.entity';
+import { TicketStatus } from '@/src/global/enum/ticket.enum';
 
 @CustomRepository(Epic)
 export default class EpicRepository extends Repository<Epic> {
@@ -37,18 +38,20 @@ export default class EpicRepository extends Repository<Epic> {
   public async findAllByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([
-        'workspace.id',
         'epic.id',
         'epic.name',
         'epic.code',
-        'ticket.id',
       ])
-      .leftJoin('epic.workspace', 'workspace')
+      .addSelect('COUNT(ticket.adminId)', 'allTicketCount')
+      .addSelect('COUNT(CASE WHEN ticket.status = :status THEN ticket.adminId END)', 'doneTicketCount')
+      .setParameter('status', TicketStatus.Compeleted)
       .leftJoin('epic.ticket', 'ticket')
-      .where('epic.workspace = :workspaceId', { workspaceId });
-    return await querybuilder.getManyAndCount();
-  }
+      .where('epic.workspace = :workspaceId', { workspaceId })
+      .groupBy('epic.id')
 
+    return await querybuilder.getRawMany();
+  }
+  
   public async findOneEpicById(epicId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([

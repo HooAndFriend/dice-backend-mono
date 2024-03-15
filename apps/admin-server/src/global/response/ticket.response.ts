@@ -13,8 +13,21 @@ export const TicketResponse = {
       data: {
         ticket: [
           {
+            id: 1,
             name: '상세보기 버튼',
+            content: "ticket 내용",
             status: TicketStatus.Reopen,
+            workspace: {
+              "id": 1
+            },
+            epic: {
+              "id": 1
+            },
+            admin: {
+              "id": 1,
+              "nickname": "Pinomaker",
+              "profile": "https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450"
+            },
             worker: {
               id: 2,
               profile:
@@ -22,7 +35,7 @@ export const TicketResponse = {
             },
             storypoint : 30,
             dueDate: '2024-01-20',
-            endDate: '2024-01-19',
+            completeDate: '2024-01-19',
             reopenDate: '2024-01-22',
           },
         ],
