@@ -13,16 +13,29 @@ export const TicketResponse = {
       data: {
         ticket: [
           {
+            id : 1,
             name: '상세보기 버튼',
             status: TicketStatus.Reopen,
+            dueDate: '2024-01-20',
+            completeDate: '2024-01-19',
+            reopenDate: '2024-01-22',
+            workspace: {
+              id: 1
+            },
             worker: {
               id: 2,
+              nickname: "Pinomaker",
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
             },
-            dueDate: '2024-01-20',
-            endDate: '2024-01-19',
-            reopenDate: '2024-01-22',
+            admin: {
+              id: 1,
+              nickname: "Pinomaker",
+              profile: "https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450"
+            },
+            epic: {
+              id: 1
+            }
           },
         ],
         count: 1,
@@ -142,8 +155,17 @@ export const TicketResponse = {
             id: 3,
             code: 'DICE-1',
             name: '게시판',
-            allTicketCount: 20,
-            doneTicketCount: 16,
+            workspace: {
+              "id": 1
+            },
+            ticket: [
+              {
+                "id": 1
+              },
+              {
+                "id": 2
+              }
+            ]
           },
         ],
         count: 1,
@@ -160,13 +182,27 @@ export const TicketResponse = {
             id: 3,
             name: '상세보기 버튼',
             status: TicketStatus.Reopen,
+            content: "ticket 내용",
+            storypoint: 0,
+            workspace: {
+              id: 1
+            },
             worker: {
               id: 2,
+              nickname: "Pinomaker",
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
             },
+            admin: {
+              id: 1,
+              nickname: "Pinomaker",
+              profile: "https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450"
+            },
+            epic: {
+              id: 1
+            },
             dueDate: '2024-01-20',
-            endDate: '2024-01-19',
+            completeDate: '2024-01-19',
             reopenDate: '2024-01-22',
           },
         ],
