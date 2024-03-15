@@ -38,26 +38,10 @@ export default class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'TICKET 전체 조회' })
+  @ApiOperation({ summary: 'TICKET 리스트 조회' })
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findAllTicket(
-  ) {
-    const ticket = await this.ticketService.findAllTicket();
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Finding Tickets',
-      data: ticket,
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'TICKET 상세 조회' })
-  @ApiResponse(TicketResponse.findAllTicket[200])
-  @UseGuards(JwtAccessGuard)
-  @Get('/detail/')
   public async findDetailTicket(
     @Query() findquery: RequestTicketFindDto,
   ) {
@@ -65,7 +49,7 @@ export default class TicketController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Finding Tickets',
+      message: 'Ticket을 전체 조회합니다.',
       data: ticket,
     });
   }

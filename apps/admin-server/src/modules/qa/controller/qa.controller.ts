@@ -46,22 +46,6 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 리스트 조회' })
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/')
-  public async findQaList(
-  ) {
-    const qaList = await this.qaService.findQaList()
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Qa리스트를 조회합니다.',
-      data: qaList,
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 상세 조회' })
-  @ApiResponse(QaResponse.findQaList[200])
-  @UseGuards(JwtAccessGuard)
   @Get('/detail/')
   public async findQaListByQuery(
     @Query() findquery: RequestQaFindDto,
@@ -70,7 +54,7 @@ export default class QaController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Qa리스트를 상세 조회합니다.',
+      message: 'Qa리스트를 조회합니다.',
       data: qaList,
     });
   }

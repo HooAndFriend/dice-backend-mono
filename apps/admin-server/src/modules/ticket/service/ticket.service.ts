@@ -18,18 +18,8 @@ import RequestTicketFindDto from '../dto/ticket.find.dto';
 @Injectable()
 export default class TicketService {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly epicRepository: EpicRepository,
     private readonly ticketRepository: TicketRepository,
-    private readonly ticketFileRepository: TicketFileRepository,
-    private readonly ticketCommentRepository: TicketCommentRepository,
   ) {}
-
-  public async findAllTicket() {
-    const [ticket, count] = await this.ticketRepository.findAllTicket();
-    
-    return {ticket, count};
-  }
   public async findTicketByQuery(findquery: RequestTicketFindDto) {
     const [ticket, count] = await this.ticketRepository.findTicketByQuery(findquery);
     
