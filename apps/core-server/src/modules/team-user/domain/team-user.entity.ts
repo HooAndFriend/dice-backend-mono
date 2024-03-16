@@ -32,7 +32,7 @@ export default class TeamUser extends BaseTimeEntity {
     type: 'varchar',
     length: 120,
     comment: '초대자 ID',
-    nullable: false,
+    nullable: true,
   })
   invitedId: string;
 
