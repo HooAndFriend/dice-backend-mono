@@ -40,17 +40,9 @@ export default class UserRepository extends Repository<User> {
         'user.email',
         'user.profile',
         'user.password',
-        'workspace.id',
-        'workspace.name',
-        'workspace.uuid',
-        'workspace.profile',
-        'workspaceFunction.id',
-        'workspaceFunction.function',
       ])
-      .leftJoin('user.workspace', 'workspace')
-      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
       .where('user.token = :token', { token })
-      .where('user.type = :type', { type });
+      .andWhere('user.type = :type', { type });
 
     return await queryBuilder.getOne();
   }
