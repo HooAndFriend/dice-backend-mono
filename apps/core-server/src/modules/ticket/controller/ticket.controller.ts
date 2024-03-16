@@ -70,12 +70,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const ticket = await this.ticketService.findAllTicket(id);
+    const {data, count} = await this.ticketService.findAllTicket(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Ticket을 전체 조회합니다.',
-      data: ticket,
+      data: {data, count},
     });
   }
 
@@ -89,11 +89,11 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
-    const ticket = await this.ticketService.findOneTicket(id);
+    const data = await this.ticketService.findOneTicket(id);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: { ticket },
+      data: { data },
     });
   }
 
@@ -185,12 +185,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
   public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const epic = await this.ticketService.findAllEpic(id);
+    const {data, count} = await this.ticketService.findAllEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
-      data: epic,
+      data: {data, count},
     });
   }
 
@@ -204,12 +204,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic/detail/:epicId')
   public async findOneEpic(@Param('epicId') id: number) {
-    const epic = await this.ticketService.findOneEpic(id);
+    const {data, count} = await this.ticketService.findOneEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 상세 조회합니다.',
-      data: epic,
+      data: {data, count},
     });
   }
 
