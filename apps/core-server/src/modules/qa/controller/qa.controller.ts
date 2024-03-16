@@ -28,7 +28,10 @@ import {
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetWorkspace, WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import {
+  GetWorkspace,
+  WorkspaceRole,
+} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 import { GetUser } from '@/src/global/decorators/user/user.decorators';
 
@@ -54,6 +57,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { QaStatus } from '../../../global/enum/QaStatus.enum';
 import RoleEnum from '@/src/global/enum/Role';
+import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -63,7 +67,7 @@ export default class QaController {
   constructor(
     private readonly qaService: QaService,
     private readonly commentService: CommentService,
-  ) { }
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
@@ -75,14 +79,36 @@ export default class QaController {
   @Get('/')
   public async findQaList(
     @Query() findquery: RequestQaFindDto,
-    @GetWorkspace() { id } : Workspace
+    @GetWorkspace() { id }: Workspace,
   ) {
-    const qa = await this.qaService.findQaList(id, findquery)
+    const qa = await this.qaService.findQaList(id, findquery);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
       data: qa,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 생성' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestSimpleQaSaveDto })
+  @ApiResponse(QaResponse.saveQa[200])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/simple')
+  public async saveSimpleQa(
+    @Body() dto: RequestSimpleQaSaveDto,
+    @GetWorkspace() workspace: Workspace,
+    @GetUser() user: User,
+  ) {
+    await this.qaService.saveSimpleQa(dto, user, workspace);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 생성합니다.',
     });
   }
 
@@ -95,7 +121,10 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveQa(@Body() dto: RequestQaSaveDto, @GetWorkspace() { id }: Workspace) {
+  public async saveQa(
+    @Body() dto: RequestQaSaveDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
     await this.qaService.saveQa(dto, id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -113,7 +142,10 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/')
-  public async updateQa(@Body() dto: RequestQaUpdateDto, @GetWorkspace() {id} : Workspace) {
+  public async updateQa(
+    @Body() dto: RequestQaUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
     await this.qaService.updateQa(dto, id);
 
     return CommonResponse.createResponseMessage({
@@ -132,7 +164,10 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/status')
-  public async updateStatusQa(@Body() dto: RequestQaStatusUpdateDto, @GetWorkspace() {id} : Workspace) {
+  public async updateStatusQa(
+    @Body() dto: RequestQaStatusUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
     await this.qaService.updateQaStatus(dto, id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -149,12 +184,15 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:id')
-  public async deleteQa(@Param('id') qaid: number, @GetWorkspace() {id} : Workspace) {
+  public async deleteQa(
+    @Param('id') qaid: number,
+    @GetWorkspace() { id }: Workspace,
+  ) {
     await this.qaService.deleteQa(qaid, id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 삭제합니다.',
-    })
+    });
   }
 
   @ApiBearerAuth('access-token')
@@ -165,7 +203,10 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/comment/:qaId')
-  public async findQaComment(@Param('qaId') qaId: number, @GetWorkspace() {id} : Workspace) {
+  public async findQaComment(
+    @Param('qaId') qaId: number,
+    @GetWorkspace() { id }: Workspace,
+  ) {
     const qaComment = await this.commentService.findQaComment(qaId, id);
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -183,7 +224,11 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/comment')
-  public async saveComment(@Body() dto: RequestQaCommentSaveDto, @GetWorkspace() {id} : Workspace, @GetUser() user : User) {
+  public async saveComment(
+    @Body() dto: RequestQaCommentSaveDto,
+    @GetWorkspace() { id }: Workspace,
+    @GetUser() user: User,
+  ) {
     await this.commentService.saveComment(dto, id, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -201,7 +246,10 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/comment')
-  public async updateComment(@Body() dto: RequestQaCommentUpdateDto, @GetUser() user :User) {
+  public async updateComment(
+    @Body() dto: RequestQaCommentUpdateDto,
+    @GetUser() user: User,
+  ) {
     await this.commentService.updateComment(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -218,7 +266,7 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
-  public async deleteComment(@Param('id') id: number, @GetUser() user :User) {
+  public async deleteComment(@Param('id') id: number, @GetUser() user: User) {
     await this.commentService.deleteComment(id, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,

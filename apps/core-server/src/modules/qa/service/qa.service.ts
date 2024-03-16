@@ -1,5 +1,5 @@
 // ** Nest Imports
-import {HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -27,6 +27,7 @@ import Qa from '@/src/modules/qa/domain/qa.entity';
 import { QaStatus } from '../../../global/enum/QaStatus.enum';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 
 @Injectable()
 export default class QaService {
@@ -39,6 +40,30 @@ export default class QaService {
     private readonly dataSource: DataSource,
   ) {}
 
+  /**
+   * Save Simple Qa
+   * @param dto
+   * @param admin
+   * @param workspace
+   */
+  public async saveSimpleQa(
+    dto: RequestSimpleQaSaveDto,
+    admin: User,
+    workspace: Workspace,
+  ) {
+    await this.qaRepository.save(
+      this.qaRepository.create({
+        number: dto.number,
+        title: dto.title,
+        asIs: '',
+        toBe: '',
+        worker: admin,
+        admin,
+        workspace,
+      }),
+    );
+  }
+
   public async findQaList(workspaceId: number, findQuery: RequestQaFindDto) {
     const findWorkspace = await this.workspaceRepository.findOne({
       where: { id: workspaceId },
@@ -50,17 +75,17 @@ export default class QaService {
       workspaceId,
       findQuery,
     );
-    return {qa, count}
+    return { qa, count };
   }
 
-  public async saveQa(dto: RequestQaSaveDto, workspaceId : number) {
+  public async saveQa(dto: RequestQaSaveDto, workspaceId: number) {
     const findAdmin = await this.userRepository.findOne({
-      where : { email : dto.adminId }
+      where: { email: dto.adminId },
     });
     await this.validationQaUser(findAdmin, workspaceId);
 
     const findWorker = await this.userRepository.findOne({
-      where : { email : dto.workerId }
+      where: { email: dto.workerId },
     });
     await this.validationQaUser(findWorker, workspaceId);
 
@@ -69,7 +94,7 @@ export default class QaService {
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    try{
+    try {
       const files = await queryRunner.manager.save(
         dto.fileurls.map((fileURL) =>
           this.fileRepository.create({
@@ -77,7 +102,7 @@ export default class QaService {
           }),
         ),
       );
-  
+
       await queryRunner.manager.save(
         this.qaRepository.create({
           number: dto.number,
@@ -91,10 +116,9 @@ export default class QaService {
           workspace: workspace,
         }),
       );
-  
+
       await queryRunner.commitTransaction();
-    }
-    catch (error){
+    } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();
 
@@ -103,15 +127,14 @@ export default class QaService {
       }
 
       throw new InternalServerErrorException('Internal Server Error');
-    }
-    finally{
+    } finally {
       await queryRunner.release();
     }
     return;
   }
-  public async updateQa(dto: RequestQaUpdateDto, workspaceId : number) {
+  public async updateQa(dto: RequestQaUpdateDto, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId, workspace : { id : workspaceId } },
+      where: { id: dto.qaId, workspace: { id: workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -125,7 +148,7 @@ export default class QaService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    try{
+    try {
       const files = await queryRunner.manager.save(
         dto.fileurls.map((fileURL) =>
           this.fileRepository.create({
@@ -133,14 +156,13 @@ export default class QaService {
           }),
         ),
       );
-  
+
       findQa.updateQaFromDto(dto, findWorker, files);
-  
+
       await queryRunner.manager.save(Qa, findQa);
-  
+
       await queryRunner.commitTransaction();
-    }
-    catch (error){
+    } catch (error) {
       console.log(error);
       await queryRunner.rollbackTransaction();
 
@@ -149,15 +171,17 @@ export default class QaService {
       }
 
       throw new InternalServerErrorException('Internal Server Error');
-    }
-    finally{
+    } finally {
       await queryRunner.release();
     }
-    return
+    return;
   }
-  public async updateQaStatus(dto: RequestQaStatusUpdateDto, workspaceId : number) {
+  public async updateQaStatus(
+    dto: RequestQaStatusUpdateDto,
+    workspaceId: number,
+  ) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId, workspace : { id: workspaceId}},
+      where: { id: dto.qaId, workspace: { id: workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
@@ -166,28 +190,28 @@ export default class QaService {
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
 
-    return
+    return;
   }
-  public async deleteQa(qaId: number, workspaceId : number) {
+  public async deleteQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId, workspace : {id : workspaceId}},
+      where: { id: qaId, workspace: { id: workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
     await this.qaRepository.remove(findQa);
-    return 
+    return;
   }
   // workspace 소속 확인
   public async validationQaUser(user: User, workspaceId: number) {
-    if(!user) {
-      throw new NotFoundException('Not Found User')
+    if (!user) {
+      throw new NotFoundException('Not Found User');
     }
     const findworkspaceUser = await this.workspaceUserRepository.findOne({
       where: {
         workspace: { id: workspaceId },
-        teamUser: { user: { id : user.id } },
-      }
+        teamUser: { user: { id: user.id } },
+      },
     });
     console.log(user);
     if (!findworkspaceUser) {
