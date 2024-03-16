@@ -71,11 +71,11 @@ export default class QaService {
     if (!findWorkspace) {
       throw new NotFoundException('Not Found Workspace');
     }
-    const [qa, count] = await this.qaRepository.findQaList(
+    const [data, count] = await this.qaRepository.findQaList(
       workspaceId,
       findQuery,
     );
-    return { qa, count };
+    return { data, count };
   }
 
   public async saveQa(dto: RequestQaSaveDto, workspaceId: number) {

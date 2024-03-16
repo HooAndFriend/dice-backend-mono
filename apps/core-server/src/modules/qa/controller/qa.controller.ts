@@ -81,12 +81,12 @@ export default class QaController {
     @Query() findquery: RequestQaFindDto,
     @GetWorkspace() { id }: Workspace,
   ) {
-    const qa = await this.qaService.findQaList(id, findquery);
+    const {data, count} = await this.qaService.findQaList(id, findquery);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
-      data: qa,
+      data: {data, count},
     });
   }
 
@@ -207,11 +207,11 @@ export default class QaController {
     @Param('qaId') qaId: number,
     @GetWorkspace() { id }: Workspace,
   ) {
-    const qaComment = await this.commentService.findQaComment(qaId, id);
+    const {data, count} = await this.commentService.findQaComment(qaId, id);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '댓글을 조회합니다.',
-      data: qaComment,
+      data: {data, count},
     });
   }
 
