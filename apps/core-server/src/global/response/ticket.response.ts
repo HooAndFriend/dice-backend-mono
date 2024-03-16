@@ -11,7 +11,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Ticket을 전체 조회합니다.',
       data: {
-        ticket: [
+        data : [
           {
             id : 1,
             name: '상세보기 버튼',
@@ -150,7 +150,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
       data: {
-        epic: [
+        data : [
           {
             id: 3,
             code: 'DICE-1',
@@ -168,7 +168,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Epic을 상세 조회합니다.',
       data: {
-        ticket: [
+        data : [
           {
             id: 3,
             name: '상세보기 버튼',
@@ -235,7 +235,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: '댓글을 조회합니다.',
       data: {
-        comment: [
+        data: [
           {
             id: 3,
             user: {

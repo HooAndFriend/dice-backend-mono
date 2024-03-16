@@ -114,18 +114,18 @@ export default class TicketService {
 
   // ** Ticket 전체 조회
   public async findAllTicket(workspaceId: number) {
-    const [ticket, count] = await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
-    return {ticket, count}
+    const [data, count] = await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    return {data, count}
   }
 
   // ** Ticket 상세조회
   public async findOneTicket(id: number) {
-    const ticket = await this.findTicketById(id);
+    const data = await this.findTicketById(id);
     const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
       id,
     );
-    ticket.file = file;
-    return ticket;
+    data.file = file;
+    return data;
   }
 
   // ** Ticket 저장
@@ -288,18 +288,18 @@ export default class TicketService {
 
   // Epic 전체 조회
   public async findAllEpic(id: number) {
-    const epic = await this.epicRepository.findAllByWorkspaceId(id);
+    const data = await this.epicRepository.findAllByWorkspaceId(id);
 
-    const count = epic.length
+    const count = data.length
     
-    return {epic, count}
+    return {data, count}
   }
 
   // Epic 상세 조회
   public async findOneEpic(id: number) {
     const findEpic = await this.findEpicById(id);
-    const [epic, count] = await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
-    return {epic, count}
+    const [data, count] = await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
+    return {data, count}
   }
 
   // ** Epic 저장
