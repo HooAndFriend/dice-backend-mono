@@ -73,6 +73,7 @@ export default class TeamService {
           comment: dto.description,
           team,
           uuid: uuidv4(),
+          createdId: user.email,
         }),
       );
 
