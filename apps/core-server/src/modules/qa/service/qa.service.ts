@@ -64,32 +64,16 @@ export default class QaService {
     );
   }
 
-  public async findQaList(workspaceId: number, findQuery: RequestQaFindDto) {
-    const findWorkspace = await this.workspaceRepository.findOne({
-      where: { id: workspaceId },
-    });
-    if (!findWorkspace) {
-      throw new NotFoundException('Not Found Workspace');
-    }
+  public async findQaList(workspace: Workspace, findQuery: RequestQaFindDto) {
     const [data, count] = await this.qaRepository.findQaList(
-      workspaceId,
+      workspace.id,
       findQuery,
     );
     return { data, count };
   }
 
-  public async saveQa(dto: RequestQaSaveDto, workspaceId: number) {
-    const findAdmin = await this.userRepository.findOne({
-      where: { email: dto.adminId },
-    });
-    await this.validationQaUser(findAdmin, workspaceId);
-
-    const findWorker = await this.userRepository.findOne({
-      where: { email: dto.workerId },
-    });
-    await this.validationQaUser(findWorker, workspaceId);
-
-    const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
+  public async saveQa(dto: RequestQaSaveDto,admin : User, workspace: Workspace) {
+    const findWorker = await this.findQaUser(dto.workerId, workspace.id);
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -110,7 +94,7 @@ export default class QaService {
           asIs: dto.asIs,
           toBe: dto.toBe,
           memo: dto.memo,
-          admin: findAdmin,
+          admin: admin,
           worker: findWorker,
           file: files,
           workspace: workspace,
@@ -132,17 +116,10 @@ export default class QaService {
     }
     return;
   }
-  public async updateQa(dto: RequestQaUpdateDto, workspaceId: number) {
-    const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId, workspace: { id: workspaceId } },
-    });
-    if (!findQa) {
-      throw new NotFoundException('Not Found Qa');
-    }
-    const findWorker = await this.userRepository.findOne({
-      where: { id: dto.workerId },
-    });
-    await this.validationQaUser(findWorker, workspaceId);
+  public async updateQa(dto: RequestQaUpdateDto, workspace: Workspace) {
+    const findQa = await this.findQa(dto.qaId, workspace.id)
+    const findWorker = await this.findQaUser(dto.workerId, workspace.id);
+    
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -178,44 +155,51 @@ export default class QaService {
   }
   public async updateQaStatus(
     dto: RequestQaStatusUpdateDto,
-    workspaceId: number,
+    workspace: Workspace,
   ) {
-    const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId, workspace: { id: workspaceId } },
-    });
-    if (!findQa) {
-      throw new NotFoundException('Not Found Qa');
-    }
+    const findQa = await this.findQa(dto.qaId, workspace.id)
 
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
 
     return;
   }
-  public async deleteQa(qaId: number, workspaceId: number) {
+  public async deleteQa(qaId: number, workspace: Workspace) {
+    const findQa = await this.findQa(qaId, workspace.id)
+    await this.qaRepository.remove(findQa);
+    return;
+  }
+  // QA 찾기
+  public async findQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, workspace: { id: workspaceId } },
     });
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
-    await this.qaRepository.remove(findQa);
-    return;
+    return findQa;
   }
-  // workspace 소속 확인
-  public async validationQaUser(user: User, workspaceId: number) {
-    if (!user) {
+  // QA 유저 찾기
+  public async findQaUser(id: number, workspaceId: number) {
+    const findWorker = await this.userRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!findWorker) {
       throw new NotFoundException('Not Found User');
     }
+
     const findworkspaceUser = await this.workspaceUserRepository.findOne({
       where: {
         workspace: { id: workspaceId },
-        teamUser: { user: { id: user.id } },
+        teamUser: { user: { id: id } },
       },
     });
-    console.log(user);
+
     if (!findworkspaceUser) {
       throw new BadRequestException('User is not in the workspace');
     }
+
+    return findWorker
   }
 }

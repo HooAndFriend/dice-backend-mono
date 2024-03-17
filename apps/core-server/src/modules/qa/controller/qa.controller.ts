@@ -79,9 +79,9 @@ export default class QaController {
   @Get('/')
   public async findQaList(
     @Query() findquery: RequestQaFindDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    const {data, count} = await this.qaService.findQaList(id, findquery);
+    const {data, count} = await this.qaService.findQaList(workspace, findquery);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -123,9 +123,10 @@ export default class QaController {
   @Post('/')
   public async saveQa(
     @Body() dto: RequestQaSaveDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
+    @GetUser() user: User,
   ) {
-    await this.qaService.saveQa(dto, id);
+    await this.qaService.saveQa(dto, user, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 생성합니다.',
@@ -144,9 +145,9 @@ export default class QaController {
   @Put('/')
   public async updateQa(
     @Body() dto: RequestQaUpdateDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.qaService.updateQa(dto, id);
+    await this.qaService.updateQa(dto, workspace);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -166,9 +167,9 @@ export default class QaController {
   @Put('/status')
   public async updateStatusQa(
     @Body() dto: RequestQaStatusUpdateDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.qaService.updateQaStatus(dto, id);
+    await this.qaService.updateQaStatus(dto, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa상태를 수정합니다.',
@@ -186,9 +187,9 @@ export default class QaController {
   @Delete('/:id')
   public async deleteQa(
     @Param('id') qaid: number,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.qaService.deleteQa(qaid, id);
+    await this.qaService.deleteQa(qaid, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 삭제합니다.',
@@ -205,9 +206,9 @@ export default class QaController {
   @Get('/comment/:qaId')
   public async findQaComment(
     @Param('qaId') qaId: number,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    const {data, count} = await this.commentService.findQaComment(qaId, id);
+    const {data, count} = await this.commentService.findQaComment(qaId, workspace);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '댓글을 조회합니다.',
@@ -226,10 +227,10 @@ export default class QaController {
   @Post('/comment')
   public async saveComment(
     @Body() dto: RequestQaCommentSaveDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
   ) {
-    await this.commentService.saveComment(dto, id, user);
+    await this.commentService.saveComment(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',

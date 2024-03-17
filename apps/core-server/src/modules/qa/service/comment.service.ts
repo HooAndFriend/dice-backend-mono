@@ -15,6 +15,7 @@ import RequestCommentSaveDto from '@/src/modules/qa/dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import QaService from './qa.service';
 import User from '../../user/domain/user.entity';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class CommentService {
@@ -25,25 +26,14 @@ export default class CommentService {
     private readonly configService: ConfigService,
     private readonly qaService: QaService,
   ) {}
-  public async findQaComment(qaId: number, workspaceId : number) {
-    const findQa = await this.qaRepository.findOne({
-      where: { id: qaId, workspace : { id : workspaceId}},
-    });
-    if (!findQa) {
-      throw new NotFoundException('Not Found Qa');
-    }
+  public async findQaComment(qaId: number, workspace : Workspace) {
+    await this.qaService.findQa(qaId, workspace.id);
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
     return { data, count }
   }
-  public async saveComment(dto: RequestCommentSaveDto, workspaceId : number, user : User) {
-    const findQa = await this.qaRepository.findOne({
-      where: { id: dto.qaId, workspace : { id : workspaceId }},
-    });
-    if (!findQa) {
-      throw new NotFoundException('Not Found Qa');
-    }
-
+  public async saveComment(dto: RequestCommentSaveDto, workspace : Workspace, user : User) {
+    const findQa = await this.qaService.findQa(dto.qaId, workspace.id);
     await this.qacommentRepository.save(
       this.qacommentRepository.create({
         content: dto.content,
