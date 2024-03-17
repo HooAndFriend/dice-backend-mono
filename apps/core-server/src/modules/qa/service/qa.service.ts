@@ -63,7 +63,11 @@ export default class QaService {
       }),
     );
   }
-
+  /**
+   * Find Qa List
+   * @param workspace
+   * @param findQuery
+   */
   public async findQaList(workspace: Workspace, findQuery: RequestQaFindDto) {
     const [data, count] = await this.qaRepository.findQaList(
       workspace.id,
@@ -71,7 +75,12 @@ export default class QaService {
     );
     return { data, count };
   }
-
+  /**
+   * Save Qa
+   * @param dto
+   * @param admin
+   * @param workspace
+   */
   public async saveQa(dto: RequestQaSaveDto,admin : User, workspace: Workspace) {
     const findWorker = await this.findQaUser(dto.workerId, workspace.id);
     const queryRunner = this.dataSource.createQueryRunner();
@@ -116,6 +125,11 @@ export default class QaService {
     }
     return;
   }
+  /**
+   * Update Qa
+   * @param dto
+   * @param workspace
+   */
   public async updateQa(dto: RequestQaUpdateDto, workspace: Workspace) {
     const findQa = await this.findQa(dto.qaId, workspace.id)
     const findWorker = await this.findQaUser(dto.workerId, workspace.id);
@@ -153,6 +167,11 @@ export default class QaService {
     }
     return;
   }
+  /**
+   * Update Qa Status
+   * @param dto
+   * @param workspace
+   */
   public async updateQaStatus(
     dto: RequestQaStatusUpdateDto,
     workspace: Workspace,
@@ -169,7 +188,11 @@ export default class QaService {
     await this.qaRepository.remove(findQa);
     return;
   }
-  // QA 찾기
+  /**
+   * Find a Qa
+   * @param qaId
+   * @param workspaceId
+   */
   public async findQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, workspace: { id: workspaceId } },
@@ -179,10 +202,14 @@ export default class QaService {
     }
     return findQa;
   }
-  // QA 유저 찾기
-  public async findQaUser(id: number, workspaceId: number) {
+  /**
+   * Find a Qa User
+   * @param userId
+   * @param workspaceId
+   */
+  public async findQaUser(userId: number, workspaceId: number) {
     const findWorker = await this.userRepository.findOne({
-      where: { id: id },
+      where: { id: userId },
     });
 
     if (!findWorker) {
@@ -192,7 +219,7 @@ export default class QaService {
     const findworkspaceUser = await this.workspaceUserRepository.findOne({
       where: {
         workspace: { id: workspaceId },
-        teamUser: { user: { id: id } },
+        teamUser: { user: { id: userId } },
       },
     });
 
