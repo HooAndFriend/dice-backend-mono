@@ -7,27 +7,27 @@ import Workspace from '../domain/workspace.entity';
 
 @CustomRepository(Workspace)
 export default class WorkspaceRepository extends Repository<Workspace> {
-  // public async findWorkspace(workspaceId: number) {
-  //   const queryBuilder = this.createQueryBuilder('workspace')
-  //     .select([
-  //       'workspace.id',
-  //       'workspace.name',
-  //       'workspace.profile',
-  //       'workspace.comment',
-  //       'workspaceUser.id',
-  //       'workspaceUser.role',
-  //       'teamUser.id',
-  //       'user.nickname',
-  //       'user.email',
-  //       'user.profile',
-  //     ])
-  //     .leftJoin('workspace.workspaceUser', 'workspaceUser')
-  //     .leftJoin('workspaceUser.teamUser', 'teamUser')
-  //     .leftJoin('teamUser.user', 'user')
-  //     .where('workspace.id = :workspaceId', { workspaceId });
+  public async findWorkspace(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+        'workspaceUser.id',
+        'workspaceUser.role',
+        'teamUser.id',
+        'user.nickname',
+        'user.email',
+        'user.profile',
+      ])
+      .leftJoin('workspace.workspaceUser', 'workspaceUser')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .leftJoin('teamUser.user', 'user')
+      .where('workspace.id = :workspaceId', { workspaceId });
 
-  //   return await queryBuilder.getOne();
-  // }
+    return await queryBuilder.getOne();
+  }
 
   public async findMainWorkspace(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')

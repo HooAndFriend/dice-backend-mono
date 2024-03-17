@@ -437,14 +437,10 @@ export default class TicketService {
   // ** Setting 저장
   public async saveSetting(
     dto: RequestSettingSaveDto,
-    workspaceId: number,
+    workspace: Workspace,
     user: User,
   ) {
-    await this.settingTypeValidation(dto.type, workspaceId);
-
-    const workspace = await this.workspaceReposiotry.findOne({
-      where: { id: workspaceId },
-    });
+    await this.settingTypeValidation(dto.type, workspace.id);
 
     const setting = this.ticketSettingRepository.create({
       color: dto.color,
