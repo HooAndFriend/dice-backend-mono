@@ -380,10 +380,10 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Patch('/setting')
   public async updateSetting(
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @Body() dto: RequestSettingUpdateDto,
   ) {
-    await this.ticketService.updateSetting(dto, id);
+    await this.ticketService.updateSetting(dto, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Setting',
