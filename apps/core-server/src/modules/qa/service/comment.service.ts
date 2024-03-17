@@ -8,7 +8,6 @@ import QaRepository from '../repository/qa.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
 
 // ** Response Imports
-import CommonResponse from '@/src/global/dto/api.response';
 
 // ** enum, dto, entity, types Imports
 import RequestCommentSaveDto from '@/src/modules/qa/dto/comment.save.dto';

@@ -1,9 +1,13 @@
 // ** Nest Imports
 import { HttpException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
-import { Admin, DataSource } from 'typeorm';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../global/exception/CustomException';
+import {DataSource } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
@@ -11,20 +15,13 @@ import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.re
 import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 
 // ** Response Imports
-import CommonResponse from '../../../global/dto/api.response';
 
 // ** enum, dto, entity, types Imports
-import {
-  BadRequestException,
-  InternalServerErrorException,
-  NotFoundException,
-} from '../../../global/exception/CustomException';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
 import Qa from '@/src/modules/qa/domain/qa.entity';
-import { QaStatus } from '../../../global/enum/QaStatus.enum';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';

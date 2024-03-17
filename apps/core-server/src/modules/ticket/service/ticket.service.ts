@@ -22,7 +22,6 @@ import TicketCommentRepository from '../repository/ticket.comment.repository';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
 
 // ** Response Imports
-import CommonResponse from '@/src/global/dto/api.response';
 
 // Other Imports
 

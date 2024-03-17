@@ -21,7 +21,6 @@ import {
   ApiBody,
   ApiHeader,
   ApiOperation,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -55,7 +54,6 @@ import RequestQaFindDto from '../dto/qa.find.dto';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
-import { QaStatus } from '../../../global/enum/QaStatus.enum';
 import RoleEnum from '@/src/global/enum/Role';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 

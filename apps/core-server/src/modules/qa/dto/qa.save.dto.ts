@@ -1,5 +1,5 @@
 // ** Swagger Imports
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsArray, IsNumber, IsString } from 'class-validator';
