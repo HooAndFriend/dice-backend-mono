@@ -39,6 +39,7 @@ export default class UserService {
    */
   private async findUserById(userId: number) {
     const user = await this.userRepository.findUser(userId);
+
     if (!user) {
       throw new NotFoundException('Not Found User');
     }

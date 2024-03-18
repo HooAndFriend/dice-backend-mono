@@ -81,6 +81,8 @@ export default class UserRepository extends Repository<User> {
         'user.nickname',
         'user.createdDate',
         'user.lastLoginDate',
+        'user.deleted_date',
+        'user.deleted_reason',
         'user.type',
       ])
       .where('user.id = :id', { id });
