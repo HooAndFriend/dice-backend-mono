@@ -162,9 +162,9 @@ export default class TeamUserService {
    * Find Team User By Email
    * @param email
    */
-  public async isExistedTeamUserByEmail(email: string) {
+  public async isExistedTeamUserByEmail(email: string, teamId: number) {
     const teamUser = await this.teamUserRepository.exist({
-      where: { user: { email } },
+      where: { user: { email }, team: { id: teamId } },
     });
 
     if (teamUser) {

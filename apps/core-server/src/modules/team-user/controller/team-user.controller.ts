@@ -84,7 +84,7 @@ export default class TeamUserController {
     @GetTeam() team: Team,
     @GetUser() { email }: User,
   ) {
-    await this.teamUserService.isExistedTeamUserByEmail(dto.email);
+    await this.teamUserService.isExistedTeamUserByEmail(dto.email, team.id);
     await this.teamUserService.inviteTeamUser(team, dto, email);
 
     return CommonResponse.createResponseMessage({
