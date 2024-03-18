@@ -186,7 +186,7 @@ export default class QaService {
     return;
   }
   /**
-   * Find a Qa
+   * Find Qa by Id
    * @param qaId
    * @param workspaceId
    */

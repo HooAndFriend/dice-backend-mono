@@ -89,6 +89,27 @@ export default class QaController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(QaResponse.findQa[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findQaById(
+    @Param('id') id: number,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    const data = await this.qaService.findQa(id, workspace.id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Qa를 조회합니다.',
+      data: data,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 생성' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestSimpleQaSaveDto })

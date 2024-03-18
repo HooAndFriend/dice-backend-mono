@@ -46,6 +46,23 @@ export const QaResponse = {
       message: 'qa 리스트를 조회합니다.',
     }),
   },
+  findQa: {
+    200: createResponse({
+      data: {
+        createdDate: "2024-03-13T17:40:32.903Z",
+        modifiedDate: "2024-03-15T18:07:45.801Z",
+        id: 1,
+        number: "ISSUE-02",
+        status: "ALL",
+        title: "QA 제목입니다.",
+        asIs: "문제사항입니다.",
+        toBe: "기대결과입니다.",
+        memo: "메모입니다"
+      },
+      statusCode: 200,
+      message: 'qa 리스트를 조회합니다.',
+    }),
+  },
   saveQa: {
     200: createMessageResponse({
       statusCode: 200,
