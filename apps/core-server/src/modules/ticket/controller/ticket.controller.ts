@@ -359,11 +359,11 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Post('/setting')
   public async saveSetting(
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
     @Body() dto: RequestSettingSaveDto,
   ) {
-    await this.ticketService.saveSetting(dto, id, user);
+    await this.ticketService.saveSetting(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Setting',
@@ -380,10 +380,10 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Patch('/setting')
   public async updateSetting(
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @Body() dto: RequestSettingUpdateDto,
   ) {
-    await this.ticketService.updateSetting(dto, id);
+    await this.ticketService.updateSetting(dto, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Setting',

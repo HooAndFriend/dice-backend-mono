@@ -1,9 +1,6 @@
 // ** Swagger Imports
 import {
-  ApiParam,
   ApiProperty,
-  ApiPropertyOptional,
-  ApiQuery,
 } from '@nestjs/swagger';
 
 // ** Pipe Imports
