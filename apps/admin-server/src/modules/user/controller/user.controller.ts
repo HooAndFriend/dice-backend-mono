@@ -34,6 +34,7 @@ import RequestUserFindDto from '../dto/user.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import TeamUserService from '../../team-user/service/team-user.service';
 import WorkspaceUserService from '../../workspace-user/service/workspace-user.service';
+import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -58,6 +59,23 @@ export default class UserController {
       data: { data, count: data.length },
       statusCode: 200,
       message: '유저 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '탈퇴한 유저 리스트 조회' })
+  @ApiResponse(UserResponse.findUserList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/delete')
+  public async findDeleteUserList(
+    @Query(ValidationPipe) dto: RequestDeleteUserFindDto,
+  ) {
+    const [data, count] = await this.userService.findDeleteUserList(dto);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: '삭제된 유저 리스트를 조회합니다.',
     });
   }
 
