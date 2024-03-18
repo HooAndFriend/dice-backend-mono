@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
@@ -39,6 +39,8 @@ export default class QaService {
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly dataSource: DataSource,
   ) {}
+
+  private logger = new Logger();
 
   /**
    * Save Simple Qa
@@ -119,7 +121,7 @@ export default class QaService {
 
       await queryRunner.commitTransaction();
     } catch (error) {
-      console.log(error);
+      this.logger.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
@@ -163,7 +165,7 @@ export default class QaService {
 
       await queryRunner.commitTransaction();
     } catch (error) {
-      console.log(error);
+      this.logger.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {
@@ -213,7 +215,7 @@ export default class QaService {
         teamUser: { user: { id: user.id } },
       },
     });
-    console.log(user);
+    this.logger.log(user);
     if (!findworkspaceUser) {
       throw new BadRequestException('User is not in the workspace');
     }

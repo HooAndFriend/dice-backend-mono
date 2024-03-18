@@ -372,7 +372,7 @@ export default class AuthService {
         ],
       };
     } catch (error) {
-      console.log(error);
+      this.logger.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {

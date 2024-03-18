@@ -52,7 +52,7 @@ export class LoggingInterceptor implements NestInterceptor {
             })
             .toPromise()
             .catch((err) => {
-              console.log(err);
+              Logger.log(err);
             });
         },
         // eslint-disable-next-line @typescript-eslint/no-empty-function
