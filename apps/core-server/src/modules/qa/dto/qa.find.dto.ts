@@ -9,9 +9,10 @@ export default class RequestQaFindDto {
   @ApiProperty({
     example: QaStatus.NOTHING,
     enum: QaStatus,
-    default: QaStatus.NOTHING,
+    required: false,
     type: QaStatus,
   })
+  @IsOptional()
   @IsEnum(QaStatus)
   status: QaStatus;
 
@@ -19,12 +20,6 @@ export default class RequestQaFindDto {
   @IsString()
   @IsOptional()
   title: string;
-
-  @ApiProperty({ example: 1, required: false })
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  qaId: number;
 
   @ApiProperty({ example: 'Pinomaker', required: false })
   @IsString()

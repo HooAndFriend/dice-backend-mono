@@ -50,9 +50,7 @@ export default class QaRepository extends Repository<Qa> {
         title: `%${findQuery.title}%`,
       });
     }
-    if (findQuery.qaId) {
-      queryBuilder.andWhere('qa.id = :qaId', { qaId: findQuery.qaId });
-    }
+
     if (findQuery.adminNickname) {
       queryBuilder.andWhere('admin.nickname LIKE :adminNickname', {
         adminNickname: `%${findQuery.adminNickname}%`,
