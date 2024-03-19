@@ -40,11 +40,12 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.file', 'file')
       .where('qa.workspaceId = :workspaceId', { workspaceId });
 
-    if (findQuery.status !== QaStatus.NOTHING) {
+    if (findQuery.status) {
       queryBuilder.andWhere('qa.status = :status', {
         status: findQuery.status,
       });
     }
+
     if (findQuery.title) {
       queryBuilder.andWhere('qa.title LIKE :title', {
         title: `%${findQuery.title}%`,
@@ -56,6 +57,7 @@ export default class QaRepository extends Repository<Qa> {
         adminNickname: `%${findQuery.adminNickname}%`,
       });
     }
+
     if (findQuery.workerNickname) {
       queryBuilder.andWhere('worker.nickname LIKE :workerNickname', {
         workerNickname: `%${findQuery.workerNickname}%`,
