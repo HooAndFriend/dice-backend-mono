@@ -79,12 +79,15 @@ export default class QaController {
     @Query() findquery: RequestQaFindDto,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const {data, count} = await this.qaService.findQaList(workspace, findquery);
+    const { data, count } = await this.qaService.findQaList(
+      workspace,
+      findquery,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
-      data: {data, count},
+      data: { data, count },
     });
   }
 
@@ -96,11 +99,8 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
-  public async findQaById(
-    @Param('id') id: number,
-    @GetWorkspace() workspace: Workspace,
-  ) {
-    const data = await this.qaService.findQa(id, workspace.id);
+  public async findQaById(@Param('id') id: number) {
+    const data = await this.qaService.findQaWithFileAndWorkerAndAdmin(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -227,11 +227,14 @@ export default class QaController {
     @Param('qaId') qaId: number,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const {data, count} = await this.commentService.findQaComment(qaId, workspace);
+    const { data, count } = await this.commentService.findQaComment(
+      qaId,
+      workspace,
+    );
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '댓글을 조회합니다.',
-      data: {data, count},
+      data: { data, count },
     });
   }
 

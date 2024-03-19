@@ -192,6 +192,7 @@ export default class QaService {
     await this.qaRepository.remove(findQa);
     return;
   }
+
   /**
    * Find Qa by Id
    * @param qaId
@@ -201,11 +202,29 @@ export default class QaService {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, workspace: { id: workspaceId } },
     });
+
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
     }
+
     return findQa;
   }
+
+  /**
+   * Find Qa by Id
+   * @param qaId
+   * @param workspaceId
+   */
+  public async findQaWithFileAndWorkerAndAdmin(qaId: number) {
+    const findQa = await this.qaRepository.findQaById(qaId);
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+
+    return findQa;
+  }
+
   /**
    * Find a Qa User
    * @param userId

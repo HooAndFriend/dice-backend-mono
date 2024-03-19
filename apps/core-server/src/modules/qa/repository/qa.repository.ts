@@ -66,4 +66,35 @@ export default class QaRepository extends Repository<Qa> {
 
     return await queryBuilder.getManyAndCount();
   }
+
+  public async findQaById(qaId: number) {
+    const queryBuilder = this.createQueryBuilder('qa')
+      .select([
+        'qa.id',
+        'qa.number',
+        'qa.status',
+        'qa.title',
+        'qa.asIs',
+        'qa.toBe',
+        'qa.memo',
+        'qa.adminId',
+        'qa.workerId',
+        'admin.email',
+        'admin.nickname',
+        'admin.profile',
+        'worker.email',
+        'worker.nickname',
+        'worker.profile',
+        'file.id',
+        'file.url',
+        'qa.createdDate',
+        'qa.modifiedDate',
+      ])
+      .leftJoin('qa.admin', 'admin')
+      .leftJoin('qa.worker', 'worker')
+      .leftJoin('qa.file', 'file')
+      .where('qa.id = :qaId', { qaId });
+
+    return await queryBuilder.getOne();
+  }
 }
