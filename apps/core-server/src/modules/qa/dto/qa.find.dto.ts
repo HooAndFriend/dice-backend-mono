@@ -1,7 +1,5 @@
 // ** Swagger Imports
-import {
-  ApiProperty,
-} from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
@@ -9,9 +7,9 @@ import { QaStatus } from '@/src/global/enum/QaStatus.enum';
 import { Type } from 'class-transformer';
 export default class RequestQaFindDto {
   @ApiProperty({
-    example: QaStatus.ALL,
+    example: QaStatus.NOTHING,
     enum: QaStatus,
-    default: QaStatus.ALL,
+    default: QaStatus.NOTHING,
     type: QaStatus,
   })
   @IsEnum(QaStatus)

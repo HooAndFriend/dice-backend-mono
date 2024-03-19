@@ -34,7 +34,7 @@ export default class Qa extends BaseTimeEntity {
     enum: QaStatus,
     comment: '상태',
     nullable: false,
-    default: QaStatus.ALL,
+    default: QaStatus.NOTHING,
   })
   status: QaStatus;
 
