@@ -149,4 +149,22 @@ export default class TeamUserController {
       data: { data, count },
     });
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'team-code', required: true })
+  @ApiOperation({ summary: '팀의 유저 리스트 조회' })
+  @ApiResponse(TeamUserResponse.findTeamUserList[200])
+  @TeamRole(RoleEnum.VIEWER)
+  @UseGuards(TeamRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/user/search')
+  public async searchTeamUserList(@GetTeam() { id }: Team) {
+    const [data, count] = await this.teamUserService.findTeamUserList(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Team User List',
+      data: { data, count },
+    });
+  }
 }

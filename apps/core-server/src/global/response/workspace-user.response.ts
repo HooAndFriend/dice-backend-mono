@@ -117,6 +117,42 @@ export const WorkspaceUserResponse = {
       message: 'Find Workspace List',
     }),
   },
+  searchWorkspaceUser: {
+    200: createResponse({
+      data: [
+        {
+          id: 6,
+          role: 'ADMIN',
+          teamUser: {
+            id: 6,
+            user: {
+              id: 6,
+              email: 'yoonalim2003@gmail.com',
+              nickname: 'yoonananana',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            },
+          },
+        },
+        {
+          id: 13,
+          role: 'VIEWER',
+          teamUser: {
+            id: 14,
+            user: {
+              id: 6,
+              email: 'yoonalim2003@gmail.com',
+              nickname: 'yoonananana',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            },
+          },
+        },
+      ],
+      statusCode: 200,
+      message: 'Find Workspace User List',
+    }),
+  },
   findInviteUserList: {
     200: createResponse({
       data: {

@@ -11,6 +11,7 @@ import TeamUserRepository from '../../team-user/repository/team-user.repository'
 // ** enum, dto, entity, types Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -62,6 +63,22 @@ export default class WorkspaceUserService {
    */
   public async deleteWorksapceUser(workspaceUserId: number) {
     await this.workspaceUserRepository.delete(workspaceUserId);
+  }
+
+  /**
+   * Search Workspace User List
+   * @param dto
+   * @param workspaceId
+   * @returns
+   */
+  public async searchWorkspaceUser(
+    dto: RequestWorkspaceUserFindDto,
+    workspaceId: number,
+  ) {
+    return await this.workspaceUserRepository.searchWorkspaceUser(
+      dto,
+      workspaceId,
+    );
   }
 
   /**
