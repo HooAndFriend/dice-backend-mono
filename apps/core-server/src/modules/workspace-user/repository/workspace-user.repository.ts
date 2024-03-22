@@ -106,6 +106,6 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         });
     }
 
-    return await queryBuilder.getMany();
+    return await queryBuilder.getManyAndCount();
   }
 }
