@@ -102,9 +102,6 @@ export default class TicketService {
    */
   public async findSettingById(settingId: number) {
     const findSetting = this.ticketSettingRepository.findSettingById(settingId);
-    if (!findSetting) {
-      throw new NotFoundException('Cannot Find Setting.');
-    }
     return findSetting;
   }
 

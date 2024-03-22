@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import TicketSetting from '../domain/ticket.setting.entity';
+import { NotFoundException } from '@nestjs/common';
 
 @CustomRepository(TicketSetting)
 export default class TicketSettingRepository extends Repository<TicketSetting> {
@@ -53,6 +54,12 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
       .leftJoin('setting.workspace', 'workspace')
       .leftJoin('setting.admin', 'admin')
       .where('setting.id = :settingId', { settingId });
-    return await querybuilder.getOne();
+    const findSetting = await querybuilder.getOne();
+
+    if (!findSetting) {
+      throw new NotFoundException('Cannot Find Setting.');
+    }
+
+    return findSetting;
   }
 }
