@@ -6,7 +6,6 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,10 +19,6 @@ import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
-
-// ** Response Imports
-
-// Other Imports
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
@@ -43,6 +38,7 @@ import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class TicketService {
@@ -65,7 +61,7 @@ export default class TicketService {
    * @param ticketId
    */
   public async findTicketById(ticketId: number) {
-    const findTicket = this.ticketRepository.findTicketById(ticketId);
+    const findTicket = await this.ticketRepository.findTicketById(ticketId);
     if (!findTicket) {
       throw new NotFoundException('Cannot Find Ticket.');
     }
@@ -77,7 +73,7 @@ export default class TicketService {
    * @param epicId
    */
   public async findEpicById(epicId: number) {
-    const findEpic = this.epicRepository.findEpicById(epicId);
+    const findEpic = await this.epicRepository.findEpicById(epicId);
     if (!findEpic) {
       throw new NotFoundException('Cannot Find Epic.');
     }
@@ -89,7 +85,9 @@ export default class TicketService {
    * @param ticketId
    */
   public async findCommentById(ticketId: number) {
-    const findComment = this.ticketCommentRepository.findCommentById(ticketId);
+    const findComment = await this.ticketCommentRepository.findCommentById(
+      ticketId,
+    );
     if (!findComment) {
       throw new NotFoundException('Cannot Find Comment.');
     }
@@ -101,7 +99,14 @@ export default class TicketService {
    * @param settingId
    */
   public async findSettingById(settingId: number) {
-    const findSetting = this.ticketSettingRepository.findSettingById(settingId);
+    const findSetting = await this.ticketSettingRepository.findSettingById(
+      settingId,
+    );
+
+    if (!findSetting) {
+      throw new NotFoundException('Cannot Find Setting.');
+    }
+
     return findSetting;
   }
 

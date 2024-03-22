@@ -54,12 +54,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
       .leftJoin('setting.workspace', 'workspace')
       .leftJoin('setting.admin', 'admin')
       .where('setting.id = :settingId', { settingId });
-    const findSetting = await querybuilder.getOne();
-
-    if (!findSetting) {
-      throw new NotFoundException('Cannot Find Setting.');
-    }
-
-    return findSetting;
+    return await querybuilder.getOne();
   }
 }
