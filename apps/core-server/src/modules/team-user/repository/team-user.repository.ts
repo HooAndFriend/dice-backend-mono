@@ -28,6 +28,8 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'workspace.name',
         'workspace.profile',
         'workspace.uuid',
+        'workspaceFunction.id',
+        'workspaceFunction.function',
         'workspaceUser.id',
         'workspaceUser.role',
         'teamUser.id',
@@ -35,6 +37,7 @@ export default class TeamUserRepository extends Repository<TeamUser> {
       ])
       .leftJoin('userTeam.team', 'team')
       .leftJoin('team.workspace', 'workspace')
+      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
       .leftJoin('workspace.workspaceUser', 'workspaceUser')
       .leftJoin('workspaceUser.teamUser', 'teamUser')
       .leftJoin('teamUser.user', 'user')
