@@ -95,7 +95,7 @@ export default class TicketService {
     }
     return findComment;
   }
-  
+
   /**
    * Find Setting by Id
    * @param settingId
@@ -134,8 +134,9 @@ export default class TicketService {
    * @param workspaceId
    */
   public async findAllTicket(workspaceId: number) {
-    const [data, count] = await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
-    return {data, count}
+    const [data, count] =
+      await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    return { data, count };
   }
 
   /**
@@ -334,9 +335,9 @@ export default class TicketService {
   public async findAllEpic(id: number) {
     const data = await this.epicRepository.findAllByWorkspaceId(id);
 
-    const count = data.length
-    
-    return {data, count}
+    const count = data.length;
+
+    return { data, count };
   }
 
   /**
@@ -345,8 +346,10 @@ export default class TicketService {
    */
   public async findOneEpic(id: number) {
     const findEpic = await this.findEpicById(id);
-    const [data, count] = await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
-    return {data, count}
+    const [data, count] = await this.ticketRepository.findAllTicketByEpicId(
+      findEpic.id,
+    );
+    return { data, count };
   }
 
   /**

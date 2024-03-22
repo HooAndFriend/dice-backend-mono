@@ -70,12 +70,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const {data, count} = await this.ticketService.findAllTicket(id);
+    const { data, count } = await this.ticketService.findAllTicket(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Ticket을 전체 조회합니다.',
-      data: {data, count},
+      data: { data, count },
     });
   }
 
@@ -185,12 +185,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
   public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const {data, count} = await this.ticketService.findAllEpic(id);
+    const { data, count } = await this.ticketService.findAllEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
-      data: {data, count},
+      data: { data, count },
     });
   }
 
@@ -204,12 +204,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic/detail/:epicId')
   public async findOneEpic(@Param('epicId') id: number) {
-    const {data, count} = await this.ticketService.findOneEpic(id);
+    const { data, count } = await this.ticketService.findOneEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 상세 조회합니다.',
-      data: {data, count},
+      data: { data, count },
     });
   }
 
@@ -352,8 +352,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 생성' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.saveSetting[200])
+  @ApiResponse(TicketResponse.saveSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -373,8 +373,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 수정' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.updateSetting[200])
+  @ApiResponse(TicketResponse.updateSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -393,8 +393,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 삭제' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.deleteSetting[200])
+  @ApiResponse(TicketResponse.deleteSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -410,8 +410,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 전체 조회' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.findSetting[200])
+  @ApiResponse(TicketResponse.findSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -429,8 +429,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 단일 조회' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.findOneSetting[200])
+  @ApiResponse(TicketResponse.findOneSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)

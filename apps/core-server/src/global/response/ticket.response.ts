@@ -11,31 +11,32 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Ticket을 전체 조회합니다.',
       data: {
-        data : [
+        data: [
           {
-            id : 1,
+            id: 1,
             name: '상세보기 버튼',
             status: TicketStatus.Reopen,
             dueDate: '2024-01-20',
             completeDate: '2024-01-19',
             reopenDate: '2024-01-22',
             workspace: {
-              id: 1
+              id: 1,
             },
             worker: {
               id: 2,
-              nickname: "Pinomaker",
+              nickname: 'Pinomaker',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2F%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=da1aeee5-3cd9-4be1-a99c-80d80bee3f7c',
             },
             admin: {
               id: 1,
-              nickname: "Pinomaker",
-              profile: "https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450"
+              nickname: 'Pinomaker',
+              profile:
+                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
             },
             epic: {
-              id: 1
-            }
+              id: 1,
+            },
           },
         ],
         count: 1,
@@ -150,7 +151,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
       data: {
-        data : [
+        data: [
           {
             id: 3,
             code: 'DICE-1',
@@ -168,7 +169,7 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Epic을 상세 조회합니다.',
       data: {
-        data : [
+        data: [
           {
             id: 3,
             name: '상세보기 버튼',
@@ -287,6 +288,102 @@ export const TicketResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: '댓글 정보를 찾을 수 없습니다.',
+    }),
+  },
+  findSetting: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 10,
+            color: 'ff8080',
+            type: 'FUNC',
+            description: '냐',
+            workspace: {
+              id: 1,
+            },
+            admin: {
+              id: 1,
+            },
+          },
+          {
+            id: 11,
+            color: 'ffffff',
+            type: 'SCN',
+            description: 'description',
+            workspace: {
+              id: 1,
+            },
+            admin: {
+              id: 1,
+            },
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: 'Find Settings',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'setting에 대한 정보를 찾을 수 없습니다.',
+    }),
+  },
+  findOneSetting: {
+    200: createResponse({
+      data: {
+        id: 10,
+        color: 'ff8080',
+        type: 'FUNC',
+        description: '냐',
+        workspace: {
+          id: 1,
+        },
+        admin: {
+          id: 1,
+        },
+      },
+      statusCode: 200,
+      message: 'Find Setting',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'setting에 대한 정보를 찾을 수 없습니다.',
+    }),
+  },
+  saveSetting: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Save Setting',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Ticket 정보를 찾을 수 없습니다.',
+    }),
+  },
+  updateSetting: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Update Setting',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: '해당 setting 정보를 찾을 수 없습니다.',
+    }),
+  },
+  deleteSetting: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Setting',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: '해당 setting 정보를 찾을 수 없습니다.',
     }),
   },
 };
