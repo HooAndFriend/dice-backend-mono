@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,6 +17,7 @@ import Qa from './domain/qa.entity';
 import Comment from './domain/comment.entity';
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 import WorkspaceUserModule from '../workspace-user/workspace-user.module';
+import UserModule from '../user/user.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import WorkspaceUserModule from '../workspace-user/workspace-user.module';
       FileRepository,
       WorkspaceRepository,
     ]),
-    WorkspaceUserModule
+    forwardRef(() => WorkspaceUserModule),
+    forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [QaController],

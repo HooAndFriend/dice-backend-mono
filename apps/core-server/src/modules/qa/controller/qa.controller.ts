@@ -14,6 +14,7 @@ import {
 // ** Module Imports
 import QaService from '../service/qa.service';
 import CommentService from '../service/comment.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -50,12 +51,15 @@ import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
+
 // ** Entity Imports
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+
 // ** Emum Imports
 import RoleEnum from '@/src/global/enum/Role';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
+import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -65,6 +69,7 @@ export default class QaController {
   constructor(
     private readonly qaService: QaService,
     private readonly commentService: CommentService,
+    private readonly userService: UserService,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -189,6 +194,31 @@ export default class QaController {
     @GetWorkspace() workspace: Workspace,
   ) {
     await this.qaService.updateQaStatus(dto, workspace);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa상태를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 유저 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaUserUpdateDto })
+  @ApiResponse(QaResponse.updateUserQa[200])
+  @ApiResponse(QaResponse.updateUserQa[404.1])
+  @ApiResponse(QaResponse.updateUserQa[404.2])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/user')
+  public async updateUserQa(
+    @Body() dto: RequestQaUserUpdateDto,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    await this.qaService.isExistedQaById(dto.qaId);
+    const user = await this.userService.findUserById(dto.userId);
+    await this.qaService.updateUserQa(dto, user);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa상태를 수정합니다.',

@@ -44,4 +44,19 @@ export default class UserService {
       data: findUser,
     });
   }
+
+  /**
+   * Find User By Id
+   * @param userId
+   * @returns
+   */
+  public async findUserById(userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new NotFoundException('Not Found User');
+    }
+
+    return user;
+  }
 }

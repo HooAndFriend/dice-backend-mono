@@ -26,6 +26,7 @@ import Qa from '@/src/modules/qa/domain/qa.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
+import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 
 @Injectable()
 export default class QaService {
@@ -250,5 +251,32 @@ export default class QaService {
     }
 
     return findWorker;
+  }
+
+  /**
+   * Update User Qa
+   * @param dto
+   * @param user
+   */
+  public async updateUserQa(dto: RequestQaUserUpdateDto, user: User) {
+    if (dto.type === 'admin') {
+      await this.qaRepository.update(dto.qaId, { admin: user });
+    } else {
+      await this.qaRepository.update(dto.qaId, { worker: user });
+    }
+  }
+
+  /**
+   * Existed Qa By Id
+   * @param qaId
+   */
+  public async isExistedQaById(qaId: number) {
+    const findQa = await this.qaRepository.exist({
+      where: { id: qaId },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
   }
 }
