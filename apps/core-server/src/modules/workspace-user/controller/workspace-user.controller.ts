@@ -215,10 +215,13 @@ export default class WorkspaceUserController {
     @Query(ValidationPipe) dto: RequestWorkspaceUserFindDto,
     @GetWorkspace() { id }: Workspace,
   ) {
-    const data = await this.workspaceUserService.searchWorkspaceUser(dto, id);
+    const [data, count] = await this.workspaceUserService.searchWorkspaceUser(
+      dto,
+      id,
+    );
 
     return CommonResponse.createResponse({
-      data,
+      data: { data, count },
       statusCode: 200,
       message: 'Find Workspace User List',
     });
