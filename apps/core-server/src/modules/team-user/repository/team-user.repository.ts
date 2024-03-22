@@ -24,10 +24,23 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'team.profile',
         'team.uuid',
         'team.isPersonal',
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.uuid',
+        'workspaceUser.id',
+        'workspaceUser.role',
+        'teamUser.id',
+        'user.id',
       ])
       .leftJoin('userTeam.team', 'team')
+      .leftJoin('team.workspace', 'workspace')
+      .leftJoin('workspace.workspaceUser', 'workspaceUser')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .leftJoin('teamUser.user', 'user')
       .orderBy('team.isPersonal', 'DESC')
       .where('userTeam.userId = :userId', { userId })
+      .andWhere('user.id = :userId', { userId })
       .andWhere('team.isPersonal = false');
 
     return await queryBuilder.getManyAndCount();
