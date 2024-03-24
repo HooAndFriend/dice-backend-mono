@@ -227,9 +227,9 @@ export default class TicketController {
   public async saveEpic(
     @Body() dto: RequestEpicSaveDto,
     @GetUser() user: User,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketService.saveEpic(dto, id, user);
+    await this.ticketService.saveEpic(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 생성합니다.',

@@ -367,22 +367,24 @@ export default class TicketService {
    */
   public async saveEpic(
     dto: RequestEpicSaveDto,
-    workspaceId: number,
+    workspace: Workspace,
     user: User,
   ) {
-    const workspace = await this.workspaceReposiotry.findWorkspace(workspaceId);
-
     await this.epicNameValidation(dto.name, workspace.id);
 
     const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-      workspaceId,
+      workspace.id,
     );
+    const epicCount = await this.epicRepository.count({
+      where: {workspace: {id: workspace.id}}
+    }) + 1;
+    const epicCode = workspace.code + "-" + epicCount;
 
     const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
       workspace: workspace,
-      code: `${workspace.name}-${count + 1}`,
+      code: epicCode,
     });
 
     return await this.epicRepository.save(epic);
