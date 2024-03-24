@@ -20,14 +20,14 @@ import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import Role from '@/src/global/enum/Role';
 import TeamUser from '../../team-user/domain/team-user.entity';
+import TeamService from '../../team/service/team.service';
 
 @Injectable()
 export default class WorkspaceService {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
-    private readonly configService: ConfigService,
+    private readonly teamService: TeamService,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
@@ -47,7 +47,7 @@ export default class WorkspaceService {
       comment: dto.comment,
       profile: dto.profile,
       uuid: uuidv4(),
-      code: this.createWorkspaceCode(dto.name),
+      code: this.teamService.createCode(dto.name),
       team: teamUser.team,
       createdId: teamUser.user.email,
       workspaceUser: [
@@ -59,19 +59,6 @@ export default class WorkspaceService {
     });
 
     return await this.workspaceRepository.save(workspace);
-  }
-  /**
-   * Create Workspace Code from Name
-   * @param name
-   * @returns
-   */
-  public createWorkspaceCode(name: string) {
-    const workspaceCode = name.replace(/[^A-Z]/g, '');
-    if(workspaceCode.length === 0) {
-      return name[0].toUpperCase();
-    }else{
-      return workspaceCode;
-    }
   }
 
   /**

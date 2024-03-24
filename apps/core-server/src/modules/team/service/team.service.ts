@@ -53,6 +53,7 @@ export default class TeamService {
       const team = await queryRunner.manager.save(
         this.teamRepository.create({
           name: dto.name,
+          code: this.createCode(dto.name),
           profile: dto.profile,
           description: dto.description,
           isPersonal: false,
@@ -72,6 +73,7 @@ export default class TeamService {
       const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.name,
+          code: this.createCode(dto.name),
           profile: dto.profile,
           comment: dto.description,
           team,
@@ -100,6 +102,19 @@ export default class TeamService {
       throw new InternalServerErrorException('Internal Server Error');
     } finally {
       await queryRunner.release();
+    }
+  }
+  /**
+   * Create Team Code from Name
+   * @param name
+   * @returns
+   */
+  public createCode(name: string) {
+    const Code = name.replace(/[^A-Z]/g, '');
+    if(Code.length === 0) {
+      return name[0].toUpperCase();
+    }else{
+      return Code;
     }
   }
 
