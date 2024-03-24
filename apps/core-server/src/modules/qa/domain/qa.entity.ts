@@ -68,6 +68,14 @@ export default class Qa extends BaseTimeEntity {
   })
   memo: string;
 
+  @Column({
+    type: 'boolean',
+    comment: '삭제 여부',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
   @OneToMany(() => Comment, (comment) => comment.qa)
   comment: Relation<Comment>[];
 
