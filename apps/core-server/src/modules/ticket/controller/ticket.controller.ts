@@ -111,8 +111,9 @@ export default class TicketController {
   public async saveTicket(
     @Body() dto: RequestTicketSaveDto,
     @GetUser() user: User,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketService.saveTicket(dto, user);
+    await this.ticketService.saveTicket(dto, user, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 생성합니다.',

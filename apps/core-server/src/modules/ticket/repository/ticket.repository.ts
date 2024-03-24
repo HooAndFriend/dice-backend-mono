@@ -14,6 +14,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.name',
         'ticket.status',
         'ticket.content',
+        'ticket.number',
         'ticket.storypoint',
         'ticket.dueDate',
         'ticket.completeDate',
@@ -31,7 +32,8 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.epic', 'epic')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
-      .where('ticket.id = :ticketId', { ticketId });
+      .where('ticket.id = :ticketId', { ticketId })
+      .andWhere('ticket.isDeleted = false');
     return await querybuilder.getOne();
   }
 
@@ -42,6 +44,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.name',
         'ticket.status',
         'ticket.dueDate',
+        'ticket.number',
         'ticket.completeDate',
         'ticket.reopenDate',
         'worker.id',
@@ -50,7 +53,8 @@ export default class TicketRepository extends Repository<Ticket> {
       ])
       .leftJoin('ticket.worker', 'worker')
       .leftJoin('ticket.epic', 'epic')
-      .where('ticket.epic = :epicId', { epicId });
+      .where('ticket.epic = :epicId', { epicId })
+      .andWhere('ticket.isDeleted = false');
     return await querybuilder.getManyAndCount();
   }
 
@@ -60,32 +64,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.id',
         'ticket.name',
         'ticket.status',
-        'ticket.dueDate',
-        'ticket.completeDate',
-        'ticket.reopenDate',
-        'workspace.id',
-        'worker.id',
-        'worker.nickname',
-        'worker.profile',
-        'admin.id',
-        'admin.nickname',
-        'admin.profile',
-        'epic.id',
-      ])
-      .leftJoin('ticket.workspace', 'workspace')
-      .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.admin', 'admin')
-      .leftJoin('ticket.epic', 'epic')
-      .where('ticket.workspaceId = :workspaceId', { workspaceId });
-    return await querybuilder.getManyAndCount();
-  }
-
-  public async findOneByNameAndWorkspaceId(name: string, workspaceId: number) {
-    const querybuilder = this.createQueryBuilder('ticket')
-      .select([
-        'ticket.id',
-        'ticket.name',
-        'ticket.status',
+        'ticket.number',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
@@ -103,7 +82,36 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('ticket.name = :name', { name });
+      .andWhere('ticket.isDeleted = false');
+    return await querybuilder.getManyAndCount();
+  }
+
+  public async findOneByNameAndWorkspaceId(name: string, workspaceId: number) {
+    const querybuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.id',
+        'ticket.name',
+        'ticket.status',
+        'ticket.dueDate',
+        'ticket.number',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'workspace.id',
+        'worker.id',
+        'worker.nickname',
+        'worker.profile',
+        'admin.id',
+        'admin.nickname',
+        'admin.profile',
+        'epic.id',
+      ])
+      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('ticket.epic', 'epic')
+      .where('ticket.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('ticket.name = :name', { name })
+      .andWhere('ticket.isDeleted = false');
     return await querybuilder.getOne();
   }
 
@@ -113,13 +121,14 @@ export default class TicketRepository extends Repository<Ticket> {
     const endDate = new Date(parseInt(year), parseInt(monthStr), 0);
 
     const querybuilder = this.createQueryBuilder('ticket')
-      .select(['ticket.id', 'ticket.name', 'ticket.status', 'ticket.dueDate'])
+      .select(['ticket.id', 'ticket.name', 'ticket.status', 'ticket.dueDate', 'ticket.number'])
       .leftJoin('ticket.workspace', 'workspace')
       .where('workspace.teamId = :teamId', { teamId })
       .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
-      });
+      })
+      .andWhere('ticket.isDeleted = false');
     return await querybuilder.getManyAndCount();
   }
 }
