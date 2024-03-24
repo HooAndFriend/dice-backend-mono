@@ -15,6 +15,7 @@ import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
 import TeamModule from '../team/team.module';
 import TeamUserModule from '../team-user/team-user.module';
+import TeamService from '../team/service/team.service';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import TeamUserModule from '../team-user/team-user.module';
   ],
   exports: [TypeOrmExModule, TypeOrmModule, WorkspaceService],
   controllers: [WorkspaceController],
-  providers: [WorkspaceService],
+  providers: [WorkspaceService, TeamService],
 })
 export default class WorkspaceModule {}
