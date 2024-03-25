@@ -90,6 +90,8 @@ export default class VersionService {
 
   /**
    * Find Lastest Version
+   * @param type
+   * @returns
    */
   public async findLastestVesrion(type: VersionTypeEnum) {
     const latestVersion = await this.versionRepository.findOne({
