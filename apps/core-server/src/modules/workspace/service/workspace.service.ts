@@ -11,6 +11,7 @@ import WorkspaceRepository from '../repository/workspace.repository';
 
 // ** Utils Imports
 import { v4 as uuidv4 } from 'uuid';
+import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
 import { NotFoundException } from '@/src/global/exception/CustomException';
@@ -20,13 +21,11 @@ import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import Role from '@/src/global/enum/Role';
 import TeamUser from '../../team-user/domain/team-user.entity';
-import TeamService from '../../team/service/team.service';
 
 @Injectable()
 export default class WorkspaceService {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
-    private readonly teamService: TeamService,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
   ) {}
 
@@ -47,7 +46,7 @@ export default class WorkspaceService {
       comment: dto.comment,
       profile: dto.profile,
       uuid: uuidv4(),
-      code: this.teamService.createCode(dto.name),
+      code: createCode(dto.name),
       team: teamUser.team,
       createdId: teamUser.user.email,
       workspaceUser: [
