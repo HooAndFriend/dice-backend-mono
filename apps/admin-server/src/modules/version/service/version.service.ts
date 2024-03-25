@@ -8,6 +8,7 @@ import RequestVersionSaveDto from '../dto/version.save.dto';
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 import RequestVersionUpdateDto from '../dto/version.update.dto';
+import VersionTypeEnum from '../domain/version-type.enum';
 
 // ** Utils Imports
 
@@ -85,6 +86,22 @@ export default class VersionService {
     }
 
     return version;
+  }
+
+  /**
+   * Find Lastest Version
+   */
+  public async findLastestVesrion(type: VersionTypeEnum) {
+    const latestVersion = await this.versionRepository.findOne({
+      where: { type },
+      order: { version: 'DESC' },
+    });
+
+    if (!latestVersion) {
+      throw new BadRequestException('해당 type 버전이 없습니다.');
+    }
+
+    return latestVersion;
   }
 
   /**
