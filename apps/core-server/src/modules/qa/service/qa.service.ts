@@ -193,7 +193,8 @@ export default class QaService {
   }
   public async deleteQa(qaId: number, workspace: Workspace) {
     const findQa = await this.findQa(qaId, workspace.id);
-    await this.qaRepository.remove(findQa);
+    findQa.isDeleted = true;
+    await this.qaRepository.save(findQa);
     return;
   }
 

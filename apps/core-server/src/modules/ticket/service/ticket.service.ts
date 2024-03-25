@@ -254,8 +254,8 @@ export default class TicketService {
       await queryRunner.manager.delete(TicketFile, { ticket: id });
 
       await queryRunner.manager.delete(TicketComment, { ticket: id });
-
-      await queryRunner.manager.delete(Ticket, { id });
+      findTicket.isDeleted = true;
+      await queryRunner.manager.save(Ticket, findTicket);
 
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -423,11 +423,11 @@ export default class TicketService {
         await queryRunner.manager.delete(TicketFile, { ticket: ticket.id });
 
         await queryRunner.manager.delete(TicketComment, { ticket: ticket.id });
-
-        await queryRunner.manager.delete(Ticket, { id: ticket.id });
+        ticket.isDeleted = true;
+        await queryRunner.manager.save(Ticket, ticket);
       }
-
-      await queryRunner.manager.delete(Epic, { id });
+      findEpic.isDeleted = true;
+      await queryRunner.manager.save(Epic, findEpic);
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(error);
