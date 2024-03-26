@@ -49,12 +49,28 @@ export default class Ticket extends BaseTimeEntity {
   content: string;
 
   @Column({
+    type: 'varchar',
+    length: 30,
+    comment: '티켓 번호',
+    nullable: false,
+  })
+  number: string;
+
+  @Column({
     type: 'integer',
     name: 'storypoint',
     comment: 'storypoint',
     nullable: true,
   })
   storypoint: number;
+  
+  @Column({
+    type: 'boolean',
+    comment: '삭제 여부',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
 
   @Column({
     type: 'date',

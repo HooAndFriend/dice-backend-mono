@@ -22,7 +22,8 @@ export default class EpicRepository extends Repository<Epic> {
       ])
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.admin', 'admin')
-      .where('epic.workspace = :workspaceId', { workspaceId });
+      .where('epic.workspace = :workspaceId', { workspaceId })
+      .andWhere('epic.isDeleted = false');
     return await querybuilder.getManyAndCount();
   }
 
@@ -31,7 +32,8 @@ export default class EpicRepository extends Repository<Epic> {
       .select(['epic.id', 'epic.name', 'epic.code', 'workspace.id', 'admin.id'])
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.admin', 'admin')
-      .where('epic.id = :epicId', { epicId });
+      .where('epic.id = :epicId', { epicId })
+      .andWhere('epic.isDeleted = false');
     return await querybuilder.getOne();
   }
 
@@ -47,6 +49,7 @@ export default class EpicRepository extends Repository<Epic> {
       .setParameter('status', TicketStatus.Compeleted)
       .leftJoin('epic.ticket', 'ticket')
       .where('epic.workspace = :workspaceId', { workspaceId })
+      .where('epic.isDeleted = false')
       .groupBy('epic.id')
 
     return await querybuilder.getRawMany();
@@ -72,7 +75,8 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.ticket', 'ticket')
       .leftJoin('epic.worker', 'worker')
-      .where('epic.id = :epicId', { epicId });
+      .where('epic.id = :epicId', { epicId })
+      .andWhere('epic.isDeleted = false');
     return await querybuilder.getManyAndCount();
   }
 
@@ -82,7 +86,8 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.ticket', 'ticket')
       .where('epic.name = :name', { name })
-      .andWhere('workspace.id = :workspaceId', { workspaceId });
+      .andWhere('workspace.id = :workspaceId', { workspaceId })
+      .andWhere('epic.isDeleted = false');
 
     return await querybuilder.getOne();
   }

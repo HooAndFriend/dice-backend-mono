@@ -42,6 +42,14 @@ export default class Team extends BaseTimeEntity {
   uuid: string;
 
   @Column({
+    type: 'varchar',
+    length: 20,
+    comment: 'Team Code',
+    nullable: false,
+  })
+  code: string;
+
+  @Column({
     type: 'boolean',
     comment: '개인 팀 여부',
     nullable: false,

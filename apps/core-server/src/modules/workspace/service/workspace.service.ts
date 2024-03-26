@@ -11,6 +11,7 @@ import WorkspaceRepository from '../repository/workspace.repository';
 
 // ** Utils Imports
 import { v4 as uuidv4 } from 'uuid';
+import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
 import { NotFoundException } from '@/src/global/exception/CustomException';
@@ -25,9 +26,7 @@ import TeamUser from '../../team-user/domain/team-user.entity';
 export default class WorkspaceService {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
-    private readonly configService: ConfigService,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger();
@@ -47,6 +46,7 @@ export default class WorkspaceService {
       comment: dto.comment,
       profile: dto.profile,
       uuid: uuidv4(),
+      code: createCode(dto.name),
       team: teamUser.team,
       createdId: teamUser.user.email,
       workspaceUser: [

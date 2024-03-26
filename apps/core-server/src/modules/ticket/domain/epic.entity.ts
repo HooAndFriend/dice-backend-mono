@@ -37,6 +37,14 @@ export default class Epic extends BaseTimeEntity {
   })
   code: string;
 
+  @Column({
+    type: 'boolean',
+    comment: '삭제 여부',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
   @ManyToOne(() => Workspace, (workspace) => workspace.epic)
   workspace: Relation<Workspace>;
 

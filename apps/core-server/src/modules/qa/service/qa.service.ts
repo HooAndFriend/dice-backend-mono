@@ -100,10 +100,14 @@ export default class QaService {
           }),
         ),
       );
+      const qaCount = await this.qaRepository.count({
+        where: {workspace: {id: workspace.id}}
+      }) + 1;
+      const qaNumber = workspace.code + "-" + qaCount;
 
       await queryRunner.manager.save(
         this.qaRepository.create({
-          number: dto.number,
+          number: qaNumber,
           title: dto.title,
           asIs: dto.asIs,
           toBe: dto.toBe,
@@ -190,7 +194,8 @@ export default class QaService {
   }
   public async deleteQa(qaId: number, workspace: Workspace) {
     const findQa = await this.findQa(qaId, workspace.id);
-    await this.qaRepository.remove(findQa);
+    findQa.isDeleted = true;
+    await this.qaRepository.save(findQa);
     return;
   }
 
@@ -201,7 +206,7 @@ export default class QaService {
    */
   public async findQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId, workspace: { id: workspaceId } },
+      where: { id: qaId, workspace: { id: workspaceId }, isDeleted: false },
     });
 
     if (!findQa) {

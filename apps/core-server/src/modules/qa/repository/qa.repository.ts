@@ -8,7 +8,6 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Qa from '../domain/qa.entity';
 // ** Emum Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
-import { QaStatus } from '../../../global/enum/QaStatus.enum';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {
@@ -38,7 +37,8 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.worker', 'worker')
       .leftJoin('qa.file', 'file')
-      .where('qa.workspaceId = :workspaceId', { workspaceId });
+      .where('qa.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('qa.isDeleted = false');
 
     if (findQuery.status) {
       queryBuilder.andWhere('qa.status = :status', {
@@ -93,7 +93,8 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.worker', 'worker')
       .leftJoin('qa.file', 'file')
-      .where('qa.id = :qaId', { qaId });
+      .where('qa.id = :qaId', { qaId })
+      .andWhere('qa.isDeleted = false');
 
     return await queryBuilder.getOne();
   }

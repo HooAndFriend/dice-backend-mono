@@ -54,6 +54,14 @@ export default class Workspace extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
+    length: 20,
+    comment: 'Workspace Code',
+    nullable: false,
+  })
+  code: string;
+
+  @Column({
+    type: 'varchar',
     length: 120,
     comment: '생성 유저 ID',
     nullable: false,

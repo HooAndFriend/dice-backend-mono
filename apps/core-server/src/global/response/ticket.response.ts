@@ -15,6 +15,7 @@ export const TicketResponse = {
           {
             id: 1,
             name: '상세보기 버튼',
+            number: 'HAF-1',
             status: TicketStatus.Reopen,
             dueDate: '2024-01-20',
             completeDate: '2024-01-19',
@@ -54,6 +55,7 @@ export const TicketResponse = {
           name: '게시판',
         },
         name: '상세보기 버튼',
+        number: 'HAF-1',
         status: TicketStatus.Reopen,
         type: {
           type: 'Screen',
