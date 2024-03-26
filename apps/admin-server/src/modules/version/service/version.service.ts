@@ -89,24 +89,6 @@ export default class VersionService {
   }
 
   /**
-   * Find Lastest Version
-   * @param type
-   * @returns
-   */
-  public async findLastestVesrion(type: VersionTypeEnum) {
-    const latestVersion = await this.versionRepository.findOne({
-      where: { type },
-      order: { version: 'DESC' },
-    });
-
-    if (!latestVersion) {
-      throw new BadRequestException('해당 type 버전이 없습니다.');
-    }
-
-    return latestVersion;
-  }
-
-  /**
    * Delete Version
    * @param id
    */

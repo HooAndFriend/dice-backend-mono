@@ -42,7 +42,6 @@ import CommonResponse from '@/src/global/dto/api.response';
 import RequestVersionSaveDto from '../dto/version.save.dto';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 import RequestVersionUpdateDto from '../dto/version.update.dto';
-import VersionTypeEnum from '../domain/version-type.enum';
 
 @ApiTags('Version')
 @ApiResponse(createServerExceptionResponse())
@@ -99,23 +98,6 @@ export default class VersionController {
       data: version,
       statusCode: 200,
       message: 'Version을 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '최신 Version 조회' })
-  @ApiResponse(VersionResponse.findVersion[200])
-  @ApiResponse(VersionResponse.findVersion[400])
-  @ApiQuery({ name: 'type', enum: VersionTypeEnum })
-  @UseGuards(JwtAccessGuard)
-  @Get('/lastest/:type')
-  public async fidnLastestVersion(@Query('type') type: VersionTypeEnum) {
-    const LatestVersion = await this.versionService.findLastestVesrion(type);
-
-    return CommonResponse.createResponse({
-      data: LatestVersion,
-      statusCode: 200,
-      message: '가장 최신 Version을 조회합니다.',
     });
   }
 
