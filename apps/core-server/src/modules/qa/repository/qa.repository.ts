@@ -40,24 +40,24 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.file', 'file')
       .where('qa.workspaceId = :workspaceId', { workspaceId });
 
-    if (findQuery.status !== QaStatus.ALL) {
+    if (findQuery.status) {
       queryBuilder.andWhere('qa.status = :status', {
         status: findQuery.status,
       });
     }
+
     if (findQuery.title) {
       queryBuilder.andWhere('qa.title LIKE :title', {
         title: `%${findQuery.title}%`,
       });
     }
-    if (findQuery.qaId) {
-      queryBuilder.andWhere('qa.id = :qaId', { qaId: findQuery.qaId });
-    }
+
     if (findQuery.adminNickname) {
       queryBuilder.andWhere('admin.nickname LIKE :adminNickname', {
         adminNickname: `%${findQuery.adminNickname}%`,
       });
     }
+
     if (findQuery.workerNickname) {
       queryBuilder.andWhere('worker.nickname LIKE :workerNickname', {
         workerNickname: `%${findQuery.workerNickname}%`,
@@ -65,5 +65,36 @@ export default class QaRepository extends Repository<Qa> {
     }
 
     return await queryBuilder.getManyAndCount();
+  }
+
+  public async findQaById(qaId: number) {
+    const queryBuilder = this.createQueryBuilder('qa')
+      .select([
+        'qa.id',
+        'qa.number',
+        'qa.status',
+        'qa.title',
+        'qa.asIs',
+        'qa.toBe',
+        'qa.memo',
+        'qa.adminId',
+        'qa.workerId',
+        'admin.email',
+        'admin.nickname',
+        'admin.profile',
+        'worker.email',
+        'worker.nickname',
+        'worker.profile',
+        'file.id',
+        'file.url',
+        'qa.createdDate',
+        'qa.modifiedDate',
+      ])
+      .leftJoin('qa.admin', 'admin')
+      .leftJoin('qa.worker', 'worker')
+      .leftJoin('qa.file', 'file')
+      .where('qa.id = :qaId', { qaId });
+
+    return await queryBuilder.getOne();
   }
 }

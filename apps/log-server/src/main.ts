@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { VersioningType } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
@@ -70,8 +70,8 @@ async function bootstrap() {
 }
 bootstrap()
   .then((res) => {
-    console.log(`LOG SERVER START : ${process.env.SERVER_ENV}`);
+    Logger.log(`LOG SERVER START : ${process.env.SERVER_ENV}`);
   })
   .catch((error) => {
-    console.error(`LOG SERVER START FAILED : ${JSON.stringify(error)}`);
+    Logger.error(`LOG SERVER START FAILED : ${JSON.stringify(error)}`);
   });

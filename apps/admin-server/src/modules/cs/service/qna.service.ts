@@ -86,7 +86,7 @@ export default class QnaService {
       .send<SendMailDto>('send-single-mail', sendMail)
       .toPromise()
       .catch((err) => {
-        console.log(err);
+        this.logger.log(err);
       });
   }
 

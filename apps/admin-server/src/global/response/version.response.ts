@@ -65,7 +65,7 @@ export const VersionResponse = {
         modifiedId: 'admin',
       },
       statusCode: 200,
-      message: 'Version 리스트를 조회합니다.',
+      message: 'Version을 조회합니다.',
     }),
     404: createErrorResponse({
       statusCode: 404,

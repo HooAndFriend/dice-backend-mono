@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import TicketSetting from '../domain/ticket.setting.entity';
+import { NotFoundException } from '@nestjs/common';
 
 @CustomRepository(TicketSetting)
 export default class TicketSettingRepository extends Repository<TicketSetting> {

@@ -10,7 +10,6 @@ import Comment from '../domain/comment.entity';
 @CustomRepository(Comment)
 export default class CommentRepository extends Repository<Comment> {
   public async findQaComment(qaId: number) {
-    console.log('qaId : ' + qaId);
     const queryBuilder = this.createQueryBuilder('comment')
       .select([
         'comment.id',

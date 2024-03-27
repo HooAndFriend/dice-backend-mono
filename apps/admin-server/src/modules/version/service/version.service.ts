@@ -8,6 +8,7 @@ import RequestVersionSaveDto from '../dto/version.save.dto';
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 import RequestVersionUpdateDto from '../dto/version.update.dto';
+import VersionTypeEnum from '../domain/version-type.enum';
 
 // ** Utils Imports
 

@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 // ** Redis Imports
@@ -32,6 +32,8 @@ export default class TeamUserService {
     @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
     @InjectRedis() private readonly redis: Redis,
   ) {}
+
+  private logger = new Logger();
 
   /**
    * Find Team List
@@ -152,7 +154,7 @@ export default class TeamUserService {
       .send<SendMailDto>('send-single-mail', dto)
       .toPromise()
       .catch((err) => {
-        console.log(err);
+        this.logger.log(err);
       });
   }
 
@@ -160,9 +162,9 @@ export default class TeamUserService {
    * Find Team User By Email
    * @param email
    */
-  public async isExistedTeamUserByEmail(email: string) {
+  public async isExistedTeamUserByEmail(email: string, teamId: number) {
     const teamUser = await this.teamUserRepository.exist({
-      where: { user: { email } },
+      where: { user: { email }, team: { id: teamId } },
     });
 
     if (teamUser) {

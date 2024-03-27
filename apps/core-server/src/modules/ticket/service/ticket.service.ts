@@ -6,7 +6,6 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,11 +19,6 @@ import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
-
-// ** Response Imports
-import CommonResponse from '@/src/global/dto/api.response';
-
-// Other Imports
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
@@ -44,6 +38,7 @@ import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class TicketService {
@@ -61,41 +56,65 @@ export default class TicketService {
 
   private logger = new Logger();
 
-  // ** Find
-
+  /**
+   * Find Ticket by Id
+   * @param ticketId
+   */
   public async findTicketById(ticketId: number) {
-    const findTicket = this.ticketRepository.findTicketById(ticketId);
+    const findTicket = await this.ticketRepository.findTicketById(ticketId);
     if (!findTicket) {
       throw new NotFoundException('Cannot Find Ticket.');
     }
     return findTicket;
   }
 
+  /**
+   * Find Epic by Id
+   * @param epicId
+   */
   public async findEpicById(epicId: number) {
-    const findEpic = this.epicRepository.findEpicById(epicId);
+    const findEpic = await this.epicRepository.findEpicById(epicId);
     if (!findEpic) {
       throw new NotFoundException('Cannot Find Epic.');
     }
     return findEpic;
   }
 
+  /**
+   * Find Comment by Id
+   * @param ticketId
+   */
   public async findCommentById(ticketId: number) {
-    const findComment = this.ticketCommentRepository.findCommentById(ticketId);
+    const findComment = await this.ticketCommentRepository.findCommentById(
+      ticketId,
+    );
     if (!findComment) {
       throw new NotFoundException('Cannot Find Comment.');
     }
     return findComment;
   }
 
+  /**
+   * Find Setting by Id
+   * @param settingId
+   */
   public async findSettingById(settingId: number) {
-    const findSetting = this.ticketSettingRepository.findSettingById(settingId);
+    const findSetting = await this.ticketSettingRepository.findSettingById(
+      settingId,
+    );
+
     if (!findSetting) {
       throw new NotFoundException('Cannot Find Setting.');
     }
+
     return findSetting;
   }
 
-  // Ticket name 확인
+  /**
+   * Verify ticket name
+   * @param name
+   * @param workspaceId
+   */
   public async ticketNameValidation(name: string, workspaceId: number) {
     if (name.length > 30) {
       throw new BadRequestException('Max length of ticket name is 30');
@@ -112,22 +131,34 @@ export default class TicketService {
     }
   }
 
-  // ** Ticket 전체 조회
+  /**
+   * Find all tickets
+   * @param workspaceId
+   */
   public async findAllTicket(workspaceId: number) {
-    return await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    const [data, count] =
+      await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
+    return { data, count };
   }
 
-  // ** Ticket 상세조회
+  /**
+   * Find one ticket
+   * @param id
+   */
   public async findOneTicket(id: number) {
-    const ticket = await this.findTicketById(id);
+    const data = await this.findTicketById(id);
     const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
       id,
     );
-    ticket.file = file;
-    return ticket;
+    data.file = file;
+    return data;
   }
 
-  // ** Ticket 저장
+  /**
+   * Save ticket
+   * @param dto
+   * @param user
+   */
   public async saveTicket(dto: RequestTicketSaveDto, user: User) {
     const findEpic = await this.findEpicById(dto.epicId);
 
@@ -154,7 +185,11 @@ export default class TicketService {
     return await this.ticketRepository.save(ticket);
   }
 
-  // ** Ticket 수정
+  /**
+   * Update ticket
+   * @param dto
+   * @param user
+   */
   public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
     const findTicket = await this.findTicketById(dto.ticketId);
 
@@ -198,7 +233,10 @@ export default class TicketService {
     }
   }
 
-  // ** Ticket 삭제
+  /**
+   * Delete ticket
+   * @param id
+   */
   public async deleteTicket(id: number) {
     const findTicket = await this.findTicketById(id);
 
@@ -225,7 +263,10 @@ export default class TicketService {
     }
   }
 
-  // ** Ticket 상태변경
+  /**
+   * Update ticket
+   * @param dto
+   */
   public async updateTicketState(dto: RequestTicketStateUpdateDto) {
     const findTicket = await this.findTicketById(dto.ticketId);
 
@@ -269,10 +310,14 @@ export default class TicketService {
 
   // ** Epic Service
 
-  // Epic name 확인
+  /**
+   * Verify Epic name
+   * @param name
+   * @param workspaceId
+   */
   public async epicNameValidation(name: string, workspaceId: number) {
     if (name.length > 30) {
-      throw new BadRequestException('Epic name max is 30');
+      throw new BadRequestException('Epic 이름은 최대 30자 입니다.');
     }
 
     const findEpicName = await this.epicRepository.findOneByNameAndWorkspaceId(
@@ -281,22 +326,40 @@ export default class TicketService {
     );
 
     if (findEpicName) {
-      throw new BadRequestException('Epic is already exist');
+      throw new BadRequestException('Epic 이 이미 존재합니다');
     }
   }
 
-  // Epic 전체 조회
+  /**
+   * Find All epic
+   * @param id
+   */
   public async findAllEpic(id: number) {
-    return await this.epicRepository.findAllByWorkspaceId(id);
+    const data = await this.epicRepository.findAllByWorkspaceId(id);
+
+    const count = data.length;
+
+    return { data, count };
   }
 
-  // Epic 상세 조회
+  /**
+   * Find Epic details
+   * @param id
+   */
   public async findOneEpic(id: number) {
     const findEpic = await this.findEpicById(id);
-    return await this.ticketRepository.findAllTicketByEpicId(findEpic.id);
+    const [data, count] = await this.ticketRepository.findAllTicketByEpicId(
+      findEpic.id,
+    );
+    return { data, count };
   }
 
-  // ** Epic 저장
+  /**
+   * Save Epic
+   * @param dto
+   * @param workspaceId
+   * @param user
+   */
   public async saveEpic(
     dto: RequestEpicSaveDto,
     workspaceId: number,
@@ -320,7 +383,10 @@ export default class TicketService {
     return await this.epicRepository.save(epic);
   }
 
-  // ** Epic 수정
+  /**
+   * Update Epic
+   * @param dto
+   */
   public async updateEpic(dto: RequestEpicUpdateDto) {
     const findEpic = await this.findEpicById(dto.epicId);
 
@@ -331,7 +397,10 @@ export default class TicketService {
     });
   }
 
-  // Epic 삭제
+  /**
+   * Delete Epic
+   * @param id
+   */
   public async deleteEpic(id: number) {
     const findEpic = await this.findEpicById(id);
 
@@ -365,7 +434,11 @@ export default class TicketService {
 
   // ** Comment Service
 
-  // ** Comment  저장
+  /**
+   * Save Comment
+   * @param dto
+   * @param user
+   */
   public async saveComment(dto: RequestTicketCommentSaveDto, user: User) {
     const findTicket = await this.findTicketById(dto.ticketId);
 
@@ -378,7 +451,11 @@ export default class TicketService {
     return await this.ticketCommentRepository.save(comment);
   }
 
-  // ** Comment 수정
+  /**
+   * Update Comment
+   * @param dto
+   * @param user
+   */
   public async updateComment(dto: RequestTicketCommentUpdateDto, user: User) {
     const findComment = await this.findCommentById(dto.commentId);
 
@@ -387,14 +464,20 @@ export default class TicketService {
     });
   }
 
-  // ** Comment 삭제
+  /**
+   * Delete Comment
+   * @param id
+   */
   public async deleteComment(id: number) {
     const findComment = await this.findCommentById(id);
 
     await this.ticketCommentRepository.delete(id);
   }
 
-  // ** Comment 조회
+  /**
+   * Find Comment
+   * @param id
+   */
   public async findComment(id: number) {
     const findTicket = await this.findTicketById(id);
 
@@ -413,8 +496,12 @@ export default class TicketService {
 
   // ** Setting Service
 
-  // ** Setting validation
-  public async settingTypeValidation(type: string, workspaceId) {
+  /**
+   * Setting validation
+   * @param type
+   * @param workspaceId
+   */
+  public async settingTypeValidation(type: string, workspaceId: number) {
     const findSetting =
       await this.ticketSettingRepository.findOneByTypeAndWorkspaceId(
         type,
@@ -428,17 +515,18 @@ export default class TicketService {
     return findSetting;
   }
 
-  // ** Setting 저장
+  /**
+   * Save Setting
+   * @param dto
+   * @param workspace
+   * @param user
+   */
   public async saveSetting(
     dto: RequestSettingSaveDto,
-    workspaceId: number,
+    workspace: Workspace,
     user: User,
   ) {
-    await this.settingTypeValidation(dto.type, workspaceId);
-
-    const workspace = await this.workspaceReposiotry.findOne({
-      where: { id: workspaceId },
-    });
+    await this.settingTypeValidation(dto.type, workspace.id);
 
     const setting = this.ticketSettingRepository.create({
       color: dto.color,
@@ -451,14 +539,18 @@ export default class TicketService {
     return await this.ticketSettingRepository.save(setting);
   }
 
-  // ** Setting 수정
+  /**
+   * Update Setting
+   * @param dto
+   * @param workspace
+   */
   public async updateSetting(
     dto: RequestSettingUpdateDto,
-    workspaceId: number,
+    workspace: Workspace,
   ) {
     const findSetting = await this.findSettingById(dto.settingId);
 
-    await this.settingTypeValidation(dto.type, workspaceId);
+    await this.settingTypeValidation(dto.type, workspace.id);
 
     return this.ticketSettingRepository.update(dto.settingId, {
       type: dto.type,
@@ -467,14 +559,20 @@ export default class TicketService {
     });
   }
 
-  // ** Setting 삭제
+  /**
+   * Delete Setting
+   * @param id
+   */
   public async deleteSetting(id: number) {
     await this.findSettingById(id);
 
     return this.ticketSettingRepository.delete(id);
   }
 
-  // ** Setting 조회
+  /**
+   * Find all Setting
+   * @param workspaceId
+   */
   public async findAllSetting(workspaceId: number) {
     return await this.ticketSettingRepository.findSettingByWorkspaceId(
       workspaceId,

@@ -184,7 +184,7 @@ export default class AuthService {
       .send<SendMailDto>('send-single-mail', dto)
       .toPromise()
       .catch((err) => {
-        console.log(err);
+        this.logger.log(err);
       });
   }
 }

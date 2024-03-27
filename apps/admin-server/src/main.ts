@@ -6,6 +6,7 @@ import { Transport } from '@nestjs/microservices';
 
 // ** Custom Module Imports
 import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
 
 // ** Swagger Config Imports
 import swaggerConfig from './global/config/swaggerConfig';
@@ -58,8 +59,8 @@ async function bootstrap() {
 }
 bootstrap()
   .then((res) => {
-    console.log(`ADMIN SERVER START : ${process.env.SERVER_ENV}`);
+    Logger.log(`ADMIN SERVER START : ${process.env.SERVER_ENV}`);
   })
   .catch((error) => {
-    console.error(`ADMIN SERVER START FAILED : ${JSON.stringify(error)}`);
+    Logger.error(`ADMIN SERVER START FAILED : ${JSON.stringify(error)}`);
   });

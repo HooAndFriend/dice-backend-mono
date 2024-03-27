@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import UserRepository from '../repository/user.repository';
 import RequestUserFindDto from '../dto/user.find.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
+import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
 
 @Injectable()
 export default class UserService {
@@ -24,6 +25,15 @@ export default class UserService {
   }
 
   /**
+   * Find Delete User List
+   * @param dto
+   * @returns
+   */
+  public async findDeleteUserList(dto: RequestDeleteUserFindDto) {
+    return await this.userRepository.findDeleteUserList(dto);
+  }
+
+  /**
    * find User
    * @param userId
    * @returns
@@ -39,6 +49,7 @@ export default class UserService {
    */
   private async findUserById(userId: number) {
     const user = await this.userRepository.findUser(userId);
+
     if (!user) {
       throw new NotFoundException('Not Found User');
     }

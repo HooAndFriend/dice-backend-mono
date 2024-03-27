@@ -70,11 +70,11 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllTicket(id);
+    const { data, count } = await this.ticketService.findAllTicket(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Finding Tickets',
+      message: 'Ticket을 전체 조회합니다.',
       data: { data, count },
     });
   }
@@ -89,11 +89,11 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
-    const ticket = await this.ticketService.findOneTicket(id);
+    const data = await this.ticketService.findOneTicket(id);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: { ticket },
+      data: { data },
     });
   }
 
@@ -115,7 +115,7 @@ export default class TicketController {
     await this.ticketService.saveTicket(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Save Ticket',
+      message: 'Ticket을 생성합니다.',
     });
   }
 
@@ -137,7 +137,7 @@ export default class TicketController {
     await this.ticketService.updateTicket(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Ticket',
+      message: 'Ticket을 수정합니다.',
     });
   }
 
@@ -154,7 +154,7 @@ export default class TicketController {
     await this.ticketService.deleteTicket(id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Delete Ticket',
+      message: 'Ticket을 삭제합니다.',
     });
   }
 
@@ -172,7 +172,7 @@ export default class TicketController {
     await this.ticketService.updateTicketState(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Ticket State',
+      message: 'Ticket 상태를 변경합니다.',
     });
   }
 
@@ -185,11 +185,11 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
   public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllEpic(id);
+    const { data, count } = await this.ticketService.findAllEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Find All Epic',
+      message: 'Epic을 전체 조회합니다.',
       data: { data, count },
     });
   }
@@ -204,12 +204,12 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Get('/epic/detail/:epicId')
   public async findOneEpic(@Param('epicId') id: number) {
-    const epic = await this.ticketService.findOneEpic(id);
+    const { data, count } = await this.ticketService.findOneEpic(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Find All Epic',
-      data: { epic },
+      message: 'Epic을 상세 조회합니다.',
+      data: { data, count },
     });
   }
 
@@ -231,7 +231,7 @@ export default class TicketController {
     await this.ticketService.saveEpic(dto, id, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Save Epic',
+      message: 'Epic을 생성합니다.',
     });
   }
 
@@ -250,7 +250,7 @@ export default class TicketController {
     await this.ticketService.updateEpic(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Update Epic',
+      message: 'Epic을 수정합니다.',
     });
   }
 
@@ -267,7 +267,7 @@ export default class TicketController {
     await this.ticketService.deleteEpic(id);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Delete Epic',
+      message: 'Epic을 삭제합니다.',
     });
   }
 
@@ -352,18 +352,18 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 생성' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.saveSetting[200])
+  @ApiResponse(TicketResponse.saveSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/setting')
   public async saveSetting(
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
     @Body() dto: RequestSettingSaveDto,
   ) {
-    await this.ticketService.saveSetting(dto, id, user);
+    await this.ticketService.saveSetting(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Setting',
@@ -373,17 +373,17 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 수정' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.updateSetting[200])
+  @ApiResponse(TicketResponse.updateSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/setting')
   public async updateSetting(
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() workspace: Workspace,
     @Body() dto: RequestSettingUpdateDto,
   ) {
-    await this.ticketService.updateSetting(dto, id);
+    await this.ticketService.updateSetting(dto, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Setting',
@@ -393,8 +393,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 삭제' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.deleteSetting[200])
+  @ApiResponse(TicketResponse.deleteSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -410,8 +410,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 전체 조회' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.findSetting[200])
+  @ApiResponse(TicketResponse.findSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -429,8 +429,8 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'Setting 단일 조회' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiResponse(TicketResponse.findOneSetting[200])
+  @ApiResponse(TicketResponse.findOneSetting[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)

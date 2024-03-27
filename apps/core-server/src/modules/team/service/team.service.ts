@@ -3,6 +3,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 
@@ -33,6 +34,8 @@ export default class TeamService {
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly dataSource: DataSource,
   ) {}
+
+  private logger = new Logger();
 
   /**
    * Save Team
@@ -73,6 +76,7 @@ export default class TeamService {
           comment: dto.description,
           team,
           uuid: uuidv4(),
+          createdId: user.email,
         }),
       );
 
@@ -86,7 +90,7 @@ export default class TeamService {
 
       await queryRunner.commitTransaction();
     } catch (error) {
-      console.log(error);
+      this.logger.log(error);
       await queryRunner.rollbackTransaction();
 
       if (error instanceof HttpException) {

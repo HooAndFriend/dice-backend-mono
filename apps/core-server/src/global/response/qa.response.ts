@@ -9,7 +9,7 @@ export const QaResponse = {
   findQaList: {
     200: createPaginationResponse({
       data: {
-        qa: [
+        data : [
           {
             id: 1,
             number: 'ISSUE_01',
@@ -46,42 +46,21 @@ export const QaResponse = {
       message: 'qa 리스트를 조회합니다.',
     }),
   },
-  findQaDetailList: {
-    200: createPaginationResponse({
-      data: [
-        {
-          id: 1,
-          number: 'ISSUE_01',
-          status: 'DONE',
-          title: 'qa 제목입니다',
-          admin: {
-            adminId: 'qwer1234',
-            nickname: '임동현',
-            profile:
-              'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-          },
-          worker: {
-            workerId: 'asdf1234',
-            nickname: '김기덕',
-            profile:
-              'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-          },
-          file: [
-            {
-              fileid: 1,
-              url: 'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-            },
-          ],
-          asIs: '문제사항입니다',
-          toBe: '기대결과입니다',
-          memo: '메모입니다',
-          createdDate: '2023-11-20 13:23:10',
-          modifiedDate: '2023-11-20 13:23:10',
-        },
-      ],
-      count: 1,
+  findQa: {
+    200: createResponse({
+      data: {
+        createdDate: "2024-03-13T17:40:32.903Z",
+        modifiedDate: "2024-03-15T18:07:45.801Z",
+        id: 1,
+        number: "ISSUE-02",
+        status: "ALL",
+        title: "QA 제목입니다.",
+        asIs: "문제사항입니다.",
+        toBe: "기대결과입니다.",
+        memo: "메모입니다"
+      },
       statusCode: 200,
-      message: 'qa 상세로 리스트를 조회합니다.',
+      message: 'qa 리스트를 조회합니다.',
     }),
   },
   saveQa: {
@@ -126,7 +105,7 @@ export const QaResponse = {
   findQaComment: {
     200: createPaginationResponse({
       data: {
-        qaComment: [
+        data : [
           {
             commentId: 1,
             user: {

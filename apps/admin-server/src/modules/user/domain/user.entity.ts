@@ -86,9 +86,27 @@ export default class User extends BaseTimeEntity {
   @Column({
     type: 'datetime',
     comment: '마지막 로그인 시간',
-    nullable: false,
+    name: 'last_login_date',
+    nullable: true,
   })
   lastLoginDate: Date;
+
+  @Column({
+    type: 'datetime',
+    name: 'deleted_date',
+    comment: '삭제 시간',
+    nullable: true,
+  })
+  deletedDate: Date;
+
+  @Column({
+    type: 'varchar',
+    name: 'deleted_reason',
+    length: 255,
+    comment: '삭제 사유',
+    nullable: true,
+  })
+  deletedReason: string;
 
   @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
   teamUser: Relation<TeamUser>[];

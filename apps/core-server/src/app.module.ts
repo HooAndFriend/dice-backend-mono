@@ -20,7 +20,6 @@ import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -45,11 +44,6 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
         },
         slaves: [
           {
-            // host: process.env.DB_SLAVE_HOST,
-            // port: +process.env.DB_SLAVE_PORT,
-            // username: process.env.DB_SLAVE_USERNAME,
-            // password: process.env.DB_SLAVE_PASSWORD,
-            // database: process.env.DB_SLAVE_DATABASE,
             host: process.env.DB_MASTER_HOST,
             port: +process.env.DB_MASTER_PORT,
             username: process.env.DB_MASTER_USERNAME,

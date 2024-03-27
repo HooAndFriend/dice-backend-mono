@@ -6,7 +6,7 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { UserType } from '../../../global/enum/UserType.enum';
 
 export default class RequestSocialUserSaveDto {
-  @ApiProperty({ example: '123asdasdpsajdgfkhdasfglajdfh' })
+  @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
   @IsString()
   token: string;
 
@@ -18,7 +18,7 @@ export default class RequestSocialUserSaveDto {
   @IsString()
   nickname: string;
 
-  @ApiProperty({ example: UserType.APPLE, enum: UserType })
+  @ApiProperty({ example: UserType.GOOGLE, enum: UserType })
   @IsEnum(UserType)
   type: UserType;
 

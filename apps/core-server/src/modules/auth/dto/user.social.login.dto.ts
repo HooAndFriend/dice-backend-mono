@@ -6,11 +6,11 @@ import { IsEnum, IsString } from 'class-validator';
 import { UserType } from '../../../global/enum/UserType.enum';
 
 export default class RequestSocialUserLoginDto {
-  @ApiProperty({ example: '123asdasdpsajdgfkhdasfglajdfh' })
+  @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
   @IsString()
   token: string;
 
-  @ApiProperty({ example: UserType.APPLE, enum: UserType })
+  @ApiProperty({ example: UserType.GOOGLE, enum: UserType })
   @IsEnum(UserType)
   type: UserType;
 }

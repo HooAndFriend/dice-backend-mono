@@ -1,7 +1,6 @@
 // ** Typeorm Imports
 import {
   Column,
-  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,

@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 // ** Custom Module Imports
 import { DataSource } from 'typeorm';
@@ -11,6 +11,7 @@ import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.re
 // ** Response Imports
 
 // ** enum, dto, entity, types Imports
+import RequestQaFindDto from '../dto/qa.find.dto';
 
 @Injectable()
 export default class QaService {
@@ -18,4 +19,11 @@ export default class QaService {
     private readonly qaRepository: QaRepository,
     private readonly dataSource: DataSource,
   ) {}
+  
+  public async findQaListByQuery(findQuery: RequestQaFindDto) {
+    const [qa, count] = await this.qaRepository.findQaListByQuery(
+      findQuery,
+    );
+    return {qa, count}
+  }
 }

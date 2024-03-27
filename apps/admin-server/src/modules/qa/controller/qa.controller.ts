@@ -2,6 +2,7 @@
 import {
   Controller,
   Get,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -25,6 +26,10 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
+import RequestQaFindDto from '../dto/qa.find.dto';
+import QaService from '../service/qa.service';
+import CommentService from '../service/comment.service';
+import CommonResponse from '@/src/global/dto/api.response';
 
 // ** Dto Imports
 
@@ -34,12 +39,23 @@ import {
 @Controller({ path: '/qa', version: '1' })
 export default class QaController {
   constructor(
+    private readonly qaService: QaService,
   ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/')
-  public async findQaList() {}
+  @Get('/detail/')
+  public async findQaListByQuery(
+    @Query() findquery: RequestQaFindDto,
+  ) {
+    const qaList = await this.qaService.findQaListByQuery(findquery)
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Qa리스트를 조회합니다.',
+      data: qaList,
+    });
+  }
 }

@@ -1,44 +1,21 @@
 // ** Nest Imports
-import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
-
-// ** Utils Imports
-import dayjs from 'dayjs';
+import { Injectable, ConsoleLogger } from '@nestjs/common';
 
 @Injectable()
-export default class LoggerService implements NestLoggerService {
+export default class LoggerService extends ConsoleLogger {
   debug(message: any, ...optionalParams: any[]) {
-    console.debug(
-      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      '\x1b[36m[Debug]\x1b[0m',
-      message,
-      ...optionalParams,
-    );
+    super.debug(message, ...optionalParams);
   }
 
   warn(message: any, ...optionalParams: any[]) {
-    console.warn(
-      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      '\x1b[33m[Warning]\x1b[0m',
-      message,
-      ...optionalParams,
-    );
+    super.warn(message, ...optionalParams);
   }
 
   log(message: any, ...optionalParams: any[]) {
-    console.log(
-      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      '\x1b[32m[Log]\x1b[0m',
-      message,
-      ...optionalParams,
-    );
+    super.log(message, ...optionalParams);
   }
 
   error(message: any, ...optionalParams: any[]) {
-    console.error(
-      dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      '\x1b[31m[Error]\x1b[0m',
-      message,
-      ...optionalParams,
-    );
+    super.error(message, ...optionalParams);
   }
 }
