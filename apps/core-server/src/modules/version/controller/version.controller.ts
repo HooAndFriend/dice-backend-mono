@@ -34,8 +34,8 @@ import {
   createUnauthorizedResponse,
 } from '../../../global/response/common';
 import CommonResponse from '@/src/global/dto/api.response';
-import { VersionResponse } from '@/src/global/response/version.response';
 import VersionTypeEnum from '../domain/version-type.enum';
+import { VersionResponse } from '@/src/global/response/version.response';
 
 // ** Dto Imports
 
@@ -46,11 +46,10 @@ import VersionTypeEnum from '../domain/version-type.enum';
 export default class VersionController {
   constructor(private readonly versionService: VersionService) {}
 
-  
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '최신 Version 조회' })
-  @ApiResponse(VersionResponse.findVersion[200])
-  @ApiResponse(VersionResponse.findVersion[400])
+  @ApiResponse(VersionResponse.findLastestVersion[200])
+  @ApiResponse(VersionResponse.findLastestVersion[400])
   @ApiQuery({ name: 'type', enum: VersionTypeEnum })
   @UseGuards(JwtAccessGuard)
   @Get('/lastest/:type')
