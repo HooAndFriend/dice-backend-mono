@@ -36,7 +36,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(teamId: number) {
+  public async findWorkspaceUserListByTeam(teamId: number, userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
         'workspaceUser.id',
@@ -50,8 +50,10 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspaceFunction.function',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      .where('workspace.teamId = :teamId', { teamId });
+      .where('workspace.teamId = :teamId', { teamId })
+      .andWhere('teamUser.userId = :userId', { userId });
 
     return queryBuilder.getManyAndCount();
   }

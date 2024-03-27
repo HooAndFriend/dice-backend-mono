@@ -154,9 +154,12 @@ export default class WorkspaceUserController {
   @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/team')
-  public async findMyWorkspaceList(@GetTeam() { id }: Team) {
+  public async findMyWorkspaceList(
+    @GetTeam() { id }: Team,
+    @GetUser() { id: userId }: User,
+  ) {
     const [data, count] =
-      await this.workspaceUserService.findWorkspaceUserListByTeam(id);
+      await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
