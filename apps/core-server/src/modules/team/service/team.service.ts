@@ -36,7 +36,7 @@ export default class TeamService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(TeamService.name);
 
   /**
    * Save Team

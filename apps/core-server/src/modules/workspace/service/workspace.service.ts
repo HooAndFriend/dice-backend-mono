@@ -29,7 +29,7 @@ export default class WorkspaceService {
     private readonly workspaceUserRepository: WorkspaceUserRepository,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(WorkspaceService.name);
 
   /**
    * 워크스페이스 생성

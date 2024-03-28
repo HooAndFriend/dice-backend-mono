@@ -4,12 +4,12 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
-import QnaRepository from '../repository/qna.repository';
-import RequestQnaSaveDto from '../dto/qna.save.dto';
 
 // ** Custom Module Imports
+import QnaRepository from '../repository/qna.repository';
 
 // ** enum, dto, entity, types Imports
+import RequestQnaSaveDto from '../dto/qna.save.dto';
 
 @Injectable()
 export default class QnaService {
@@ -19,7 +19,7 @@ export default class QnaService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(QnaService.name);
 
   /**
    * Save Qna

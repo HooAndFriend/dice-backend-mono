@@ -35,7 +35,7 @@ export default class AuthService {
     @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(AuthService.name);
 
   /**
    * Admin Login

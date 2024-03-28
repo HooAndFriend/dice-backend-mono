@@ -4,12 +4,12 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
-import FaqRepository from '../repository/faq.repository';
-import RequestFaqFindDto from '../dto/faq.find.dto';
 
 // ** Custom Module Imports
+import FaqRepository from '../repository/faq.repository';
 
 // ** enum, dto, entity, types Imports
+import RequestFaqFindDto from '../dto/faq.find.dto';
 
 @Injectable()
 export default class FaqService {
@@ -19,7 +19,7 @@ export default class FaqService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(FaqService.name);
 
   /**
    * Find Faq List

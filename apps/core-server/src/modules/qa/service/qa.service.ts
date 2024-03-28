@@ -39,7 +39,7 @@ export default class QaService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(QaService.name);
 
   /**
    * Save Simple Qa
@@ -100,10 +100,11 @@ export default class QaService {
           }),
         ),
       );
-      const qaCount = await this.qaRepository.count({
-        where: {workspace: {id: workspace.id}}
-      }) + 1;
-      const qaNumber = workspace.code + "-" + qaCount;
+      const qaCount =
+        (await this.qaRepository.count({
+          where: { workspace: { id: workspace.id } },
+        })) + 1;
+      const qaNumber = workspace.code + '-' + qaCount;
 
       await queryRunner.manager.save(
         this.qaRepository.create({
