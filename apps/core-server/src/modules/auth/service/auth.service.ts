@@ -35,6 +35,7 @@ import UserStatusEnum from '../../user/domain/user-status.enum';
 import { waitForDebugger } from 'inspector';
 import WorkspaceFunctionRepository from '../../workspace-function/repository/workspace-function.repository';
 import DiceFunction from '@/src/global/enum/DiceFunction';
+import { createCode } from '@/src/global/util/generator/code.generate';
 
 @Injectable()
 export default class AuthService {
@@ -51,7 +52,7 @@ export default class AuthService {
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(AuthService.name);
 
   /**
    * 소셜 회원가입
@@ -122,6 +123,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           description: '',
           isPersonal: true,
+          code: createCode(dto.nickname),
           createdId: user.email,
           uuid: uuidv4(),
         }),
@@ -142,6 +144,7 @@ export default class AuthService {
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           comment: '',
           team,
+          code: createCode(dto.nickname),
           uuid: uuidv4(),
           createdId: user.email,
         }),
@@ -305,6 +308,7 @@ export default class AuthService {
           description: '',
           isPersonal: true,
           createdId: user.email,
+          code: createCode(dto.nickname),
           uuid: uuidv4(),
         }),
       );
@@ -325,6 +329,7 @@ export default class AuthService {
           comment: '',
           team,
           createdId: user.email,
+          code: createCode(dto.nickname),
           uuid: uuidv4(),
         }),
       );
