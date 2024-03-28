@@ -99,6 +99,14 @@ export default class QaService {
   }
 
   /**
+   * Delete Qa File By Id
+   * @param qaFileId
+   */
+  public async deleteQaFile(qaFileId: number) {
+    await this.fileRepository.delete(qaFileId);
+  }
+
+  /**
    * Save Qa
    * @param dto
    * @param admin
@@ -321,6 +329,20 @@ export default class QaService {
 
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
+    }
+  }
+
+  /**
+   * Existed Qa By Id
+   * @param qaId
+   */
+  public async isExistedFileById(fileId: number) {
+    const findQa = await this.fileRepository.exist({
+      where: { id: fileId },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found File');
     }
   }
 }

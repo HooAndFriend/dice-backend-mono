@@ -333,6 +333,26 @@ export default class QaController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 파일 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(QaResponse.deleteQaFile[200])
+  @ApiResponse(QaResponse.deleteQaFile[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/file/:fileId')
+  public async deleteQaFile(@Param('fileId') fileId: number) {
+    await this.qaService.isExistedFileById(fileId);
+
+    await this.qaService.deleteQaFile(fileId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Qa File',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 댓글 삭제' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(CommentResponse.deleteComment[200])

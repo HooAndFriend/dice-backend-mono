@@ -69,6 +69,17 @@ export const QaResponse = {
       message: 'Qa를 생성합니다.',
     }),
   },
+  deleteQaFile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Qa File',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found File',
+    }),
+  },
   saveQaFile: {
     200: createMessageResponse({
       statusCode: 200,
