@@ -27,6 +27,7 @@ import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
+import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 
 @Injectable()
 export default class QaService {
@@ -82,6 +83,21 @@ export default class QaService {
     );
     return { data, count };
   }
+
+  /**
+   * Save Qa File
+   * @param qa
+   * @param dto
+   */
+  public async saveQaFile(qa: Qa, dto: RequestQaFileSaveDto) {
+    await this.fileRepository.save(
+      this.fileRepository.create({
+        url: dto.url,
+        qa,
+      }),
+    );
+  }
+
   /**
    * Save Qa
    * @param dto
@@ -214,6 +230,22 @@ export default class QaService {
   public async findQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, workspace: { id: workspaceId }, isDeleted: false },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+
+    return findQa;
+  }
+
+  /**
+   * Find Qa by Id
+   * @param qaId
+   */
+  public async findQaById(qaId: number) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: qaId, isDeleted: false },
     });
 
     if (!findQa) {

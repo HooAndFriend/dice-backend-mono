@@ -60,6 +60,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RoleEnum from '@/src/global/enum/Role';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
+import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -307,6 +308,27 @@ export default class QaController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 파일 등록' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaFileSaveDto })
+  @ApiResponse(QaResponse.saveQaFile[200])
+  @ApiResponse(QaResponse.saveQaFile[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/file')
+  public async saveQaFile(@Body() dto: RequestQaFileSaveDto) {
+    const qa = await this.qaService.findQaById(dto.qaId);
+
+    await this.qaService.saveQaFile(qa, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Qa File',
     });
   }
 
