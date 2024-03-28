@@ -52,9 +52,15 @@ export default class QaService {
     admin: User,
     workspace: Workspace,
   ) {
+    const qaCount =
+      (await this.qaRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+    const qaNumber = workspace.code + '-' + qaCount;
+
     await this.qaRepository.save(
       this.qaRepository.create({
-        number: dto.number,
+        number: qaNumber,
         title: dto.title,
         asIs: '',
         toBe: '',
