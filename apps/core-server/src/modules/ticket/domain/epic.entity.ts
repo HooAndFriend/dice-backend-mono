@@ -1,6 +1,7 @@
 // ** Typeorm Imports
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -44,6 +45,14 @@ export default class Epic extends BaseTimeEntity {
     default: false,
   })
   isDeleted: boolean;
+
+  @Column({ 
+    type: 'date',
+    name: 'due_date',
+    comment: '마감일',
+    nullable: true,
+  })
+  dueDate: Date;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.epic)
   workspace: Relation<Workspace>;

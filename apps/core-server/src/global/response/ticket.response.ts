@@ -158,6 +158,7 @@ export const TicketResponse = {
             id: 3,
             code: 'DICE-1',
             name: '게시판',
+            due_date: '2024-01-20',
             allTicketCount: 20,
             doneTicketCount: 16,
           },
@@ -210,6 +211,22 @@ export const TicketResponse = {
     200: createMessageResponse({
       statusCode: 200,
       message: 'Epic을 수정합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Epic 정보를 찾을 수 없습니다.',
+    }),
+    400: createErrorResponse({
+      statusCode: 400,
+      error: 'BAD REQUEST',
+      message: 'Epic 이름은 최대 30자 입니다.',
+    }),
+  },
+  updateDueDateEpic: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Epic Due Date를 수정합니다.',
     }),
     404: createErrorResponse({
       statusCode: 404,

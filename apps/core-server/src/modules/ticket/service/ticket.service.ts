@@ -39,6 +39,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
+import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 
 @Injectable()
 export default class TicketService {
@@ -377,9 +378,9 @@ export default class TicketService {
   ) {
     await this.epicNameValidation(dto.name, workspace.id);
 
-    const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-      workspace.id,
-    );
+    // const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
+    //   workspace.id,
+    // );
     const epicCount =
       (await this.epicRepository.count({
         where: { workspace: { id: workspace.id } },
@@ -389,6 +390,7 @@ export default class TicketService {
     const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
+      dueDate: dto.dueDate,
       workspace: workspace,
       code: epicCode,
     });
@@ -407,6 +409,18 @@ export default class TicketService {
 
     await this.epicRepository.update(dto.epicId, {
       name: dto.name,
+    });
+  }
+
+  /**
+   * Update Due Date Epic
+   * @param dto
+   */
+  public async updateDueDateEpic(dto: RequestEpicDueDateUpdateDto) {
+    const findEpic = await this.findEpicById(dto.epicId);
+
+    await this.epicRepository.update(dto.epicId, {
+      dueDate: dto.dueDate,
     });
   }
 

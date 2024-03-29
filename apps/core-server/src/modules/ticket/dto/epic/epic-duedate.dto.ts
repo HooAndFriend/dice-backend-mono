@@ -2,12 +2,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsDateString, IsOptional, IsString, Matches } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, Matches } from 'class-validator';
 
-export default class RequestEpicSaveDto {
-  @ApiProperty({ example: 'DICE 로그인' })
-  @IsString()
-  name: string;
+export default class RequestEpicDueDateUpdateDto {
+  @ApiProperty({ example: 2 })
+  @IsNumber()
+  epicId: number;
 
   @ApiProperty({ example : '2024-04-04', required : false})
   @IsOptional()

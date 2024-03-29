@@ -40,9 +40,10 @@ export default class EpicRepository extends Repository<Epic> {
   public async findAllByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([
-        'epic.id',
-        'epic.name',
-        'epic.code',
+        'epic.id as id',
+        'epic.name as name',
+        'epic.code as code',
+        'epic.dueDate as dueDate',
       ])
       .addSelect('COUNT(ticket.adminId)', 'allTicketCount')
       .addSelect('COUNT(CASE WHEN ticket.status = :status THEN ticket.adminId END)', 'doneTicketCount')
