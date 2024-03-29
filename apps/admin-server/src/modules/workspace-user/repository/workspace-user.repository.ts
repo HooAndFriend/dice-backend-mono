@@ -18,6 +18,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspaceUser.id',
         'workspaceUser.createdDate',
         'workspaceUser.role',
+        'workspaceUser.invitedId',
         'workspace.name',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')

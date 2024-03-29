@@ -173,6 +173,7 @@ export const UserResponse = {
             createdDate: '2024-02-14T00:57:33.382Z',
             id: 1,
             role: 'ADMIN',
+            invitedId: 'admin',
             workspace: {
               name: 'Pinomaker',
             },
