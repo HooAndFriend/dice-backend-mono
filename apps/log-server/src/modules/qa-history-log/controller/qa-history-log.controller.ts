@@ -22,7 +22,7 @@ import {
 // ** Dto Imports
 import RequestQaHistoryLogSaveDto from '../dto/qa-history-log.save.dto';
 
-@ApiTags('Workspace Function')
+@ApiTags('Qa History Log')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/qa-history-log', version: '1' })

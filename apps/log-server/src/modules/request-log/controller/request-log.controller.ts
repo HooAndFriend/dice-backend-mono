@@ -1,5 +1,11 @@
 // ** Nest Imports
 import { Controller } from '@nestjs/common';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 
 // ** Module Imports
 import RequestLogService from '../service/request-log.service';
@@ -12,15 +18,11 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+
+// ** Dto Imports
 import RequestLogDto from '../dto/request-log.dto';
 
-@ApiTags('Workspace Function')
+@ApiTags('Request Log')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/request-log', version: '1' })
