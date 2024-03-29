@@ -1,6 +1,7 @@
 // ** Typeorm Imports
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -46,6 +47,9 @@ export default class Qa extends BaseTimeEntity {
     nullable: false,
   })
   title: string;
+
+  @CreateDateColumn({ name: 'due_date' })
+  dueDate: Date;
 
   @Column({
     type: 'text',
