@@ -63,6 +63,7 @@ import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
+import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -201,6 +202,27 @@ export default class QaController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa상태를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA dueDate 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaDueDateUpdateDto })
+  @ApiResponse(QaResponse.updateStatusQa[200])
+  @ApiResponse(QaResponse.updateStatusQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/dueDate')
+  public async updatedueDateQa(
+    @Body() dto: RequestQaDueDateUpdateDto,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    await this.qaService.updateQaDueDate(dto, workspace);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'qa dueDate를 수정합니다.',
     });
   }
 

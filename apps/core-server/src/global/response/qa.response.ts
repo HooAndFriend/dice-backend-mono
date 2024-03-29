@@ -15,6 +15,7 @@ export const QaResponse = {
             number: 'ISSUE_01',
             status: 'DONE',
             title: 'qa 제목입니다',
+            dueDate: '2024-04-04',
             admin: {
               adminId: 'qwer1234',
               nickname: '임동현',

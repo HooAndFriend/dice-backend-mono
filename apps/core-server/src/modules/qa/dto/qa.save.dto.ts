@@ -1,8 +1,9 @@
 // ** Swagger Imports
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 // ** Pipe Imports
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 export default class RequestQaSaveDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
@@ -27,6 +28,12 @@ export default class RequestQaSaveDto {
   @ApiProperty({ example: '메모입니다' })
   @IsString()
   memo: string;
+
+  @ApiProperty({ example : '2024-04-04', required : false})
+  @IsDate()
+  @Type(()=> Date)
+  @IsOptional()
+  dueDate : Date
 
   @ApiProperty({
     type: [Object],

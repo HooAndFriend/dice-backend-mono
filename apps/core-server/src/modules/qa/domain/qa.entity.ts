@@ -48,6 +48,30 @@ export default class Qa extends BaseTimeEntity {
   title: string;
 
   @Column({
+    type: 'date',
+    name: 'due_date',
+    comment: '마감일',
+    nullable: true,
+  })
+  dueDate: Date;
+
+  @Column({
+    type: 'date',
+    name: 'complete_date',
+    comment: '완료일',
+    nullable: true,
+  })
+  completeDate: Date;
+
+  @Column({
+    type: 'date',
+    name: 'reopen_date',
+    comment: '재오픈일',
+    nullable: true,
+  })
+  reopenDate: Date;
+
+  @Column({
     type: 'text',
     comment: '문제 사항',
     nullable: false,

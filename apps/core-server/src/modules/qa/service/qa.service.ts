@@ -27,6 +27,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
+import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 
 @Injectable()
 export default class QaService {
@@ -142,6 +143,7 @@ export default class QaService {
           asIs: dto.asIs,
           toBe: dto.toBe,
           memo: dto.memo,
+          dueDate: dto.dueDate,
           admin: admin,
           worker: findWorker,
           file: files,
@@ -222,6 +224,19 @@ export default class QaService {
 
     return;
   }
+  public async updateQaDueDate(dto: RequestQaDueDateUpdateDto, workspace: Workspace) {
+    const findQa = await this.findQa(dto.qaId, workspace.id);
+
+    findQa.dueDate = dto.dueDate;
+    await this.qaRepository.save(findQa);
+
+    return;
+  }
+  /**
+   * Delete Qa
+   * @param qaId
+   * @param workspace
+   */
   public async deleteQa(qaId: number, workspace: Workspace) {
     const findQa = await this.findQa(qaId, workspace.id);
     findQa.isDeleted = true;
