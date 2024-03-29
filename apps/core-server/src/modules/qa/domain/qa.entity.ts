@@ -48,7 +48,12 @@ export default class Qa extends BaseTimeEntity {
   })
   title: string;
 
-  @CreateDateColumn({ name: 'due_date' })
+  @Column({
+    type: 'date',
+    comment: '마감일',
+    nullable: true,
+    name: 'due_date',
+  })
   dueDate: Date;
 
   @Column({

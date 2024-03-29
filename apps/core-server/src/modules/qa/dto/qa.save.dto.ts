@@ -1,9 +1,8 @@
 // ** Swagger Imports
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 
 // ** Pipe Imports
-import { IsArray, IsDate, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import { IsArray, IsDateString, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 export default class RequestQaSaveDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
@@ -30,8 +29,9 @@ export default class RequestQaSaveDto {
   memo: string;
 
   @ApiProperty({ example : '2024-04-04', required : false})
-  @Matches(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
-  @IsString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  @IsOptional()
+  @IsDateString()
   dueDate : string;
 
   @ApiProperty({
