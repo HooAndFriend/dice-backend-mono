@@ -21,7 +21,24 @@ export default class UserService {
    * @returns
    */
   public async findUserList(dto: RequestUserFindDto) {
-    return await this.userRepository.findUserList(dto);
+    const [data, count] = await this.userRepository.findUserList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.id,
+        email: item.email,
+        nickname: item.nickname,
+        type: item.type,
+        createdDate: item.createdDate,
+        lastLoginDate: item.lastLoginDate,
+        teamUserCount: item.teamUser.length,
+        workspaceUserCount: item.teamUser.reduce(
+          (total, count) => total + count.workspaceUser.length,
+          0,
+        ),
+      })),
+      count,
+    ];
   }
 
   /**

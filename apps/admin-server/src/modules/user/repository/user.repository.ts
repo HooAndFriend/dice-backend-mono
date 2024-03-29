@@ -9,6 +9,7 @@ import User from '../domain/user.entity';
 import RequestUserFindDto from '../dto/user.find.dto';
 import UserStatusEnum from '../domain/user-status.enum';
 import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
+import dayjs from 'dayjs';
 
 @CustomRepository(User)
 export default class UserRepository extends Repository<User> {
@@ -26,12 +27,12 @@ export default class UserRepository extends Repository<User> {
         'user.type',
         'user.createdDate',
         'user.lastLoginDate',
+        'teamUser.id',
+        'workspaceUser.id',
       ])
-      .addSelect('COUNT(workspaceUser.id)', 'workspaceUserCount')
-      .addSelect('COUNT(teamUser.id)', 'teamUserCount')
+
       .leftJoin('user.teamUser', 'teamUser')
-      .leftJoin('teamUser.workspaceUser', 'workspaceUser')
-      .groupBy('user.id');
+      .leftJoin('teamUser.workspaceUser', 'workspaceUser');
 
     if (dto.nickname) {
       queryBuilder.where('user.nickname like :nickname', {
@@ -48,7 +49,7 @@ export default class UserRepository extends Repository<User> {
         'user.createdDate between :createdStartDate and :createdEndDate',
         {
           createdStartDate: dto.createdStartDate,
-          createdEndDate: dto.createdEndDate,
+          createdEndDate: `${dto.createdEndDate} 23:59:59`,
         },
       );
     }
@@ -58,7 +59,7 @@ export default class UserRepository extends Repository<User> {
         'user.lastLoginDate between :lastLoginStartDate and :lastLoginEndDate',
         {
           lastLoginStartDate: dto.lastLoginStartDate,
-          lastLoginEndDate: dto.lastLoginEndDate,
+          lastLoginEndDate: `${dto.lastLoginEndDate} 23:59:59`,
         },
       );
     }
@@ -67,7 +68,7 @@ export default class UserRepository extends Repository<User> {
       queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
-    return await queryBuilder.getRawMany();
+    return await queryBuilder.getManyAndCount();
   }
 
   /**
@@ -102,17 +103,20 @@ export default class UserRepository extends Repository<User> {
         'user.createdDate between :createdStartDate and :createdEndDate',
         {
           createdStartDate: dto.createdStartDate,
-          createdEndDate: dto.createdEndDate,
+          createdEndDate: `${dto.createdEndDate} 23:59:59`,
         },
       );
     }
 
     if (dto.deletedStartDate && dto.deletedEndDate) {
+      const deletedEndDate = new Date(dto.deletedEndDate);
+      deletedEndDate.setHours(23, 59, 59, 999);
+
       queryBuilder.andWhere(
         'user.deletedDate between :deletedStartDate and :deletedEndDate',
         {
           deletedStartDate: dto.deletedStartDate,
-          deletedEndDate: dto.deletedEndDate,
+          deletedEndDate: `${dto.deletedEndDate} 23:59:59`,
         },
       );
     }

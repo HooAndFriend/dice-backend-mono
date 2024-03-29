@@ -53,10 +53,10 @@ export default class UserController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findUserList(@Query(ValidationPipe) dto: RequestUserFindDto) {
-    const data = await this.userService.findUserList(dto);
+    const [data, count] = await this.userService.findUserList(dto);
 
     return CommonResponse.createResponse({
-      data: { data, count: data.length },
+      data: { data, count },
       statusCode: 200,
       message: '유저 리스트를 조회합니다.',
     });
