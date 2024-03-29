@@ -54,6 +54,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
+import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -140,6 +141,26 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
+    });
+  }
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET Due Date 수정' })
+  @ApiBody({ type: RequestTicketDueDateUpdateDto })
+  @ApiResponse(TicketResponse.updateDueDateEpic[200])
+  @ApiResponse(TicketResponse.updateDueDateEpic[400])
+  @ApiResponse(TicketResponse.updateDueDateEpic[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/')
+  public async updateTicketDueDate(
+    @Body() dto: RequestTicketDueDateUpdateDto,
+  ) {
+    await this.ticketService.updateTicketDueDate(dto);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket due date를 수정합니다.',
     });
   }
 
