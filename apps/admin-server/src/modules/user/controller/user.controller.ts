@@ -86,7 +86,7 @@ export default class UserController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findUser(@Param('id') id: number) {
-    const data = await this.userService.findUser(id);
+    const data = await this.userService.findUserById(id);
 
     return CommonResponse.createResponse({
       data,

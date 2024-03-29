@@ -34,20 +34,11 @@ export default class UserService {
   }
 
   /**
-   * find User
-   * @param userId
-   * @returns
-   */
-  public async findUser(userId: number) {
-    return await this.findUserById(userId);
-  }
-
-  /**
    * Find User By Id
    * @param userId
    * @returns
    */
-  private async findUserById(userId: number) {
+  public async findUserById(userId: number) {
     const user = await this.userRepository.findUser(userId);
 
     if (!user) {
