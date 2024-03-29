@@ -10,6 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import QaService from '../service/qa.service';
@@ -61,6 +62,7 @@ import RoleEnum from '@/src/global/enum/Role';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
+import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -71,6 +73,7 @@ export default class QaController {
     private readonly qaService: QaService,
     private readonly commentService: CommentService,
     private readonly userService: UserService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -214,11 +217,23 @@ export default class QaController {
   @Put('/user')
   public async updateUserQa(
     @Body() dto: RequestQaUserUpdateDto,
+    @GetUser() { nickname }: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    await this.qaService.isExistedQaById(dto.qaId);
+    const qa = await this.qaService.findQaById(dto.qaId);
     const user = await this.userService.findUserById(dto.userId);
     await this.qaService.updateUserQa(dto, user);
+
+    this.eventEmitter.emit('qa.send-change-history', {
+      qaId: dto.qaId,
+      username: user.nickname,
+      before: dto.type === 'admin' ? qa.admin.nickname : qa.worker.nickname,
+      after: user.nickname,
+      type:
+        dto.type === 'admin'
+          ? QaHistoryTypeEnum.ADMIN
+          : QaHistoryTypeEnum.WORKER,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

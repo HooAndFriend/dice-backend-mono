@@ -1,6 +1,5 @@
 // ** Nest Imports
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import {
@@ -254,6 +253,7 @@ export default class QaService {
   public async findQaById(qaId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, isDeleted: false },
+      relations: ['worker', 'admin'],
     });
 
     if (!findQa) {

@@ -1,5 +1,11 @@
 // ** Nest Imports
 import { Controller } from '@nestjs/common';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 
 // ** Module Imports
 import QaHistoryLogService from '../service/qa-history-log.service';
@@ -12,12 +18,9 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+
+// ** Dto Imports
+import RequestQaHistoryLogSaveDto from '../dto/qa-history-log.save.dto';
 
 @ApiTags('Workspace Function')
 @ApiResponse(createServerExceptionResponse())
@@ -28,7 +31,9 @@ export default class QaHistoryLogController {
 
   @MessagePattern('qa-history-log')
   async handleMessage(
-    @Payload() data: any,
+    @Payload() data: RequestQaHistoryLogSaveDto,
     @Ctx() context: RmqContext,
-  ): Promise<void> {}
+  ): Promise<void> {
+    await this.qaHistoryLogService.saveQaHistoryLog(data);
+  }
 }
