@@ -152,7 +152,7 @@ export default class TicketController {
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Patch('/')
+  @Patch('/dueDate')
   public async updateTicketDueDate(
     @Body() dto: RequestTicketDueDateUpdateDto,
   ) {
@@ -286,7 +286,7 @@ export default class TicketController {
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Patch('/epic')
+  @Patch('/epic/dueDate')
   public async updateDueDateEpic(@Body() dto: RequestEpicDueDateUpdateDto) {
     await this.ticketService.updateEpicDueDate(dto);
     return CommonResponse.createResponseMessage({

@@ -438,9 +438,10 @@ export default class TicketService {
    * @param dto
    */
   public async updateEpicDueDate(dto: RequestEpicDueDateUpdateDto) {
-    await this.epicRepository.update(dto.epicId, {
-      dueDate: dto.dueDate,
-    });
+    const findEpic = await this.findEpicById(dto.epicId);
+
+    findEpic.dueDate = new Date(dto.dueDate);
+    await this.epicRepository.save(findEpic);
   }
 
   /**
