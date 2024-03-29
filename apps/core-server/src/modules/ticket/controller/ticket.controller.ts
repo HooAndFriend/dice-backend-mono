@@ -147,9 +147,8 @@ export default class TicketController {
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET Due Date 수정' })
   @ApiBody({ type: RequestTicketDueDateUpdateDto })
-  @ApiResponse(TicketResponse.updateDueDateEpic[200])
-  @ApiResponse(TicketResponse.updateDueDateEpic[400])
-  @ApiResponse(TicketResponse.updateDueDateEpic[404])
+  @ApiResponse(TicketResponse.updateTicketDueDate[200])
+  @ApiResponse(TicketResponse.updateTicketDueDate[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -289,7 +288,7 @@ export default class TicketController {
   @UseGuards(JwtAccessGuard)
   @Patch('/epic')
   public async updateDueDateEpic(@Body() dto: RequestEpicDueDateUpdateDto) {
-    await this.ticketService.updateDueDateEpic(dto);
+    await this.ticketService.updateEpicDueDate(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 수정합니다.',
