@@ -9,16 +9,10 @@ export const AuthResponse = {
     200: createResponse({
       data: {
         admin: {
-          createdDate: '2024-02-06T05:49:57.188Z',
-          modifiedDate: '2024-02-06T05:49:57.188Z',
-          id: 1,
           email: 'admin',
-          password:
-            '$2a$10$iM8h/1wR.hW/5t9cuvu5Ju8SP6Ya7L0JQve3WB2TCqVOYy.fZVEeO',
           role: 'MASTER',
           nickname: 'ADMIN',
           profile: '',
-          createdId: '',
         },
         token: {
           accessToken:

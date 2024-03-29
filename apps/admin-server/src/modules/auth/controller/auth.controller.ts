@@ -51,7 +51,12 @@ export default class AuthController {
 
     return CommonResponse.createResponse({
       data: {
-        admin,
+        admin: {
+          email: admin.email,
+          nickname: admin.nickname,
+          role: admin.role,
+          profile: admin.profile,
+        },
         token,
       },
       statusCode: 200,
