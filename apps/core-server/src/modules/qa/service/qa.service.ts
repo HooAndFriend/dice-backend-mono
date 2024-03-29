@@ -223,7 +223,7 @@ export default class QaService {
   public async updateQaDueDate(dto: RequestQaDueDateUpdateDto, workspace: Workspace) {
     const findQa = await this.findQa(dto.qaId, workspace.id);
 
-    findQa.dueDate = dto.dueDate;
+    findQa.dueDate = new Date(dto.dueDate);
     await this.qaRepository.save(findQa);
   }
   /**
