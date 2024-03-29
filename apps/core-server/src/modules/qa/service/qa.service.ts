@@ -164,7 +164,6 @@ export default class QaService {
     } finally {
       await queryRunner.release();
     }
-    return;
   }
   /**
    * Update Qa
@@ -206,7 +205,6 @@ export default class QaService {
     } finally {
       await queryRunner.release();
     }
-    return;
   }
   /**
    * Update Qa Status
@@ -221,16 +219,12 @@ export default class QaService {
 
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
-
-    return;
   }
   public async updateQaDueDate(dto: RequestQaDueDateUpdateDto, workspace: Workspace) {
     const findQa = await this.findQa(dto.qaId, workspace.id);
 
     findQa.dueDate = dto.dueDate;
     await this.qaRepository.save(findQa);
-
-    return;
   }
   /**
    * Delete Qa
@@ -241,7 +235,6 @@ export default class QaService {
     const findQa = await this.findQa(qaId, workspace.id);
     findQa.isDeleted = true;
     await this.qaRepository.save(findQa);
-    return;
   }
 
   /**
