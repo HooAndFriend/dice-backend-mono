@@ -251,18 +251,11 @@ export default class TicketService {
    * @param dto
    */
   public async updateTicketDueDate(dto: RequestTicketDueDateUpdateDto) {
-    try{
-      await this.ticketRepository.update(dto.ticketId, {
-        dueDate: dto.dueDate,
-      });
-    }
-    catch(error){
-      this.logger.error(error);
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-      throw new InternalServerErrorException('Internal Server Error');
-    }
+    const findTicket = await this.findTicketById(dto.ticketId);
+
+    await this.ticketRepository.update(findTicket.id, {
+      dueDate: dto.dueDate,
+    });
   }
 
   /**
@@ -399,9 +392,6 @@ export default class TicketService {
   ) {
     await this.epicNameValidation(dto.name, workspace.id);
 
-    // const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-    //   workspace.id,
-    // );
     const epicCount =
       (await this.epicRepository.count({
         where: { workspace: { id: workspace.id } },
