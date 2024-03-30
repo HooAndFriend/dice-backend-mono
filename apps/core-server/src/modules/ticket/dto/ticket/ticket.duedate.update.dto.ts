@@ -2,16 +2,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsDateString, IsNumber, IsString, Matches } from 'class-validator';
+import { IsDateString, IsNumber, Matches } from 'class-validator';
 
-export default class RequestTicketSaveDto {
+export default class RequestTicketDueDateUpdateDto {
   @ApiProperty({ example: 2 })
   @IsNumber()
-  epicId: number;
-
-  @ApiProperty({ example: '게시판' })
-  @IsString()
-  name: string;
+  ticketId: number;
 
   @ApiProperty({ example: '2024-04-04', required: true })
   @Matches(/^\d{4}-\d{2}-\d{2}$/)

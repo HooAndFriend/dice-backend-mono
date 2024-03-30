@@ -39,6 +39,9 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
+import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
+import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
+import { find } from 'rxjs';
 
 @Injectable()
 export default class TicketService {
@@ -186,6 +189,7 @@ export default class TicketService {
     const ticket = this.ticketRepository.create({
       admin: user,
       epic: findEpic,
+      dueDate: dto.dueDate,
       number: ticketNumber,
       workspace: findEpic.workspace,
       name: dto.name,
@@ -241,6 +245,17 @@ export default class TicketService {
       }
       throw new InternalServerErrorException('Internal Server Error');
     }
+  }
+  /**
+   * Update ticket due date
+   * @param dto
+   */
+  public async updateTicketDueDate(dto: RequestTicketDueDateUpdateDto) {
+    const findTicket = await this.findTicketById(dto.ticketId);
+
+    await this.ticketRepository.update(findTicket.id, {
+      dueDate: dto.dueDate,
+    });
   }
 
   /**
@@ -377,9 +392,6 @@ export default class TicketService {
   ) {
     await this.epicNameValidation(dto.name, workspace.id);
 
-    const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-      workspace.id,
-    );
     const epicCount =
       (await this.epicRepository.count({
         where: { workspace: { id: workspace.id } },
@@ -389,6 +401,7 @@ export default class TicketService {
     const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
+      dueDate: dto.dueDate,
       workspace: workspace,
       code: epicCode,
     });
@@ -408,6 +421,17 @@ export default class TicketService {
     await this.epicRepository.update(dto.epicId, {
       name: dto.name,
     });
+  }
+
+  /**
+   * Update Due Date Epic
+   * @param dto
+   */
+  public async updateEpicDueDate(dto: RequestEpicDueDateUpdateDto) {
+    const findEpic = await this.findEpicById(dto.epicId);
+
+    findEpic.dueDate = new Date(dto.dueDate);
+    await this.epicRepository.save(findEpic);
   }
 
   /**
