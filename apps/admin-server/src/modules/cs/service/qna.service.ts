@@ -28,7 +28,7 @@ export default class QnaService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(QnaService.name);
 
   /**
    * Find Faq List

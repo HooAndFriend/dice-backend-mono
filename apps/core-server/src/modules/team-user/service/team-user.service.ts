@@ -33,7 +33,7 @@ export default class TeamUserService {
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(TeamUserService.name);
 
   /**
    * Find Team List

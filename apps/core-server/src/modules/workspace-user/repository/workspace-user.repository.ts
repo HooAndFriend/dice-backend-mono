@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import WorkspaceUser from '../domain/workspace-user.entity';
+import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 
 @CustomRepository(WorkspaceUser)
 export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
@@ -35,7 +36,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(teamId: number) {
+  public async findWorkspaceUserListByTeam(teamId: number, userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
         'workspaceUser.id',
@@ -49,8 +50,10 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspaceFunction.function',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      .where('workspace.teamId = :teamId', { teamId });
+      .where('workspace.teamId = :teamId', { teamId })
+      .andWhere('teamUser.userId = :userId', { userId });
 
     return queryBuilder.getManyAndCount();
   }
@@ -73,6 +76,37 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .leftJoin('workspaceUser.workspace', 'workspace')
       .leftJoin('workspaceUser.teamUser', 'teamUser')
       .where('teamUser.userId = :userId', { userId });
+
+    return await queryBuilder.getManyAndCount();
+  }
+
+  public async searchWorkspaceUser(
+    dto: RequestWorkspaceUserFindDto,
+    workspaceId: number,
+  ) {
+    const queryBuilder = this.createQueryBuilder('workspaceUser')
+      .select([
+        'workspaceUser.id',
+        'workspaceUser.role',
+        'teamUser.id',
+        'user.id',
+        'user.nickname',
+        'user.email',
+        'user.profile',
+      ])
+      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .leftJoin('teamUser.user', 'user')
+      .where('workspaceUser.workspaceId = :workspaceId', { workspaceId });
+
+    if (dto.name) {
+      queryBuilder
+        .andWhere('user.email LIKE :email', {
+          email: `%${dto.name}%`,
+        })
+        .orWhere('user.nickname LIKE :nickname', {
+          nickname: `%${dto.name}%`,
+        });
+    }
 
     return await queryBuilder.getManyAndCount();
   }

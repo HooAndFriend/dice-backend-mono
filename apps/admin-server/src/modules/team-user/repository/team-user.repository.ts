@@ -20,6 +20,7 @@ export default class TeamUserRepository extends Repository<TeamUser> {
         'teamUser.id',
         'teamUser.createdDate',
         'teamUser.role',
+        'teamUser.invitedId',
         'team.name',
       ])
       .leftJoin('teamUser.team', 'team')

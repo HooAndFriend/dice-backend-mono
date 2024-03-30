@@ -22,7 +22,7 @@ export default class FaqService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(FaqService.name);
 
   /**
    * Save Faq

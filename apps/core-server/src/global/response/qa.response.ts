@@ -9,7 +9,7 @@ export const QaResponse = {
   findQaList: {
     200: createPaginationResponse({
       data: {
-        data : [
+        data: [
           {
             id: 1,
             number: 'ISSUE_01',
@@ -49,15 +49,15 @@ export const QaResponse = {
   findQa: {
     200: createResponse({
       data: {
-        createdDate: "2024-03-13T17:40:32.903Z",
-        modifiedDate: "2024-03-15T18:07:45.801Z",
+        createdDate: '2024-03-13T17:40:32.903Z',
+        modifiedDate: '2024-03-15T18:07:45.801Z',
         id: 1,
-        number: "ISSUE-02",
-        status: "ALL",
-        title: "QA 제목입니다.",
-        asIs: "문제사항입니다.",
-        toBe: "기대결과입니다.",
-        memo: "메모입니다"
+        number: 'ISSUE-02',
+        status: 'ALL',
+        title: 'QA 제목입니다.',
+        asIs: '문제사항입니다.',
+        toBe: '기대결과입니다.',
+        memo: '메모입니다',
       },
       statusCode: 200,
       message: 'qa 리스트를 조회합니다.',
@@ -69,6 +69,28 @@ export const QaResponse = {
       message: 'Qa를 생성합니다.',
     }),
   },
+  deleteQaFile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Qa File',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found File',
+    }),
+  },
+  saveQaFile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Save Qa File',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'qa 정보를 찾을 수 없습니다.',
+    }),
+  },
   updateQa: {
     200: createMessageResponse({
       statusCode: 200,
@@ -78,6 +100,22 @@ export const QaResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: 'qa 정보를 찾을 수 없습니다.',
+    }),
+  },
+  updateUserQa: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Qa 상태를 수정합니다.',
+    }),
+    404.1: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'QA 정보를 찾을 수 없습니다.',
+    }),
+    404.2: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'USER 정보를 찾을 수 없습니다.',
     }),
   },
   updateStatusQa: {
@@ -105,7 +143,7 @@ export const QaResponse = {
   findQaComment: {
     200: createPaginationResponse({
       data: {
-        data : [
+        data: [
           {
             commentId: 1,
             user: {

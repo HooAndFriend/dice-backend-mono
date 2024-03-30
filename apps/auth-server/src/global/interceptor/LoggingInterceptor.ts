@@ -21,7 +21,7 @@ import RequestLogDto from '../dto/request-log.dto';
 export class LoggingInterceptor implements NestInterceptor {
   constructor(@Inject('RMQ_LOG_QUE') private readonly rmqClient: ClientProxy) {}
 
-  private logger = new Logger();
+  private logger = new Logger(LoggingInterceptor.name);
   intercept(
     context: ExecutionContext,
     next: CallHandler,

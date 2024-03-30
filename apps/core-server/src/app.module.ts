@@ -2,6 +2,7 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 // ** Cache Imports
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
@@ -20,12 +21,15 @@ import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
+    EventEmitterModule.forRoot(),
+
     TypeOrmModule.forRoot({
       type: 'mysql',
       entities: ['dist/modules/**/*.entity.js'],

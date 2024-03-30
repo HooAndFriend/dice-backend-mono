@@ -10,10 +10,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import QaService from '../service/qa.service';
 import CommentService from '../service/comment.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -50,12 +52,17 @@ import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
+
 // ** Entity Imports
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
+
 // ** Emum Imports
 import RoleEnum from '@/src/global/enum/Role';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
+import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
+import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
+import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -65,6 +72,8 @@ export default class QaController {
   constructor(
     private readonly qaService: QaService,
     private readonly commentService: CommentService,
+    private readonly userService: UserService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -196,6 +205,43 @@ export default class QaController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 유저 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaUserUpdateDto })
+  @ApiResponse(QaResponse.updateUserQa[200])
+  @ApiResponse(QaResponse.updateUserQa[404.1])
+  @ApiResponse(QaResponse.updateUserQa[404.2])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/user')
+  public async updateUserQa(
+    @Body() dto: RequestQaUserUpdateDto,
+    @GetUser() { nickname }: User,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    const qa = await this.qaService.findQaById(dto.qaId);
+    const user = await this.userService.findUserById(dto.userId);
+    await this.qaService.updateUserQa(dto, user);
+
+    this.eventEmitter.emit('qa.send-change-history', {
+      qaId: dto.qaId,
+      username: user.nickname,
+      before: dto.type === 'admin' ? qa.admin.nickname : qa.worker.nickname,
+      after: user.nickname,
+      type:
+        dto.type === 'admin'
+          ? QaHistoryTypeEnum.ADMIN
+          : QaHistoryTypeEnum.WORKER,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa상태를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 삭제' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(QaResponse.deleteQa[200])
@@ -277,6 +323,47 @@ export default class QaController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 파일 등록' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaFileSaveDto })
+  @ApiResponse(QaResponse.saveQaFile[200])
+  @ApiResponse(QaResponse.saveQaFile[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/file')
+  public async saveQaFile(@Body() dto: RequestQaFileSaveDto) {
+    const qa = await this.qaService.findQaById(dto.qaId);
+
+    await this.qaService.saveQaFile(qa, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Qa File',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 파일 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(QaResponse.deleteQaFile[200])
+  @ApiResponse(QaResponse.deleteQaFile[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/file/:fileId')
+  public async deleteQaFile(@Param('fileId') fileId: number) {
+    await this.qaService.isExistedFileById(fileId);
+
+    await this.qaService.deleteQaFile(fileId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Qa File',
     });
   }
 

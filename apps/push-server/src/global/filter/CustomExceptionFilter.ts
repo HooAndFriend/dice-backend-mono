@@ -8,7 +8,7 @@ import {
 
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
-  private logger = new Logger();
+  private logger = new Logger(CustomExceptionFilter.name);
 
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

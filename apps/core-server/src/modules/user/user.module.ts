@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // ** Custom Module Imports
 import AuthController from './controller/user.controller';
 import UserRepository from './repository/user.repository';
-import AuthService from './service/user.service';
+import UserService from './service/user.service';
 import User from './domain/user.entity';
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 import TeamUserModule from '../team-user/team-user.module';
@@ -22,8 +22,8 @@ import WorkspaceModule from '../workspace/workspace.module';
     forwardRef(() => TicketModule),
     forwardRef(() => WorkspaceModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, UserService],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [UserService],
 })
 export default class UserModule {}

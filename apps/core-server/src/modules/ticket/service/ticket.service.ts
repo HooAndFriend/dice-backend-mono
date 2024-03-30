@@ -54,7 +54,7 @@ export default class TicketService {
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(TicketService.name);
 
   /**
    * Find Ticket by Id
@@ -159,7 +159,11 @@ export default class TicketService {
    * @param dto
    * @param user
    */
-  public async saveTicket(dto: RequestTicketSaveDto, user: User) {
+  public async saveTicket(
+    dto: RequestTicketSaveDto,
+    user: User,
+    workspace: Workspace,
+  ) {
     const findEpic = await this.findEpicById(dto.epicId);
 
     if (dto.name.length > 30) {
@@ -167,16 +171,22 @@ export default class TicketService {
     }
 
     const findTicketByName = await this.ticketRepository.findOne({
-      where: { name: dto.name },
+      where: { name: dto.name, isDeleted: false, epic: { id: findEpic.id } },
     });
 
     if (findTicketByName) {
       throw new BadRequestException('Ticket is already exist');
     }
+    const ticketCount =
+      (await this.ticketRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+    const ticketNumber = workspace.code + '-' + ticketCount;
 
     const ticket = this.ticketRepository.create({
       admin: user,
       epic: findEpic,
+      number: ticketNumber,
       workspace: findEpic.workspace,
       name: dto.name,
       status: TicketStatus.ToDo,
@@ -249,8 +259,8 @@ export default class TicketService {
       await queryRunner.manager.delete(TicketFile, { ticket: id });
 
       await queryRunner.manager.delete(TicketComment, { ticket: id });
-
-      await queryRunner.manager.delete(Ticket, { id });
+      findTicket.isDeleted = true;
+      await queryRunner.manager.save(Ticket, findTicket);
 
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -362,22 +372,25 @@ export default class TicketService {
    */
   public async saveEpic(
     dto: RequestEpicSaveDto,
-    workspaceId: number,
+    workspace: Workspace,
     user: User,
   ) {
-    const workspace = await this.workspaceReposiotry.findWorkspace(workspaceId);
-
     await this.epicNameValidation(dto.name, workspace.id);
 
     const [epics, count] = await this.epicRepository.findAllEpicByWorkspaceId(
-      workspaceId,
+      workspace.id,
     );
+    const epicCount =
+      (await this.epicRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+    const epicCode = workspace.code + '-' + epicCount;
 
     const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
       workspace: workspace,
-      code: `${workspace.name}-${count + 1}`,
+      code: epicCode,
     });
 
     return await this.epicRepository.save(epic);
@@ -416,11 +429,11 @@ export default class TicketService {
         await queryRunner.manager.delete(TicketFile, { ticket: ticket.id });
 
         await queryRunner.manager.delete(TicketComment, { ticket: ticket.id });
-
-        await queryRunner.manager.delete(Ticket, { id: ticket.id });
+        ticket.isDeleted = true;
+        await queryRunner.manager.save(Ticket, ticket);
       }
-
-      await queryRunner.manager.delete(Epic, { id });
+      findEpic.isDeleted = true;
+      await queryRunner.manager.save(Epic, findEpic);
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(error);

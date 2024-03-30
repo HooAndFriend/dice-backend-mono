@@ -7,7 +7,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 
 // ** Module Imports
@@ -52,6 +54,7 @@ import {
 } from '@/src/global/decorators/team-role/team-role.decorator';
 import Team from '../../team/domain/team.entity';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
+import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
@@ -151,9 +154,12 @@ export default class WorkspaceUserController {
   @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/team')
-  public async findMyWorkspaceList(@GetTeam() { id }: Team) {
+  public async findMyWorkspaceList(
+    @GetTeam() { id }: Team,
+    @GetUser() { id: userId }: User,
+  ) {
     const [data, count] =
-      await this.workspaceUserService.findWorkspaceUserListByTeam(id);
+      await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -197,6 +203,30 @@ export default class WorkspaceUserController {
       statusCode: 200,
       message: 'Find Team List to invite workspace',
       data: { data: list, count: list.length },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: '워크스페이스 멤버 리스트 조회' })
+  @ApiResponse(WorkspaceUserResponse.searchWorkspaceUser[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/search')
+  public async searchWorkspaceUser(
+    @Query(ValidationPipe) dto: RequestWorkspaceUserFindDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
+    const [data, count] = await this.workspaceUserService.searchWorkspaceUser(
+      dto,
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Find Workspace User List',
     });
   }
 }

@@ -1,6 +1,5 @@
 // ** Nest Imports
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import {
@@ -26,6 +25,8 @@ import Qa from '@/src/modules/qa/domain/qa.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
+import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
+import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 
 @Injectable()
 export default class QaService {
@@ -38,7 +39,7 @@ export default class QaService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private logger = new Logger();
+  private logger = new Logger(QaService.name);
 
   /**
    * Save Simple Qa
@@ -51,9 +52,15 @@ export default class QaService {
     admin: User,
     workspace: Workspace,
   ) {
+    const qaCount =
+      (await this.qaRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+    const qaNumber = workspace.code + '-' + qaCount;
+
     await this.qaRepository.save(
       this.qaRepository.create({
-        number: dto.number,
+        number: qaNumber,
         title: dto.title,
         asIs: '',
         toBe: '',
@@ -75,6 +82,29 @@ export default class QaService {
     );
     return { data, count };
   }
+
+  /**
+   * Save Qa File
+   * @param qa
+   * @param dto
+   */
+  public async saveQaFile(qa: Qa, dto: RequestQaFileSaveDto) {
+    await this.fileRepository.save(
+      this.fileRepository.create({
+        url: dto.url,
+        qa,
+      }),
+    );
+  }
+
+  /**
+   * Delete Qa File By Id
+   * @param qaFileId
+   */
+  public async deleteQaFile(qaFileId: number) {
+    await this.fileRepository.delete(qaFileId);
+  }
+
   /**
    * Save Qa
    * @param dto
@@ -99,10 +129,15 @@ export default class QaService {
           }),
         ),
       );
+      const qaCount =
+        (await this.qaRepository.count({
+          where: { workspace: { id: workspace.id } },
+        })) + 1;
+      const qaNumber = workspace.code + '-' + qaCount;
 
       await queryRunner.manager.save(
         this.qaRepository.create({
-          number: dto.number,
+          number: qaNumber,
           title: dto.title,
           asIs: dto.asIs,
           toBe: dto.toBe,
@@ -189,7 +224,8 @@ export default class QaService {
   }
   public async deleteQa(qaId: number, workspace: Workspace) {
     const findQa = await this.findQa(qaId, workspace.id);
-    await this.qaRepository.remove(findQa);
+    findQa.isDeleted = true;
+    await this.qaRepository.save(findQa);
     return;
   }
 
@@ -200,7 +236,24 @@ export default class QaService {
    */
   public async findQa(qaId: number, workspaceId: number) {
     const findQa = await this.qaRepository.findOne({
-      where: { id: qaId, workspace: { id: workspaceId } },
+      where: { id: qaId, workspace: { id: workspaceId }, isDeleted: false },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+
+    return findQa;
+  }
+
+  /**
+   * Find Qa by Id
+   * @param qaId
+   */
+  public async findQaById(qaId: number) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: qaId, isDeleted: false },
+      relations: ['worker', 'admin'],
     });
 
     if (!findQa) {
@@ -250,5 +303,46 @@ export default class QaService {
     }
 
     return findWorker;
+  }
+
+  /**
+   * Update User Qa
+   * @param dto
+   * @param user
+   */
+  public async updateUserQa(dto: RequestQaUserUpdateDto, user: User) {
+    if (dto.type === 'admin') {
+      await this.qaRepository.update(dto.qaId, { admin: user });
+    } else {
+      await this.qaRepository.update(dto.qaId, { worker: user });
+    }
+  }
+
+  /**
+   * Existed Qa By Id
+   * @param qaId
+   */
+  public async isExistedQaById(qaId: number) {
+    const findQa = await this.qaRepository.exist({
+      where: { id: qaId },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+  }
+
+  /**
+   * Existed Qa By Id
+   * @param qaId
+   */
+  public async isExistedFileById(fileId: number) {
+    const findQa = await this.fileRepository.exist({
+      where: { id: fileId },
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found File');
+    }
   }
 }
