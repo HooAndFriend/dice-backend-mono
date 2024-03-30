@@ -91,4 +91,40 @@ export default class WorkspaceFunctionService {
       throw new BadRequestException('This Function is Existed');
     }
   }
+
+  /**
+   * Remove Workspace Function
+   * @param workspace
+   * @param dto
+   */
+  public async removeWorkspaceFunction(
+    workspace: Workspace,
+    dto: RequestSaveWorkspaceFunctionDto,
+  ) {
+    await this.workspaceFunctionRepository.delete({
+      function: dto.function,
+      workspace: { id: workspace.id },
+    });
+  }
+
+  /**
+   * Existed Workspace Function
+   * @param workspaceId
+   * @param diceFunction
+   */
+  public async isExistedWorksapceFunctionNot(
+    workspaceId: number,
+    diceFunction: DiceFunction,
+  ) {
+    const isExistFunction = await this.workspaceFunctionRepository.exist({
+      where: {
+        function: diceFunction,
+        workspace: { id: workspaceId },
+      },
+    });
+
+    if (!isExistFunction) {
+      throw new NotFoundException('Not Found Function');
+    }
+  }
 }

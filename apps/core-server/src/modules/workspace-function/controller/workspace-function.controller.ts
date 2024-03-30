@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceFunctionService from '../service/workspace-function.service';
@@ -34,6 +42,7 @@ import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto'
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
 import CommonResponse from '@/src/global/dto/api.response';
+import RequestRemoveWorkspaceFunctionDto from '../dto/workspace-function.remove.dto';
 
 @ApiTags('Workspace Function')
 @ApiResponse(createServerExceptionResponse())
@@ -92,6 +101,33 @@ export default class WorkspaceFunctionController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Workspace Function',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestSaveWorkspaceFunctionDto })
+  @ApiOperation({ summary: '워크스페이스 기능 제거' })
+  @ApiResponse(WorkspaceFunctionResponse.removeWorkspaceFunction[200])
+  @ApiResponse(WorkspaceFunctionResponse.removeWorkspaceFunction[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put()
+  public async removeWorkspaceFunction(
+    @Body() dto: RequestRemoveWorkspaceFunctionDto,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    await this.workspaceFunctionService.isExistedWorksapceFunctionNot(
+      workspace.id,
+      dto.function,
+    );
+
+    await this.workspaceFunctionService.removeWorkspaceFunction(workspace, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Remove Workspace Function',
     });
   }
 

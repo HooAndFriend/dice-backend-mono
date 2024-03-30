@@ -48,6 +48,17 @@ export const WorkspaceFunctionResponse = {
       message: 'Find Workspace Function List',
     }),
   },
+  removeWorkspaceFunction: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Remove Workspace Function',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found Function',
+      error: 'NOT FOUND',
+    }),
+  },
   saveWorkspaceFunction: {
     200: createMessageResponse({
       statusCode: 200,
