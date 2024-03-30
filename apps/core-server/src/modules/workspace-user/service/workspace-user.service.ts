@@ -12,6 +12,7 @@ import TeamUserRepository from '../../team-user/repository/team-user.repository'
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
+import Team from '../../team/domain/team.entity';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -118,19 +119,18 @@ export default class WorkspaceUserService {
    * @param workspaceId
    * @returns
    */
-  public async findInviteUserList(workspace: Workspace) {
+  public async findInviteUserList(workspace: Workspace, team: Team) {
     const [teamUserList] = await this.teamUserRepository.findTeamUserList(
-      workspace.team.id,
+      team.id,
     );
 
-    const [data] = await this.workspaceUserRepository.findWorkspaceUserList(
-      workspace.id,
-    );
+    const [workspaceUserList] =
+      await this.workspaceUserRepository.findWorkspaceUserList(workspace.id);
 
     return teamUserList
       .map((item) => {
-        if (data.length < 1) return item;
-        for (const _ of data) {
+        if (workspaceUserList.length < 1) return item;
+        for (const _ of workspaceUserList) {
           if (item.id === _.teamUser.id) {
             return null;
           }

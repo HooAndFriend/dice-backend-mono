@@ -55,13 +55,17 @@ import {
 import Team from '../../team/domain/team.entity';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
+import TeamService from '../../team/service/team.service';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/workspace-user', version: '1' })
 export default class WorkspaceUserController {
-  constructor(private readonly workspaceUserService: WorkspaceUserService) {}
+  constructor(
+    private readonly workspaceUserService: WorkspaceUserService,
+    private readonly teamService: TeamService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -197,7 +201,11 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/invite')
   public async findInviteUserList(@GetWorkspace() workspace: Workspace) {
-    const list = await this.workspaceUserService.findInviteUserList(workspace);
+    const team = await this.teamService.findTeamByWorkspaceId(workspace.id);
+    const list = await this.workspaceUserService.findInviteUserList(
+      workspace,
+      team,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,

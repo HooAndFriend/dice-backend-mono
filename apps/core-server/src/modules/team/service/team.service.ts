@@ -131,4 +131,21 @@ export default class TeamService {
 
     return team;
   }
+
+  /**
+   * Find Team By Workspace Id
+   * @param workspaceId
+   * @returns
+   */
+  public async findTeamByWorkspaceId(workspaceId: number) {
+    const team = await this.teamRepository.findOne({
+      where: { workspace: { id: workspaceId } },
+    });
+
+    if (!team) {
+      throw new NotFoundException('Not Found Team');
+    }
+
+    return team;
+  }
 }

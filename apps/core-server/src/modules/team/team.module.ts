@@ -22,7 +22,7 @@ import TeamUserModule from '../team-user/team-user.module';
     forwardRef(() => TeamUserModule),
     forwardRef(() => WorkspaceUserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, TeamService],
   controllers: [TeamController],
   providers: [TeamService],
 })

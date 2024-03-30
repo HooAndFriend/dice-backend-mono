@@ -12,6 +12,7 @@ import WorkspaceUser from './domain/workspace-user.entity';
 import WorkspaceUserRepository from './repository/workspace-user.repository';
 import WorkspaceModule from '../workspace/workspace.module';
 import TeamUserModule from '../team-user/team-user.module';
+import TeamModule from '../team/team.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import TeamUserModule from '../team-user/team-user.module';
     TypeOrmExModule.forCustomRepository([WorkspaceUserRepository]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => TeamUserModule),
+    forwardRef(() => TeamModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [WorkspaceUserController],
