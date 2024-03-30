@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -64,6 +65,7 @@ import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
+import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -185,6 +187,26 @@ export default class QaController {
   }
 
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaSimpleUpdateDto })
+  @ApiResponse(QaResponse.updateQa[200])
+  @ApiResponse(QaResponse.updateQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/')
+  public async updateSimpleQa(@Body() dto: RequestQaSimpleUpdateDto) {
+    const qa = await this.qaService.findQaById(dto.qaId);
+    await this.qaService.updateQaSimple(qa, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 상태 수정' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaStatusUpdateDto })
@@ -242,7 +264,7 @@ export default class QaController {
     @GetUser() { nickname }: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const qa = await this.qaService.findQaById(dto.qaId);
+    const qa = await this.qaService.findQaByIdWithWorkerAndAdmin(dto.qaId);
     const user = await this.userService.findUserById(dto.userId);
     await this.qaService.updateUserQa(dto, user);
 

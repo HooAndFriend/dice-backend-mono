@@ -28,6 +28,7 @@ import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
+import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 
 @Injectable()
 export default class QaService {
@@ -220,7 +221,10 @@ export default class QaService {
     findQa.status = dto.status;
     await this.qaRepository.save(findQa);
   }
-  public async updateQaDueDate(dto: RequestQaDueDateUpdateDto, workspace: Workspace) {
+  public async updateQaDueDate(
+    dto: RequestQaDueDateUpdateDto,
+    workspace: Workspace,
+  ) {
     const findQa = await this.findQa(dto.qaId, workspace.id);
 
     findQa.dueDate = new Date(dto.dueDate);
@@ -255,13 +259,48 @@ export default class QaService {
   }
 
   /**
+   * QA를 업데이트 합니다.
+   * @param qa
+   * @param dto
+   */
+  public async updateQaSimple(qa: Qa, dto: RequestQaSimpleUpdateDto) {
+    if (dto.type === 'title') {
+      qa.title = dto.value;
+    } else if (dto.type === 'asIs') {
+      qa.asIs = dto.value;
+    } else if (dto.type === 'toBe') {
+      qa.toBe = dto.value;
+    } else if (dto.type === 'memo') {
+      qa.memo = dto.value;
+    }
+
+    await this.qaRepository.save(qa);
+  }
+
+  /**
+   * Find Qa by Id
+   * @param qaId
+   */
+  public async findQaByIdWithWorkerAndAdmin(qaId: number) {
+    const findQa = await this.qaRepository.findOne({
+      where: { id: qaId, isDeleted: false },
+      relations: ['worker', 'admin'],
+    });
+
+    if (!findQa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+
+    return findQa;
+  }
+
+  /**
    * Find Qa by Id
    * @param qaId
    */
   public async findQaById(qaId: number) {
     const findQa = await this.qaRepository.findOne({
       where: { id: qaId, isDeleted: false },
-      relations: ['worker', 'admin'],
     });
 
     if (!findQa) {
