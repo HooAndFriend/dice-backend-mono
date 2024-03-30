@@ -10,7 +10,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
-import { DataSource } from 'typeorm';
+import { DataSource, Equal, Not } from 'typeorm';
 
 // ** Custom Module Imports
 import EpicRepository from '../repository/epic.repository';
@@ -561,9 +561,17 @@ export default class TicketService {
     dto: RequestSettingUpdateDto,
     workspace: Workspace,
   ) {
-    const findSetting = await this.findSettingById(dto.settingId);
+    const isDuplicationType = await this.ticketSettingRepository.findOne({
+      where: {
+        type: dto.type,
+        id: Not(dto.settingId),
+        workspace: Equal(workspace.id),
+      },
+    });
 
-    await this.settingTypeValidation(dto.type, workspace.id);
+    if (isDuplicationType) {
+      throw new BadRequestException('Setting type is already exist');
+    }
 
     return this.ticketSettingRepository.update(dto.settingId, {
       type: dto.type,

@@ -38,7 +38,7 @@ export default class State extends BaseTimeEntity {
   @Column({
     type: 'boolean',
     comment: '노출 여부',
-    name: 'exposeYn',
+    name: 'expose_yn',
     nullable: false,
   })
   exposeYn: boolean;
