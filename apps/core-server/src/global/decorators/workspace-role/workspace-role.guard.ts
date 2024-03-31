@@ -18,11 +18,11 @@ export class WorkspaceRoleGuard implements CanActivate {
     );
 
     const { user, headers } = context.switchToHttp().getRequest();
-    const teamCode = headers['workspace-code'];
+    const worksapceCode = headers['workspace-code'];
 
     const workspaceUser = await this.workspaceUserRepository.findOne({
       where: {
-        workspace: { uuid: teamCode },
+        workspace: { uuid: worksapceCode },
         teamUser: { user: { id: user.id } },
       },
       relations: ['workspace'],
