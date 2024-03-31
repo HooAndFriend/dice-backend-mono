@@ -1,10 +1,5 @@
 // ** Nest Imports
-import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 
@@ -38,19 +33,15 @@ import CommonResponse from '@/src/global/dto/api.response';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/qa', version: '1' })
 export default class QaController {
-  constructor(
-    private readonly qaService: QaService,
-  ) {}
+  constructor(private readonly qaService: QaService) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'QA 리스트 조회' })
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/detail/')
-  public async findQaListByQuery(
-    @Query() findquery: RequestQaFindDto,
-  ) {
-    const qaList = await this.qaService.findQaListByQuery(findquery)
+  public async findQaListByQuery(@Query() findquery: RequestQaFindDto) {
+    const qaList = await this.qaService.findQaListByQuery(findquery);
 
     return CommonResponse.createResponse({
       statusCode: 200,

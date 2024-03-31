@@ -63,7 +63,7 @@ export default class Ticket extends BaseTimeEntity {
     nullable: true,
   })
   storypoint: number;
-  
+
   @Column({
     type: 'boolean',
     comment: '삭제 여부',

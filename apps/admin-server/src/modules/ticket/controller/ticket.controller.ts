@@ -1,10 +1,5 @@
 // ** Nest Imports
-import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import TicketService from '../service/ticket.service';
@@ -42,9 +37,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findDetailTicket(
-    @Query() findquery: RequestTicketFindDto,
-  ) {
+  public async findDetailTicket(@Query() findquery: RequestTicketFindDto) {
     const ticket = await this.ticketService.findTicketByQuery(findquery);
 
     return CommonResponse.createResponse({

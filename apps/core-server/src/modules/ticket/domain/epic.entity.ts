@@ -46,7 +46,7 @@ export default class Epic extends BaseTimeEntity {
   })
   isDeleted: boolean;
 
-  @Column({ 
+  @Column({
     type: 'date',
     name: 'due_date',
     comment: '마감일',

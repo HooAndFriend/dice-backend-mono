@@ -153,9 +153,7 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/dueDate')
-  public async updateTicketDueDate(
-    @Body() dto: RequestTicketDueDateUpdateDto,
-  ) {
+  public async updateTicketDueDate(@Body() dto: RequestTicketDueDateUpdateDto) {
     await this.ticketService.updateTicketDueDate(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,

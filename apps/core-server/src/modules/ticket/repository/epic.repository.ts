@@ -46,16 +46,19 @@ export default class EpicRepository extends Repository<Epic> {
         'epic.dueDate as dueDate',
       ])
       .addSelect('COUNT(ticket.adminId)', 'allTicketCount')
-      .addSelect('COUNT(CASE WHEN ticket.status = :status THEN ticket.adminId END)', 'doneTicketCount')
+      .addSelect(
+        'COUNT(CASE WHEN ticket.status = :status THEN ticket.adminId END)',
+        'doneTicketCount',
+      )
       .setParameter('status', TicketStatus.Compeleted)
       .leftJoin('epic.ticket', 'ticket')
       .where('epic.workspace = :workspaceId', { workspaceId })
       .where('epic.isDeleted = false')
-      .groupBy('epic.id')
+      .groupBy('epic.id');
 
     return await querybuilder.getRawMany();
   }
-  
+
   public async findOneEpicById(epicId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([

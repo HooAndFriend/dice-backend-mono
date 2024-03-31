@@ -116,9 +116,8 @@ export default class UserController {
   @UseGuards(JwtAccessGuard)
   @Get('/workspace/:id')
   public async findWorkspaceUserList(@Param('id') id: number) {
-    const [data, count] = await this.workspaceUserService.findWorkspaceUserList(
-      id,
-    );
+    const [data, count] =
+      await this.workspaceUserService.findWorkspaceUserList(id);
 
     return CommonResponse.createResponse({
       data: { data, count },

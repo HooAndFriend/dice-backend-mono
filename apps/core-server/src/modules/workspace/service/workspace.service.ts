@@ -95,9 +95,8 @@ export default class WorkspaceService {
    * @returns
    */
   public async findMainWorkspace(workspaceId: number) {
-    const workspace = await this.workspaceRepository.findMainWorkspace(
-      workspaceId,
-    );
+    const workspace =
+      await this.workspaceRepository.findMainWorkspace(workspaceId);
 
     if (!workspace) {
       throw new NotFoundException('Not Found Workspace');

@@ -139,9 +139,8 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/my')
   public async findUserWorkspaceList(@GetUser() { id }: User) {
-    const [data, count] = await this.workspaceUserService.findUserWorkspaceList(
-      id,
-    );
+    const [data, count] =
+      await this.workspaceUserService.findUserWorkspaceList(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -181,9 +180,8 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findWorkspaceUserList(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.workspaceUserService.findWorkspaceUserList(
-      id,
-    );
+    const [data, count] =
+      await this.workspaceUserService.findWorkspaceUserList(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,

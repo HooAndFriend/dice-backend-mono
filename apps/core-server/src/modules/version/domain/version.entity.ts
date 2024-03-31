@@ -10,26 +10,25 @@ export default class Version extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
- 
-private _version: string;
+  private _version: string;
 
-@Column({
-  type: 'varchar',
-  length: 50,
-  comment: '버전명',
-  nullable: false,
-})
-get version(): string {
-  return this._version;
-}
-
-set version(value: string) {
-  if (/^\d+(\.\d+)*$/.test(value)) {
-    this._version = value;
-  } else {
-    throw new Error('버전명은 숫자와 .만 이용해서 작성 가능합니다.');
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: '버전명',
+    nullable: false,
+  })
+  get version(): string {
+    return this._version;
   }
-}
+
+  set version(value: string) {
+    if (/^\d+(\.\d+)*$/.test(value)) {
+      this._version = value;
+    } else {
+      throw new Error('버전명은 숫자와 .만 이용해서 작성 가능합니다.');
+    }
+  }
 
   @Column({
     type: 'varchar',

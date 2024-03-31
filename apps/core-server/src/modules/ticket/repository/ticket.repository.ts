@@ -121,7 +121,13 @@ export default class TicketRepository extends Repository<Ticket> {
     const endDate = new Date(parseInt(year), parseInt(monthStr), 0);
 
     const querybuilder = this.createQueryBuilder('ticket')
-      .select(['ticket.id', 'ticket.name', 'ticket.status', 'ticket.dueDate', 'ticket.number'])
+      .select([
+        'ticket.id',
+        'ticket.name',
+        'ticket.status',
+        'ticket.dueDate',
+        'ticket.number',
+      ])
       .leftJoin('ticket.workspace', 'workspace')
       .where('workspace.teamId = :teamId', { teamId })
       .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {

@@ -62,9 +62,8 @@ export default class WorkspaceFunctionController {
   @UseGuards(JwtAccessGuard)
   @Get('/function')
   public async findWorkspaceFunctionList(@GetWorkspace() { id }: Workspace) {
-    const list = await this.workspaceFunctionService.findWorkspaceFunctionList(
-      id,
-    );
+    const list =
+      await this.workspaceFunctionService.findWorkspaceFunctionList(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -140,9 +139,8 @@ export default class WorkspaceFunctionController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findFunctionList(@Param('id') id: number) {
-    const [data, count] = await this.workspaceFunctionService.findFunctionList(
-      id,
-    );
+    const [data, count] =
+      await this.workspaceFunctionService.findFunctionList(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,

@@ -88,9 +88,8 @@ export default class TicketService {
    * @param ticketId
    */
   public async findCommentById(ticketId: number) {
-    const findComment = await this.ticketCommentRepository.findCommentById(
-      ticketId,
-    );
+    const findComment =
+      await this.ticketCommentRepository.findCommentById(ticketId);
     if (!findComment) {
       throw new NotFoundException('Cannot Find Comment.');
     }
@@ -102,9 +101,8 @@ export default class TicketService {
    * @param settingId
    */
   public async findSettingById(settingId: number) {
-    const findSetting = await this.ticketSettingRepository.findSettingById(
-      settingId,
-    );
+    const findSetting =
+      await this.ticketSettingRepository.findSettingById(settingId);
 
     if (!findSetting) {
       throw new NotFoundException('Cannot Find Setting.');
@@ -150,9 +148,8 @@ export default class TicketService {
    */
   public async findOneTicket(id: number) {
     const data = await this.findTicketById(id);
-    const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
-      id,
-    );
+    const [file, count] =
+      await this.ticketFileRepository.findAllFileByTicketId(id);
     data.file = file;
     return data;
   }

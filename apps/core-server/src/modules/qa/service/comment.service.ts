@@ -25,13 +25,17 @@ export default class CommentService {
     private readonly configService: ConfigService,
     private readonly qaService: QaService,
   ) {}
-  public async findQaComment(qaId: number, workspace : Workspace) {
+  public async findQaComment(qaId: number, workspace: Workspace) {
     await this.qaService.findQa(qaId, workspace.id);
     const [data, count] = await this.qacommentRepository.findQaComment(qaId);
 
-    return { data, count }
+    return { data, count };
   }
-  public async saveComment(dto: RequestCommentSaveDto, workspace : Workspace, user : User) {
+  public async saveComment(
+    dto: RequestCommentSaveDto,
+    workspace: Workspace,
+    user: User,
+  ) {
     const findQa = await this.qaService.findQa(dto.qaId, workspace.id);
     await this.qacommentRepository.save(
       this.qacommentRepository.create({
@@ -41,23 +45,26 @@ export default class CommentService {
       }),
     );
 
-    return 
+    return;
   }
-  public async updateComment(dto: RequestQaCommentUpdateDto, user : User) {
-    await this.qacommentRepository.update({ id : dto.commentId, user : { id : user.id}}, {
-      content: dto.content,
-    });
-    return 
+  public async updateComment(dto: RequestQaCommentUpdateDto, user: User) {
+    await this.qacommentRepository.update(
+      { id: dto.commentId, user: { id: user.id } },
+      {
+        content: dto.content,
+      },
+    );
+    return;
   }
-  public async deleteComment(commentid: number, user : User) {
+  public async deleteComment(commentid: number, user: User) {
     const findComment = await this.qacommentRepository.findOne({
-      where: { id: commentid , user : { id : user.id }},
+      where: { id: commentid, user: { id: user.id } },
     });
     if (!findComment) {
       throw new NotFoundException('Not Found Comment');
     }
     await this.qacommentRepository.remove(findComment);
 
-    return 
+    return;
   }
 }
