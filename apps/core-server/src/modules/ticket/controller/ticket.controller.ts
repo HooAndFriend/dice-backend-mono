@@ -35,9 +35,14 @@ import { TicketResponse } from '@/src/global/response/ticket.response';
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
-import User from '../../user/domain/user.entity';
+import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
+import {
+  GetWorkspace,
+  WorkspaceRole,
+} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 
 // ** Dto Imports
+import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
@@ -46,11 +51,6 @@ import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import CommonResponse from '@/src/global/dto/api.response';
-import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
-import {
-  GetWorkspace,
-  WorkspaceRole,
-} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';

@@ -2,19 +2,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { QaStatus } from '@/src/global/enum/QaStatus.enum';
-import { Type } from 'class-transformer';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+
+// ** Enum Imports
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+
 export default class RequestQaFindDto {
   @ApiProperty({
-    example: QaStatus.NOTHING,
-    enum: QaStatus,
+    example: TaskStatusEnum.NOTHING,
+    enum: TaskStatusEnum,
     required: false,
-    type: QaStatus,
+    type: TaskStatusEnum,
   })
   @IsOptional()
-  @IsEnum(QaStatus)
-  status: QaStatus;
+  @IsEnum(TaskStatusEnum)
+  status: TaskStatusEnum;
 
   @ApiProperty({ example: 'QA 제목입니다.', required: false })
   @IsString()

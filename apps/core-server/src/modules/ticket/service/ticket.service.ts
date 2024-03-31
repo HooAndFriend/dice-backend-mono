@@ -19,6 +19,7 @@ import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
+import UserRepository from '../../user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
@@ -26,9 +27,7 @@ import TicketFile from '../domain/ticket.file.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
-import { TicketStatus } from '@/src/global/enum/ticket.enum';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import UserRepository from '../../user/repository/user.repository';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import Ticket from '../domain/ticket.entity';
@@ -41,8 +40,8 @@ import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
-import { find } from 'rxjs';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @Injectable()
 export default class TicketService {
@@ -194,7 +193,7 @@ export default class TicketService {
       number: ticketNumber,
       workspace: findEpic.workspace,
       name: dto.name,
-      status: TicketStatus.ToDo,
+      status: TaskStatusEnum.NOTHING,
     });
 
     return await this.ticketRepository.save(ticket);
@@ -302,14 +301,14 @@ export default class TicketService {
     const date = _date.getDate();
 
     switch (dto.status) {
-      case TicketStatus.Reopen:
+      case TaskStatusEnum.REOPEN:
         await this.ticketRepository.update(findTicket.id, {
           status: dto.status,
           reopenDate: `${year}-${month}-${date}`,
         });
         break;
 
-      case TicketStatus.Solved:
+      case TaskStatusEnum.COMPLETE:
         await this.ticketRepository.update(findTicket.id, {
           status: dto.status,
           completeDate: `${year}-${month}-${date}`,
@@ -369,7 +368,7 @@ export default class TicketService {
     const doneCount = data.reduce(
       (acc, cur) =>
         acc +
-        cur.ticket.filter((item) => item.status === TicketStatus.Compeleted)
+        cur.ticket.filter((item) => item.status === TaskStatusEnum.COMPLETE)
           .length,
       0,
     );
@@ -378,7 +377,7 @@ export default class TicketService {
       data: data.map((item) => ({
         ...item,
         doneTicketCount: item.ticket.filter(
-          (item) => item.status === TicketStatus.Compeleted,
+          (item) => item.status === TaskStatusEnum.COMPLETE,
         ).length,
       })),
       count,

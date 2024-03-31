@@ -16,7 +16,7 @@ import Comment from '@/src/modules/qa/domain/comment.entity';
 import File from '@/src/modules/qa/domain/file.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import { QaStatus } from '@/src/global/enum/QaStatus.enum';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @Entity({ name: 'TB_QA' })
 export default class Qa extends BaseTimeEntity {
@@ -33,12 +33,12 @@ export default class Qa extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: QaStatus,
+    enum: TaskStatusEnum,
     comment: '상태',
     nullable: false,
-    default: QaStatus.NOTHING,
+    default: TaskStatusEnum.NOTHING,
   })
-  status: QaStatus;
+  status: TaskStatusEnum;
 
   @Column({
     type: 'varchar',

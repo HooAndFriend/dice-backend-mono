@@ -2,25 +2,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import {
-  IsDate,
-  IsDateString,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { QaStatus } from '@/src/global/enum/QaStatus.enum';
+import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
+
+// ** Enum Imports
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+
 export default class RequestQaFindDto {
   @ApiProperty({
-    example: QaStatus.NOTHING,
-    enum: QaStatus,
-    default: QaStatus.NOTHING,
-    type: QaStatus,
+    example: TaskStatusEnum.NOTHING,
+    enum: TaskStatusEnum,
+    default: TaskStatusEnum.NOTHING,
+    type: TaskStatusEnum,
   })
-  @IsEnum(QaStatus)
-  status: QaStatus;
+  @IsEnum(TaskStatusEnum)
+  status: TaskStatusEnum;
 
   @ApiProperty({ example: '2024-02-02', required: false })
   @IsDate()

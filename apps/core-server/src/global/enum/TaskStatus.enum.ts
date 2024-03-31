@@ -1,4 +1,4 @@
-export enum QaStatus {
+export enum TaskStatusEnum {
   WAITING = 'WAITING',
   DOING = 'DOING',
   DONE = 'DONE',

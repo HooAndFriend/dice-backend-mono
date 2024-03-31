@@ -13,9 +13,9 @@ import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Epic from './epic.entity';
-import { TicketStatus } from '@/src/global/enum/ticket.enum';
 import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -33,12 +33,12 @@ export default class Ticket extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: TicketStatus,
+    enum: TaskStatusEnum,
     name: 'status',
     comment: '상태',
     nullable: false,
   })
-  status: TicketStatus;
+  status: TaskStatusEnum;
 
   @Column({
     type: 'text',

@@ -3,8 +3,9 @@ import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
+
+// ** Dto Imports
 import Epic from '../domain/epic.entity';
-import { TicketStatus } from '@/src/global/enum/ticket.enum';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @CustomRepository(Epic)

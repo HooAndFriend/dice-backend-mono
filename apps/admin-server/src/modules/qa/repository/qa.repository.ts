@@ -7,8 +7,8 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 // ** Dto Imports
 import Qa from '../domain/qa.entity';
 // ** Emum Imports
-import { QaStatus } from '../../../global/enum/QaStatus.enum';
 import RequestQaFindDto from '../dto/qa.find.dto';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {
@@ -58,7 +58,7 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.file', 'file');
 
-    if (findQuery.status !== QaStatus.NOTHING) {
+    if (findQuery.status !== TaskStatusEnum.NOTHING) {
       queryBuilder.andWhere('qa.status = :status', {
         status: findQuery.status,
       });

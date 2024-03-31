@@ -1,4 +1,4 @@
-import { TicketStatus } from '../enum/ticket.enum';
+import { TaskStatusEnum } from '../enum/TaskStatus.enum';
 import {
   createErrorResponse,
   createMessageResponse,
@@ -16,7 +16,7 @@ export const TicketResponse = {
             id: 1,
             name: '상세보기 버튼',
             content: 'ticket 내용',
-            status: TicketStatus.Reopen,
+            status: TaskStatusEnum.REOPEN,
             workspace: {
               id: 1,
             },

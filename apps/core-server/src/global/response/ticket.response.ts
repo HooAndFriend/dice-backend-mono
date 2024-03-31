@@ -1,4 +1,4 @@
-import { TicketStatus } from '../enum/ticket.enum';
+import { TaskStatusEnum } from '../enum/TaskStatus.enum';
 import {
   createErrorResponse,
   createMessageResponse,
@@ -16,7 +16,7 @@ export const TicketResponse = {
             id: 1,
             name: '상세보기 버튼',
             number: 'HAF-1',
-            status: TicketStatus.Reopen,
+            status: TaskStatusEnum.COMPLETE,
             dueDate: '2024-01-20',
             completeDate: '2024-01-19',
             reopenDate: '2024-01-22',
@@ -56,7 +56,7 @@ export const TicketResponse = {
         },
         name: '상세보기 버튼',
         number: 'HAF-1',
-        status: TicketStatus.Reopen,
+        status: TaskStatusEnum.COMPLETE,
         type: {
           type: 'Screen',
           color: '',
@@ -441,7 +441,7 @@ export const TicketResponse = {
           {
             id: 3,
             name: '상세보기 버튼',
-            status: TicketStatus.Reopen,
+            status: TaskStatusEnum.COMPLETE,
             worker: {
               id: 2,
               profile:

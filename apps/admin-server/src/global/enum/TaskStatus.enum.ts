@@ -1,5 +1,5 @@
-export enum QaStatus {
-  WAITING = 'WAIT',
+export enum TaskStatusEnum {
+  WAITING = 'WAITING',
   DOING = 'DOING',
   DONE = 'DONE',
   COMPLETE = 'COMPLETE',

@@ -2,16 +2,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import {
-  IsDate,
-  IsDateString,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-import { QaStatus } from '@/src/global/enum/QaStatus.enum';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
+
 export default class RequestTicketFindDto {
   @ApiProperty({ example: '2024-02-02', required: false })
   @IsDate()
