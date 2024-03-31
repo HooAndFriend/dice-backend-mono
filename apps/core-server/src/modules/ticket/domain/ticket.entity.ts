@@ -54,7 +54,7 @@ export default class Ticket extends BaseTimeEntity {
     comment: '티켓 번호',
     nullable: false,
   })
-  number: string;
+  code: string;
 
   @Column({
     type: 'integer',

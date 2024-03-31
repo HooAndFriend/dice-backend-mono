@@ -52,7 +52,7 @@ export default class EpicRepository extends Repository<Epic> {
         'ticket.id',
         'ticket.name',
         'ticket.status',
-        'ticket.number',
+        'ticket.code',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',

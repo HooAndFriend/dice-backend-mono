@@ -190,7 +190,7 @@ export default class TicketService {
       admin: user,
       epic: findEpic,
       dueDate: dto.dueDate,
-      number: ticketNumber,
+      code: ticketNumber,
       workspace: findEpic.workspace,
       name: dto.name,
       status: TaskStatusEnum.NOTHING,
