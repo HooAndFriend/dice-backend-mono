@@ -13,6 +13,7 @@ import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 import Team from '../../team/domain/team.entity';
+import { LessThan } from 'typeorm';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -80,6 +81,27 @@ export default class WorkspaceUserService {
       dto,
       workspaceId,
     );
+  }
+
+  /**
+   * Workspace의 유저 개수를 조회합니다.
+   * @param workspaceId
+   * @returns
+   */
+  public async findWorkspaceUserCount(workspaceId: number) {
+    const worksapceUserCount = await this.workspaceUserRepository.count({
+      where: { workspace: { id: workspaceId } },
+    });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterDayworksapceUserCount =
+      await this.workspaceUserRepository.count({
+        where: { workspace: { id: workspaceId }, createdDate: LessThan(today) },
+      });
+
+    return { worksapceUserCount, yesterDayworksapceUserCount };
   }
 
   /**

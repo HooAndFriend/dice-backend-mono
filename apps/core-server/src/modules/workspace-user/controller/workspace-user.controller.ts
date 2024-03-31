@@ -139,8 +139,9 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/my')
   public async findUserWorkspaceList(@GetUser() { id }: User) {
-    const [data, count] =
-      await this.workspaceUserService.findUserWorkspaceList(id);
+    const [data, count] = await this.workspaceUserService.findUserWorkspaceList(
+      id,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -180,13 +181,32 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findWorkspaceUserList(@GetWorkspace() { id }: Workspace) {
-    const [data, count] =
-      await this.workspaceUserService.findWorkspaceUserList(id);
+    const [data, count] = await this.workspaceUserService.findWorkspaceUserList(
+      id,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace User List',
       data: { data, count },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: '워크스페이스의 유저 통계 조회' })
+  @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/count')
+  public async findWorkspaceUserCount(@GetWorkspace() { id }: Workspace) {
+    const data = await this.workspaceUserService.findWorkspaceUserCount(id);
+
+    return CommonResponse.createResponse({
+      data,
+      statusCode: 200,
+      message: 'Find Workspace User Count',
     });
   }
 
