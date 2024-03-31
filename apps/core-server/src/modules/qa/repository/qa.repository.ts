@@ -15,7 +15,7 @@ export default class QaRepository extends Repository<Qa> {
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
-        'qa.number',
+        'qa.code',
         'qa.status',
         'qa.title',
         'qa.dueDate',
@@ -72,7 +72,7 @@ export default class QaRepository extends Repository<Qa> {
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
-        'qa.number',
+        'qa.code',
         'qa.status',
         'qa.title',
         'qa.asIs',

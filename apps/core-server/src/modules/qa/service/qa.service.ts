@@ -2,11 +2,6 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
-import {
-  BadRequestException,
-  InternalServerErrorException,
-  NotFoundException,
-} from '../../../global/exception/CustomException';
 import { DataSource } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/file.repository';
@@ -14,9 +9,12 @@ import UserRepository from '@/src/modules/user/repository/user.repository';
 import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
 import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 
-// ** Response Imports
-
 // ** enum, dto, entity, types Imports
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '../../../global/exception/CustomException';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
@@ -62,7 +60,7 @@ export default class QaService {
 
     await this.qaRepository.save(
       this.qaRepository.create({
-        number: qaNumber,
+        code: qaNumber,
         title: dto.title,
         asIs: '',
         toBe: '',
@@ -139,7 +137,7 @@ export default class QaService {
 
       await queryRunner.manager.save(
         this.qaRepository.create({
-          number: qaNumber,
+          code: qaNumber,
           title: dto.title,
           asIs: dto.asIs,
           toBe: dto.toBe,

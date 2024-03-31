@@ -16,7 +16,7 @@ export default class QaRepository extends Repository<Qa> {
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
-        'qa.number',
+        'qa.code',
         'qa.status',
         'qa.title',
         'qa.asIs',
@@ -40,7 +40,7 @@ export default class QaRepository extends Repository<Qa> {
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
-        'qa.number',
+        'qa.code',
         'qa.status',
         'qa.title',
         'qa.asIs',
@@ -68,9 +68,9 @@ export default class QaRepository extends Repository<Qa> {
         title: `%${findQuery.title}%`,
       });
     }
-    if (findQuery.number) {
-      queryBuilder.andWhere('qa.number LIKE :number', {
-        number: `%${findQuery.number}%`,
+    if (findQuery.code) {
+      queryBuilder.andWhere('qa.code LIKE :code', {
+        number: `%${findQuery.code}%`,
       });
     }
     if (findQuery.createdDate) {

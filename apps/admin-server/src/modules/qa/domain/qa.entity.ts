@@ -27,7 +27,7 @@ export default class Qa extends BaseTimeEntity {
     comment: '이슈 번호',
     nullable: false,
   })
-  number: string;
+  code: string;
 
   @Column({
     type: 'enum',

@@ -38,5 +38,5 @@ export default class RequestQaFindDto {
   @ApiProperty({ example: 'ISSUE-01', required: false })
   @IsString()
   @IsOptional()
-  number: string;
+  code: string;
 }
