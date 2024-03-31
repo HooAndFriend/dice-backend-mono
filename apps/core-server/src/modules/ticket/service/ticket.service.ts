@@ -418,7 +418,6 @@ export default class TicketService {
     const epic = this.epicRepository.create({
       admin: user,
       name: dto.name,
-      dueDate: dto.dueDate,
       workspace: workspace,
       code: epicCode,
     });
