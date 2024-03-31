@@ -15,6 +15,8 @@ import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
 import TeamModule from '../team/team.module';
 import TeamUserModule from '../team-user/team-user.module';
+import TicketModule from '../ticket/ticket.module';
+import QaModule from '../qa/qa.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import TeamUserModule from '../team-user/team-user.module';
     forwardRef(() => WorkspaceUserModule),
     forwardRef(() => TeamModule),
     forwardRef(() => TeamUserModule),
+    forwardRef(() => TicketModule),
+    forwardRef(() => QaModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, WorkspaceService],
   controllers: [WorkspaceController],

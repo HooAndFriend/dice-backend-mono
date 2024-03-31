@@ -52,7 +52,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     forwardRef(() => WorkspaceUserModule),
     forwardRef(() => UserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],
   controllers: [QaController],
   providers: [QaService, CommentService, QaSendChangeHistoryListener],
 })

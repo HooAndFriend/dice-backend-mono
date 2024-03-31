@@ -2,7 +2,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
-import { DataSource } from 'typeorm';
+import { DataSource, LessThan } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
@@ -205,6 +205,29 @@ export default class QaService {
       await queryRunner.release();
     }
   }
+
+  /**
+   * QA 카운트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findQaCount(workspaceId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const qaCount = await this.qaRepository.count({
+      where: { workspace: { id: workspaceId }, dueDate: LessThan(today) },
+    });
+
+    const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+    const yesterDayQaCount = await this.qaRepository.count({
+      where: { workspace: { id: workspaceId }, dueDate: LessThan(oneDayAgo) },
+    });
+
+    return { qaCount, yesterDayQaCount };
+  }
+
   /**
    * Update Qa Status
    * @param dto

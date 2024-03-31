@@ -45,13 +45,19 @@ import Team from '../../team/domain/team.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../domain/workspace.entity';
+import QaService from '../../qa/service/qa.service';
+import TicketService from '../../ticket/service/ticket.service';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/workspace', version: '1' })
 export default class WorkspaceController {
-  constructor(private readonly workspaceService: WorkspaceService) {}
+  constructor(
+    private readonly workspaceService: WorkspaceService,
+    private readonly qaService: QaService,
+    private readonly ticketService: TicketService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({
@@ -156,6 +162,29 @@ export default class WorkspaceController {
       statusCode: 200,
       message: 'Find Workspace Info',
       data: workspace,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스의 오늘 할 일 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(WorkspaceResponse.findWorksapceTaskCount[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/task')
+  public async findWorksapceTaskCount(@GetWorkspace() { id }: Workspace) {
+    const { qaCount, yesterDayQaCount } = await this.qaService.findQaCount(id);
+    const { ticketCount, yesterDayTicketCount } =
+      await this.ticketService.findTicketCount(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Today Task Count',
+      data: {
+        count: qaCount + ticketCount,
+        yesterdayCount: yesterDayQaCount + yesterDayTicketCount,
+      },
     });
   }
 }

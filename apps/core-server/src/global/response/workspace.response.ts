@@ -56,6 +56,16 @@ export const WorkspaceResponse = {
       error: 'NOT FOUND',
     }),
   },
+  findWorksapceTaskCount: {
+    200: createResponse({
+      data: {
+        count: 0,
+        yesterdayCount: 0,
+      },
+      statusCode: 200,
+      message: 'Find Workspace Info',
+    }),
+  },
   findWorkspaceMain: {
     200: createResponse({
       data: {

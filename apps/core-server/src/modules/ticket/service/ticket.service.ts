@@ -10,7 +10,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
-import { DataSource, Equal, Not } from 'typeorm';
+import { DataSource, Equal, LessThan, Not } from 'typeorm';
 
 // ** Custom Module Imports
 import EpicRepository from '../repository/epic.repository';
@@ -95,6 +95,28 @@ export default class TicketService {
       throw new NotFoundException('Cannot Find Comment.');
     }
     return findComment;
+  }
+
+  /**
+   * 티켓 카운트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findTicketCount(workspaceId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const ticketCount = await this.ticketRepository.count({
+      where: { workspace: { id: workspaceId }, dueDate: LessThan(today) },
+    });
+
+    const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+    const yesterDayTicketCount = await this.ticketRepository.count({
+      where: { workspace: { id: workspaceId }, dueDate: LessThan(oneDayAgo) },
+    });
+
+    return { ticketCount, yesterDayTicketCount };
   }
 
   /**
