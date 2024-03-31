@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Epic from '../domain/epic.entity';
 import { TicketStatus } from '@/src/global/enum/ticket.enum';
+import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @CustomRepository(Epic)
 export default class EpicRepository extends Repository<Epic> {
@@ -37,26 +38,40 @@ export default class EpicRepository extends Repository<Epic> {
     return await querybuilder.getOne();
   }
 
-  public async findAllByWorkspaceId(workspaceId: number) {
+  public async findAllByWorkspaceId(
+    workspaceId: number,
+    dto: RequestEpicFindDto,
+  ) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([
-        'epic.id as id',
-        'epic.name as name',
-        'epic.code as code',
-        'epic.dueDate as dueDate',
+        'epic.id',
+        'epic.name',
+        'epic.code',
+        'epic.dueDate',
+        'ticket.id',
+        'ticket.name',
+        'ticket.status',
+        'ticket.number',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'ticket.createdDate',
+        'worker.id',
+        'worker.nickname',
+        'worker.profile',
       ])
-      .addSelect('COUNT(ticket.adminId)', 'allTicketCount')
-      .addSelect(
-        'COUNT(CASE WHEN ticket.status = :status THEN ticket.adminId END)',
-        'doneTicketCount',
-      )
-      .setParameter('status', TicketStatus.Compeleted)
       .leftJoin('epic.ticket', 'ticket')
+      .leftJoin('ticket.worker', 'worker')
       .where('epic.workspace = :workspaceId', { workspaceId })
-      .where('epic.isDeleted = false')
-      .groupBy('epic.id');
+      .where('epic.isDeleted = false');
 
-    return await querybuilder.getRawMany();
+    if (dto.name) {
+      querybuilder.andWhere('epic.name like :name', {
+        name: `%${dto.name}%`,
+      });
+    }
+
+    return await querybuilder.getManyAndCount();
   }
 
   public async findOneEpicById(epicId: number) {

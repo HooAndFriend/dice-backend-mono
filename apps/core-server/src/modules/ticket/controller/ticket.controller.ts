@@ -7,7 +7,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 
 // ** Module Imports
@@ -55,6 +57,7 @@ import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
+import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -204,8 +207,11 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/epic')
-  public async findAllEpic(@GetWorkspace() { id }: Workspace) {
-    const { data, count } = await this.ticketService.findAllEpic(id);
+  public async findAllEpic(
+    @GetWorkspace() { id }: Workspace,
+    @Query(ValidationPipe) query: RequestEpicFindDto,
+  ) {
+    const { data, count } = await this.ticketService.findAllEpic(id, query);
 
     return CommonResponse.createResponse({
       statusCode: 200,

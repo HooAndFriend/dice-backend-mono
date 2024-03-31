@@ -42,6 +42,7 @@ import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import { find } from 'rxjs';
+import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @Injectable()
 export default class TicketService {
@@ -88,8 +89,9 @@ export default class TicketService {
    * @param ticketId
    */
   public async findCommentById(ticketId: number) {
-    const findComment =
-      await this.ticketCommentRepository.findCommentById(ticketId);
+    const findComment = await this.ticketCommentRepository.findCommentById(
+      ticketId,
+    );
     if (!findComment) {
       throw new NotFoundException('Cannot Find Comment.');
     }
@@ -101,8 +103,9 @@ export default class TicketService {
    * @param settingId
    */
   public async findSettingById(settingId: number) {
-    const findSetting =
-      await this.ticketSettingRepository.findSettingById(settingId);
+    const findSetting = await this.ticketSettingRepository.findSettingById(
+      settingId,
+    );
 
     if (!findSetting) {
       throw new NotFoundException('Cannot Find Setting.');
@@ -148,8 +151,9 @@ export default class TicketService {
    */
   public async findOneTicket(id: number) {
     const data = await this.findTicketById(id);
-    const [file, count] =
-      await this.ticketFileRepository.findAllFileByTicketId(id);
+    const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
+      id,
+    );
     data.file = file;
     return data;
   }
@@ -356,12 +360,29 @@ export default class TicketService {
    * Find All epic
    * @param id
    */
-  public async findAllEpic(id: number) {
-    const data = await this.epicRepository.findAllByWorkspaceId(id);
+  public async findAllEpic(id: number, dto: RequestEpicFindDto) {
+    const [data, count] = await this.epicRepository.findAllByWorkspaceId(
+      id,
+      dto,
+    );
 
-    const count = data.length;
+    const doneCount = data.reduce(
+      (acc, cur) =>
+        acc +
+        cur.ticket.filter((item) => item.status === TicketStatus.Compeleted)
+          .length,
+      0,
+    );
 
-    return { data, count };
+    return {
+      data: data.map((item) => ({
+        ...item,
+        doneTicketCount: item.ticket.filter(
+          (item) => item.status === TicketStatus.Compeleted,
+        ).length,
+      })),
+      count,
+    };
   }
 
   /**
