@@ -16,8 +16,8 @@ const swaggerCustomOptions: SwaggerCustomOptions = {
 
 const swaggerConfig = (app: INestApplication): void => {
   const options = new DocumentBuilder()
-    .setTitle('DICE API')
-    .setDescription('api document of dice project')
+    .setTitle('DICE API - LOG')
+    .setDescription('api log document of dice project')
     .setVersion('1.0.0')
     .addBearerAuth(
       {
