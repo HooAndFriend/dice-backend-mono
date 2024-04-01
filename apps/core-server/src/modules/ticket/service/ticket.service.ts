@@ -120,6 +120,33 @@ export default class TicketService {
   }
 
   /**
+   * 티켓 카운트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findTicketDoneCount(workspaceId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const ticketCount = await this.ticketRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        status: TaskStatusEnum.COMPLETE,
+      },
+    });
+
+    const yesterDayTicketCount = await this.ticketRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        completeDate: LessThan(today),
+        status: TaskStatusEnum.COMPLETE,
+      },
+    });
+
+    return { ticketCount, yesterDayTicketCount };
+  }
+
+  /**
    * Find Setting by Id
    * @param settingId
    */

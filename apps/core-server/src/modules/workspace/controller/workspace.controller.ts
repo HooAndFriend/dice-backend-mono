@@ -187,4 +187,29 @@ export default class WorkspaceController {
       },
     });
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스의 전체 처리한 티켓 개수 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(WorkspaceResponse.findWorksapceTaskCount[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/task/done')
+  public async findWorksapceDoneTaskCount(@GetWorkspace() { id }: Workspace) {
+    const { qaCount, yesterDayQaCount } = await this.qaService.findQaDoneCount(
+      id,
+    );
+    const { ticketCount, yesterDayTicketCount } =
+      await this.ticketService.findTicketDoneCount(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Total Done Task Count',
+      data: {
+        count: qaCount + ticketCount,
+        yesterdayCount: yesterDayQaCount + yesterDayTicketCount,
+      },
+    });
+  }
 }

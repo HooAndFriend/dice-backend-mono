@@ -27,6 +27,7 @@ import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @Injectable()
 export default class QaService {
@@ -223,6 +224,33 @@ export default class QaService {
 
     const yesterDayQaCount = await this.qaRepository.count({
       where: { workspace: { id: workspaceId }, dueDate: LessThan(oneDayAgo) },
+    });
+
+    return { qaCount, yesterDayQaCount };
+  }
+
+  /**
+   * QA 카운트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findQaDoneCount(workspaceId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const qaCount = await this.qaRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        status: TaskStatusEnum.COMPLETE,
+      },
+    });
+
+    const yesterDayQaCount = await this.qaRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        completeDate: LessThan(today),
+        status: TaskStatusEnum.COMPLETE,
+      },
     });
 
     return { qaCount, yesterDayQaCount };
