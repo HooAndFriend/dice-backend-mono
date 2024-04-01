@@ -39,6 +39,14 @@ export default class Qa extends BaseTimeEntity {
   status: TaskStatusEnum;
 
   @Column({
+    type: 'date',
+    name: 'complete_date',
+    comment: 'complete date',
+    nullable: true,
+  })
+  completeDate: Date;
+
+  @Column({
     type: 'varchar',
     length: 50,
     comment: '제목',

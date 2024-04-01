@@ -57,6 +57,14 @@ export default class Qa extends BaseTimeEntity {
   dueDate: Date;
 
   @Column({
+    type: 'date',
+    name: 'complete_date',
+    comment: 'complete date',
+    nullable: true,
+  })
+  completeDate: Date;
+
+  @Column({
     type: 'text',
     comment: '문제 사항',
     nullable: false,
