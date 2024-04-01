@@ -1,11 +1,5 @@
 // ** Nest Imports
 import { Body, Controller, Ip, Post } from '@nestjs/common';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
 
 // ** Module Imports
 import FileDownloadLogService from '../service/file-download-log.service';
@@ -18,11 +12,11 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import RequestFileDownloadLogSaveDto from '../dto/file-download-log.save.dto';
-import CommonResponse from '@/src/global/dto/api.response';
 import { FileDownloadLogResponse } from '@/src/global/response/file-download-log.response.ts';
 
 // ** Dto Imports
+import RequestFileDownloadLogSaveDto from '../dto/file-download-log.save.dto';
+import CommonResponse from '@/src/global/dto/api.response';
 
 @ApiTags('Qa History Log')
 @ApiResponse(createServerExceptionResponse())
