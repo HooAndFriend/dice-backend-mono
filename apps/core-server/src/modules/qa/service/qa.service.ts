@@ -283,9 +283,19 @@ export default class QaService {
   ) {
     const findQa = await this.findQa(dto.qaId, workspace.id);
 
+    if (findQa.status === TaskStatusEnum.COMPLETE) {
+      if (dto.status === TaskStatusEnum.COMPLETE) {
+        findQa.completeDate = new Date();
+      } else {
+        findQa.completeDate = null;
+      }
+    }
+
     findQa.status = dto.status;
+
     await this.qaRepository.save(findQa);
   }
+
   public async updateQaDueDate(
     dto: RequestQaDueDateUpdateDto,
     workspace: Workspace,
