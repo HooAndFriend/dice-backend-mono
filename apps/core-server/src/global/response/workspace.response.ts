@@ -56,6 +56,49 @@ export const WorkspaceResponse = {
       error: 'NOT FOUND',
     }),
   },
+  findWorksapceCalendarTaskCount: {
+    200: createResponse({
+      data: [
+        {
+          id: 10,
+          name: 'QA 페이지에서 Team 변경해도 Qa가 옛날 걸로 나옴',
+          dueDate: '2024-04-02',
+          type: 'QA',
+          createdDate: '2024-04-01T08:09:15.730Z',
+        },
+        {
+          id: 11,
+          name: 'QA 페이지에서 Team 변경해도 Qa가 옛날 걸로 나옴',
+          dueDate: '2024-04-02',
+          type: 'QA',
+          createdDate: '2024-04-01T08:09:15.733Z',
+        },
+        {
+          createdDate: '2024-03-31T07:46:33.453Z',
+          id: 2,
+          name: '게시판',
+          dueDate: '2024-04-04',
+          type: 'ticket',
+        },
+        {
+          createdDate: '2024-03-31T07:46:33.453Z',
+          id: 3,
+          name: '게시판',
+          dueDate: '2024-04-04',
+          type: 'ticket',
+        },
+        {
+          createdDate: '2024-03-31T07:46:33.453Z',
+          id: 4,
+          name: '게시판',
+          dueDate: '2024-04-04',
+          type: 'ticket',
+        },
+      ],
+      statusCode: 200,
+      message: 'Find Workspace Total Done Task Count',
+    }),
+  },
   findWorksapceTaskCount: {
     200: createResponse({
       data: {

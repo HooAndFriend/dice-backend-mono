@@ -42,6 +42,7 @@ import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 
 @Injectable()
 export default class TicketService {
@@ -117,6 +118,25 @@ export default class TicketService {
     });
 
     return { ticketCount, yesterDayTicketCount };
+  }
+
+  /**
+   * Find Ticket List By Date
+   * @param workspaceId
+   * @param userId
+   * @param dto
+   * @returns
+   */
+  public async findTicketListByDate(
+    workspaceId: number,
+    userId: number,
+    dto: RequestWorkspaceTaskFindDto,
+  ) {
+    return await this.ticketRepository.findTicketListByDate(
+      workspaceId,
+      userId,
+      dto,
+    );
   }
 
   /**

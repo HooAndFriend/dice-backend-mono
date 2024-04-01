@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Ticket from '../domain/ticket.entity';
+import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
+import dayjs from 'dayjs';
 
 @CustomRepository(Ticket)
 export default class TicketRepository extends Repository<Ticket> {
@@ -35,6 +37,38 @@ export default class TicketRepository extends Repository<Ticket> {
       .where('ticket.id = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
     return await querybuilder.getOne();
+  }
+
+  public async findTicketListByDate(
+    workspaceId: number,
+    userId: number,
+    dto: RequestWorkspaceTaskFindDto,
+  ) {
+    const startDate = dayjs(dto.date)
+      .startOf('month')
+      .format('YYYY-MM-DD HH:mm:ss');
+
+    const endDate = dayjs(dto.date)
+      .endOf('month')
+      .format('YYYY-MM-DD HH:mm:ss');
+
+    const querybuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.id',
+        'ticket.name',
+        'ticket.dueDate',
+        'ticket.createdDate',
+      ])
+      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.worker', 'worker')
+      .where('workspace.id = :workspaceId', { workspaceId })
+      .andWhere('worker.id = :userId', { userId })
+      .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      });
+
+    return await querybuilder.getMany();
   }
 
   public async findAllTicketByEpicId(epicId: number) {

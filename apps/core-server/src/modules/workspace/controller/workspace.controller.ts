@@ -1,5 +1,14 @@
 // ** Nest Imports
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
 // ** Module Imports
 import WorkspaceService from '../service/workspace.service';
@@ -47,6 +56,8 @@ import TeamUser from '../../team-user/domain/team-user.entity';
 import Workspace from '../domain/workspace.entity';
 import QaService from '../../qa/service/qa.service';
 import TicketService from '../../ticket/service/ticket.service';
+import RequestWorkspaceTaskFindDto from '../dto/workspace-task.find.dto';
+import dayjs from 'dayjs';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
@@ -210,6 +221,43 @@ export default class WorkspaceController {
         count: qaCount + ticketCount,
         yesterdayCount: yesterDayQaCount + yesterDayTicketCount,
       },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스의 이번 달 Task 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(WorkspaceResponse.findWorksapceCalendarTaskCount[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/task/calendar')
+  public async findWorksapceCalendarTaskCount(
+    @GetWorkspace() { id }: Workspace,
+    @GetUser() { id: userId }: User,
+    @Query(ValidationPipe) query: RequestWorkspaceTaskFindDto,
+  ) {
+    const ticketList = await this.ticketService.findTicketListByDate(
+      id,
+      userId,
+      query,
+    );
+
+    const qaList = await this.qaService.findQaListByDate(id, userId, query);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Total Done Task Count',
+      data: [
+        ...ticketList.map((item) => ({ ...item, type: 'ticket' })),
+        ...qaList.map((item) => ({
+          id: item.id,
+          name: item.title,
+          dueDate: item.dueDate,
+          type: 'QA',
+          createdDate: item.createdDate,
+        })),
+      ].sort((a, b) => dayjs(a.dueDate).diff(dayjs(b.dueDate))),
     });
   }
 }

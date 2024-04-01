@@ -28,6 +28,7 @@ import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 
 @Injectable()
 export default class QaService {
@@ -96,6 +97,21 @@ export default class QaService {
         qa,
       }),
     );
+  }
+
+  /**
+   * Find Qa List By Date
+   * @param workspaceId
+   * @param userId
+   * @param dto
+   * @returns
+   */
+  public async findQaListByDate(
+    workspaceId: number,
+    userId: number,
+    dto: RequestWorkspaceTaskFindDto,
+  ) {
+    return await this.qaRepository.findQaListByDate(workspaceId, userId, dto);
   }
 
   /**

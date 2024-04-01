@@ -8,6 +8,8 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Qa from '../domain/qa.entity';
 // ** Emum Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
+import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
+import dayjs from 'dayjs';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {
@@ -66,6 +68,33 @@ export default class QaRepository extends Repository<Qa> {
     }
 
     return await queryBuilder.getManyAndCount();
+  }
+
+  public async findQaListByDate(
+    workspaceId: number,
+    userId: number,
+    dto: RequestWorkspaceTaskFindDto,
+  ) {
+    const startDate = dayjs(dto.date)
+      .startOf('month')
+      .format('YYYY-MM-DD HH:mm:ss');
+
+    const endDate = dayjs(dto.date)
+      .endOf('month')
+      .format('YYYY-MM-DD HH:mm:ss');
+
+    const querybuilder = this.createQueryBuilder('qa')
+      .select(['qa.id', 'qa.title', 'qa.dueDate', 'qa.createdDate'])
+      .leftJoin('qa.workspace', 'workspace')
+      .leftJoin('qa.worker', 'worker')
+      .where('workspace.id = :workspaceId', { workspaceId })
+      .andWhere('worker.id = :userId', { userId })
+      .andWhere('qa.dueDate BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      });
+
+    return await querybuilder.getMany();
   }
 
   public async findQaById(qaId: number) {
