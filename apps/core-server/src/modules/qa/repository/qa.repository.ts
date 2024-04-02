@@ -32,14 +32,14 @@ export default class QaRepository extends Repository<Qa> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
-        'file.id',
-        'file.url',
+        'qaFile.id',
+        'qaFile.url',
         'qa.createdDate',
         'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.worker', 'worker')
-      .leftJoin('qa.file', 'file')
+      .leftJoin('qa.qaFile', 'qaFile')
       .where('qa.workspaceId = :workspaceId', { workspaceId })
       .andWhere('qa.isDeleted = false');
 
@@ -116,14 +116,14 @@ export default class QaRepository extends Repository<Qa> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
-        'file.id',
-        'file.url',
+        'qaFile.id',
+        'qaFile.url',
         'qa.createdDate',
         'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
       .leftJoin('qa.worker', 'worker')
-      .leftJoin('qa.file', 'file')
+      .leftJoin('qa.qaFile', 'qaFile')
       .where('qa.id = :qaId', { qaId })
       .andWhere('qa.isDeleted = false');
 

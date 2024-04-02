@@ -161,7 +161,7 @@ export default class QaService {
           dueDate: dto.dueDate,
           admin: admin,
           worker: findWorker,
-          file: files,
+          qaFile: files,
           workspace: workspace,
         }),
       );

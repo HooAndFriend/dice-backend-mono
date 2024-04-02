@@ -97,7 +97,7 @@ export default class Qa extends BaseTimeEntity {
   comment: Relation<Comment>[];
 
   @OneToMany(() => File, (file) => file.qa, { nullable: true })
-  file: Relation<File>[];
+  qaFile: Relation<File>[];
 
   @ManyToOne(() => User, (user) => user.qa)
   admin: Relation<User>;
@@ -108,13 +108,13 @@ export default class Qa extends BaseTimeEntity {
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
   workspace: Relation<Workspace>;
 
-  updateQaFromDto(dto: RequestQaUpdateDto, user: User, file: File[]): void {
+  updateQaFromDto(dto: RequestQaUpdateDto, user: User, qaFile: File[]): void {
     const { title, asIs, toBe, memo } = dto;
     this.title = title;
     this.asIs = asIs;
     this.toBe = toBe;
     this.memo = memo;
     this.worker = user;
-    this.file = file;
+    this.qaFile = qaFile;
   }
 }
