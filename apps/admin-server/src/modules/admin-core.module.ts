@@ -1,5 +1,7 @@
+// ** Nest Imports
 import { Module } from '@nestjs/common';
 
+// ** Custom Module Imports
 import AuthModule from './auth/auth.module';
 import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
@@ -12,7 +14,6 @@ import TicketModule from './ticket/ticket.module';
 import AdminModule from './admin/admin.module';
 import CsModule from './cs/cs.module';
 import VersionModule from './version/version.module';
-import AuthorityModule from './authority/authority.module';
 import StateModule from './state/state.module';
 
 @Module({
@@ -29,7 +30,6 @@ import StateModule from './state/state.module';
     AdminModule,
     CsModule,
     VersionModule,
-    AuthorityModule,
     StateModule,
   ],
   providers: [],
