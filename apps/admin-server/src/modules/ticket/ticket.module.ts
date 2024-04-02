@@ -18,19 +18,24 @@ import Ticket from './domain/ticket.entity';
 import TicketFile from './domain/ticket.file.entity';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketCommentRepository from './repository/ticket.comment.repository';
+import State from './domain/state.entity';
+import StateRepository from './repository/state.repository';
+import StateService from './service/state.service';
+import StateController from './controller/state.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Epic, Ticket, TicketFile, TicketComment]),
+    TypeOrmModule.forFeature([Epic, Ticket, TicketFile, TicketComment, State]),
     TypeOrmExModule.forCustomRepository([
       EpicRepository,
       TicketRepository,
       TicketFileRepository,
       TicketCommentRepository,
+      StateRepository,
     ]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
-  controllers: [TicketController],
-  providers: [TicketService],
+  exports: [TypeOrmExModule, TypeOrmModule, TicketService, StateService],
+  controllers: [TicketController, StateController],
+  providers: [TicketService, StateService],
 })
 export default class TicketModule {}
