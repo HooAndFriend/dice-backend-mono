@@ -10,8 +10,8 @@ import WorkspaceFunctionRepository from '../repository/workspace-function.reposi
 import DiceFunction from '@/src/global/enum/DiceFunction';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
-import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import Workspace from '../../workspace/domain/workspace.entity';
+import WorkspaceRepository from '../repository/workspace.repository';
+import Workspace from '../domain/workspace.entity';
 
 @Injectable()
 export default class WorkspaceFunctionService {

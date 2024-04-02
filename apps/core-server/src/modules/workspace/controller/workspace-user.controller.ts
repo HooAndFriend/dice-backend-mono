@@ -46,7 +46,7 @@ import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 import RoleEnum from '@/src/global/enum/Role';
 import CommonResponse from '@/src/global/dto/api.response';
-import Workspace from '../../workspace/domain/workspace.entity';
+import Workspace from '../domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import {
   GetTeam,

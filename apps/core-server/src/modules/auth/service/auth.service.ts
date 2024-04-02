@@ -9,7 +9,7 @@ import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TeamUserRepository from '../../team/repository/team-user.repository';
 import TeamRepository from '../../team/repository/team.repository';
-import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
+import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
 
 // ** Utils Imports
 import * as bcrypt from 'bcryptjs';
@@ -33,7 +33,7 @@ import User from '../../user/domain/user.entity';
 import Role from '@/src/global/enum/Role';
 import UserStatusEnum from '../../user/domain/user-status.enum';
 import { waitForDebugger } from 'inspector';
-import WorkspaceFunctionRepository from '../../workspace-function/repository/workspace-function.repository';
+import WorkspaceFunctionRepository from '../../workspace/repository/workspace-function.repository';
 import DiceFunction from '@/src/global/enum/DiceFunction';
 import { createCode } from '@/src/global/util/generator/code.generate';
 

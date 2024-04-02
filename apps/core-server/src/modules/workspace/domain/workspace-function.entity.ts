@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import Workspace from '../../workspace/domain/workspace.entity';
+import Workspace from './workspace.entity';
 import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
 import DiceFunction from '@/src/global/enum/DiceFunction';
 

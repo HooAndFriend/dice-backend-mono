@@ -40,7 +40,7 @@ import { WorkspaceFunctionResponse } from '@/src/global/response/workspace-funct
 // ** Dto Imports
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
 import RoleEnum from '@/src/global/enum/Role';
-import Workspace from '../../workspace/domain/workspace.entity';
+import Workspace from '../domain/workspace.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestRemoveWorkspaceFunctionDto from '../dto/workspace-function.remove.dto';
 
@@ -62,8 +62,9 @@ export default class WorkspaceFunctionController {
   @UseGuards(JwtAccessGuard)
   @Get('/function')
   public async findWorkspaceFunctionList(@GetWorkspace() { id }: Workspace) {
-    const list =
-      await this.workspaceFunctionService.findWorkspaceFunctionList(id);
+    const list = await this.workspaceFunctionService.findWorkspaceFunctionList(
+      id,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -139,8 +140,9 @@ export default class WorkspaceFunctionController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findFunctionList(@Param('id') id: number) {
-    const [data, count] =
-      await this.workspaceFunctionService.findFunctionList(id);
+    const [data, count] = await this.workspaceFunctionService.findFunctionList(
+      id,
+    );
 
     return CommonResponse.createResponse({
       statusCode: 200,

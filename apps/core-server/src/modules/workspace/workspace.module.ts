@@ -6,30 +6,48 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // ** Custom Module Imports
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
-import WorkspaceRepository from './repository/workspace.repository';
-import WorkspaceService from './service/workspace.service';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
-import WorkspaceController from './controller/workspace.controller';
 
 // ** Entity Imports
+import WorkspaceRepository from './repository/workspace.repository';
+import WorkspaceService from './service/workspace.service';
+import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
 import TeamModule from '../team/team.module';
-import TeamUserModule from '../team-user/team-user.module';
 import TicketModule from '../ticket/ticket.module';
 import QaModule from '../qa/qa.module';
+import WorkspaceFunction from './domain/workspace-function.entity';
+import WorkspaceUser from './domain/workspace-user.entity';
+import WorkspaceFunctionRepository from './repository/workspace-function.repository';
+import WorkspaceUserRepository from './repository/workspace-user.repository';
+import WorkspaceFunctionService from './service/workspace-function.service';
+import WorkspaceUserService from './service/workspace-user.service';
+import WorkspaceFunctionController from './controller/workspace-function.controller';
+import WorkspaceUserController from './controller/workspace-user.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Workspace]),
-    TypeOrmExModule.forCustomRepository([WorkspaceRepository]),
-    forwardRef(() => WorkspaceUserModule),
+    TypeOrmModule.forFeature([Workspace, WorkspaceFunction, WorkspaceUser]),
+    TypeOrmExModule.forCustomRepository([
+      WorkspaceRepository,
+      WorkspaceFunctionRepository,
+      WorkspaceUserRepository,
+    ]),
     forwardRef(() => TeamModule),
-    forwardRef(() => TeamUserModule),
     forwardRef(() => TicketModule),
     forwardRef(() => QaModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule, WorkspaceService],
-  controllers: [WorkspaceController],
-  providers: [WorkspaceService],
+  exports: [
+    TypeOrmExModule,
+    TypeOrmModule,
+    WorkspaceService,
+    WorkspaceFunctionService,
+    WorkspaceUserService,
+  ],
+  controllers: [
+    WorkspaceController,
+    WorkspaceFunctionController,
+    WorkspaceUserController,
+  ],
+  providers: [WorkspaceService, WorkspaceFunctionService, WorkspaceUserService],
 })
 export default class WorkspaceModule {}

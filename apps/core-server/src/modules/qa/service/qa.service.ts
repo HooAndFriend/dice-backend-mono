@@ -7,7 +7,7 @@ import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
 import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
-import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
+import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
 
 // ** enum, dto, entity, types Imports
 import {

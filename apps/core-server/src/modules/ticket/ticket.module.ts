@@ -21,7 +21,6 @@ import Ticket from './domain/ticket.entity';
 import TicketFile from './domain/ticket.file.entity';
 import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 import TicketSetting from './domain/ticket.setting.entity';
 
 @Module({
@@ -42,7 +41,6 @@ import TicketSetting from './domain/ticket.setting.entity';
     ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
-    forwardRef(() => WorkspaceUserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketService],
   controllers: [TicketController],

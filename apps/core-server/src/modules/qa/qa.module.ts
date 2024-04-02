@@ -1,5 +1,7 @@
 // ** Nest Imports
 import { Module, forwardRef } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,11 +18,9 @@ import CommentService from './service/comment.service';
 import Qa from './domain/qa.entity';
 import Comment from './domain/comment.entity';
 import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 import UserModule from '../user/user.module';
 import { QaSendChangeHistoryListener } from './listener/qa.listener';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import WorkspaceModule from '../workspace/workspace.module';
 
 @Module({
   imports: [
@@ -49,7 +49,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         inject: [ConfigService],
       },
     ]),
-    forwardRef(() => WorkspaceUserModule),
+    forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],

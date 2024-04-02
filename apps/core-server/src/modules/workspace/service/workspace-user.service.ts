@@ -5,12 +5,12 @@ import { ConfigService } from '@nestjs/config';
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
-import WorkspaceRepository from '../../workspace/repository/workspace.repository';
+import WorkspaceRepository from '../repository/workspace.repository';
 import TeamUserRepository from '../../team/repository/team-user.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
-import Workspace from '../../workspace/domain/workspace.entity';
+import Workspace from '../domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 import Team from '../../team/domain/team.entity';
 import { LessThan } from 'typeorm';

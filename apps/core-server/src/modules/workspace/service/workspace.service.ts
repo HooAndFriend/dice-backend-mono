@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
-import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
+import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import WorkspaceRepository from '../repository/workspace.repository';
 
 // ** Utils Imports

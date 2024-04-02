@@ -10,22 +10,22 @@ import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 // ** Custom Module Imports
 import TeamService from './service/team.service';
 import TeamController from './controller/team.controller';
-import Team from './domain/team.entity';
 import TeamRepository from './repository/team.repository';
 import WorkspaceModule from '../workspace/workspace.module';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 import UserModule from '../user/user.module';
 import TeamUserService from './service/team-user.service';
 import TeamUserController from './controller/team-user.controller';
-import TeamUser from './domain/team-user.entity';
 import TeamUserRepository from './repository/team-user.repository';
+
+// ** Entity Imports
+import TeamUser from './domain/team-user.entity';
+import Team from './domain/team.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Team, TeamUser]),
     TypeOrmExModule.forCustomRepository([TeamRepository, TeamUserRepository]),
     forwardRef(() => WorkspaceModule),
-    forwardRef(() => WorkspaceUserModule),
     forwardRef(() => UserModule),
     ClientsModule.registerAsync([
       {

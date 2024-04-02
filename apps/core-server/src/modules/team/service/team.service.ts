@@ -13,7 +13,7 @@ import { DataSource } from 'typeorm';
 // ** Custom Module Imports
 import TeamRepository from '../repository/team.repository';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
+import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
 
 // ** Utils Imports
 import { v4 as uuidv4 } from 'uuid';
