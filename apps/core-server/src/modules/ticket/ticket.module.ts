@@ -14,6 +14,7 @@ import TicketFileRepository from './repository/ticket.file.repository';
 import WorkspaceModule from '../workspace/workspace.module';
 import TicketSettingRepository from './repository/ticket.setting.repository';
 import TicketCommentRepository from './repository/ticket.comment.repository';
+import StateRepository from './repository/state.repository';
 
 // ** entity Imports
 import Epic from './domain/epic.entity';
@@ -22,6 +23,9 @@ import TicketFile from './domain/ticket.file.entity';
 import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketSetting from './domain/ticket.setting.entity';
+import State from './domain/state.entity';
+import StateService from './service/state.service';
+import StateController from './controller/state.controller';
 
 @Module({
   imports: [
@@ -31,6 +35,7 @@ import TicketSetting from './domain/ticket.setting.entity';
       TicketFile,
       TicketComment,
       TicketSetting,
+      State,
     ]),
     TypeOrmExModule.forCustomRepository([
       EpicRepository,
@@ -38,12 +43,13 @@ import TicketSetting from './domain/ticket.setting.entity';
       TicketFileRepository,
       TicketCommentRepository,
       TicketSettingRepository,
+      StateRepository,
     ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule, TicketService],
-  controllers: [TicketController],
-  providers: [TicketService],
+  exports: [TypeOrmExModule, TypeOrmModule, TicketService, StateService],
+  controllers: [TicketController, StateController],
+  providers: [TicketService, StateService],
 })
 export default class TicketModule {}
