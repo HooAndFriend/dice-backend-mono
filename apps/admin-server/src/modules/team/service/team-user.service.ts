@@ -2,7 +2,7 @@
 
 // ** Custom Module Imports
 import TeamUserRepository from '../repository/team-user.repository';
-import TeamRepository from '../../team/repository/team.repository';
+import TeamRepository from '../repository/team.repository';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

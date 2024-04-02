@@ -10,8 +10,8 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
-import WorkspaceUser from '../../workspace-user/domain/workspace-user.entity';
-import WorkspaceFunction from '../../workspace-function/domain/workspace-function.entity';
+import WorkspaceUser from './workspace-user.entity';
+import WorkspaceFunction from './workspace-function.entity';
 import Team from '../../team/domain/team.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Ticket from '../../ticket/domain/ticket.entity';

@@ -10,7 +10,7 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
-import TeamUser from '../../team-user/domain/team-user.entity';
+import TeamUser from './team-user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_TEAM' })

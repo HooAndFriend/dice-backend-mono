@@ -1,24 +1,26 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 
 // ** Custom Module Imports
 import UserController from './controller/user.controller';
 import UserRepository from './repository/user.repository';
 import UserService from './service/user.service';
+import TeamModule from '../team/team.module';
+import WorkspaceModule from '../workspace/workspace.module';
+
+// ** Entity Imports
 import User from './domain/user.entity';
-import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
-import TeamUserModule from '../team-user/team-user.module';
-import WorkspaceUserModule from '../workspace-user/workspace-user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     TypeOrmExModule.forCustomRepository([UserRepository]),
-    TeamUserModule,
-    WorkspaceUserModule,
+    forwardRef(() => TeamModule),
+    forwardRef(() => WorkspaceModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [UserController],

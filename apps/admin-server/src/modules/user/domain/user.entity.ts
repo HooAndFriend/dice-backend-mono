@@ -11,7 +11,7 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import { UserType } from '../../../global/enum/UserType.enum';
-import TeamUser from '../../team-user/domain/team-user.entity';
+import TeamUser from '../../team/domain/team-user.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';
 import Comment from '@/src/modules/qa/domain/comment.entity';
