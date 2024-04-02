@@ -5,32 +5,31 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 
 // ** Custom Module Imports
 import QaController from './controller/qa.controller';
 import QaRepository from './repository/qa.repository';
 import CommentRepository from './repository/comment.repository';
-import UserRepository from '@/src/modules/user/repository/user.repository';
 import FileRepository from './repository/file.repository';
-import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
 import QaService from './service/qa.service';
 import CommentService from './service/comment.service';
-import Qa from './domain/qa.entity';
-import Comment from './domain/comment.entity';
-import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 import UserModule from '../user/user.module';
 import { QaSendChangeHistoryListener } from './listener/qa.listener';
 import WorkspaceModule from '../workspace/workspace.module';
 
+// ** Entity Imports
+import Qa from './domain/qa.entity';
+import Comment from './domain/comment.entity';
+import File from './domain/file.entity';
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Qa, Comment]),
+    TypeOrmModule.forFeature([Qa, Comment, File]),
     TypeOrmExModule.forCustomRepository([
       QaRepository,
       CommentRepository,
-      UserRepository,
       FileRepository,
-      WorkspaceRepository,
     ]),
     ClientsModule.registerAsync([
       {
