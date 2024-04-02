@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
-import AdminRoleEnum from '../../admin/domain/admin-role.enum';
+import AdminRoleEnum from './admin-role.enum';
 
 @Entity({ name: 'TB_AUTHORITY' })
 @Unique(['name', 'role'])

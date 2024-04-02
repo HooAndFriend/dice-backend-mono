@@ -10,14 +10,18 @@ import AdminService from './service/admin.service';
 import AdminController from './controller/admin.controller';
 import AdminRepository from './repository/admin.repository';
 import Admin from './domain/admin.entity';
+import AuthorityController from './controller/authority.controller';
+import AuthorityService from './service/authority.service';
+import Authority from './domain/authority.entity';
+import AuthorityRepository from './repository/authority.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Admin]),
-    TypeOrmExModule.forCustomRepository([AdminRepository]),
+    TypeOrmModule.forFeature([Admin, Authority]),
+    TypeOrmExModule.forCustomRepository([AdminRepository, AuthorityRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
-  controllers: [AdminController],
-  providers: [AdminService],
+  controllers: [AdminController, AuthorityController],
+  providers: [AdminService, AuthorityService],
 })
 export default class AdminModule {}
