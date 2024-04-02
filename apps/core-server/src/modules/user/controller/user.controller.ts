@@ -3,7 +3,7 @@ import { Body, Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
-import TeamUserService from '../../team-user/service/team-user.service';
+import TeamUserService from '../../team/service/team-user.service';
 import TicketService from '../../ticket/service/ticket.service';
 import WorkspaceService from '../../workspace/service/workspace.service';
 

@@ -22,7 +22,7 @@ import { createCode } from '@/src/global/util/generator/code.generate';
 // ** enum, dto, entity Imports
 import User from '../../user/domain/user.entity';
 import RequestTeamSaveDto from '../dto/team.save.dto';
-import TeamUserRepository from '../../team-user/repository/team-user.repository';
+import TeamUserRepository from '../repository/team-user.repository';
 import Role from '@/src/global/enum/Role';
 import RequestTeamUpdateDto from '../dto/team.update.dto';
 

@@ -20,7 +20,7 @@ import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import Role from '@/src/global/enum/Role';
-import TeamUser from '../../team-user/domain/team-user.entity';
+import TeamUser from '../../team/domain/team-user.entity';
 
 @Injectable()
 export default class WorkspaceService {
@@ -95,8 +95,9 @@ export default class WorkspaceService {
    * @returns
    */
   public async findMainWorkspace(workspaceId: number) {
-    const workspace =
-      await this.workspaceRepository.findMainWorkspace(workspaceId);
+    const workspace = await this.workspaceRepository.findMainWorkspace(
+      workspaceId,
+    );
 
     if (!workspace) {
       throw new NotFoundException('Not Found Workspace');

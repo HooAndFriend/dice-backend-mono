@@ -45,7 +45,7 @@ import {
 } from '@/src/global/decorators/team-role/team-role.decorator';
 import RoleEnum from '@/src/global/enum/Role';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
-import Team from '../../team/domain/team.entity';
+import Team from '../domain/team.entity';
 
 @ApiTags('Team User')
 @ApiResponse(createServerExceptionResponse())

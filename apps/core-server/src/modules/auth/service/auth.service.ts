@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import UserRepository from '../../user/repository/user.repository';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import TeamUserRepository from '../../team-user/repository/team-user.repository';
+import TeamUserRepository from '../../team/repository/team-user.repository';
 import TeamRepository from '../../team/repository/team.repository';
 import WorkspaceUserRepository from '../../workspace-user/repository/workspace-user.repository';
 

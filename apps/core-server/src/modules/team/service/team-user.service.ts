@@ -11,7 +11,7 @@ import TeamUserRepository from '../repository/team-user.repository';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
-import TeamRepository from '../../team/repository/team.repository';
+import TeamRepository from '../repository/team.repository';
 import Role from '@/src/global/enum/Role';
 import dayjs from 'dayjs';
 
@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import UserRepository from '../../user/repository/user.repository';
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import SendMailDto from '@/src/global/dto/mail-send.dto';
-import Team from '../../team/domain/team.entity';
+import Team from '../domain/team.entity';
 import RoleEnum from '@/src/global/enum/Role';
 import User from '../../user/domain/user.entity';
 

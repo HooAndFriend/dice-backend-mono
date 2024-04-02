@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import TeamUserRepository from '../../team-user/repository/team-user.repository';
+import TeamUserRepository from '../../team/repository/team-user.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';

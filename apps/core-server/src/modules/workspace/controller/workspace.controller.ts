@@ -52,7 +52,7 @@ import User from '../../user/domain/user.entity';
 import RoleEnum from '@/src/global/enum/Role';
 import Team from '../../team/domain/team.entity';
 import CommonResponse from '@/src/global/dto/api.response';
-import TeamUser from '../../team-user/domain/team-user.entity';
+import TeamUser from '../../team/domain/team-user.entity';
 import Workspace from '../domain/workspace.entity';
 import QaService from '../../qa/service/qa.service';
 import TicketService from '../../ticket/service/ticket.service';
