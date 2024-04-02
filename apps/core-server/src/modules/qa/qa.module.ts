@@ -10,18 +10,18 @@ import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 // ** Custom Module Imports
 import QaController from './controller/qa.controller';
 import QaRepository from './repository/qa.repository';
-import CommentRepository from './repository/comment.repository';
-import FileRepository from './repository/file.repository';
+import CommentRepository from './repository/qa.comment.repository';
+import FileRepository from './repository/qa.file.repository';
 import QaService from './service/qa.service';
-import CommentService from './service/comment.service';
+import CommentService from './service/qa.comment.service';
 import UserModule from '../user/user.module';
 import { QaSendChangeHistoryListener } from './listener/qa.listener';
 import WorkspaceModule from '../workspace/workspace.module';
 
 // ** Entity Imports
 import Qa from './domain/qa.entity';
-import Comment from './domain/comment.entity';
-import File from './domain/file.entity';
+import Comment from './domain/qa.comment.entity';
+import File from './domain/qa.file.entity';
 
 @Module({
   imports: [

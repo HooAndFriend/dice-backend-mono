@@ -12,8 +12,8 @@ import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';
 import User from '../../user/domain/user.entity';
 
-@Entity({ name: 'TB_COMMENT' })
-export default class Comment extends BaseTimeEntity {
+@Entity({ name: 'TB_QA_COMMENT' })
+export default class QaComment extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

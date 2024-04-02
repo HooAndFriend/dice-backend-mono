@@ -12,7 +12,7 @@ import Qa from '@/src/modules/qa/domain/qa.entity';
 import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
 
 @Entity({ name: 'TB_QA_FILE' })
-export default class File extends BaseCreatedTimeEntity {
+export default class QaFile extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

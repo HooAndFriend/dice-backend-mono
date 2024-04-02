@@ -4,7 +4,7 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 // ** Custom Module Imports
 import { DataSource, LessThan } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
-import FileRepository from '../repository/file.repository';
+import FileRepository from '../repository/qa.file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
 import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
 import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
@@ -36,7 +36,6 @@ export default class QaService {
     private readonly qaRepository: QaRepository,
     private readonly fileRepository: FileRepository,
     private readonly userRepository: UserRepository,
-    private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly dataSource: DataSource,
   ) {}

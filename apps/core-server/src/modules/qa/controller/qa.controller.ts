@@ -15,7 +15,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import QaService from '../service/qa.service';
-import CommentService from '../service/comment.service';
+import QaCommentService from '../service/qa.comment.service';
 import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
@@ -74,7 +74,7 @@ import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 export default class QaController {
   constructor(
     private readonly qaService: QaService,
-    private readonly commentService: CommentService,
+    private readonly qaCommentService: QaCommentService,
     private readonly userService: UserService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
@@ -317,7 +317,7 @@ export default class QaController {
     @Param('qaId') qaId: number,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const { data, count } = await this.commentService.findQaComment(
+    const { data, count } = await this.qaCommentService.findQaComment(
       qaId,
       workspace,
     );
@@ -342,7 +342,7 @@ export default class QaController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
   ) {
-    await this.commentService.saveComment(dto, workspace, user);
+    await this.qaCommentService.saveComment(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',
@@ -363,7 +363,7 @@ export default class QaController {
     @Body() dto: RequestQaCommentUpdateDto,
     @GetUser() user: User,
   ) {
-    await this.commentService.updateComment(dto, user);
+    await this.qaCommentService.updateComment(dto, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 수정합니다.',
@@ -421,7 +421,7 @@ export default class QaController {
   @UseGuards(JwtAccessGuard)
   @Delete('/comment/:id')
   public async deleteComment(@Param('id') id: number, @GetUser() user: User) {
-    await this.commentService.deleteComment(id, user);
+    await this.qaCommentService.deleteComment(id, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 삭제합니다.',
