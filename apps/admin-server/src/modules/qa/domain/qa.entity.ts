@@ -10,8 +10,8 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '@/src/global/domain/BaseTime.Entity';
-import Comment from '@/src/modules/qa/domain/comment.entity';
-import File from '@/src/modules/qa/domain/file.entity';
+import Comment from '@/src/modules/qa/domain/qa.comment.entity';
+import File from '@/src/modules/qa/domain/qa.file.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';

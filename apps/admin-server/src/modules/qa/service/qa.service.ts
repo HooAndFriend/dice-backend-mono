@@ -1,14 +1,10 @@
 // ** Nest Imports
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
-import { DataSource } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
-import FileRepository from '../repository/file.repository';
-import UserRepository from '@/src/modules/user/repository/user.repository';
-import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
-
-// ** Response Imports
+import QaFileRepository from '../repository/qa.file.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
@@ -17,6 +13,7 @@ import RequestQaFindDto from '../dto/qa.find.dto';
 export default class QaService {
   constructor(
     private readonly qaRepository: QaRepository,
+    private readonly qaFileRepository: QaFileRepository,
     private readonly dataSource: DataSource,
   ) {}
 

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
-import File from '../domain/file.entity';
+import QaComment from '../domain/qa.comment.entity';
 
-@CustomRepository(File)
-export default class FileRepository extends Repository<File> {}
+@CustomRepository(QaComment)
+export default class QaCommentRepository extends Repository<QaComment> {}

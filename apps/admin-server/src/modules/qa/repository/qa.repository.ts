@@ -26,13 +26,13 @@ export default class QaRepository extends Repository<Qa> {
         'admin.email',
         'admin.nickname',
         'admin.profile',
-        'file.id',
-        'file.url',
+        'qaFile.id',
+        'qaFile.url',
         'qa.createdDate',
         'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
-      .leftJoin('qa.file', 'file');
+      .leftJoin('qa.qaFile', 'qaFile');
     return await queryBuilder.getManyAndCount();
   }
 
@@ -50,13 +50,13 @@ export default class QaRepository extends Repository<Qa> {
         'admin.email',
         'admin.nickname',
         'admin.profile',
-        'file.id',
-        'file.url',
+        'qaFile.id',
+        'qaFile.url',
         'qa.createdDate',
         'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
-      .leftJoin('qa.file', 'file');
+      .leftJoin('qa.qaFile', 'qaFile');
 
     if (findQuery.status !== TaskStatusEnum.NOTHING) {
       queryBuilder.andWhere('qa.status = :status', {

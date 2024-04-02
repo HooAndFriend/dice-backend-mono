@@ -14,7 +14,7 @@ import { UserType } from '../../../global/enum/UserType.enum';
 import TeamUser from '../../team/domain/team-user.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';
-import Comment from '@/src/modules/qa/domain/comment.entity';
+import Comment from '@/src/modules/qa/domain/qa.comment.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
 import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 import TicketFile from '../../ticket/domain/ticket.file.entity';
