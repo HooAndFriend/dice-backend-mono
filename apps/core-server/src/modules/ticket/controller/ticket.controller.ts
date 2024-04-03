@@ -46,7 +46,6 @@ import {
 import User from '../../user/domain/user.entity';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
@@ -55,6 +54,7 @@ import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
+import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -221,15 +221,17 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 상태변경' })
-  @ApiBody({ type: RequestTicketStateUpdateDto })
+  @ApiBody({ type: RequestTicketStatusUpdateDto })
   @ApiResponse(TicketResponse.updateTicketState[200])
   @ApiResponse(TicketResponse.updateTicketState[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Post('/state/:ticketId')
-  public async updateTicketState(@Body() dto: RequestTicketStateUpdateDto) {
-    await this.ticketService.updateTicketState(dto);
+  @Put('/status')
+  public async updateTicketState(@Body() dto: RequestTicketStatusUpdateDto) {
+    await this.ticketService.isExistedTicketById(dto.ticketId);
+
+    await this.ticketService.updateTicketStatus(dto);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',

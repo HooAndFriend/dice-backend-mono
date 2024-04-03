@@ -33,7 +33,6 @@ import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import Ticket from '../domain/ticket.entity';
 import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
-import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
@@ -44,6 +43,7 @@ import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
+import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -393,34 +393,29 @@ export default class TicketService {
    * Update ticket
    * @param dto
    */
-  public async updateTicketState(dto: RequestTicketStateUpdateDto) {
-    const findTicket = await this.findTicketById(dto.ticketId);
+  public async updateTicketStatus(dto: RequestTicketStatusUpdateDto) {
+    const now = new Date();
 
-    const _date = new Date();
-    const year = _date.getFullYear();
-    const month = _date.getMonth() + 1;
-    const date = _date.getDate();
+    if (dto.status === TaskStatusEnum.REOPEN) {
+      await this.ticketRepository.update(dto.ticketId, {
+        status: dto.status,
+        reopenDate: now,
+        completeDate: null,
+      });
 
-    switch (dto.status) {
-      case TaskStatusEnum.REOPEN:
-        await this.ticketRepository.update(findTicket.id, {
-          status: dto.status,
-          reopenDate: `${year}-${month}-${date}`,
-        });
-        break;
+      return;
+    } else if (dto.status === TaskStatusEnum.COMPLETE) {
+      await this.ticketRepository.update(dto.ticketId, {
+        status: dto.status,
+        completeDate: now,
+      });
 
-      case TaskStatusEnum.COMPLETE:
-        await this.ticketRepository.update(findTicket.id, {
-          status: dto.status,
-          completeDate: `${year}-${month}-${date}`,
-        });
-        break;
-
-      default:
-        await this.ticketRepository.update(findTicket.id, {
-          status: dto.status,
-        });
+      return;
     }
+
+    await this.ticketRepository.update(dto.ticketId, {
+      status: dto.status,
+    });
   }
 
   /**
@@ -667,6 +662,20 @@ export default class TicketService {
     }
 
     return findSetting;
+  }
+
+  /**
+   * Existed Ticket By Id
+   * @param ticketId
+   */
+  public async isExistedTicketById(ticketId: number) {
+    const ticket = await this.ticketRepository.exist({
+      where: { id: ticketId },
+    });
+
+    if (!ticket) {
+      throw new NotFoundException('Not Found Ticket');
+    }
   }
 
   /**

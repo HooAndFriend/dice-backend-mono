@@ -7,7 +7,7 @@ import { IsEnum, IsNumber } from 'class-validator';
 // ** Enum Imports
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
-export default class RequestTicketStateUpdateDto {
+export default class RequestTicketStatusUpdateDto {
   @ApiProperty({ example: 2 })
   @IsNumber()
   ticketId: number;
