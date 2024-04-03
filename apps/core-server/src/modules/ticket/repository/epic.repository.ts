@@ -64,7 +64,7 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('epic.ticket', 'ticket')
       .leftJoin('ticket.worker', 'worker')
       .where('epic.workspace = :workspaceId', { workspaceId })
-      .where('epic.isDeleted = false');
+      .andWhere('epic.isDeleted = false');
 
     if (dto.name) {
       querybuilder.andWhere('epic.name like :name', {
