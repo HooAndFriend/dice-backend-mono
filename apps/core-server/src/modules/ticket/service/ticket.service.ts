@@ -43,6 +43,7 @@ import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.d
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
+import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -82,6 +83,37 @@ export default class TicketService {
       throw new NotFoundException('Cannot Find Epic.');
     }
     return findEpic;
+  }
+
+  /**
+   * Find Ticket By Id With Worker And Admin
+   * @param ticketId
+   * @returns
+   */
+  public async findTicketByIdWithWorkerAndAdmin(ticketId: number) {
+    const ticket = await this.ticketRepository.findOne({
+      where: { id: ticketId },
+      relations: ['worker', 'admin'],
+    });
+
+    if (!ticket) {
+      throw new NotFoundException('Not Found Ticket.');
+    }
+
+    return ticket;
+  }
+
+  /**
+   * Update Ticket User
+   * @param dto
+   * @param user
+   */
+  public async updateTicketUser(dto: RequestTicketUserUpdateDto, user: User) {
+    if (dto.type === 'admin') {
+      await this.ticketRepository.update(dto.ticketId, { admin: user });
+    } else {
+      await this.ticketRepository.update(dto.ticketId, { worker: user });
+    }
   }
 
   /**

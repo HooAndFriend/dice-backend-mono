@@ -126,6 +126,22 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  updateTicketUser: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket 담당자를 수정합니다.',
+    }),
+    404.1: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket',
+    }),
+    404.2: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found User',
+    }),
+  },
   updateTicketDueDate: {
     200: createMessageResponse({
       statusCode: 200,

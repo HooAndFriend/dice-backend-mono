@@ -7,11 +7,14 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import TicketService from '../service/ticket.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -43,8 +46,6 @@ import {
 import User from '../../user/domain/user.entity';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
-import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketStateUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import RoleEnum from '@/src/global/enum/Role';
@@ -52,13 +53,19 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
+import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
+import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/ticket', version: '1' })
 export default class TicketController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(
+    private readonly ticketService: TicketService,
+    private readonly userService: UserService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -155,6 +162,42 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket due date를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 유저 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestTicketUserUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketUser[200])
+  @ApiResponse(TicketResponse.updateTicketUser[404.1])
+  @ApiResponse(TicketResponse.updateTicketUser[404.2])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/user')
+  public async updateTicketUser(@Body() dto: RequestTicketUserUpdateDto) {
+    const ticket = await this.ticketService.findTicketByIdWithWorkerAndAdmin(
+      dto.ticketId,
+    );
+    const user = await this.userService.findUserById(dto.userId);
+    await this.ticketService.updateTicketUser(dto, user);
+
+    this.eventEmitter.emit('ticket.send-change-history', {
+      qaId: dto.ticketId,
+      username: user.nickname,
+      before:
+        dto.type === 'admin' ? ticket.admin.nickname : ticket.worker.nickname,
+      after: user.nickname,
+      type:
+        dto.type === 'admin'
+          ? TicketHistoryTypeEnum.ADMIN
+          : TicketHistoryTypeEnum.WORKER,
+    });
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket 담당자를 수정합니다.',
     });
   }
 

@@ -1,5 +1,7 @@
 // ** Nest Imports
 import { Module, forwardRef } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +17,11 @@ import WorkspaceModule from '../workspace/workspace.module';
 import TicketSettingRepository from './repository/ticket.setting.repository';
 import TicketCommentRepository from './repository/ticket.comment.repository';
 import StateRepository from './repository/state.repository';
+import StateService from './service/state.service';
+import StateController from './controller/state.controller';
+import EpicController from './controller/epic.controller';
+import TicketCommentController from './controller/ticket.comment.controller';
+import { TicketSendChangeHistoryListener } from './listener/ticket.listener';
 
 // ** entity Imports
 import Epic from './domain/epic.entity';
@@ -24,10 +31,6 @@ import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketSetting from './domain/ticket.setting.entity';
 import State from './domain/state.entity';
-import StateService from './service/state.service';
-import StateController from './controller/state.controller';
-import EpicController from './controller/epic.controller';
-import TicketCommentController from './controller/ticket.comment.controller';
 
 @Module({
   imports: [
@@ -47,6 +50,23 @@ import TicketCommentController from './controller/ticket.comment.controller';
       TicketSettingRepository,
       StateRepository,
     ]),
+    ClientsModule.registerAsync([
+      {
+        name: 'RMQ_LOG_QUE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_LOG_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
@@ -57,6 +77,6 @@ import TicketCommentController from './controller/ticket.comment.controller';
     EpicController,
     TicketCommentController,
   ],
-  providers: [TicketService, StateService],
+  providers: [TicketService, StateService, TicketSendChangeHistoryListener],
 })
 export default class TicketModule {}
