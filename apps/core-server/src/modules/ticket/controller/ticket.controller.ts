@@ -132,7 +132,6 @@ export default class TicketController {
   @ApiOperation({ summary: 'TICKET 간단 생성' })
   @ApiBody({ type: RequestSimpleTicketSaveDto })
   @ApiResponse(TicketResponse.saveSimpleTicket[200])
-  @ApiResponse(TicketResponse.saveSimpleTicket[404])
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -142,9 +141,7 @@ export default class TicketController {
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const epic = await this.ticketService.findEpicById(dto.epicId);
-
-    await this.ticketService.saveSimpleTicket(dto, user, workspace, epic);
+    await this.ticketService.saveSimpleTicket(dto, user, workspace);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

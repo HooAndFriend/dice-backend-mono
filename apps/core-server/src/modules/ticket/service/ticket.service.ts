@@ -310,7 +310,6 @@ export default class TicketService {
     dto: RequestSimpleTicketSaveDto,
     user: User,
     workspace: Workspace,
-    epic: Epic,
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
@@ -323,7 +322,6 @@ export default class TicketService {
       this.ticketRepository.create({
         admin: user,
         code: ticketNumber,
-        epic,
         workspace,
         name: dto.name,
         status: TaskStatusEnum.NOTHING,
