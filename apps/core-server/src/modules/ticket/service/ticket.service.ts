@@ -461,14 +461,6 @@ export default class TicketService {
       dto,
     );
 
-    const doneCount = data.reduce(
-      (acc, cur) =>
-        acc +
-        cur.ticket.filter((item) => item.status === TaskStatusEnum.COMPLETE)
-          .length,
-      0,
-    );
-
     return {
       data: data.map((item) => ({
         ...item,
