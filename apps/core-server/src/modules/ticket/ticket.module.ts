@@ -27,6 +27,7 @@ import State from './domain/state.entity';
 import StateService from './service/state.service';
 import StateController from './controller/state.controller';
 import EpicController from './controller/epic.controller';
+import TicketCommentController from './controller/ticket.comment.controller';
 
 @Module({
   imports: [
@@ -50,7 +51,12 @@ import EpicController from './controller/epic.controller';
     forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketService, StateService],
-  controllers: [TicketController, StateController, EpicController],
+  controllers: [
+    TicketController,
+    StateController,
+    EpicController,
+    TicketCommentController,
+  ],
   providers: [TicketService, StateService],
 })
 export default class TicketModule {}
