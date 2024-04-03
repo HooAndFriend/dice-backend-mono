@@ -44,6 +44,7 @@ import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
+import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 
 @Injectable()
 export default class TicketService {
@@ -298,6 +299,36 @@ export default class TicketService {
     });
 
     return await this.ticketRepository.save(ticket);
+  }
+
+  /**
+   * Save ticket
+   * @param dto
+   * @param user
+   */
+  public async saveSimpleTicket(
+    dto: RequestSimpleTicketSaveDto,
+    user: User,
+    workspace: Workspace,
+    epic: Epic,
+  ) {
+    const ticketCount =
+      (await this.ticketRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+
+    const ticketNumber = workspace.code + '-' + ticketCount;
+
+    return await this.ticketRepository.save(
+      this.ticketRepository.create({
+        admin: user,
+        code: ticketNumber,
+        epic,
+        workspace,
+        name: dto.name,
+        status: TaskStatusEnum.NOTHING,
+      }),
+    );
   }
 
   /**

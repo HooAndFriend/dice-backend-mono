@@ -55,6 +55,7 @@ import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.d
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
+import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -128,6 +129,31 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 간단 생성' })
+  @ApiBody({ type: RequestSimpleTicketSaveDto })
+  @ApiResponse(TicketResponse.saveSimpleTicket[200])
+  @ApiResponse(TicketResponse.saveSimpleTicket[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/simple')
+  public async saveSimpleTicket(
+    @Body() dto: RequestSimpleTicketSaveDto,
+    @GetUser() user: User,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    const epic = await this.ticketService.findEpicById(dto.epicId);
+
+    await this.ticketService.saveSimpleTicket(dto, user, workspace, epic);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 생성합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 수정' })
   @ApiBody({ type: RequestTicketUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
@@ -147,6 +173,7 @@ export default class TicketController {
       message: 'Ticket을 수정합니다.',
     });
   }
+
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET Due Date 수정' })
