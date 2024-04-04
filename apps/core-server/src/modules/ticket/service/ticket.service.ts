@@ -271,40 +271,27 @@ export default class TicketService {
    * @param user
    */
   public async saveTicket(
+    epic: Epic,
     dto: RequestTicketSaveDto,
     user: User,
     workspace: Workspace,
   ) {
-    const findEpic = await this.findEpicById(dto.epicId);
-
-    if (dto.name.length > 30) {
-      throw new BadRequestException('Max length of ticket name is 30');
-    }
-
-    const findTicketByName = await this.ticketRepository.findOne({
-      where: { name: dto.name, isDeleted: false, epic: { id: findEpic.id } },
-    });
-
-    if (findTicketByName) {
-      throw new BadRequestException('Ticket is already exist');
-    }
     const ticketCount =
       (await this.ticketRepository.count({
         where: { workspace: { id: workspace.id } },
       })) + 1;
     const ticketNumber = workspace.code + '-' + ticketCount;
 
-    const ticket = this.ticketRepository.create({
-      admin: user,
-      epic: findEpic,
-      dueDate: dto.dueDate,
-      code: ticketNumber,
-      workspace: findEpic.workspace,
-      name: dto.name,
-      status: TaskStatusEnum.NOTHING,
-    });
-
-    return await this.ticketRepository.save(ticket);
+    await this.ticketRepository.save(
+      this.ticketRepository.create({
+        admin: user,
+        epic,
+        code: ticketNumber,
+        workspace,
+        name: dto.name,
+        status: TaskStatusEnum.NOTHING,
+      }),
+    );
   }
 
   /**

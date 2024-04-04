@@ -120,7 +120,9 @@ export default class TicketController {
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketService.saveTicket(dto, user, workspace);
+    const epic = await this.ticketService.findEpicById(dto.epicId);
+    await this.ticketService.saveTicket(epic, dto, user, workspace);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 생성합니다.',
