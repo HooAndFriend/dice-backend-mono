@@ -45,6 +45,7 @@ import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
+import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 
 @Injectable()
 export default class TicketService {
@@ -332,6 +333,26 @@ export default class TicketService {
         status: TaskStatusEnum.NOTHING,
       }),
     );
+  }
+
+  /**
+   * Update Simple Ticket
+   * @param ticket
+   * @param dto
+   */
+  public async updateSimpleTicket(
+    ticket: Ticket,
+    dto: RequestTicketSimpleUpdateDto,
+  ) {
+    if (dto.type === 'content') {
+      ticket.content = dto.value;
+    } else if (dto.type === 'name') {
+      ticket.name = dto.value;
+    } else if (dto.type === 'storypoint') {
+      ticket.storypoint = dto.storypoint;
+    }
+
+    await this.ticketRepository.save(ticket);
   }
 
   /**

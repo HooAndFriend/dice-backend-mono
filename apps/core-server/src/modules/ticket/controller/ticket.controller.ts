@@ -54,6 +54,7 @@ import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
+import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -158,12 +159,32 @@ export default class TicketController {
   @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Patch('/')
+  @Put('/')
   public async updateTicket(
     @Body() dto: RequestTicketUpdateDto,
     @GetUser() user: User,
   ) {
     await this.ticketService.updateTicket(dto, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 간단 수정' })
+  @ApiBody({ type: RequestTicketSimpleUpdateDto })
+  @ApiResponse(TicketResponse.updateTicket[200])
+  @ApiResponse(TicketResponse.updateTicket[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/')
+  public async updateSimpleTicket(@Body() dto: RequestTicketSimpleUpdateDto) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+    await this.ticketService.updateSimpleTicket(ticket, dto);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
