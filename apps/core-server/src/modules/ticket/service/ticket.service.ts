@@ -46,6 +46,7 @@ import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
+import TicketSetting from '../domain/ticket.setting.entity';
 
 @Injectable()
 export default class TicketService {
@@ -717,6 +718,18 @@ export default class TicketService {
    */
   public async updateTicketEpic(epic: Epic, ticketId: number) {
     await this.ticketRepository.update(ticketId, { epic });
+  }
+
+  /**
+   * Update Ticket Setting
+   * @param ticketSetting
+   * @param ticketId
+   */
+  public async updateTicketSetting(
+    ticketSetting: TicketSetting,
+    ticketId: number,
+  ) {
+    await this.ticketRepository.update(ticketId, { ticketSetting });
   }
 
   /**

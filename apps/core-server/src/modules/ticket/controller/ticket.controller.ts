@@ -16,6 +16,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import TicketService from '../service/ticket.service';
 import UserService from '../../user/service/user.service';
 import EpicService from '../service/epic.service';
+import TicketSettingService from '../service/ticket.setting.service';
 
 // ** Swagger Imports
 import {
@@ -57,6 +58,7 @@ import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto'
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
+import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -67,6 +69,7 @@ export default class TicketController {
     private readonly ticketService: TicketService,
     private readonly userService: UserService,
     private readonly epicService: EpicService,
+    private readonly ticketSettingService: TicketSettingService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -211,6 +214,30 @@ export default class TicketController {
     const epic = await this.epicService.findEpicById(dto.epicId);
 
     await this.ticketService.updateTicketEpic(epic, dto.ticketId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET의 SETTING 수정' })
+  @ApiBody({ type: RequestTicketSettingUpdateDto })
+  @ApiResponse(TicketResponse.updateTicket[200])
+  @ApiResponse(TicketResponse.updateTicket[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/ticket-setting')
+  public async updateTicketSetting(@Body() dto: RequestTicketSettingUpdateDto) {
+    await this.ticketService.isExistedTicketById(dto.ticketId);
+    const ticketSetting = await this.ticketSettingService.findTicketSettingById(
+      dto.settingId,
+    );
+
+    await this.ticketService.updateTicketSetting(ticketSetting, dto.ticketId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
