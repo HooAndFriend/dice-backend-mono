@@ -33,6 +33,7 @@ import TicketSetting from './domain/ticket.setting.entity';
 import State from './domain/state.entity';
 import TicketSettingController from './controller/ticket.setting.controller';
 import TicketFileService from './service/ticket.file.service';
+import TicketFileController from './controller/ticket.file.controller';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import TicketFileService from './service/ticket.file.service';
     EpicController,
     TicketCommentController,
     TicketSettingController,
+    TicketFileController,
   ],
   providers: [
     TicketService,

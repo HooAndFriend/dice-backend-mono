@@ -19,6 +19,6 @@ export default class RequestTicketSimpleUpdateDto {
   storypoint: number;
 
   @ApiProperty({ example: 'content' })
-  @IsNumber()
+  @IsString()
   type: 'content' | 'name' | 'storypoint';
 }
