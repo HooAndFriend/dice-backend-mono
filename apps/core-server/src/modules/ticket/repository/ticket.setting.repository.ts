@@ -15,8 +15,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.color',
         'setting.type',
         'setting.description',
-        'workspace.id',
-        'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
       .leftJoin('setting.admin', 'admin')
@@ -32,7 +30,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.type',
         'setting.description',
         'workspace.id',
-        'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
       .leftJoin('setting.admin', 'admin')
@@ -48,8 +45,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.color',
         'setting.type',
         'setting.description',
-        'workspace.id',
-        'admin.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
       .leftJoin('setting.admin', 'admin')

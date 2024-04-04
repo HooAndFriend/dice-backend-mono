@@ -621,24 +621,12 @@ export const TicketResponse = {
             color: 'ff8080',
             type: 'FUNC',
             description: '냐',
-            workspace: {
-              id: 1,
-            },
-            admin: {
-              id: 1,
-            },
           },
           {
             id: 11,
             color: 'ffffff',
             type: 'SCN',
             description: 'description',
-            workspace: {
-              id: 1,
-            },
-            admin: {
-              id: 1,
-            },
           },
         ],
         count: 2,
@@ -660,9 +648,6 @@ export const TicketResponse = {
         type: 'FUNC',
         description: '냐',
         workspace: {
-          id: 1,
-        },
-        admin: {
           id: 1,
         },
       },
