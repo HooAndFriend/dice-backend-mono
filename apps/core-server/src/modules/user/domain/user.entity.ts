@@ -123,9 +123,6 @@ export default class User extends BaseTimeEntity {
   @OneToMany(() => TicketComment, (ticketComment) => ticketComment.user)
   ticketComment: Relation<TicketComment>[];
 
-  @OneToMany(() => TicketFile, (ticketFile) => ticketFile.admin)
-  ticketFile: Relation<TicketFile>[];
-
   @OneToMany(() => Qa, (qa) => [qa.admin, qa.worker])
   qa: Relation<Qa>[];
 

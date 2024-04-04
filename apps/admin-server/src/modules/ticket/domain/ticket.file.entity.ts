@@ -31,7 +31,4 @@ export default class TicketFile extends BaseTimeEntity {
     orphanedRowAction: 'delete',
   })
   ticket: Relation<Ticket>;
-
-  @ManyToOne(() => User, (user) => user.ticketFile)
-  admin: Relation<User>;
 }

@@ -32,6 +32,7 @@ import TicketComment from './domain/ticket.comment.entity';
 import TicketSetting from './domain/ticket.setting.entity';
 import State from './domain/state.entity';
 import TicketSettingController from './controller/ticket.setting.controller';
+import TicketFileService from './service/ticket.file.service';
 
 @Module({
   imports: [
@@ -71,7 +72,13 @@ import TicketSettingController from './controller/ticket.setting.controller';
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule, TicketService, StateService],
+  exports: [
+    TypeOrmExModule,
+    TypeOrmModule,
+    TicketService,
+    StateService,
+    TicketFileService,
+  ],
   controllers: [
     TicketController,
     StateController,
@@ -79,6 +86,11 @@ import TicketSettingController from './controller/ticket.setting.controller';
     TicketCommentController,
     TicketSettingController,
   ],
-  providers: [TicketService, StateService, TicketSendChangeHistoryListener],
+  providers: [
+    TicketService,
+    StateService,
+    TicketSendChangeHistoryListener,
+    TicketFileService,
+  ],
 })
 export default class TicketModule {}

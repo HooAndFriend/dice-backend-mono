@@ -22,5 +22,10 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
   },
-  "include": ["**/*.js", "**/*.ts", "**/.*.js"]
+  "include": [
+    "**/*.js",
+    "**/*.ts",
+    "**/.*.js",
+    "src/modules/ticket/dto/file/file.save.dto.ts"
+  ]
 }

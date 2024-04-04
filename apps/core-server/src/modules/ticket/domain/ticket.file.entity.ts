@@ -9,7 +9,6 @@ import {
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
-import User from '../../user/domain/user.entity';
 import Ticket from './ticket.entity';
 
 @Entity({ name: 'TB_TICKET_FILE' })
@@ -31,7 +30,4 @@ export default class TicketFile extends BaseTimeEntity {
     orphanedRowAction: 'delete',
   })
   ticket: Relation<Ticket>;
-
-  @ManyToOne(() => User, (user) => user.ticketFile)
-  admin: Relation<User>;
 }

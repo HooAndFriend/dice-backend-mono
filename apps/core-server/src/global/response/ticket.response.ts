@@ -557,6 +557,17 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  saveTicketFile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '티켓 파일을 생성합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Ticket 정보를 찾을 수 없습니다.',
+    }),
+  },
   saveComment: {
     200: createMessageResponse({
       statusCode: 200,
