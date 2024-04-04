@@ -5,6 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import TicketFileRepository from '../repository/ticket.file.repository';
 import Ticket from '../domain/ticket.entity';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 
@@ -26,5 +27,27 @@ export default class TicketFileService {
         ticket,
       }),
     );
+  }
+
+  /**
+   * Delete Ticket File
+   * @param ticketFileId
+   */
+  public async deleteTicketFile(ticketFileId: number) {
+    await this.ticketFileRepository.delete(ticketFileId);
+  }
+
+  /**
+   * Exist Ticket File
+   * @param ticketFileId
+   */
+  public async isExistedTicketFile(ticketFileId: number) {
+    const ticketFile = await this.ticketFileRepository.exist({
+      where: { id: ticketFileId },
+    });
+
+    if (!ticketFile) {
+      throw new NotFoundException('Not Found Ticket File');
+    }
   }
 }

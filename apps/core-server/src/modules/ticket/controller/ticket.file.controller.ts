@@ -82,18 +82,20 @@ export default class TicketFileController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'COMMENT 삭제' })
-  @ApiResponse(TicketResponse.deleteComment[200])
-  @ApiResponse(TicketResponse.deleteComment[404])
+  @ApiOperation({ summary: 'Ticket File 삭제' })
+  @ApiResponse(TicketResponse.deleteTicketFile[200])
+  @ApiResponse(TicketResponse.deleteTicketFile[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Delete('/:commentId')
-  public async deleteComment(@Param('commentId') id: number) {
-    await this.ticketService.deleteComment(id);
+  @Delete('/:fileId')
+  public async deleteTicketFile(@Param('fileId') fileId: number) {
+    await this.ticketFileService.isExistedTicketFile(fileId);
+    await this.ticketFileService.deleteTicketFile(fileId);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Delete Comment',
+      message: 'Delete Ticket File',
     });
   }
 }

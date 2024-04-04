@@ -560,7 +560,7 @@ export const TicketResponse = {
   saveTicketFile: {
     200: createMessageResponse({
       statusCode: 200,
-      message: '티켓 파일을 생성합니다.',
+      message: 'Save Ticket File',
     }),
     404: createErrorResponse({
       statusCode: 404,
@@ -588,6 +588,17 @@ export const TicketResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: '댓글 정보를 찾을 수 없습니다.',
+    }),
+  },
+  deleteTicketFile: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Ticket File',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket File',
     }),
   },
   deleteComment: {
