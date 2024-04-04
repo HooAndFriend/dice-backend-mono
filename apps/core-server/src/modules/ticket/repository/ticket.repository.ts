@@ -23,7 +23,6 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.reopenDate',
         'ticket.createdDate',
         'ticket.modifiedDate',
-        'workspace.id',
         'epic.id',
         'epic.name',
         'admin.id',
@@ -34,14 +33,18 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.profile',
         'ticketFile.id',
         'ticketFile.url',
+        'ticketSetting.id',
+        'ticketSetting.color',
+        'ticketSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
-      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.epic', 'epic')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
       .where('ticket.id = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
+
     return await querybuilder.getOne();
   }
 
@@ -95,6 +98,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.epic = :epicId', { epicId })
       .andWhere('ticket.isDeleted = false');
+
     return await querybuilder.getManyAndCount();
   }
 
@@ -108,7 +112,6 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
-        'workspace.id',
         'worker.id',
         'worker.nickname',
         'worker.profile',
@@ -116,8 +119,13 @@ export default class TicketRepository extends Repository<Ticket> {
         'admin.nickname',
         'admin.profile',
         'epic.id',
+        'epic.name',
+        'ticketSetting.id',
+        'ticketSetting.color',
+        'ticketSetting.type',
       ])
       .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.epic', 'epic')
@@ -152,6 +160,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .where('ticket.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.name = :name', { name })
       .andWhere('ticket.isDeleted = false');
+
     return await querybuilder.getOne();
   }
 
