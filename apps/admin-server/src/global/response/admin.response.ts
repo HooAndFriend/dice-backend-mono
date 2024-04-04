@@ -25,6 +25,7 @@ export const AdminResponse = {
             id: 2,
             email: 'subAdmin',
             role: 'MASTER',
+            phone: '01063057848',
             nickname: '피노키오',
             profile: 'https://s3.bucket.com/123.png',
           },
