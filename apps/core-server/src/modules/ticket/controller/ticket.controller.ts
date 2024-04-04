@@ -49,8 +49,6 @@ import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
-import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
-import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
@@ -259,101 +257,6 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 생성' })
-  @ApiResponse(TicketResponse.saveSetting[200])
-  @ApiResponse(TicketResponse.saveSetting[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/setting')
-  public async saveSetting(
-    @GetWorkspace() workspace: Workspace,
-    @GetUser() user: User,
-    @Body() dto: RequestSettingSaveDto,
-  ) {
-    await this.ticketService.saveSetting(dto, workspace, user);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Save Setting',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 수정' })
-  @ApiResponse(TicketResponse.updateSetting[200])
-  @ApiResponse(TicketResponse.updateSetting[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Patch('/setting')
-  public async updateSetting(
-    @GetWorkspace() workspace: Workspace,
-    @Body() dto: RequestSettingUpdateDto,
-  ) {
-    await this.ticketService.updateSetting(dto, workspace);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Update Setting',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 삭제' })
-  @ApiResponse(TicketResponse.deleteSetting[200])
-  @ApiResponse(TicketResponse.deleteSetting[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Delete('/setting/:settingId')
-  public async deleteSetting(@Param('settingId') id: number) {
-    await this.ticketService.deleteSetting(id);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Delete Setting',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 전체 조회' })
-  @ApiResponse(TicketResponse.findSetting[200])
-  @ApiResponse(TicketResponse.findSetting[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/setting')
-  public async findAllSetting(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllSetting(id);
-
-    return CommonResponse.createResponse({
-      data: { data, count },
-      message: 'Find Settings',
-      statusCode: 200,
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 단일 조회' })
-  @ApiResponse(TicketResponse.findOneSetting[200])
-  @ApiResponse(TicketResponse.findOneSetting[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/setting/:settingId')
-  public async findSetting(@Param('settingId') id: number) {
-    const setting = await this.ticketService.findSettingById(id);
-    return CommonResponse.createResponse({
-      data: setting,
-      message: 'Find Setting',
-      statusCode: 200,
     });
   }
 }

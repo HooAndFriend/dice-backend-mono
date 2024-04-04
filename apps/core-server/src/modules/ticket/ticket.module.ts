@@ -31,6 +31,7 @@ import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketSetting from './domain/ticket.setting.entity';
 import State from './domain/state.entity';
+import TicketSettingController from './controller/ticket.setting.controller';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import State from './domain/state.entity';
     StateController,
     EpicController,
     TicketCommentController,
+    TicketSettingController,
   ],
   providers: [TicketService, StateService, TicketSendChangeHistoryListener],
 })
