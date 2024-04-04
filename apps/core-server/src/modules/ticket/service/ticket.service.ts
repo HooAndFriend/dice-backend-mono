@@ -711,6 +711,15 @@ export default class TicketService {
   }
 
   /**
+   * Update Ticket Epic
+   * @param epic
+   * @param ticketId
+   */
+  public async updateTicketEpic(epic: Epic, ticketId: number) {
+    await this.ticketRepository.update(ticketId, { epic });
+  }
+
+  /**
    * Save Setting
    * @param dto
    * @param workspace

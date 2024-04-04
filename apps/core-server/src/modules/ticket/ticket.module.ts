@@ -34,6 +34,7 @@ import State from './domain/state.entity';
 import TicketSettingController from './controller/ticket.setting.controller';
 import TicketFileService from './service/ticket.file.service';
 import TicketFileController from './controller/ticket.file.controller';
+import EpicService from './service/epic.service';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import TicketFileController from './controller/ticket.file.controller';
     TicketService,
     StateService,
     TicketFileService,
+    EpicService,
   ],
   controllers: [
     TicketController,
@@ -93,6 +95,7 @@ import TicketFileController from './controller/ticket.file.controller';
     StateService,
     TicketSendChangeHistoryListener,
     TicketFileService,
+    EpicService,
   ],
 })
 export default class TicketModule {}

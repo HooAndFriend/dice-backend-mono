@@ -15,6 +15,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 // ** Module Imports
 import TicketService from '../service/ticket.service';
 import UserService from '../../user/service/user.service';
+import EpicService from '../service/epic.service';
 
 // ** Swagger Imports
 import {
@@ -55,6 +56,7 @@ import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
+import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -64,6 +66,7 @@ export default class TicketController {
   constructor(
     private readonly ticketService: TicketService,
     private readonly userService: UserService,
+    private readonly epicService: EpicService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -186,6 +189,28 @@ export default class TicketController {
   public async updateSimpleTicket(@Body() dto: RequestTicketSimpleUpdateDto) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
     await this.ticketService.updateSimpleTicket(ticket, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET의 EPIC 수정' })
+  @ApiBody({ type: RequestTicketEpicUpdateDto })
+  @ApiResponse(TicketResponse.updateTicket[200])
+  @ApiResponse(TicketResponse.updateTicket[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/epic')
+  public async updateTicketEpic(@Body() dto: RequestTicketEpicUpdateDto) {
+    await this.ticketService.isExistedTicketById(dto.ticketId);
+    const epic = await this.epicService.findEpicById(dto.epicId);
+
+    await this.ticketService.updateTicketEpic(epic, dto.ticketId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
