@@ -108,8 +108,8 @@ export default class Ticket extends BaseTimeEntity {
   @ManyToOne(() => User, (user) => user.ticket)
   worker: Relation<User>;
 
-  @OneToMany(() => TicketFile, (file) => file.ticket)
-  file: Relation<TicketFile>[];
+  @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
+  ticketFile: Relation<TicketFile>[];
 
   @OneToMany(() => TicketComment, (comment) => comment.ticket)
   comment: Relation<TicketComment>[];

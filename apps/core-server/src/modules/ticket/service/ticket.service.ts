@@ -67,10 +67,14 @@ export default class TicketService {
    * @param ticketId
    */
   public async findTicketById(ticketId: number) {
-    const findTicket = await this.ticketRepository.findTicketById(ticketId);
+    const findTicket = await this.ticketRepository.findOne({
+      where: { id: ticketId },
+    });
+
     if (!findTicket) {
       throw new NotFoundException('Cannot Find Ticket.');
     }
+
     return findTicket;
   }
 
@@ -251,11 +255,12 @@ export default class TicketService {
    * @param id
    */
   public async findOneTicket(id: number) {
-    const data = await this.findTicketById(id);
-    const [file, count] = await this.ticketFileRepository.findAllFileByTicketId(
-      id,
-    );
-    data.file = file;
+    const data = await this.ticketRepository.findTicketDetailById(id);
+
+    if (!data) {
+      throw new NotFoundException('Not Found Ticket');
+    }
+
     return data;
   }
 
@@ -649,8 +654,6 @@ export default class TicketService {
    * @param id
    */
   public async findComment(id: number) {
-    const findTicket = await this.findTicketById(id);
-
     return await this.ticketCommentRepository.findAllCommentByTicketId(id);
   }
 

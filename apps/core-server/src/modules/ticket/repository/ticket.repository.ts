@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 @CustomRepository(Ticket)
 export default class TicketRepository extends Repository<Ticket> {
-  public async findTicketById(ticketId: number) {
+  public async findTicketDetailById(ticketId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
         'ticket.id',
@@ -21,15 +21,21 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
+        'ticket.createdDate',
+        'ticket.modifiedDate',
         'workspace.id',
         'epic.id',
+        'epic.name',
         'admin.id',
         'admin.nickname',
         'admin.profile',
         'worker.id',
         'worker.nickname',
         'worker.profile',
+        'ticketFile.id',
+        'ticketFile.url',
       ])
+      .leftJoin('ticket.ticketFile', 'ticketFile')
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.epic', 'epic')
       .leftJoin('ticket.admin', 'admin')

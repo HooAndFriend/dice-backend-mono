@@ -26,7 +26,10 @@ export default class TicketFile extends BaseTimeEntity {
   })
   url: string;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.file)
+  @ManyToOne(() => Ticket, (ticket) => ticket.ticketFile, {
+    onDelete: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
   ticket: Relation<Ticket>;
 
   @ManyToOne(() => User, (user) => user.ticketFile)
