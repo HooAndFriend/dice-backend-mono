@@ -27,6 +27,8 @@ export default class QaComment extends BaseTimeEntity {
   @ManyToOne(() => Qa, (qa) => qa.comment, { onDelete: 'CASCADE' })
   qa: Relation<Qa>;
 
-  @ManyToOne(() => User, (user) => user.comment)
+  @ManyToOne(() => User, (user) => user.comment, {
+    onDelete: 'CASCADE',
+  })
   user: Relation<User>;
 }

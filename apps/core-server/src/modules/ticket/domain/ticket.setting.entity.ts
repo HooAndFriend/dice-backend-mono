@@ -44,9 +44,13 @@ export default class TicketSetting extends BaseTimeEntity {
   })
   description: string;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.ticketSetting)
+  @ManyToOne(() => Workspace, (workspace) => workspace.ticketSetting, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => User, (user) => user.ticketSetting)
+  @ManyToOne(() => User, (user) => user.ticketSetting, {
+    onDelete: 'CASCADE',
+  })
   admin: Relation<User>;
 }

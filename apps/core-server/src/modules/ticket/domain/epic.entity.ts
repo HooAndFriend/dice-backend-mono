@@ -54,10 +54,14 @@ export default class Epic extends BaseTimeEntity {
   })
   dueDate: Date;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.epic)
+  @ManyToOne(() => Workspace, (workspace) => workspace.epic, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => User, (user) => user.epic)
+  @ManyToOne(() => User, (user) => user.epic, {
+    onDelete: 'CASCADE',
+  })
   admin: Relation<User>;
 
   @OneToMany(() => Ticket, (ticket) => ticket.epic)

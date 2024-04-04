@@ -96,16 +96,24 @@ export default class Ticket extends BaseTimeEntity {
   })
   reopenDate: Date;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.ticket)
+  @ManyToOne(() => Workspace, (workspace) => workspace.ticket, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => Epic, (epic) => epic.ticket)
+  @ManyToOne(() => Epic, (epic) => epic.ticket, {
+    onDelete: 'CASCADE',
+  })
   epic: Relation<Epic>;
 
-  @ManyToOne(() => User, (user) => user.ticket)
+  @ManyToOne(() => User, (user) => user.ticket, {
+    onDelete: 'CASCADE',
+  })
   admin: Relation<User>;
 
-  @ManyToOne(() => User, (user) => user.ticket)
+  @ManyToOne(() => User, (user) => user.ticket, {
+    onDelete: 'CASCADE',
+  })
   worker: Relation<User>;
 
   @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)

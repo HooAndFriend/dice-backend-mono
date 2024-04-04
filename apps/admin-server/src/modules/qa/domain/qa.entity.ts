@@ -81,12 +81,18 @@ export default class Qa extends BaseTimeEntity {
   @OneToMany(() => File, (file) => file.qa, { nullable: true })
   file: Relation<File>[];
 
-  @ManyToOne(() => User, (user) => user.qa)
+  @ManyToOne(() => User, (user) => user.qa, {
+    onDelete: 'CASCADE',
+  })
   admin: Relation<User>;
 
-  @ManyToOne(() => User, (user) => user.qa)
+  @ManyToOne(() => User, (user) => user.qa, {
+    onDelete: 'CASCADE',
+  })
   worker: Relation<User>;
 
-  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction)
+  @ManyToOne(() => Workspace, (workspace) => workspace.workspaceFunction, {
+    onDelete: 'CASCADE',
+  })
   workspace: Relation<Workspace>;
 }

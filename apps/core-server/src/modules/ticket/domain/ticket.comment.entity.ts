@@ -27,9 +27,13 @@ export default class TicketComment extends BaseTimeEntity {
   })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.ticketComment)
+  @ManyToOne(() => User, (user) => user.ticketComment, {
+    onDelete: 'CASCADE',
+  })
   user: Relation<User>;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.comment)
+  @ManyToOne(() => Ticket, (ticket) => ticket.comment, {
+    onDelete: 'CASCADE',
+  })
   ticket: Relation<Ticket>;
 }
