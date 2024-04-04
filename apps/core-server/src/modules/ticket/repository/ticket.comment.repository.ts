@@ -22,11 +22,12 @@ export default class TicketCommentRepository extends Repository<TicketComment> {
       .select([
         'comment.id',
         'comment.content',
-        'comment.created_date',
+        'comment.createdDate',
+        'comment.modifiedDate',
         'user.id',
+        'user.email',
         'user.nickname',
         'user.profile',
-        'ticket.id',
       ])
       .leftJoin('comment.ticket', 'ticket')
       .leftJoin('comment.user', 'user')
