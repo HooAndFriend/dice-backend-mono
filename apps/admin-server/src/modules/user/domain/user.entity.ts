@@ -16,8 +16,6 @@ import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';
 import Comment from '@/src/modules/qa/domain/qa.comment.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
-import TicketSetting from '../../ticket/domain/ticket.setting.entity';
-import TicketFile from '../../ticket/domain/ticket.file.entity';
 import TicketComment from '../../ticket/domain/ticket.comment.entity';
 import UserStatusEnum from './user-status.enum';
 
@@ -116,9 +114,6 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => [ticket.admin, ticket.worker])
   ticket: Relation<Ticket>[];
-
-  @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.admin)
-  ticketSetting: Relation<TicketSetting>[];
 
   @OneToMany(() => TicketComment, (ticketComment) => ticketComment.user)
   ticketComment: Relation<TicketComment>[];

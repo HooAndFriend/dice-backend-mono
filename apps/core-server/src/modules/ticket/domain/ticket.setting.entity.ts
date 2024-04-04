@@ -11,7 +11,6 @@ import {
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import User from '../../user/domain/user.entity';
 import Ticket from './ticket.entity';
 
 @Entity({ name: 'TB_TICKET_SETTING' })
@@ -50,11 +49,6 @@ export default class TicketSetting extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   workspace: Relation<Workspace>;
-
-  @ManyToOne(() => User, (user) => user.ticketSetting, {
-    onDelete: 'CASCADE',
-  })
-  admin: Relation<User>;
 
   @OneToMany(() => Ticket, (ticket) => ticket.ticketSetting)
   ticket: Relation<Ticket>[];

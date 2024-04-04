@@ -32,7 +32,6 @@ import { TicketResponse } from '@/src/global/response/ticket.response';
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetUser } from '../../../global/decorators/user/user.decorators';
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 import {
   GetWorkspace,
@@ -40,7 +39,6 @@ import {
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 
 // ** Dto Imports
-import User from '../../user/domain/user.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
@@ -66,10 +64,9 @@ export default class TicketSettingController {
   @Post('/')
   public async saveSetting(
     @GetWorkspace() workspace: Workspace,
-    @GetUser() user: User,
     @Body() dto: RequestSettingSaveDto,
   ) {
-    await this.ticketService.saveSetting(dto, workspace, user);
+    await this.ticketService.saveSetting(dto, workspace);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Setting',

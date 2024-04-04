@@ -738,18 +738,13 @@ export default class TicketService {
    * @param workspace
    * @param user
    */
-  public async saveSetting(
-    dto: RequestSettingSaveDto,
-    workspace: Workspace,
-    user: User,
-  ) {
+  public async saveSetting(dto: RequestSettingSaveDto, workspace: Workspace) {
     await this.settingTypeValidation(dto.type, workspace.id);
 
     const setting = this.ticketSettingRepository.create({
       color: dto.color,
       description: dto.description,
       type: dto.type,
-      admin: user,
       workspace,
     });
 
