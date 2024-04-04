@@ -17,7 +17,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.description',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('setting.admin', 'admin')
       .where('setting.workspace = :workspaceId', { workspaceId });
     return await querybuilder.getManyAndCount();
   }
@@ -32,7 +31,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'workspace.id',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('setting.admin', 'admin')
       .where('setting.workspace = :workspaceId', { workspaceId })
       .andWhere('setting.type = :type', { type });
     return querybuilder.getOne();
@@ -47,7 +45,6 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.description',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .leftJoin('setting.admin', 'admin')
       .where('setting.id = :settingId', { settingId });
     return await querybuilder.getOne();
   }
