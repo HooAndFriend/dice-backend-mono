@@ -51,6 +51,7 @@ export default class RequestUserFindDto extends RequestPagingDto {
     },
   )
   @IsArray()
+  @IsOptional()
   @IsString({ each: true })
   type: string[];
 }
