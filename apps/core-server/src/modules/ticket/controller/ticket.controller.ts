@@ -92,13 +92,14 @@ export default class TicketController {
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/detail/:ticketId')
+  @Get('/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
     const data = await this.ticketService.findOneTicket(id);
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Finding Tickets',
-      data: { data },
+      data,
     });
   }
 
