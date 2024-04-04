@@ -93,7 +93,7 @@ export default class TicketController {
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Get('/:ticketId')
+  @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
     const data = await this.ticketService.findOneTicket(id);
 
