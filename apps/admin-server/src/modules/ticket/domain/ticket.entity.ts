@@ -60,6 +60,7 @@ export default class Ticket extends BaseTimeEntity {
     type: 'integer',
     name: 'storypoint',
     comment: 'storypoint',
+    default: 0,
     nullable: true,
   })
   storypoint: number;
