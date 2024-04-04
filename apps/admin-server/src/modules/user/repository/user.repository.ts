@@ -9,7 +9,7 @@ import User from '../domain/user.entity';
 import RequestUserFindDto from '../dto/user.find.dto';
 import UserStatusEnum from '../domain/user-status.enum';
 import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
-import dayjs from 'dayjs';
+import { UserType } from '@/src/global/enum/UserType.enum';
 
 @CustomRepository(User)
 export default class UserRepository extends Repository<User> {
@@ -41,7 +41,9 @@ export default class UserRepository extends Repository<User> {
     }
 
     if (dto.type) {
-      queryBuilder.andWhere('user.type = :type', { type: dto.type });
+      queryBuilder.andWhere('user.type IN (:...type)', {
+        type: typeof dto.type === 'string' ? [dto.type] : dto.type,
+      });
     }
 
     if (dto.createdStartDate && dto.createdEndDate) {

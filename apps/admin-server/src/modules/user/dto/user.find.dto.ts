@@ -2,9 +2,11 @@
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 import { UserType } from '@/src/global/enum/UserType.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 // ** Pipe Imports
 import {
+  IsArray,
   IsDateString,
   IsEnum,
   IsOptional,
@@ -42,8 +44,13 @@ export default class RequestUserFindDto extends RequestPagingDto {
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
   lastLoginEndDate: string;
 
-  @ApiProperty({ example: UserType.APPLE, required: false, enum: UserType })
-  @IsOptional()
-  @IsEnum(UserType)
-  type: UserType;
+  @Transform(
+    ({ value }) => (typeof value === 'string' ? [value] : [...value]),
+    {
+      toClassOnly: true,
+    },
+  )
+  @IsArray()
+  @IsString({ each: true })
+  type: string[];
 }
