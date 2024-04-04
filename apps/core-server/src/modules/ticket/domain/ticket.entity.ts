@@ -16,6 +16,7 @@ import Epic from './epic.entity';
 import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import TicketSetting from './ticket.setting.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -115,6 +116,11 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   worker: Relation<User>;
+
+  @ManyToOne(() => TicketSetting, (ticketSetting) => ticketSetting.ticket, {
+    onDelete: 'CASCADE',
+  })
+  ticketSetting: Relation<TicketSetting>;
 
   @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
   ticketFile: Relation<TicketFile>[];
