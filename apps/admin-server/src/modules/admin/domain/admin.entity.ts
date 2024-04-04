@@ -21,6 +21,14 @@ export default class Admin extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
+    length: 50,
+    comment: '전화번호',
+    nullable: false,
+  })
+  phone: string;
+
+  @Column({
+    type: 'varchar',
     length: 120,
     comment: '비밀번호',
     nullable: false,

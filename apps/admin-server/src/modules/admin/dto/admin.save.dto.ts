@@ -10,6 +10,10 @@ export default class RequestAdminSaveDto {
   @IsString()
   email: string;
 
+  @ApiProperty({ example: '01012345678' })
+  @IsString()
+  phone: string;
+
   @ApiProperty({ example: '1234' })
   @IsString()
   password: string;

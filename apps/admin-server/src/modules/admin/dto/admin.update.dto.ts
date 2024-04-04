@@ -18,6 +18,10 @@ export default class RequestAdminUpdateDto {
   @IsString()
   nickname: string;
 
+  @ApiProperty({ example: '01012345678' })
+  @IsString()
+  phone: string;
+
   @ApiProperty({ example: 'https://s3.bucket.com/123.png' })
   @IsString()
   profile: string;

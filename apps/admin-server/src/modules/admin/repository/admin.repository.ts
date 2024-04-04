@@ -19,6 +19,7 @@ export default class AdminRepository extends Repository<Admin> {
     const queryBuilder = this.createQueryBuilder('admin').select([
       'admin.id',
       'admin.email',
+      'admin.phone',
       'admin.nickname',
       'admin.profile',
       'admin.role',
