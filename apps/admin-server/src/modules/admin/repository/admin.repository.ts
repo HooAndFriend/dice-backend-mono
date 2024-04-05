@@ -24,6 +24,7 @@ export default class AdminRepository extends Repository<Admin> {
       'admin.profile',
       'admin.role',
       'admin.createdDate',
+      'admin.modifiedDate',
     ]);
 
     if (dto.email) {
