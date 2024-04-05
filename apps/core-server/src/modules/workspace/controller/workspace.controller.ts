@@ -179,11 +179,42 @@ export default class WorkspaceController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스의 오늘 할 일 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(WorkspaceResponse.findWorksapceTaskCount[200])
+  @ApiResponse(WorkspaceResponse.findWorksapceTaskList[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/task')
+  public async findWorksapceTaskList(@GetUser() { id }: User) {
+    const qaList = await this.qaService.findQaListByWorkerId(id);
+    const ticketList = await this.ticketService.findTicketListByWorkerId(id);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Find Workspace Task List',
+      data: {
+        data: [
+          ...qaList,
+          ...ticketList.map((item) => ({
+            id: item.id,
+            code: item.code,
+            status: item.status,
+            title: item.name,
+            createdDate: item.createdDate,
+          })),
+        ],
+        count: qaList.length + ticketList.length,
+      },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스의 오늘 할 일 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(WorkspaceResponse.findWorksapceTaskCount[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/task/count')
   public async findWorksapceTaskCount(@GetWorkspace() { id }: Workspace) {
     const { qaCount, yesterDayQaCount } = await this.qaService.findQaCount(id);
     const { ticketCount, yesterDayTicketCount } =

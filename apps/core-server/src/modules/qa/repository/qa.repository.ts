@@ -129,4 +129,15 @@ export default class QaRepository extends Repository<Qa> {
 
     return await queryBuilder.getOne();
   }
+
+  public async findQaListByWorkerId(workerId: number) {
+    const queryBuilder = this.createQueryBuilder('qa')
+      .select(['qa.id', 'qa.code', 'qa.status', 'qa.title', 'qa.createdDate'])
+      .leftJoin('qa.worker', 'worker')
+      .where('worker.id = :workerId', { workerId })
+      .andWhere('qa.dueDate = :today', { today: dayjs().format('YYYY-MM-DD') })
+      .andWhere('qa.isDeleted = false');
+
+    return await queryBuilder.getMany();
+  }
 }

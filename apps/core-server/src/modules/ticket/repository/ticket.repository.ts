@@ -186,4 +186,23 @@ export default class TicketRepository extends Repository<Ticket> {
       .andWhere('ticket.isDeleted = false');
     return await querybuilder.getManyAndCount();
   }
+
+  public async findTicketListByWorkerId(workerId: number) {
+    const queryBuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.id',
+        'ticket.code',
+        'ticket.status',
+        'ticket.name',
+        'ticket.createdDate',
+      ])
+      .leftJoin('ticket.worker', 'worker')
+      .where('worker.id = :workerId', { workerId })
+      .andWhere('ticket.dueDate = :today', {
+        today: dayjs().format('YYYY-MM-DD'),
+      })
+      .andWhere('ticket.isDeleted = false');
+
+    return await queryBuilder.getMany();
+  }
 }

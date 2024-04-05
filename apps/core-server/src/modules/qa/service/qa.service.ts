@@ -85,6 +85,15 @@ export default class QaService {
   }
 
   /**
+   * Find My Qa List
+   * @param workerId
+   * @returns
+   */
+  public async findQaListByWorkerId(workerId: number) {
+    return await this.qaRepository.findQaListByWorkerId(workerId);
+  }
+
+  /**
    * Save Qa File
    * @param qa
    * @param dto

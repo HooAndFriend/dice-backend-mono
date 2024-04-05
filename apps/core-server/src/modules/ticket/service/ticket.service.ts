@@ -65,6 +65,15 @@ export default class TicketService {
   private logger = new Logger(TicketService.name);
 
   /**
+   * Find My Ticket List
+   * @param workerId
+   * @returns
+   */
+  public async findTicketListByWorkerId(workerId: number) {
+    return await this.ticketRepository.findTicketListByWorkerId(workerId);
+  }
+
+  /**
    * Find Ticket by Id
    * @param ticketId
    */
