@@ -99,6 +99,16 @@ export const WorkspaceResponse = {
       message: 'Find Workspace Total Done Task Count',
     }),
   },
+  findWorksapceTaskProgressCount: {
+    200: createResponse({
+      data: {
+        todayProgress: 39.130434782608695,
+        yesterdayProgress: 10.526315789473683,
+      },
+      statusCode: 200,
+      message: 'Find Workspace Today Task Progress',
+    }),
+  },
   findWorksapceTaskCount: {
     200: createResponse({
       data: {

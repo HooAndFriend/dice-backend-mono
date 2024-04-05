@@ -245,6 +245,46 @@ export default class QaService {
   }
 
   /**
+   * 전체 QA 카운트 조회
+   * @param workspaceId
+   * @returns
+   */
+  public async findQaCountAll(workspaceId: number) {
+    const qaCount = await this.qaRepository.count({
+      where: { workspace: { id: workspaceId } },
+    });
+
+    const qaCompleteCount = await this.qaRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        status: TaskStatusEnum.COMPLETE,
+      },
+    });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterDayQaCount = await this.qaRepository.count({
+      where: { workspace: { id: workspaceId }, createdDate: LessThan(today) },
+    });
+
+    const yesterDayQaCompleteCount = await this.qaRepository.count({
+      where: {
+        workspace: { id: workspaceId },
+        status: TaskStatusEnum.COMPLETE,
+        completeDate: LessThan(today),
+      },
+    });
+
+    return {
+      qaCount,
+      qaCompleteCount,
+      yesterDayQaCount,
+      yesterDayQaCompleteCount,
+    };
+  }
+
+  /**
    * QA 카운트 조회
    * @param workspaceId
    * @returns
