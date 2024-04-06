@@ -322,19 +322,21 @@ export default class WorkspaceController {
 
     const qaList = await this.qaService.findQaListByDate(id, userId, query);
 
+    const data = [
+      ...ticketList.map((item) => ({ ...item, type: 'ticket' })),
+      ...qaList.map((item) => ({
+        id: item.id,
+        name: item.title,
+        dueDate: item.dueDate,
+        type: 'QA',
+        createdDate: item.createdDate,
+      })),
+    ].sort((a, b) => dayjs(a.dueDate).diff(dayjs(b.dueDate)));
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace Total Done Task Count',
-      data: [
-        ...ticketList.map((item) => ({ ...item, type: 'ticket' })),
-        ...qaList.map((item) => ({
-          id: item.id,
-          name: item.title,
-          dueDate: item.dueDate,
-          type: 'QA',
-          createdDate: item.createdDate,
-        })),
-      ].sort((a, b) => dayjs(a.dueDate).diff(dayjs(b.dueDate))),
+      data: { data, count: data.length },
     });
   }
 }
