@@ -233,7 +233,7 @@ export default class WorkspaceController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스의 한 일 Progress 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(WorkspaceResponse.findWorksapceTaskCount[200])
+  @ApiResponse(WorkspaceResponse.findWorksapceTaskProgressCount[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -254,17 +254,24 @@ export default class WorkspaceController {
       yesterDayTicketCompleteCount,
     } = await this.ticketService.findTicketCountAll(id);
 
+    const completeTodayTaskCount = qaCompleteCount + ticketCompleteCount;
+    const completeYesterdayTaskCount =
+      yesterDayQaCompleteCount + yesterDayTicketCompleteCount;
+    const todayTaskCount = qaCount + ticketCount;
+    const yesterdayTaskCount = yesterDayQaCount + yesterDayTicketCount;
+
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace Today Task Progress',
       data: {
         todayProgress:
-          ((qaCompleteCount + ticketCompleteCount) / (qaCount + ticketCount)) *
-          100,
+          completeTodayTaskCount === 0 || todayTaskCount === 0
+            ? 0
+            : (completeTodayTaskCount / todayTaskCount) * 100,
         yesterdayProgress:
-          ((yesterDayQaCompleteCount + yesterDayTicketCompleteCount) /
-            (yesterDayQaCount + yesterDayTicketCount)) *
-          100,
+          completeTodayTaskCount === 0 || todayTaskCount === 0
+            ? 0
+            : (completeYesterdayTaskCount / yesterdayTaskCount) * 100,
       },
     });
   }
