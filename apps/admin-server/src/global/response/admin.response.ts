@@ -21,21 +21,25 @@ export const AdminResponse = {
       data: {
         data: [
           {
-            createdDate: '2024-02-06T09:57:47.956Z',
-            id: 2,
+            createdDate: '2024-04-04T11:37:14.011Z',
+            modifiedDate: '2024-04-04T11:37:14.011Z',
+            id: 3,
             email: 'subAdmin',
+            phone: '01012345678',
             role: 'MASTER',
-            phone: '01063057848',
             nickname: '피노키오',
             profile: 'https://s3.bucket.com/123.png',
           },
           {
-            createdDate: '2024-02-06T05:49:57.188Z',
-            id: 1,
+            createdDate: '2024-04-01T10:15:03.561Z',
+            modifiedDate: '2024-04-04T11:37:41.667Z',
+            id: 2,
             email: 'admin',
+            phone: '01063057848',
             role: 'MASTER',
-            nickname: 'ADMIN',
-            profile: '',
+            nickname: 'admin',
+            profile:
+              '$2a$10$AaZ6vqQc1u3wz4apfHLUpeyF0Y.o4TGwrwO7jXr4FXuqXPnG.Tg9S',
           },
         ],
         count: 2,
