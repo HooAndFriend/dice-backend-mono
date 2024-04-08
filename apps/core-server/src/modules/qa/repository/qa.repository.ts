@@ -41,7 +41,8 @@ export default class QaRepository extends Repository<Qa> {
       .leftJoin('qa.worker', 'worker')
       .leftJoin('qa.qaFile', 'qaFile')
       .where('qa.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('qa.isDeleted = false');
+      .andWhere('qa.isDeleted = false')
+      .orderBy('qa.orderId', 'ASC');
 
     if (findQuery.status) {
       queryBuilder.andWhere('qa.status = :status', {

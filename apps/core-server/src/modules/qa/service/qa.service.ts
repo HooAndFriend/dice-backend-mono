@@ -66,6 +66,7 @@ export default class QaService {
         asIs: '',
         toBe: '',
         worker: admin,
+        orderId: qaCount,
         admin,
         workspace,
       }),
@@ -172,6 +173,7 @@ export default class QaService {
           worker: findWorker,
           qaFile: files,
           workspace: workspace,
+          orderId: qaCount,
         }),
       );
 

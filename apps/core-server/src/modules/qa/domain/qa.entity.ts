@@ -32,6 +32,13 @@ export default class Qa extends BaseTimeEntity {
   code: string;
 
   @Column({
+    type: 'int',
+    comment: '정렬 순서',
+    nullable: false,
+  })
+  orderId: number;
+
+  @Column({
     type: 'enum',
     enum: TaskStatusEnum,
     comment: '상태',
