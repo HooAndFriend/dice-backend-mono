@@ -264,7 +264,7 @@ export default class TicketController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 유저 수정' })
+  @ApiOperation({ summary: 'TICKET 유저 수정' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestTicketUserUpdateDto })
   @ApiResponse(TicketResponse.updateTicketUser[200])
@@ -283,7 +283,7 @@ export default class TicketController {
 
     this.eventEmitter.emit('ticket.send-change-history', {
       qaId: dto.ticketId,
-      username: user.nickname,
+      username: user?.nickname,
       before:
         dto.type === 'admin' ? ticket.admin.nickname : ticket.worker.nickname,
       after: user.nickname,
