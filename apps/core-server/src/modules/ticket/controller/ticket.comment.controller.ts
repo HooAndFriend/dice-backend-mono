@@ -77,7 +77,7 @@ export default class TicketCommentController {
   @ApiBody({ type: RequestTicketCommentSaveDto })
   @ApiResponse(TicketResponse.saveComment[200])
   @ApiResponse(TicketResponse.saveComment[404])
-  @WorkspaceRole(RoleEnum.ADMIN)
+  @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
