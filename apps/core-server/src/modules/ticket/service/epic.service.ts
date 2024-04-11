@@ -19,6 +19,8 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
+import RequestEpicFindDto from '../dto/epic/epic.find.dto';
+import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 @Injectable()
 export default class EpicService {
@@ -184,6 +186,27 @@ export default class EpicService {
    */
   public async deleteEpicById(epicId: number) {
     await this.epicRepository.update(epicId, { isDeleted: true });
+  }
+
+  /**
+   * Find All epic
+   * @param id
+   */
+  public async findAllEpic(id: number, dto: RequestEpicFindDto) {
+    const [data, count] = await this.epicRepository.findAllByWorkspaceId(
+      id,
+      dto,
+    );
+
+    return {
+      data: data.map((item) => ({
+        ...item,
+        doneTicketCount: item.ticket.filter(
+          (item) => item.status === TaskStatusEnum.COMPLETE,
+        ).length,
+      })),
+      count,
+    };
   }
 
   /**

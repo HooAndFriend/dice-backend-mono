@@ -519,61 +519,6 @@ export default class TicketService {
     });
   }
 
-  // ** Epic Service
-
-  /**
-   * Verify Epic name
-   * @param name
-   * @param workspaceId
-   */
-  public async epicNameValidation(name: string, workspaceId: number) {
-    if (name.length > 30) {
-      throw new BadRequestException('Epic 이름은 최대 30자 입니다.');
-    }
-
-    const findEpicName = await this.epicRepository.findOneByNameAndWorkspaceId(
-      name,
-      workspaceId,
-    );
-
-    if (findEpicName) {
-      throw new BadRequestException('Epic 이 이미 존재합니다');
-    }
-  }
-
-  /**
-   * Find All epic
-   * @param id
-   */
-  public async findAllEpic(id: number, dto: RequestEpicFindDto) {
-    const [data, count] = await this.epicRepository.findAllByWorkspaceId(
-      id,
-      dto,
-    );
-
-    return {
-      data: data.map((item) => ({
-        ...item,
-        doneTicketCount: item.ticket.filter(
-          (item) => item.status === TaskStatusEnum.COMPLETE,
-        ).length,
-      })),
-      count,
-    };
-  }
-
-  /**
-   * Find Epic details
-   * @param id
-   */
-  public async findOneEpic(id: number) {
-    const findEpic = await this.findEpicById(id);
-    const [data, count] = await this.ticketRepository.findAllTicketByEpicId(
-      findEpic.id,
-    );
-    return { data, count };
-  }
-
   // ** Comment Service
 
   /**

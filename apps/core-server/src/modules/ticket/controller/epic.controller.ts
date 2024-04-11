@@ -75,30 +75,11 @@ export default class EpicController {
     @GetWorkspace() { id }: Workspace,
     @Query(ValidationPipe) query: RequestEpicFindDto,
   ) {
-    const { data, count } = await this.ticketService.findAllEpic(id, query);
+    const { data, count } = await this.epicService.findAllEpic(id, query);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Epic을 전체 조회합니다.',
-      data: { data, count },
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'EPIC 상세조회' })
-  @ApiResponse(TicketResponse.findOneEpic[200])
-  @ApiResponse(TicketResponse.findOneEpic[404])
-  @WorkspaceRole(RoleEnum.VIEWER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/:epicId')
-  public async findOneEpic(@Param('epicId') id: number) {
-    const { data, count } = await this.ticketService.findOneEpic(id);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Epic을 상세 조회합니다.',
       data: { data, count },
     });
   }
