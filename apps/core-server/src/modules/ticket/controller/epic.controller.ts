@@ -50,13 +50,18 @@ import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
+import RequestEpicOrderUpdateDto from '../dto/epic/epic-order.update.dto';
+import EpicService from '../service/epic.service';
 
 @ApiTags('Epic')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/epic', version: '1' })
 export default class EpicController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(
+    private readonly ticketService: TicketService,
+    private readonly epicService: EpicService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -133,6 +138,29 @@ export default class EpicController {
   @Patch('/')
   public async updateEpic(@Body() dto: RequestEpicUpdateDto) {
     await this.ticketService.updateEpic(dto);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Epic을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC 수정' })
+  @ApiBody({ type: RequestEpicOrderUpdateDto })
+  @ApiResponse(TicketResponse.updateEpic[200])
+  @ApiResponse(TicketResponse.updateEpic[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/order')
+  public async updateEpicOrder(
+    @Body() dto: RequestEpicOrderUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
+    const epic = await this.epicService.findEpicById(dto.epicId);
+    await this.epicService.updateEpicOrder(epic, dto.targetOrderId, id);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 수정합니다.',

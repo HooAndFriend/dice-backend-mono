@@ -1,18 +1,26 @@
 // ** Nest Imports
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import EpicRepository from '../repository/epic.repository';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { Between, DataSource, LessThan, MoreThan } from 'typeorm';
 
 // ** Custom Module Imports
+import EpicRepository from '../repository/epic.repository';
 
 // ** enum, dto, entity, types Imports
+import { NotFoundException } from '@/src/global/exception/CustomException';
+import Epic from '../domain/epic.entity';
 
 @Injectable()
 export default class EpicService {
   constructor(
     private readonly configService: ConfigService,
     private readonly epicRepository: EpicRepository,
+    private readonly dataSource: DataSource,
   ) {}
 
   private logger = new Logger(EpicService.name);
@@ -30,5 +38,107 @@ export default class EpicService {
     }
 
     return epic;
+  }
+
+  /**
+   * Update Epic Order
+   * @param epic
+   * @param targetOrderId
+   * @param workspaceId
+   */
+  public async updateEpicOrder(
+    epic: Epic,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    if (epic.orderId > targetOrderId) {
+      const list = await this.findMoreEpicList(
+        epic.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, true, epic, targetOrderId);
+    }
+
+    if (epic.orderId < targetOrderId) {
+      const list = await this.findLessEpicList(
+        epic.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, false, epic, targetOrderId);
+    }
+  }
+
+  private async updateOrder(
+    epicList: Epic[],
+    isPluse: boolean,
+    targetEpic: Epic,
+    targetOrderId: number,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for await (const item of epicList) {
+        isPluse
+          ? (item.orderId = item.orderId + 1)
+          : (item.orderId = item.orderId - 1);
+
+        await queryRunner.manager.save(item);
+      }
+      targetEpic.orderId = targetOrderId;
+      queryRunner.manager.save(targetEpic);
+
+      queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+  }
+
+  /**
+   * Find More Epic List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findLessEpicList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.epicRepository.find({
+      where: {
+        orderId: Between(orderId, targetOrderId),
+        workspace: { id: workspaceId },
+      },
+    });
+  }
+
+  /**
+   * Find Less Epic List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findMoreEpicList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.epicRepository.find({
+      where: {
+        orderId: Between(targetOrderId, orderId),
+        workspace: { id: workspaceId },
+      },
+    });
   }
 }
