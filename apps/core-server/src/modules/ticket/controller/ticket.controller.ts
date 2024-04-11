@@ -59,6 +59,7 @@ import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.dto';
+import RequestTicketOrderUpdateDto from '../dto/ticket/ticket-order.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -313,6 +314,36 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 삭제합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET Order 변경' })
+  @ApiBody({ type: RequestTicketOrderUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/order')
+  public async updateTicketOrder(
+    @Body() dto: RequestTicketOrderUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+    const targetTicket = await this.ticketService.findTicketById(
+      dto.targetTicketId,
+    );
+
+    await this.ticketService.updateTicketOrder(
+      ticket,
+      targetTicket.orderId,
+      id,
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket 상태를 변경합니다.',
     });
   }
 

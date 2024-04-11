@@ -10,7 +10,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
-import { DataSource, Equal, LessThan, Not } from 'typeorm';
+import { Between, DataSource, Equal, LessThan, Not } from 'typeorm';
 
 // ** Custom Module Imports
 import EpicRepository from '../repository/epic.repository';
@@ -845,5 +845,107 @@ export default class TicketService {
     return await this.ticketSettingRepository.findSettingByWorkspaceId(
       workspaceId,
     );
+  }
+
+  /**
+   * Update Ticket Order
+   * @param ticket
+   * @param targetOrderId
+   * @param workspaceId
+   */
+  public async updateTicketOrder(
+    ticket: Ticket,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    if (ticket.orderId > targetOrderId) {
+      const list = await this.findMoreTicketList(
+        ticket.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, true, ticket, targetOrderId);
+    }
+
+    if (ticket.orderId < targetOrderId) {
+      const list = await this.findLessTicketList(
+        ticket.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, false, ticket, targetOrderId);
+    }
+  }
+
+  private async updateOrder(
+    ticketList: Ticket[],
+    isPluse: boolean,
+    targetTicket: Ticket,
+    targetOrderId: number,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for await (const item of ticketList) {
+        isPluse
+          ? (item.orderId = item.orderId + 1)
+          : (item.orderId = item.orderId - 1);
+
+        await queryRunner.manager.save(item);
+      }
+      targetTicket.orderId = targetOrderId;
+      queryRunner.manager.save(targetTicket);
+
+      queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+  }
+
+  /**
+   * Find More Ticket List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findLessTicketList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.ticketRepository.find({
+      where: {
+        orderId: Between(orderId, targetOrderId),
+        workspace: { id: workspaceId },
+      },
+    });
+  }
+
+  /**
+   * Find Less Ticket List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findMoreTicketList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.ticketRepository.find({
+      where: {
+        orderId: Between(targetOrderId, orderId),
+        workspace: { id: workspaceId },
+      },
+    });
   }
 }
