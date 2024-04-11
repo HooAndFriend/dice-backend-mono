@@ -18,6 +18,7 @@ import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
+import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 
 @Injectable()
 export default class EpicService {
@@ -183,6 +184,14 @@ export default class EpicService {
    */
   public async deleteEpicById(epicId: number) {
     await this.epicRepository.update(epicId, { isDeleted: true });
+  }
+
+  /**
+   * Update Epic Due Date
+   * @param dto
+   */
+  public async updateEpicDueDate(dto: RequestEpicDueDateUpdateDto) {
+    await this.epicRepository.update(dto.epicId, { dueDate: dto.dueDate });
   }
 
   /**

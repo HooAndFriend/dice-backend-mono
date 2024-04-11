@@ -574,17 +574,6 @@ export default class TicketService {
     return { data, count };
   }
 
-  /**
-   * Update Due Date Epic
-   * @param dto
-   */
-  public async updateEpicDueDate(dto: RequestEpicDueDateUpdateDto) {
-    const findEpic = await this.findEpicById(dto.epicId);
-
-    findEpic.dueDate = new Date(dto.dueDate);
-    await this.epicRepository.save(findEpic);
-  }
-
   // ** Comment Service
 
   /**

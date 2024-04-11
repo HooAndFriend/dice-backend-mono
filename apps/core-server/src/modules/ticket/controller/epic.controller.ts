@@ -183,7 +183,9 @@ export default class EpicController {
   @UseGuards(JwtAccessGuard)
   @Patch('/dueDate')
   public async updateDueDateEpic(@Body() dto: RequestEpicDueDateUpdateDto) {
-    await this.ticketService.updateEpicDueDate(dto);
+    await this.epicService.isExistedEpicById(dto.epicId);
+    await this.epicService.updateEpicDueDate(dto);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 수정합니다.',
@@ -200,6 +202,7 @@ export default class EpicController {
   @UseGuards(JwtAccessGuard)
   @Delete('/:epicId')
   public async deleteEpic(@Param('epicId') id: number) {
+    await this.epicService.isExistedEpicById(id);
     await this.epicService.deleteEpicById(id);
 
     return CommonResponse.createResponseMessage({
