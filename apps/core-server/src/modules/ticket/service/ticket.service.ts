@@ -24,7 +24,6 @@ import UserRepository from '../../user/repository/user.repository';
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import TicketFile from '../domain/ticket.file.entity';
-import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
@@ -573,35 +572,6 @@ export default class TicketService {
       findEpic.id,
     );
     return { data, count };
-  }
-
-  /**
-   * Save Epic
-   * @param dto
-   * @param workspaceId
-   * @param user
-   */
-  public async saveEpic(
-    dto: RequestEpicSaveDto,
-    workspace: Workspace,
-    user: User,
-  ) {
-    await this.epicNameValidation(dto.name, workspace.id);
-
-    const epicCount =
-      (await this.epicRepository.count({
-        where: { workspace: { id: workspace.id } },
-      })) + 1;
-    const epicCode = workspace.code + '-' + epicCount;
-
-    const epic = this.epicRepository.create({
-      admin: user,
-      name: dto.name,
-      workspace: workspace,
-      code: epicCode,
-    });
-
-    return await this.epicRepository.save(epic);
   }
 
   /**

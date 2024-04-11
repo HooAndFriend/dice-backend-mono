@@ -14,6 +14,9 @@ import EpicRepository from '../repository/epic.repository';
 // ** enum, dto, entity, types Imports
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Epic from '../domain/epic.entity';
+import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
+import Workspace from '../../workspace/domain/workspace.entity';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class EpicService {
@@ -102,6 +105,34 @@ export default class EpicService {
       }
       throw new InternalServerErrorException('Internal Server Error');
     }
+  }
+
+  /**
+   * Save Epic
+   * @param dto
+   * @param workspaceId
+   * @param user
+   */
+  public async saveEpic(
+    dto: RequestEpicSaveDto,
+    workspace: Workspace,
+    user: User,
+  ) {
+    const epicCount =
+      (await this.epicRepository.count({
+        where: { workspace: { id: workspace.id } },
+      })) + 1;
+    const epicCode = workspace.code + '-' + epicCount;
+
+    await this.epicRepository.save(
+      this.epicRepository.create({
+        admin: user,
+        name: dto.name,
+        workspace: workspace,
+        code: epicCode,
+        orderId: epicCount,
+      }),
+    );
   }
 
   /**

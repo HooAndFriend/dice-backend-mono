@@ -118,7 +118,7 @@ export default class EpicController {
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketService.saveEpic(dto, workspace, user);
+    await this.epicService.saveEpic(dto, workspace, user);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 생성합니다.',
