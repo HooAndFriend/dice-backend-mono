@@ -30,6 +30,14 @@ export default class Epic extends BaseTimeEntity {
   name: string;
 
   @Column({
+    type: 'int',
+    comment: '정렬 순서',
+    nullable: false,
+    default: 1,
+  })
+  orderId: number;
+
+  @Column({
     type: 'varchar',
     length: 30,
     name: 'code',
