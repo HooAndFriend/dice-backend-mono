@@ -137,7 +137,9 @@ export default class EpicController {
   @UseGuards(JwtAccessGuard)
   @Patch('/')
   public async updateEpic(@Body() dto: RequestEpicUpdateDto) {
-    await this.ticketService.updateEpic(dto);
+    await this.epicService.isExistedEpicById(dto.epicId);
+    await this.epicService.updateEpic(dto);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 수정합니다.',

@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Between, DataSource, LessThan, MoreThan } from 'typeorm';
+import { Between, DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import EpicRepository from '../repository/epic.repository';
@@ -17,6 +17,7 @@ import Epic from '../domain/epic.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
+import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 
 @Injectable()
 export default class EpicService {
@@ -152,6 +153,28 @@ export default class EpicService {
         workspace: { id: workspaceId },
       },
     });
+  }
+
+  /**
+   * Update Epic
+   * @param dto
+   */
+  public async updateEpic(dto: RequestEpicUpdateDto) {
+    await this.epicRepository.update(dto.epicId, {
+      name: dto.name,
+    });
+  }
+
+  /**
+   * Find Epic By Id
+   * @param epicId
+   */
+  public async isExistedEpicById(epicId: number) {
+    const epic = await this.epicRepository.exist({ where: { id: epicId } });
+
+    if (!epic) {
+      throw new NotFoundException('Not Found Epic');
+    }
   }
 
   /**

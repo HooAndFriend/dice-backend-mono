@@ -575,20 +575,6 @@ export default class TicketService {
   }
 
   /**
-   * Update Epic
-   * @param dto
-   */
-  public async updateEpic(dto: RequestEpicUpdateDto) {
-    const findEpic = await this.findEpicById(dto.epicId);
-
-    await this.epicNameValidation(dto.name, findEpic.id);
-
-    await this.epicRepository.update(dto.epicId, {
-      name: dto.name,
-    });
-  }
-
-  /**
    * Update Due Date Epic
    * @param dto
    */
