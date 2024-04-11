@@ -37,6 +37,14 @@ export default class Epic extends BaseTimeEntity {
   })
   code: string;
 
+  @Column({
+    type: 'int',
+    comment: '정렬 순서',
+    nullable: false,
+    default: 1,
+  })
+  orderId: number;
+
   @ManyToOne(() => Workspace, (workspace) => workspace.epic, {
     onDelete: 'CASCADE',
   })
