@@ -146,7 +146,7 @@ export default class EpicController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'EPIC 수정' })
+  @ApiOperation({ summary: 'EPIC Order 수정' })
   @ApiBody({ type: RequestEpicOrderUpdateDto })
   @ApiResponse(TicketResponse.updateEpic[200])
   @ApiResponse(TicketResponse.updateEpic[404])
@@ -159,7 +159,9 @@ export default class EpicController {
     @GetWorkspace() { id }: Workspace,
   ) {
     const epic = await this.epicService.findEpicById(dto.epicId);
-    await this.epicService.updateEpicOrder(epic, dto.targetOrderId, id);
+    const targetEpic = await this.epicService.findEpicById(dto.targetEpicId);
+
+    await this.epicService.updateEpicOrder(epic, targetEpic.orderId, id);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

@@ -11,5 +11,5 @@ export default class RequestEpicOrderUpdateDto {
 
   @ApiProperty({ example: 2 })
   @IsNumber()
-  targetOrderId: number;
+  targetEpicId: number;
 }
