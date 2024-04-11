@@ -12,9 +12,6 @@ import { DataSource } from 'typeorm';
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
 
-// ** Response Imports
-import CommonResponse from '../../../global/dto/api.response';
-
 // ** enum, dto, entity, types Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
@@ -30,6 +27,12 @@ export default class UserService {
 
   private logger = new Logger(UserService.name);
 
+  /**
+   * Update User
+   * @param dto
+   * @param user
+   * @param team
+   */
   public async updateUser(dto: RequestUserUpdateDto, user: User, team: Team) {
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -69,6 +72,11 @@ export default class UserService {
     }
   }
 
+  /**
+   * Find User
+   * @param user
+   * @returns
+   */
   public async findUser(user: User) {
     const findUser = await this.userRepository.findUser(user.id);
 
@@ -76,11 +84,7 @@ export default class UserService {
       throw new NotFoundException('Not Found User');
     }
 
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '유저 정보를 조회합니다.',
-      data: findUser,
-    });
+    return findUser;
   }
 
   /**

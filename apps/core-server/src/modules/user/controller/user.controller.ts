@@ -82,7 +82,13 @@ export default class UserController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findUser(@GetUser() user: User) {
-    return await this.userService.findUser(user);
+    const findUser = await this.userService.findUser(user);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '유저 정보를 조회합니다.',
+      data: findUser,
+    });
   }
 
   @ApiBearerAuth('access-token')
