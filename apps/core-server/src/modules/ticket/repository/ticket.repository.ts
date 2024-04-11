@@ -90,6 +90,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.code',
         'ticket.completeDate',
         'ticket.reopenDate',
+        'ticket.orderId',
         'worker.id',
         'worker.profile',
         'epic.id',
@@ -97,7 +98,8 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.worker', 'worker')
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.epic = :epicId', { epicId })
-      .andWhere('ticket.isDeleted = false');
+      .andWhere('ticket.isDeleted = false')
+      .orderBy('ticket.orderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
   }
@@ -112,6 +114,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
+        'ticket.orderId',
         'worker.id',
         'worker.nickname',
         'worker.profile',
@@ -130,7 +133,9 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('ticket.isDeleted = false');
+      .andWhere('ticket.isDeleted = false')
+      .orderBy('ticket.orderId', 'ASC');
+
     return await querybuilder.getManyAndCount();
   }
 

@@ -33,6 +33,14 @@ export default class Ticket extends BaseTimeEntity {
   name: string;
 
   @Column({
+    type: 'int',
+    comment: '정렬 순서',
+    nullable: false,
+    default: 1,
+  })
+  orderId: number;
+
+  @Column({
     type: 'enum',
     enum: TaskStatusEnum,
     name: 'status',
