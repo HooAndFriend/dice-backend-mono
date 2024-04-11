@@ -200,7 +200,8 @@ export default class EpicController {
   @UseGuards(JwtAccessGuard)
   @Delete('/:epicId')
   public async deleteEpic(@Param('epicId') id: number) {
-    await this.ticketService.deleteEpic(id);
+    await this.epicService.deleteEpicById(id);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Epic을 삭제합니다.',

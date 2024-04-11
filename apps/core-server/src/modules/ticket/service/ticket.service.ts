@@ -585,41 +585,6 @@ export default class TicketService {
     await this.epicRepository.save(findEpic);
   }
 
-  /**
-   * Delete Epic
-   * @param id
-   */
-  public async deleteEpic(id: number) {
-    const findEpic = await this.findEpicById(id);
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const [findTicket, count] =
-        await this.ticketRepository.findAllTicketByEpicId(id);
-
-      for (let i = 0; i < count; i++) {
-        let ticket = findTicket[i];
-        await queryRunner.manager.delete(TicketFile, { ticket: ticket.id });
-
-        await queryRunner.manager.delete(TicketComment, { ticket: ticket.id });
-        ticket.isDeleted = true;
-        await queryRunner.manager.save(Ticket, ticket);
-      }
-      findEpic.isDeleted = true;
-      await queryRunner.manager.save(Epic, findEpic);
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-      throw new InternalServerErrorException('Internal Server Error');
-    }
-  }
-
   // ** Comment Service
 
   /**

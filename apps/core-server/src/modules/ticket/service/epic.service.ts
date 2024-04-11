@@ -178,6 +178,14 @@ export default class EpicService {
   }
 
   /**
+   * Delete Epic
+   * @param epicId
+   */
+  public async deleteEpicById(epicId: number) {
+    await this.epicRepository.update(epicId, { isDeleted: true });
+  }
+
+  /**
    * Find Less Epic List
    * @param orderId
    * @param workspaceId
