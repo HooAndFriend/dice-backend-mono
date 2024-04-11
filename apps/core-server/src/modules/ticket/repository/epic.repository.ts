@@ -35,6 +35,7 @@ export default class EpicRepository extends Repository<Epic> {
         'ticket.name',
         'ticket.status',
         'ticket.code',
+        'ticket.orderId',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
@@ -51,7 +52,8 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('ticket.worker', 'worker')
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
-      .orderBy('epic.orderId', 'ASC');
+      .orderBy('epic.orderId', 'ASC')
+      .addOrderBy('ticket.orderId', 'ASC');
 
     if (dto.name) {
       querybuilder.andWhere('epic.name like :name', {
