@@ -10,25 +10,6 @@ import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @CustomRepository(Epic)
 export default class EpicRepository extends Repository<Epic> {
-  public async findAllEpicByWorkspaceId(workspaceId: number) {
-    const querybuilder = this.createQueryBuilder('epic')
-      .select([
-        'epic.id',
-        'epic.name',
-        'epic.code',
-        'workspace.id',
-        'workspace.name',
-        'admin.id',
-        'admin.nickname',
-        'admin.profile',
-      ])
-      .leftJoin('epic.workspace', 'workspace')
-      .leftJoin('epic.admin', 'admin')
-      .where('epic.workspace = :workspaceId', { workspaceId })
-      .andWhere('epic.isDeleted = false');
-    return await querybuilder.getManyAndCount();
-  }
-
   public async findEpicById(epicId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select(['epic.id', 'epic.name', 'epic.code', 'workspace.id', 'admin.id'])
@@ -48,6 +29,7 @@ export default class EpicRepository extends Repository<Epic> {
         'epic.id',
         'epic.name',
         'epic.code',
+        'epic.orderId',
         'epic.dueDate',
         'ticket.id',
         'ticket.name',
@@ -68,7 +50,8 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
       .where('epic.workspace = :workspaceId', { workspaceId })
-      .andWhere('epic.isDeleted = false');
+      .andWhere('epic.isDeleted = false')
+      .orderBy('epic.orderId', 'ASC');
 
     if (dto.name) {
       querybuilder.andWhere('epic.name like :name', {
