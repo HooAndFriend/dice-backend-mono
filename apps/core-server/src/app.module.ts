@@ -93,10 +93,10 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
   controllers: [],
   providers: [
     LoggerService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheInterceptor,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
