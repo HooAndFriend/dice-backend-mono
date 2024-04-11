@@ -123,4 +123,9 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comment: Relation<Comment>[];
+
+  public updateUserProfile(profile: string, nickname: string) {
+    this.profile = profile;
+    this.nickname = nickname;
+  }
 }

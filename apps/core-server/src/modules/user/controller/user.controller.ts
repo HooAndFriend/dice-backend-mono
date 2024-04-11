@@ -41,6 +41,7 @@ import User from '../domain/user.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import Team from '../../team/domain/team.entity';
 import RoleEnum from '@/src/global/enum/Role';
+import TeamService from '../../team/service/team.service';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -52,6 +53,7 @@ export default class UserController {
     private readonly ticketService: TicketService,
     private readonly teamUserService: TeamUserService,
     private readonly workspaceService: WorkspaceService,
+    private readonly teamService: TeamService,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -64,7 +66,13 @@ export default class UserController {
     @Body() dto: RequestUserUpdateDto,
     @GetUser() user: User,
   ) {
-    return await this.userService.updateUser(dto, user);
+    const team = await this.teamService.findPersonalTeamByEmail(user.email);
+    await this.userService.updateUser(dto, user, team);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '유저의 정보를 수정합니다.',
+    });
   }
 
   @ApiBearerAuth('access-token')

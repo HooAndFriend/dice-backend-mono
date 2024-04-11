@@ -76,4 +76,9 @@ export default class Team extends BaseTimeEntity {
 
   @OneToMany(() => Workspace, (workspace) => workspace.team)
   workspace: Relation<Workspace>[];
+
+  public async updateTeamProfile(profile: string, name: string) {
+    this.profile = profile;
+    this.name = name;
+  }
 }

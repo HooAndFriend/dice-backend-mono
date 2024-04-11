@@ -1,6 +1,13 @@
 // ** Nest Imports
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
@@ -11,24 +18,55 @@ import CommonResponse from '../../../global/dto/api.response';
 // ** enum, dto, entity, types Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
+import Team from '../../team/domain/team.entity';
 
 @Injectable()
 export default class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
+    private readonly dataSource: DataSource,
   ) {}
 
-  public async updateUser(dto: RequestUserUpdateDto, user: User) {
-    await this.userRepository.update(user.id, {
-      nickname: dto.nickname,
-      profile: dto.profile,
-    });
+  private logger = new Logger(UserService.name);
 
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '유저의 정보를 수정합니다.',
-    });
+  public async updateUser(dto: RequestUserUpdateDto, user: User, team: Team) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.commitTransaction();
+
+      const workspace = team.workspace.filter(
+        (item) => item.name === user.nickname,
+      );
+
+      if (workspace.length > 0) {
+        const personalWorksapce = workspace[0];
+        personalWorksapce.name = dto.nickname;
+        personalWorksapce.profile = dto.profile;
+        await queryRunner.manager.save(personalWorksapce);
+      }
+
+      user.updateUserProfile(dto.profile, dto.nickname);
+      team.updateTeamProfile(dto.profile, dto.nickname);
+
+      await queryRunner.manager.save(user);
+      await queryRunner.manager.save(team);
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+
+      throw new InternalServerErrorException('Internal Server Error');
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   public async findUser(user: User) {

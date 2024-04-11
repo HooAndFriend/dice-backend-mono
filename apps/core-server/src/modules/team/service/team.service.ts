@@ -148,4 +148,22 @@ export default class TeamService {
 
     return team;
   }
+
+  /**
+   * Find Team By User Email
+   * @param email
+   * @returns
+   */
+  public async findPersonalTeamByEmail(email: string) {
+    const team = await this.teamRepository.findOne({
+      where: { isPersonal: true, createdId: email },
+      relations: ['workspace'],
+    });
+
+    if (!team) {
+      throw new NotFoundException('Not Found Personal Team');
+    }
+
+    return team;
+  }
 }
