@@ -2,7 +2,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
-import { DataSource, LessThan } from 'typeorm';
+import { Between, DataSource, LessThan } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/qa.file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
@@ -516,5 +516,114 @@ export default class QaService {
     if (!findQa) {
       throw new NotFoundException('Not Found File');
     }
+  }
+
+  /**
+   * Update Qa Order
+   * @param qa
+   * @param targetOrderId
+   * @param workspaceId
+   */
+  public async updateQaOrder(
+    qa: Qa,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    if (qa.orderId > targetOrderId) {
+      const list = await this.findMoreQaList(
+        qa.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, true, qa, targetOrderId);
+    }
+
+    if (qa.orderId < targetOrderId) {
+      const list = await this.findLessQaList(
+        qa.orderId,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(list, false, qa, targetOrderId);
+    }
+  }
+
+  /**
+   * Qa Update Order
+   * @param epicList
+   * @param isPluse
+   * @param targetEpic
+   * @param targetOrderId
+   */
+  private async updateOrder(
+    epicList: Qa[],
+    isPluse: boolean,
+    targetEpic: Qa,
+    targetOrderId: number,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for await (const item of epicList) {
+        isPluse
+          ? (item.orderId = item.orderId + 1)
+          : (item.orderId = item.orderId - 1);
+
+        await queryRunner.manager.save(item);
+      }
+      targetEpic.orderId = targetOrderId;
+      queryRunner.manager.save(targetEpic);
+
+      queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(error);
+      await queryRunner.rollbackTransaction();
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+  }
+
+  /**
+   * Find More Qa List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findLessQaList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.qaRepository.find({
+      where: {
+        orderId: Between(orderId, targetOrderId),
+        workspace: { id: workspaceId },
+      },
+    });
+  }
+
+  /**
+   * Find Less Qa List
+   * @param orderId
+   * @param workspaceId
+   * @returns
+   */
+  public async findMoreQaList(
+    orderId: number,
+    targetOrderId: number,
+    workspaceId: number,
+  ) {
+    return await this.qaRepository.find({
+      where: {
+        orderId: Between(targetOrderId, orderId),
+        workspace: { id: workspaceId },
+      },
+    });
   }
 }

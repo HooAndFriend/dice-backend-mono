@@ -66,6 +66,7 @@ import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
+import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -199,6 +200,31 @@ export default class QaController {
   public async updateSimpleQa(@Body() dto: RequestQaSimpleUpdateDto) {
     const qa = await this.qaService.findQaById(dto.qaId);
     await this.qaService.updateQaSimple(qa, dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Qa를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestQaOrderUpdateDto })
+  @ApiResponse(QaResponse.updateQa[200])
+  @ApiResponse(QaResponse.updateQa[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/order')
+  public async updateQaOrder(
+    @Body() dto: RequestQaOrderUpdateDto,
+    @GetWorkspace() { id }: Workspace,
+  ) {
+    const qa = await this.qaService.findQaById(dto.qaId);
+    const targetQa = await this.qaService.findQaById(dto.targetQaId);
+
+    await this.qaService.updateQaOrder(qa, targetQa.orderId, id);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
