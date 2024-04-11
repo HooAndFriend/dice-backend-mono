@@ -127,7 +127,7 @@ export default class TicketController {
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const epic = await this.ticketService.findEpicById(dto.epicId);
+    const epic = await this.epicService.findEpicById(dto.epicId);
     await this.ticketService.saveTicket(epic, dto, user, workspace);
 
     return CommonResponse.createResponseMessage({

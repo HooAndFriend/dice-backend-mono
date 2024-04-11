@@ -24,7 +24,6 @@ import UserRepository from '../../user/repository/user.repository';
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import TicketFile from '../domain/ticket.file.entity';
-import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
@@ -36,9 +35,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
-import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
-import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
@@ -50,13 +47,10 @@ import TicketSetting from '../domain/ticket.setting.entity';
 @Injectable()
 export default class TicketService {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly epicRepository: EpicRepository,
     private readonly ticketRepository: TicketRepository,
     private readonly ticketFileRepository: TicketFileRepository,
     private readonly ticketCommentRepository: TicketCommentRepository,
     private readonly ticketSettingRepository: TicketSettingRepository,
-    private readonly workspaceReposiotry: WorkspaceRepository,
     private readonly userRepository: UserRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -86,18 +80,6 @@ export default class TicketService {
     }
 
     return findTicket;
-  }
-
-  /**
-   * Find Epic by Id
-   * @param epicId
-   */
-  public async findEpicById(epicId: number) {
-    const findEpic = await this.epicRepository.findEpicById(epicId);
-    if (!findEpic) {
-      throw new NotFoundException('Cannot Find Epic.');
-    }
-    return findEpic;
   }
 
   /**
