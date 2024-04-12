@@ -282,17 +282,17 @@ export default class TicketController {
     const user = await this.userService.findUserById(dto.userId);
     await this.ticketService.updateTicketUser(dto, user);
 
-    this.eventEmitter.emit('ticket.send-change-history', {
-      qaId: dto.ticketId,
-      username: user?.nickname,
-      before:
-        dto.type === 'admin' ? ticket.admin.nickname : ticket.worker.nickname,
-      after: user.nickname,
-      type:
-        dto.type === 'admin'
-          ? TicketHistoryTypeEnum.ADMIN
-          : TicketHistoryTypeEnum.WORKER,
-    });
+    // this.eventEmitter.emit('ticket.send-change-history', {
+    //   qaId: dto.ticketId,
+    //   username: user?.nickname,
+    //   before:
+    //     dto.type === 'admin' ? ticket.admin.nickname : ticket.worker.nickname,
+    //   after: user.nickname,
+    //   type:
+    //     dto.type === 'admin'
+    //       ? TicketHistoryTypeEnum.ADMIN
+    //       : TicketHistoryTypeEnum.WORKER,
+    // });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
