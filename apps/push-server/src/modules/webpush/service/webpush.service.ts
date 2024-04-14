@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import admin from 'firebase-admin';
 
 // ** Custom Module Imports
-import { BadRequestException } from '../../../global/exception/CustomException';
+import { BadRequestException } from '../../../../../core-server/src/global/exception/CustomException';
 // ** Response Imports
 
 // ** enum, dto, entity, types Imports
