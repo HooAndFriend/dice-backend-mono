@@ -191,4 +191,23 @@ export default class EpicController {
       message: 'Epic을 삭제합니다.',
     });
   }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC 조회' })
+  @ApiResponse(TicketResponse.findEpic[200])
+  @ApiResponse(TicketResponse.findEpic[404])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/:epicId')
+  public async findEpic(@Param('epicId') id: number) {
+    const epic = await this.epicService.findEpicDetailById(id);
+
+    return CommonResponse.createResponse({
+      data: epic,
+      statusCode: 200,
+      message: 'Epic을 조회합니다.',
+    });
+  }
 }

@@ -482,6 +482,48 @@ export const TicketResponse = {
       message: 'Epic 이름은 최대 30자 입니다.',
     }),
   },
+  findEpic: {
+    200: createResponse({
+      data: {
+        id: 6,
+        name: '파인애플',
+        code: 'ADM-1',
+        dueDate: null,
+        ticket: [
+          {
+            id: 12,
+            name: '',
+            status: 'NOTHING',
+            code: '',
+          },
+          {
+            id: 10,
+            name: '123121113',
+            status: 'NOTHING',
+            code: '',
+          },
+          {
+            id: 11,
+            name: '',
+            status: 'NOTHING',
+            code: '',
+          },
+        ],
+        admin: {
+          id: 1,
+          nickname: '!!!피노피노얍',
+          profile: 'http://125.133.34.224:9000/dice-dev/rn.png',
+        },
+      },
+      statusCode: 200,
+      message: 'Epic을 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Epic 정보를 찾을 수 없습니다.',
+    }),
+  },
   deleteEpic: {
     200: createMessageResponse({
       statusCode: 200,

@@ -48,6 +48,21 @@ export default class EpicService {
   }
 
   /**
+   * Find Epic Detail By Id
+   * @param epicId
+   * @returns
+   */
+  public async findEpicDetailById(epicId: number) {
+    const epic = await this.epicRepository.findOneEpicById(epicId);
+
+    if (!epic) {
+      throw new NotFoundException('Not Found Epic');
+    }
+
+    return epic;
+  }
+
+  /**
    * Update Epic Order
    * @param epic
    * @param targetOrderId

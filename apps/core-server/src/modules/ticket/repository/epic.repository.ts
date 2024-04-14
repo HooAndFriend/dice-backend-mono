@@ -57,26 +57,26 @@ export default class EpicRepository extends Repository<Epic> {
   public async findOneEpicById(epicId: number) {
     const querybuilder = this.createQueryBuilder('epic')
       .select([
-        'workspace.id',
         'epic.id',
         'epic.name',
         'epic.code',
+        'epic.dueDate',
         'ticket.id',
+        'ticket.code',
         'ticket.name',
-        'ticket.dueDate',
-        'ticket.endDate',
-        'ticket.reopenDate',
         'ticket.status',
-        'worker.id',
-        'worker.profile',
-        'worker.nickname',
+        'admin.id',
+        'admin.profile',
+        'admin.nickname',
       ])
-      .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.ticket', 'ticket')
-      .leftJoin('epic.worker', 'worker')
+      .leftJoin('epic.admin', 'admin')
       .where('epic.id = :epicId', { epicId })
-      .andWhere('epic.isDeleted = false');
-    return await querybuilder.getManyAndCount();
+      .andWhere('epic.isDeleted = false')
+      .andWhere('ticket.isDeleted = false')
+      .orderBy('ticket.orderId', 'ASC');
+
+    return await querybuilder.getOne();
   }
 
   public async findOneByNameAndWorkspaceId(name: string, workspaceId: number) {
