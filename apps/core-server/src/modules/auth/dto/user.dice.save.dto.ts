@@ -16,6 +16,10 @@ export default class RequestDiceUserSaveDto {
   @IsString()
   nickname: string;
 
+  @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
+  @IsString()
+  fcmToken: string;
+
   @ApiProperty({ example: 'd5923f2f-0b78-4583-bb34-5181ee44fa60' })
   @IsOptional()
   @IsString()

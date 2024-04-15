@@ -45,7 +45,7 @@ export default class AuthController {
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,
-          fcmToken: '',
+          fcmToken: user.fcmToken,
         },
         team: {
           id: team.id,
@@ -141,7 +141,7 @@ export default class AuthController {
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,
-          fcmToken: '',
+          fcmToken: user.fcmToken,
         },
         team: {
           id: team.id,
