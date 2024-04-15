@@ -88,6 +88,15 @@ export default class UserService {
   }
 
   /**
+   * Update User Fcm Token
+   * @param userId
+   * @param fcmToken
+   */
+  public async updateUserFcm(userId: number, fcmToken: string) {
+    await this.userRepository.update(userId, { fcmToken });
+  }
+
+  /**
    * Find User By Id
    * @param userId
    * @returns

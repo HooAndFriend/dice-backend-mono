@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Get, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
@@ -42,6 +50,7 @@ import CommonResponse from '@/src/global/dto/api.response';
 import Team from '../../team/domain/team.entity';
 import RoleEnum from '@/src/global/enum/Role';
 import TeamService from '../../team/service/team.service';
+import RequestUserFcmUpdateDto from '../dto/user-fcm.update.dto';
 
 @ApiTags('User')
 @ApiResponse(createServerExceptionResponse())
@@ -68,6 +77,24 @@ export default class UserController {
   ) {
     const team = await this.teamService.findPersonalTeamByEmail(user.email);
     await this.userService.updateUser(dto, user, team);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: '유저의 정보를 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저 FCM 정보 수정' })
+  @ApiBody({ type: RequestUserFcmUpdateDto })
+  @ApiResponse(UserResponse.updateUser[200])
+  @UseGuards(JwtAccessGuard)
+  @Patch('/fcm')
+  public async updateUserFcm(
+    @Body() dto: RequestUserFcmUpdateDto,
+    @GetUser() user: User,
+  ) {
+    await this.userService.updateUserFcm(user.id, dto.fcmToken);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

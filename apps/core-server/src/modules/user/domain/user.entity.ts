@@ -50,6 +50,15 @@ export default class User extends BaseTimeEntity {
   token: string;
 
   @Column({
+    type: 'varchar',
+    length: 150,
+    comment: 'FCM 토큰',
+    name: 'fcm_token',
+    nullable: true,
+  })
+  fcmToken: string;
+
+  @Column({
     type: 'enum',
     enum: UserType,
     comment: '로그인 종류',

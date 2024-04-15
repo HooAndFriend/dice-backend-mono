@@ -82,6 +82,15 @@ export default class User extends BaseTimeEntity {
   profile: string;
 
   @Column({
+    type: 'varchar',
+    length: 150,
+    comment: 'FCM 토큰',
+    name: 'fcm_token',
+    nullable: true,
+  })
+  fcmToken: string;
+
+  @Column({
     type: 'datetime',
     comment: '마지막 로그인 시간',
     name: 'last_login_date',
