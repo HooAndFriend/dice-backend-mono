@@ -24,6 +24,7 @@ export default class UserRepository extends Repository<User> {
         'user.id',
         'user.nickname',
         'user.email',
+        'user.fcmToken',
         'user.profile',
         'user.password',
       ])
@@ -37,6 +38,7 @@ export default class UserRepository extends Repository<User> {
       .select([
         'user.id',
         'user.nickname',
+        'user.fcmToken',
         'user.email',
         'user.profile',
         'user.password',
