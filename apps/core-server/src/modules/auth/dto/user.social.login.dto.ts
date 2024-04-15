@@ -10,6 +10,10 @@ export default class RequestSocialUserLoginDto {
   @IsString()
   token: string;
 
+  @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
+  @IsString()
+  fcmToken: string;
+
   @ApiProperty({ example: UserType.GOOGLE, enum: UserType })
   @IsEnum(UserType)
   type: UserType;

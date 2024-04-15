@@ -218,6 +218,7 @@ export default class AuthService {
 
     await this.userRepository.update(user.id, {
       lastLoginDate: new Date(),
+      fcmToken: dto.fcmToken,
     });
 
     const token = this.generateToken({ id: user.id });
@@ -240,6 +241,7 @@ export default class AuthService {
 
     await this.userRepository.update(user.id, {
       lastLoginDate: new Date(),
+      fcmToken: dto.fcmToken,
     });
 
     const token = this.generateToken({ id: user.id });

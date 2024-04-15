@@ -11,4 +11,8 @@ export default class RequestDiceUserLoginDto {
   @ApiProperty({ example: '1234' })
   @IsString()
   password: string;
+
+  @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
+  @IsString()
+  fcmToken: string;
 }
