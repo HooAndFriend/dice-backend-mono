@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { UserType } from '../../../global/enum/UserType.enum';
 
 export default class RequestSocialUserLoginDto {
@@ -11,8 +11,9 @@ export default class RequestSocialUserLoginDto {
   token: string;
 
   @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
+  @IsOptional()
   @IsString()
-  fcmToken: string;
+  fcmToken?: string;
 
   @ApiProperty({ example: UserType.GOOGLE, enum: UserType })
   @IsEnum(UserType)

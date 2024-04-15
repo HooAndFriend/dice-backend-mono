@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 export default class RequestDiceUserLoginDto {
   @ApiProperty({ example: 'admin' })
   @IsString()
@@ -13,6 +13,7 @@ export default class RequestDiceUserLoginDto {
   password: string;
 
   @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })
+  @IsOptional()
   @IsString()
-  fcmToken: string;
+  fcmToken?: string;
 }
