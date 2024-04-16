@@ -1,21 +1,19 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
-import admin from 'firebase-admin';
-import { getMessaging } from 'firebase-admin/messaging';
 
-// ** Custom Module Imports
-import { BadRequestException } from '../../../../../core-server/src/global/exception/CustomException';
-// ** Response Imports
+import { Injectable } from '@nestjs/common';
+
+// ** Utils Imports
+import admin from 'firebase-admin';
 
 // ** enum, dto, entity, types Imports
-
-var ServiceAccount = require('./fcm-account.json');
+import { BadRequestException } from '@/src/global/exception/CustomException';
+import * as serviceAccount from '@/src/firebase-config.json';
 
 @Injectable()
 export default class WebPushService {
   constructor() {
     admin.initializeApp({
-      credential: admin.credential.cert(ServiceAccount),
+      credential: admin.credential.cert(serviceAccount),
     });
   }
 
@@ -43,10 +41,14 @@ export default class WebPushService {
       throw new BadRequestException('Failed to send message');
     }
   }
-  
-  public async sendPushMessageToMultiple(tokens: string[], title: string, body: string) {
+
+  public async sendPushMessageToMultiple(
+    tokens: string[],
+    title: string,
+    body: string,
+  ) {
     const message = {
-      notification : {
+      notification: {
         title: title,
         body: body,
       },
