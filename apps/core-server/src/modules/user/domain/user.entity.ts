@@ -51,7 +51,7 @@ export default class User extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 150,
+    length: 255,
     comment: 'FCM 토큰',
     name: 'fcm_token',
     nullable: true,
