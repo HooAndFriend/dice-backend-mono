@@ -8,6 +8,8 @@ import admin from 'firebase-admin';
 // ** enum, dto, entity, types Imports
 import { BadRequestException } from '@/src/global/exception/CustomException';
 import * as serviceAccount from '@/src/firebase-config.json';
+import SendPushDto from '../dto/push.send';
+import SendMultiPushDto from '../dto/push-multi.send';
 
 @Injectable()
 export default class WebPushService {
@@ -18,42 +20,38 @@ export default class WebPushService {
   }
 
   /**
-   * Send push message
-   * @param token
-   * @param title
-   * @param body
+   * Send Single Push Message
+   * @param dto
    */
-  public async sendPushMessage(token: string, title: string, body: string) {
-    //메시지 객체 생성
+  public async sendPushMessage(dto: SendPushDto) {
     const message = {
       notification: {
-        title: title,
-        body: body,
+        title: dto.title,
+        body: dto.body,
       },
-      // 클라이언트 토큰
-      token: token,
+
+      token: dto.fcmToken,
     };
 
     try {
-      // push 메시지 전송
       await admin.messaging().send(message);
     } catch (error) {
       throw new BadRequestException('Failed to send message');
     }
   }
 
-  public async sendPushMessageToMultiple(
-    tokens: string[],
-    title: string,
-    body: string,
-  ) {
+  /**
+   * Send Multiple Push Message
+   * @param dto
+   */
+  public async sendPushMessageToMultiple(dto: SendMultiPushDto) {
     const message = {
       notification: {
-        title: title,
-        body: body,
+        title: dto.title,
+        body: dto.body,
       },
-      // 클라이언트 토큰 배열
-      tokens: tokens,
+
+      tokens: dto.fcmToken,
     };
 
     try {

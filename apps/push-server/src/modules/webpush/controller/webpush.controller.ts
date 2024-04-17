@@ -15,6 +15,14 @@ import {
 
 // ** Dto Imports
 import CommonResponse from '@/src/global/dto/api.response';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
+import SendPushDto from '../dto/push.send';
+import SendMultiPushDto from '../dto/push-multi.send';
 
 @ApiTags('Web Push')
 @ApiResponse(createServerExceptionResponse())
@@ -25,10 +33,28 @@ export default class WebPushController {
 
   @Get()
   public async sendPush(@Query('token') token: string) {
-    await this.webPushService.sendPushMessage(token, 'title', 'body');
+    await this.webPushService.sendPushMessage(
+      new SendPushDto(token, 'title', 'body'),
+    );
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Success',
     });
+  }
+
+  @MessagePattern('send-single-push')
+  async handleMessage(
+    @Payload() data: SendPushDto,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    await this.webPushService.sendPushMessage(data);
+  }
+
+  @MessagePattern('send-multi-push')
+  async handleMultiMessage(
+    @Payload() data: SendMultiPushDto,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    await this.webPushService.sendPushMessageToMultiple(data);
   }
 }
