@@ -105,6 +105,7 @@ export const WorkspaceUserResponse = {
               comment: '이 워크스페이스는..',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: 'a4a6ab31-86fd-4560-80c5-45dcb45e9775',
               workspaceFunction: [],
             },
           },
@@ -117,6 +118,7 @@ export const WorkspaceUserResponse = {
               comment: '이 워크스페이스는..',
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+              uuid: 'a4a6ab31-86fd-4560-80c5-45dcb45e9775',
               workspaceFunction: [],
             },
           },

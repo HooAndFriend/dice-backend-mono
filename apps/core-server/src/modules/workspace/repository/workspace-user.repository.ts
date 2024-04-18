@@ -45,7 +45,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspace.name',
         'workspace.comment',
         'workspace.profile',
-        'workspace.profile',
+        'workspace.uuid',
         'workspaceFunction.id',
         'workspaceFunction.function',
       ])
