@@ -39,4 +39,15 @@ export const NotificationResponse = {
       message: 'Notification Found',
     }),
   },
+  updateNotificationStatus: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Update Notification',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: '해당 알림을 찾을 수 없습니다.',
+      error: 'NOT FOUND',
+    }),
+  },
 };

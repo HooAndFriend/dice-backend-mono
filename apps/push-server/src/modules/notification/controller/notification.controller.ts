@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import NotificationService from '../service/notification.service';
@@ -46,6 +46,39 @@ export default class NotificationController {
       data: { data, count },
       statusCode: 200,
       message: 'Notification Found',
+    });
+  }
+
+  // @ApiBearerAuth('access-token')
+  // @ApiOperation({ summary: '유저의 알림 전체 읽음 처리' })
+  // @ApiResponse(NotificationResponse.findNotificationList[200])
+  // @UseGuards(JwtAccessGuard)
+  // @Patch('/:id')
+  // public async updateNotificationAllStatus(@Param('id') id: number) {
+  //   await this.notificationService.existedNotification(id);
+
+  //   await this.notificationService.updateNotificationStatus(id);
+
+  //   return CommonResponse.createResponseMessage({
+  //     statusCode: 200,
+  //     message: 'Update Notification',
+  //   });
+  // }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저의 알림 단일 읽음 처리' })
+  @ApiResponse(NotificationResponse.updateNotificationStatus[200])
+  @ApiResponse(NotificationResponse.updateNotificationStatus[404])
+  @UseGuards(JwtAccessGuard)
+  @Patch('/:id')
+  public async updateNotificationStatus(@Param('id') id: number) {
+    await this.notificationService.existedNotification(id);
+
+    await this.notificationService.updateNotificationStatus(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Notification',
     });
   }
 }

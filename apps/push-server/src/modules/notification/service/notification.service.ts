@@ -6,6 +6,8 @@ import NotificationRepository from '../repository/notification.repository';
 
 // ** enum, dto, entity, types Imports
 import SaveNotificatioNDto from '../dto/notification.save.dto';
+import { NotFoundException } from '@/src/global/exception/CustomException';
+import NotificationStatusEnum from '../domain/notification-status.enum';
 
 @Injectable()
 export default class NotificationService {
@@ -37,5 +39,46 @@ export default class NotificationService {
    */
   public async findNotificationByEmail(email: string) {
     return await this.notificationRepository.findAndCount({ where: { email } });
+  }
+
+  /**
+   * Find Notification By Id
+   * @param id
+   * @returns
+   */
+  public async findNotificationById(id: number) {
+    const notification = await this.notificationRepository.findOne({
+      where: { id },
+    });
+
+    if (!notification) {
+      throw new NotFoundException('Not Found Notification');
+    }
+
+    return notification;
+  }
+
+  /**
+   * 알림 읽음 처리
+   * @param id
+   */
+  public async updateNotificationStatus(id: number) {
+    await this.notificationRepository.update(id, {
+      status: NotificationStatusEnum.READ,
+    });
+  }
+
+  /**
+   * 알림 존재 여부 확인
+   * @param id
+   */
+  public async existedNotification(id: number) {
+    const notification = await this.notificationRepository.exist({
+      where: { id },
+    });
+
+    if (!notification) {
+      throw new NotFoundException('Not Found Notification');
+    }
   }
 }
