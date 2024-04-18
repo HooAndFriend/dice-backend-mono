@@ -26,6 +26,11 @@ elif [ $1 = "admin" ]; then
     rsync -av --exclude='node_modules' ./apps/admin-server/ dice:~/apps/admin-server/
     ssh -t dice "sh restart.sh admin"
     ssh -t dice "sh restart.sh nginx"
+elif [ $1 = "file" ]; then
+    ssh -t dice "rm -rf apps/file-server"
+    rsync -av --exclude='node_modules' ./apps/file-server/ dice:~/apps/file-server/
+    ssh -t dice "sh restart.sh file"
+    ssh -t dice "sh restart.sh nginx"
 elif [ $1 = "all" ]; then
     ssh -t dice "rm -rf apps/*"
     rsync -av --exclude='node_modules' ./apps/core-server/ dice:~/apps/core-server/
@@ -38,7 +43,8 @@ elif [ $1 = "all" ]; then
     ssh -t dice "sh restart.sh push"
     rsync -av --exclude='node_modules' ./apps/admin-server/ dice:~/apps/admin-server/
     ssh -t dice "sh restart.sh admin"
-
+    rsync -av --exclude='node_modules' ./apps/file-server/ dice:~/apps/file-server/
+    ssh -t dice "sh restart.sh file"
     ssh -t dice "sh restart.sh nginx"
 else
     echo "인자가 잘못되었습니다."

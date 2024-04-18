@@ -65,6 +65,19 @@ services:
       - redis-cache
       - rabbitmq
 
+  file:
+    build:
+      context: ./apps/file-server
+    ports:
+      - 8580:8580
+    networks:
+      - dice-networks
+    depends_on:
+      - redis
+      - db
+      - redis-cache
+      - rabbitmq
+
   redis:
     image: redis:latest
     ports:
