@@ -41,7 +41,7 @@ async function bootstrap() {
   });
 
   // ** Base URL
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/log');
 
   // ** Nest Version
   app.enableVersioning({
