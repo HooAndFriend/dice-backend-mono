@@ -146,21 +146,14 @@ export default class WorkspaceUserService {
       team.id,
     );
 
-    const [workspaceUserList] =
+    const [workspaceUserList, count] =
       await this.workspaceUserRepository.findWorkspaceUserList(workspace.id);
 
-    return teamUserList
-      .map((item) => {
-        if (workspaceUserList.length < 1) return item;
-        for (const _ of workspaceUserList) {
-          if (item.id === _.teamUser.id) {
-            return null;
-          }
+    if (count === 0) return teamUserList;
 
-          return item;
-        }
-      })
-      .filter((item) => item);
+    return teamUserList.filter(
+      (item) => !workspaceUserList.some((_) => _.teamUser.id === item.id),
+    );
   }
 
   /**
