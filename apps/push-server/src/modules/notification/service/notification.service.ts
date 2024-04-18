@@ -29,4 +29,13 @@ export default class NotificationService {
       }),
     );
   }
+
+  /**
+   * Find Notification By Email
+   * @param email
+   * @returns
+   */
+  public async findNotificationByEmail(email: string) {
+    return await this.notificationRepository.findAndCount({ where: { email } });
+  }
 }
