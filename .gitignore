@@ -39,4 +39,4 @@ ormlogs.log
 
 db
 
-*.json
+firebase-config.json
