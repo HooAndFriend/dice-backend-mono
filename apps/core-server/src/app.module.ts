@@ -29,7 +29,6 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
     EventEmitterModule.forRoot(),
-
     TypeOrmModule.forRoot({
       type: 'mysql',
       entities: ['dist/modules/**/*.entity.js'],
