@@ -1,22 +1,43 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 // ** Module Imports
 import FileService from './file.service';
 
 // ** Swagger Imports
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
+import CommonResponse from '../global/dto/api.response';
+import { FileResponse } from '../global/response/file.response';
 
 @ApiTags('File')
 @ApiResponse(createServerExceptionResponse())
-@ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/', version: '1' })
 export default class FileController {
   constructor(private readonly fileService: FileService) {}
+
+  @ApiOperation({ summary: '소셜 유저 생성' })
+  @ApiResponse(FileResponse.uploadFile[200])
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/upload')
+  public async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const data = await this.fileService.uploadFile(file);
+
+    return CommonResponse.createResponse({
+      data,
+      statusCode: 200,
+      message: 'Success Upload File',
+    });
+  }
 }
