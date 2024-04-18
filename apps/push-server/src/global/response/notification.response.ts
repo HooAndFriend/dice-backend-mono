@@ -39,6 +39,12 @@ export const NotificationResponse = {
       message: 'Notification Found',
     }),
   },
+  updateNotificationAllStatus: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Update Notification',
+    }),
+  },
   updateNotificationStatus: {
     200: createMessageResponse({
       statusCode: 200,

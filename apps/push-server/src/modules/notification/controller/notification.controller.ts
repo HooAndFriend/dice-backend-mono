@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import NotificationService from '../service/notification.service';
@@ -49,21 +49,25 @@ export default class NotificationController {
     });
   }
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: '유저의 알림 전체 읽음 처리' })
-  // @ApiResponse(NotificationResponse.findNotificationList[200])
-  // @UseGuards(JwtAccessGuard)
-  // @Patch('/:id')
-  // public async updateNotificationAllStatus(@Param('id') id: number) {
-  //   await this.notificationService.existedNotification(id);
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '유저의 알림 전체 읽음 처리' })
+  @ApiResponse(NotificationResponse.updateNotificationAllStatus[200])
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateNotificationAllStatus(@GetUser() { email }) {
+    const [data] = await this.notificationService.findNotificationByEmail(
+      email,
+    );
 
-  //   await this.notificationService.updateNotificationStatus(id);
+    await this.notificationService.updateNotificationAllStatus(
+      data.map((item) => item.id),
+    );
 
-  //   return CommonResponse.createResponseMessage({
-  //     statusCode: 200,
-  //     message: 'Update Notification',
-  //   });
-  // }
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Notification',
+    });
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '유저의 알림 단일 읽음 처리' })

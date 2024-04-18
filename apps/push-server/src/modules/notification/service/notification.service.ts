@@ -69,6 +69,16 @@ export default class NotificationService {
   }
 
   /**
+   * 알림 전체 읽음 처리
+   * @param id
+   */
+  public async updateNotificationAllStatus(ids: number[]) {
+    await this.notificationRepository.update(ids, {
+      status: NotificationStatusEnum.READ,
+    });
+  }
+
+  /**
    * 알림 존재 여부 확인
    * @param id
    */
