@@ -7,7 +7,7 @@ import admin from 'firebase-admin';
 
 // ** enum, dto, entity, types Imports
 import { BadRequestException } from '@/src/global/exception/CustomException';
-import * as serviceAccount from '@/src/firebase-config.json';
+import * as serviceAccount from '../../../firebase-config.json';
 import SendPushDto from '../dto/push.send';
 import SendMultiPushDto from '../dto/push-multi.send';
 
@@ -15,7 +15,7 @@ import SendMultiPushDto from '../dto/push-multi.send';
 export default class WebPushService {
   constructor() {
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+      credential: admin.credential.cert(serviceAccount as any),
     });
   }
 
