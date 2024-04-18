@@ -73,7 +73,7 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('epic.admin', 'admin')
       .where('epic.id = :epicId', { epicId })
       .andWhere('epic.isDeleted = false')
-      .andWhere('ticket.isDeleted = false')
+      .where('ticket.isDeleted = false')
       .orderBy('ticket.orderId', 'ASC');
 
     return await querybuilder.getOne();
