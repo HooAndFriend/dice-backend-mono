@@ -175,7 +175,7 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: user.id });
+      const token = this.generateToken({ id: user.id, email: user.email });
 
       return {
         token,
@@ -222,7 +222,7 @@ export default class AuthService {
       fcmToken: dto.fcmToken,
     });
 
-    const token = this.generateToken({ id: user.id });
+    const token = this.generateToken({ id: user.id, email: user.email });
 
     return { token, user };
   }
@@ -245,7 +245,7 @@ export default class AuthService {
       fcmToken: dto.fcmToken,
     });
 
-    const token = this.generateToken({ id: user.id });
+    const token = this.generateToken({ id: user.id, email: user.email });
 
     return { token, user };
   }
@@ -362,7 +362,7 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: user.id });
+      const token = this.generateToken({ id: user.id, email: user.email });
 
       return {
         token,
