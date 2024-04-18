@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -22,9 +22,9 @@ import { ConfigService } from '@nestjs/config';
         },
       }),
     }),
-    MailModule,
-    WebPushModule,
-    NotificationModule,
+    forwardRef(() => MailModule),
+    forwardRef(() => WebPushModule),
+    forwardRef(() => NotificationModule),
   ],
   providers: [JwtAccessStrategy],
   exports: [],
