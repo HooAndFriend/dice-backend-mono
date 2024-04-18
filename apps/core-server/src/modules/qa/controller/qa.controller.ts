@@ -67,6 +67,8 @@ import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
+import NotificationStatusEnum from '@/src/global/enum/notification-status.enum';
+import NotificationTypeEnum from '@/src/global/enum/notification-type.enum';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -305,9 +307,20 @@ export default class QaController {
           : QaHistoryTypeEnum.WORKER,
     });
 
+    console.log(1);
+    this.eventEmitter.emit('qa.notification', {
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'QA 담당자 변경',
+      body: `${nickname}님이 QA 담당자로 지정하였습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.QA,
+      subId: dto.qaId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Qa상태를 수정합니다.',
+      message: 'Qa 담당자를 수정합니다.',
     });
   }
 

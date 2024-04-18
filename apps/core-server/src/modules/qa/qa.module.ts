@@ -22,6 +22,7 @@ import WorkspaceModule from '../workspace/workspace.module';
 import Qa from './domain/qa.entity';
 import Comment from './domain/qa.comment.entity';
 import File from './domain/qa.file.entity';
+import { QaNotificationListener } from './listener/qa-notification.listener';
 
 @Module({
   imports: [
@@ -47,12 +48,33 @@ import File from './domain/qa.file.entity';
         }),
         inject: [ConfigService],
       },
+      {
+        name: 'RMQ_PUSH_QUE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_PUSH_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
     ]),
+
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],
   controllers: [QaController],
-  providers: [QaService, CommentService, QaSendChangeHistoryListener],
+  providers: [
+    QaService,
+    CommentService,
+    QaSendChangeHistoryListener,
+    QaNotificationListener,
+  ],
 })
 export default class QaModule {}
