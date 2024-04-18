@@ -31,7 +31,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // ** Base URL
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/admin');
 
   // ** Nest Version
   app.enableVersioning({
