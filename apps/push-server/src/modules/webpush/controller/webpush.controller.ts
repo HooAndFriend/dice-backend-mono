@@ -36,50 +36,50 @@ export default class WebPushController {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @MessagePattern('send-single-push')
-  async handleMessage(
-    @Payload() data: SendPushDto,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
-    await this.webPushService.sendPushMessage(
-      data.title,
-      data.body,
-      data.fcmToken,
-    );
+  // @MessagePattern('send-single-push')
+  // async handleMessage(
+  //   @Payload() data: SendPushDto,
+  //   @Ctx() context: RmqContext,
+  // ): Promise<void> {
+  //   await this.webPushService.sendPushMessage(
+  //     data.title,
+  //     data.body,
+  //     data.fcmToken,
+  //   );
 
-    this.eventEmitter.emit(
-      'notification.save-notification',
-      new SaveNotificatioNDto(
-        data.email,
-        data.title,
-        data.body,
-        data.status,
-        data.type,
-        data.subId,
-      ),
-    );
-  }
+  //   this.eventEmitter.emit(
+  //     'notification.save-notification',
+  //     new SaveNotificatioNDto(
+  //       data.email,
+  //       data.title,
+  //       data.body,
+  //       data.status,
+  //       data.type,
+  //       data.subId,
+  //     ),
+  //   );
+  // }
 
-  @MessagePattern('send-multi-push')
-  async handleMultiMessage(
-    @Payload() data: SendMultiPushDto,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
-    await this.webPushService.sendPushMessageToMultiple(
-      data.title,
-      data.body,
-      data.fcmToken,
-    );
-    this.eventEmitter.emit(
-      'notification.save-notification',
-      new SaveMultiNotificatioNDto(
-        data.email,
-        data.title,
-        data.body,
-        data.status,
-        data.type,
-        data.subId,
-      ),
-    );
-  }
+  // @MessagePattern('send-multi-push')
+  // async handleMultiMessage(
+  //   @Payload() data: SendMultiPushDto,
+  //   @Ctx() context: RmqContext,
+  // ): Promise<void> {
+  //   await this.webPushService.sendPushMessageToMultiple(
+  //     data.title,
+  //     data.body,
+  //     data.fcmToken,
+  //   );
+  //   this.eventEmitter.emit(
+  //     'notification.save-notification',
+  //     new SaveMultiNotificatioNDto(
+  //       data.email,
+  //       data.title,
+  //       data.body,
+  //       data.status,
+  //       data.type,
+  //       data.subId,
+  //     ),
+  //   );
+  // }
 }

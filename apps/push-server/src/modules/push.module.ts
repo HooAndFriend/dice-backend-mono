@@ -23,7 +23,7 @@ import { ConfigService } from '@nestjs/config';
       }),
     }),
     forwardRef(() => MailModule),
-    forwardRef(() => WebPushModule),
+    // forwardRef(() => WebPushModule),
     forwardRef(() => NotificationModule),
   ],
   providers: [JwtAccessStrategy],
