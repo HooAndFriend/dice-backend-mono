@@ -36,6 +36,7 @@ export default class AdminService {
     await this.adminRepository.save(
       this.adminRepository.create({
         ...dto,
+        profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
         password: hash,
         createdId: adminEmail,
       }),

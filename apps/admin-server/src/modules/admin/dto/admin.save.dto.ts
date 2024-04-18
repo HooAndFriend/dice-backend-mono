@@ -25,8 +25,4 @@ export default class RequestAdminSaveDto {
   @ApiProperty({ example: '피노키오' })
   @IsString()
   nickname: string;
-
-  @ApiProperty({ example: 'https://s3.bucket.com/123.png' })
-  @IsString()
-  profile: string;
 }
