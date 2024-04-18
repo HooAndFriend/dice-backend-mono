@@ -141,6 +141,7 @@ export default class TicketController {
   @ApiOperation({ summary: 'TICKET 간단 생성' })
   @ApiBody({ type: RequestSimpleTicketSaveDto })
   @ApiResponse(TicketResponse.saveSimpleTicket[200])
+  @ApiResponse(TicketResponse.saveSimpleTicket[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -150,7 +151,15 @@ export default class TicketController {
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketService.saveSimpleTicket(dto, user, workspace);
+    const ticketSetting = await this.ticketSettingService.findTicketSettingById(
+      dto.typeId,
+    );
+    await this.ticketService.saveSimpleTicket(
+      dto,
+      user,
+      workspace,
+      ticketSetting,
+    );
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

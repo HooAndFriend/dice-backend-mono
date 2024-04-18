@@ -328,11 +328,14 @@ export default class TicketService {
    * Save ticket
    * @param dto
    * @param user
+   * @param workspace
+   * @param ticketSetting
    */
   public async saveSimpleTicket(
     dto: RequestSimpleTicketSaveDto,
     user: User,
     workspace: Workspace,
+    ticketSetting: TicketSetting,
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
@@ -348,6 +351,7 @@ export default class TicketService {
         workspace,
         name: dto.name,
         status: TaskStatusEnum.NOTHING,
+        ticketSetting,
       }),
     );
   }
