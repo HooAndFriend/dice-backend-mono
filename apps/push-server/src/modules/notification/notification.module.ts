@@ -7,6 +7,7 @@ import NotificationService from './service/notification.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmExModule } from '@/src/global/repository/typeorm-ex.module';
 import NotificationRepository from './repository/notification.repository';
+import { NotificationListener } from './listener/notification.listener';
 
 // ** Entity Imports
 import Notification from './domain/notification.entity';
@@ -16,7 +17,7 @@ import Notification from './domain/notification.entity';
     TypeOrmModule.forFeature([Notification]),
     TypeOrmExModule.forCustomRepository([NotificationRepository]),
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, NotificationListener],
   exports: [NotificationService],
   controllers: [NotificationController],
 })

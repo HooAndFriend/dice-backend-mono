@@ -23,14 +23,13 @@ export default class WebPushService {
    * Send Single Push Message
    * @param dto
    */
-  public async sendPushMessage(dto: SendPushDto) {
+  public async sendPushMessage(title: string, body: string, token: string) {
     const message = {
       notification: {
-        title: dto.title,
-        body: dto.body,
+        title,
+        body,
       },
-
-      token: dto.fcmToken,
+      token,
     };
 
     try {
@@ -44,14 +43,17 @@ export default class WebPushService {
    * Send Multiple Push Message
    * @param dto
    */
-  public async sendPushMessageToMultiple(dto: SendMultiPushDto) {
+  public async sendPushMessageToMultiple(
+    title: string,
+    body: string,
+    tokens: string[],
+  ) {
     const message = {
       notification: {
-        title: dto.title,
-        body: dto.body,
+        title,
+        body,
       },
-
-      tokens: dto.fcmToken,
+      tokens,
     };
 
     try {

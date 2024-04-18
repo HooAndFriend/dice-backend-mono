@@ -1,19 +1,29 @@
 // ** Pipe Imports
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsString } from 'class-validator';
+
+// ** Enum Imports
+import NotificationStatusEnum from '../../notification/domain/notification-status.enum';
+import NotificationTypeEnum from '../../notification/domain/notification-type.enum';
 
 export default class SendMultiPushDto {
-  constructor(fcmToken: string[], title: string, body: string) {
-    this.title = title;
-    this.body = body;
-    this.fcmToken = fcmToken;
-  }
-
   @IsArray()
   fcmToken: string[];
+
+  @IsArray()
+  email: string[];
 
   @IsString()
   title: string;
 
   @IsString()
   body: string;
+
+  @IsEnum(NotificationStatusEnum)
+  status: NotificationStatusEnum;
+
+  @IsEnum(NotificationTypeEnum)
+  type: NotificationTypeEnum;
+
+  @IsString()
+  subId: number;
 }

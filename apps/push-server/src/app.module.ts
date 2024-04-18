@@ -3,6 +3,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 // ** Custom Module Imports
 import LoggerService from './global/util/logger/logger.service';
@@ -18,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
+    EventEmitterModule.forRoot(),
     RedisModule.forRoot({
       readyLog: true,
       config: {
