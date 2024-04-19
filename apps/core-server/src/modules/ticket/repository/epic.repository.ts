@@ -58,6 +58,7 @@ export default class EpicRepository extends Repository<Epic> {
       .select([
         'epic.id',
         'epic.name',
+        'epic.content',
         'epic.code',
         'ticket.id',
         'ticket.code',
