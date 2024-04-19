@@ -28,6 +28,17 @@ export const BoardResponse = {
       message: 'Not Found Board',
     }),
   },
+  updateBoardTitle: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Board를 수정합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Board',
+    }),
+  },
   findBoardList: {
     200: createResponse({
       data: {

@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -44,6 +45,7 @@ import User from '../../user/domain/user.entity';
 import RoleEnum from '@/src/global/enum/Role';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
+import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';
 
 @ApiTags('Board')
 @ApiResponse(createServerExceptionResponse())
@@ -82,6 +84,33 @@ export default class BoardController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Board를 생성합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Board Title 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiBody({ type: RequestBoardTitleUpdateDto })
+  @ApiResponse(BoardResponse.updateBoardTitle[200])
+  @ApiResponse(BoardResponse.updateBoardTitle[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/')
+  public async updateBoardTitle(
+    @Body() dto: RequestBoardTitleUpdateDto,
+    @GetUser() user: User,
+  ) {
+    await this.boardService.existedBoardById(dto.boardId);
+    await this.boardService.updateBoardTitle(
+      dto.boardId,
+      dto.title,
+      user.email,
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Board를 수정합니다.',
     });
   }
 

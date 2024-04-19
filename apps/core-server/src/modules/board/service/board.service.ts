@@ -41,6 +41,19 @@ export default class BoardService {
   }
 
   /**
+   * Update Board Title
+   * @param boardId
+   * @param title
+   */
+  public async updateBoardTitle(
+    boardId: number,
+    title: string,
+    modifiedId: string,
+  ) {
+    await this.boardRepository.update(boardId, { title, modifiedId });
+  }
+
+  /**
    * Save Board With Parent
    * @param title
    * @param createdId
