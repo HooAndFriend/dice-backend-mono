@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
@@ -175,6 +176,25 @@ export default class BoardController {
       data: { data, count },
       statusCode: 200,
       message: 'Board 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Board 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(BoardResponse.findBoard[200])
+  @ApiResponse(BoardResponse.findBoard[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/:boardId')
+  public async findBoard(@Param('boardId', ParseIntPipe) boardId: number) {
+    const board = await this.boardService.findBoardById(boardId);
+
+    return CommonResponse.createResponse({
+      data: board,
+      statusCode: 200,
+      message: 'Board를 조회합니다.',
     });
   }
 }

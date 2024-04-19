@@ -50,6 +50,28 @@ export const BoardResponse = {
       message: 'Not Found Board',
     }),
   },
+  findBoard: {
+    200: createResponse({
+      data: {
+        createdDate: '2024-04-19T08:45:00.133Z',
+        modifiedDate: '2024-04-19T08:45:00.133Z',
+        id: 4,
+        title: '게시글 이름',
+        content: '',
+        createdId: 'admin',
+        modifiedId: 'admin',
+        orderId: 0,
+        isDeleted: false,
+      },
+      statusCode: 200,
+      message: 'Board를 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Board',
+    }),
+  },
   findBoardList: {
     200: createResponse({
       data: {
