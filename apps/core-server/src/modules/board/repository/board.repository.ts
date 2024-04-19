@@ -20,10 +20,11 @@ export default class BoardRepository extends Repository<Board> {
         'children.createdDate',
       ])
       .leftJoin('board.children', 'children')
+      .where('children.isDeleted = false')
       .where('board.parentId is null')
       .andWhere('board.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
-      .where('children.isDeleted = false')
+
       .orderBy('board.orderId', 'ASC');
 
     return await queryBuilder.getManyAndCount();
