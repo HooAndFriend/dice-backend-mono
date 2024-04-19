@@ -25,4 +25,18 @@ export default class QaHistoryLogService {
       }),
     );
   }
+
+  /**
+   * Find Qa History List
+   * @param qaId
+   * @returns
+   */
+  public async findQaHistoryList(qaId: number) {
+    return await this.qaHistoryLogRepository.findAndCount({
+      where: {
+        qaId,
+      },
+      order: { createdDate: 'DESC' },
+    });
+  }
 }
