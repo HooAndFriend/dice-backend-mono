@@ -150,6 +150,7 @@ export default class EpicService {
         workspace: workspace,
         code: epicCode,
         orderId: epicCount,
+        content: '',
       }),
     );
   }

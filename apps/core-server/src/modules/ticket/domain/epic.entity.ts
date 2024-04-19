@@ -50,7 +50,6 @@ export default class Epic extends BaseTimeEntity {
     type: 'text',
     comment: '에픽 내용',
     nullable: false,
-    default: '',
   })
   content: string;
 
