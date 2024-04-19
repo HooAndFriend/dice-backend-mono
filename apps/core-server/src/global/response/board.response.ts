@@ -17,4 +17,15 @@ export const BoardResponse = {
       message: 'Not Found Board',
     }),
   },
+  deleteBoard: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Board를 삭제합니다..',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Board',
+    }),
+  },
 };

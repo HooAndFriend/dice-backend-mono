@@ -56,6 +56,7 @@ export default class BoardService {
         createdId,
         modifiedId: createdId,
         workspace,
+        isDeleted: false,
         parent: board,
       }),
     );
@@ -68,7 +69,7 @@ export default class BoardService {
    */
   public async findBoardById(boardId: number) {
     const board = await this.boardRepository.findOne({
-      where: { id: boardId },
+      where: { id: boardId, isDeleted: false },
     });
 
     if (!board) {
@@ -76,5 +77,27 @@ export default class BoardService {
     }
 
     return board;
+  }
+
+  /**
+   * Existed Board By Id
+   * @param boardId
+   */
+  public async existedBoardById(boardId: number) {
+    const board = await this.boardRepository.exist({
+      where: { id: boardId, isDeleted: false },
+    });
+
+    if (!board) {
+      throw new NotFoundException('Not Found Board');
+    }
+  }
+
+  /**
+   * Delete Board
+   * @param boardId
+   */
+  public async deleteBoard(boardId: number) {
+    await this.boardRepository.update(boardId, { isDeleted: true });
   }
 }

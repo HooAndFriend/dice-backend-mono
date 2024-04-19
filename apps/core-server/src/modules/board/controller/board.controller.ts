@@ -1,5 +1,12 @@
 // ** Nest Imports
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import BoardService from '../service/board.service';
@@ -74,6 +81,25 @@ export default class BoardController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Board를 생성합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Board 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(BoardResponse.deleteBoard[200])
+  @ApiResponse(BoardResponse.deleteBoard[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:boardId')
+  public async deleteBoard(@Param('boardId') boardId: number) {
+    await this.boardService.existedBoardById(boardId);
+    await this.boardService.deleteBoard(boardId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Board를 삭제합니다.',
     });
   }
 }

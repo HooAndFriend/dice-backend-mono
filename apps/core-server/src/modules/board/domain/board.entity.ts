@@ -41,10 +41,20 @@ export default class Board extends BaseTimeEntity {
   })
   modifiedId: string;
 
-  @ManyToOne((type) => Board, (board) => board.children)
+  @Column({
+    type: 'boolean',
+    comment: '삭제 여부',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
+  @ManyToOne((type) => Board, (board) => board.children, {
+    onDelete: 'CASCADE',
+  })
   parent: Board;
 
-  @OneToMany((type) => Board, (board) => board.parent)
+  @OneToMany((type) => Board, (board) => board.parent, { cascade: true })
   children: Board[];
 
   @ManyToOne(() => Workspace, (workspace) => workspace.board, {
