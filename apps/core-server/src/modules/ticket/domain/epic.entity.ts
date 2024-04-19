@@ -54,14 +54,6 @@ export default class Epic extends BaseTimeEntity {
   })
   isDeleted: boolean;
 
-  @Column({
-    type: 'date',
-    name: 'due_date',
-    comment: '마감일',
-    nullable: true,
-  })
-  dueDate: Date;
-
   @ManyToOne(() => Workspace, (workspace) => workspace.epic, {
     onDelete: 'CASCADE',
   })
