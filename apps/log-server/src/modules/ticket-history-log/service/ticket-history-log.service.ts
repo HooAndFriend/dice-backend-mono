@@ -27,4 +27,16 @@ export default class TicketHistoryLogService {
       }),
     );
   }
+
+  /**
+   * Find Ticket List
+   * @param ticketId
+   * @returns
+   */
+  public async findTicketHistoryList(ticketId: number) {
+    return await this.ticketHistoryLogRepository.findAndCount({
+      where: { ticketId },
+      order: { createdDate: 'DESC' },
+    });
+  }
 }

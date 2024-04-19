@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -11,7 +11,12 @@ import {
 import TicketHistoryLogService from '../service/ticket-history-log.service';
 
 // ** Swagger Imports
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 // ** Response Imports
 import {
@@ -21,6 +26,10 @@ import {
 
 // ** Dto Imports
 import RequestTicketHistoryLogSaveDto from '../dto/ticket-history-log.save.dto';
+import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
+import { GetUser } from '@/src/global/decorators/user/user.decorators';
+import CommonResponse from '@/src/global/dto/api.response';
+import { TicketHistoryLogResponse } from '@/src/global/response/ticket-history-log.response';
 
 @ApiTags('Qa History Log')
 @ApiResponse(createServerExceptionResponse())
@@ -30,6 +39,22 @@ export default class TicketHistoryLogController {
   constructor(
     private readonly ticketHistoryLogService: TicketHistoryLogService,
   ) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Ticket의 히스토리 리스트 조회' })
+  @ApiResponse(TicketHistoryLogResponse.findTicketHistoryList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findTicketHistoryList(@Param('id') id: number) {
+    const [data, count] =
+      await this.ticketHistoryLogService.findTicketHistoryList(id);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Find Ticket History List',
+    });
+  }
 
   @MessagePattern('ticket-history-log')
   async handleMessage(
