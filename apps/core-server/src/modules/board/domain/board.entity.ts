@@ -28,7 +28,7 @@ export default class Board extends BaseTimeEntity {
   @Column({
     type: 'text',
     comment: '콘텐츠',
-    nullable: false,
+    nullable: true,
   })
   content: string;
 
