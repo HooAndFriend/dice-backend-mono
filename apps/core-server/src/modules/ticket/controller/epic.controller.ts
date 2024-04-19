@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -180,7 +181,7 @@ export default class EpicController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:epicId')
-  public async findEpic(@Param('epicId') id: number) {
+  public async findEpic(@Param('epicId', ParseIntPipe) id: number) {
     const epic = await this.epicService.findEpicDetailById(id);
 
     return CommonResponse.createResponse({
