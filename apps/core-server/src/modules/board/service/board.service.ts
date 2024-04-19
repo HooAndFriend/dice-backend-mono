@@ -27,12 +27,15 @@ export default class BoardService {
     createdId: string,
     workspace: Workspace,
   ) {
+    const orderId = await this.getOrderId(workspace.id);
+
     await this.boardRepository.save(
       this.boardRepository.create({
         title,
         createdId,
         modifiedId: createdId,
         workspace,
+        orderId,
       }),
     );
   }
@@ -50,6 +53,8 @@ export default class BoardService {
     workspace: Workspace,
     board: Board,
   ) {
+    const orderId = await this.getOrderId(workspace.id);
+
     await this.boardRepository.save(
       this.boardRepository.create({
         title,
@@ -58,6 +63,7 @@ export default class BoardService {
         workspace,
         isDeleted: false,
         parent: board,
+        orderId,
       }),
     );
   }
@@ -99,5 +105,19 @@ export default class BoardService {
    */
   public async deleteBoard(boardId: number) {
     await this.boardRepository.update(boardId, { isDeleted: true });
+  }
+
+  // ******* Private Method
+  // *******
+
+  /**
+   * Get Order Id
+   * @param workspaceId
+   * @returns
+   */
+  private async getOrderId(workspaceId: number) {
+    return await this.boardRepository.count({
+      where: { workspace: { id: workspaceId } },
+    });
   }
 }

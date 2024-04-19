@@ -42,6 +42,13 @@ export default class Board extends BaseTimeEntity {
   modifiedId: string;
 
   @Column({
+    type: 'int',
+    comment: '정렬 순서',
+    nullable: false,
+  })
+  orderId: number;
+
+  @Column({
     type: 'boolean',
     comment: '삭제 여부',
     nullable: false,
