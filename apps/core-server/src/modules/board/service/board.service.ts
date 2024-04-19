@@ -9,6 +9,7 @@ import BoardRepository from '../repository/board.repository';
 import Workspace from '../../workspace/domain/workspace.entity';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
+import RequestBoardUpdateDto from '../dto/board.update.dto';
 
 @Injectable()
 export default class BoardService {
@@ -38,6 +39,20 @@ export default class BoardService {
         orderId,
       }),
     );
+  }
+
+  /**
+   * Update Board
+   * @param board
+   * @param dto
+   * @param modifiedId
+   */
+  public async updateBoard(dto: RequestBoardUpdateDto, modifiedId: string) {
+    await this.boardRepository.update(dto.boardId, {
+      title: dto.title,
+      content: dto.content,
+      modifiedId,
+    });
   }
 
   /**

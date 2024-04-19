@@ -26,6 +26,13 @@ export default class Board extends BaseTimeEntity {
   title: string;
 
   @Column({
+    type: 'text',
+    comment: '콘텐츠',
+    nullable: false,
+  })
+  content: string;
+
+  @Column({
     type: 'varchar',
     length: 120,
     comment: '생성자 ID',
