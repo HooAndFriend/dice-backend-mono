@@ -23,15 +23,16 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-
-// ** Dto Imports
-import RequestTicketHistoryLogSaveDto from '../dto/ticket-history-log.save.dto';
-import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
-import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import CommonResponse from '@/src/global/dto/api.response';
 import { TicketHistoryLogResponse } from '@/src/global/response/ticket-history-log.response';
 
-@ApiTags('Qa History Log')
+// ** Utils Imports
+import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
+
+// ** Dto Imports
+import RequestTicketHistoryLogSaveDto from '../dto/ticket-history-log.save.dto';
+
+@ApiTags('Ticket History Log')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/ticket-history-log', version: '1' })
