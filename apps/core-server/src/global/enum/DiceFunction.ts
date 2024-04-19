@@ -3,6 +3,7 @@ enum DiceFunction {
   QA = 'QA',
   COLLECTION = 'COLLECTION',
   ERD = 'ERD',
+  BOARD = 'BOARD',
 }
 
 export default DiceFunction;
