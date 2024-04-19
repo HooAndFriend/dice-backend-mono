@@ -5,10 +5,12 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
+import Workspace from '../../workspace/domain/workspace.entity';
 
 @Entity({ name: 'TB_BOARD' })
 export default class Board extends BaseTimeEntity {
@@ -44,4 +46,9 @@ export default class Board extends BaseTimeEntity {
 
   @OneToMany((type) => Board, (board) => board.parent)
   children: Board[];
+
+  @ManyToOne(() => Workspace, (workspace) => workspace.board, {
+    onDelete: 'CASCADE',
+  })
+  workspace: Relation<Workspace>;
 }
