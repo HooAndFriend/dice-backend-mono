@@ -18,7 +18,7 @@ import { FileDownloadLogResponse } from '@/src/global/response/file-download-log
 import RequestFileDownloadLogSaveDto from '../dto/file-download-log.save.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 
-@ApiTags('Qa History Log')
+@ApiTags('File Download Log')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/file', version: '1' })
