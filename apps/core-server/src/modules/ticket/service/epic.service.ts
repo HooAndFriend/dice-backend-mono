@@ -181,6 +181,7 @@ export default class EpicService {
   public async updateEpic(dto: RequestEpicUpdateDto) {
     await this.epicRepository.update(dto.epicId, {
       name: dto.name,
+      content: dto.content,
     });
   }
 

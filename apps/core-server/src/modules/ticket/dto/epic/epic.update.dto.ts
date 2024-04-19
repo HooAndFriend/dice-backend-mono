@@ -12,4 +12,8 @@ export default class RequestEpicUpdateDto {
   @ApiProperty({ example: 'DICE 로그인 수정' })
   @IsString()
   name: string;
+
+  @ApiProperty({ example: 'DICE ' })
+  @IsString()
+  content: string;
 }
