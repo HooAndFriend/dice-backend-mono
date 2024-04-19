@@ -11,6 +11,7 @@ import TicketModule from './ticket/ticket.module';
 import CsModule from './cs/cs.module';
 import AdminModule from './admin/admin.module';
 import VersionModule from './version/version.module';
+import BoardModule from './board/board.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import VersionModule from './version/version.module';
     CsModule,
     AdminModule,
     VersionModule,
+    BoardModule,
   ],
   providers: [],
   exports: [],
