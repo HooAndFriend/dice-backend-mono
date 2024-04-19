@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -100,6 +101,26 @@ export default class BoardController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Board를 삭제합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Board 리스트 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(BoardResponse.findBoardList[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findBoardList(@GetWorkspace() { id }: Workspace) {
+    const [data, count] = await this.boardService.findBoardListByWorkspaceId(
+      id,
+    );
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Board 리스트를 조회합니다.',
     });
   }
 }

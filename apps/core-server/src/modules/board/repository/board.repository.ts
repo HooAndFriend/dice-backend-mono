@@ -8,4 +8,24 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Board from '../domain/board.entity';
 
 @CustomRepository(Board)
-export default class BoardRepository extends Repository<Board> {}
+export default class BoardRepository extends Repository<Board> {
+  public async findBoardList(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('board')
+      .select([
+        'board.id',
+        'board.title',
+        'board.createdDate',
+        'children.id',
+        'children.title',
+        'children.createdDate',
+      ])
+      .leftJoin('board.children', 'children')
+      .where('board.parentId is null')
+      .andWhere('board.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('board.isDeleted = false')
+      .where('children.isDeleted = false')
+      .orderBy('board.orderId', 'ASC');
+
+    return await queryBuilder.getManyAndCount();
+  }
+}

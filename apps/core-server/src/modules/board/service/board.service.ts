@@ -107,6 +107,15 @@ export default class BoardService {
     await this.boardRepository.update(boardId, { isDeleted: true });
   }
 
+  /**
+   * Find Board List By Workspace Id
+   * @param workspaceId
+   * @returns
+   */
+  public async findBoardListByWorkspaceId(workspaceId: number) {
+    return await this.boardRepository.findBoardList(workspaceId);
+  }
+
   // ******* Private Method
   // *******
 
