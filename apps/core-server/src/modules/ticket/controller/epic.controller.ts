@@ -154,27 +154,6 @@ export default class EpicController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'EPIC Due Date 수정' })
-  @ApiBody({ type: RequestEpicDueDateUpdateDto })
-  @ApiResponse(TicketResponse.updateDueDateEpic[200])
-  @ApiResponse(TicketResponse.updateDueDateEpic[400])
-  @ApiResponse(TicketResponse.updateDueDateEpic[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Patch('/dueDate')
-  public async updateDueDateEpic(@Body() dto: RequestEpicDueDateUpdateDto) {
-    await this.epicService.isExistedEpicById(dto.epicId);
-    await this.epicService.updateEpicDueDate(dto);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Epic을 수정합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 삭제' })
   @ApiResponse(TicketResponse.deleteEpic[200])
   @ApiResponse(TicketResponse.deleteEpic[404])

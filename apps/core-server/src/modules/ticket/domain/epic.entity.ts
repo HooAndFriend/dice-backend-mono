@@ -47,6 +47,14 @@ export default class Epic extends BaseTimeEntity {
   code: string;
 
   @Column({
+    type: 'text',
+    comment: '에픽 내용',
+    nullable: false,
+    default: '',
+  })
+  content: string;
+
+  @Column({
     type: 'boolean',
     comment: '삭제 여부',
     nullable: false,

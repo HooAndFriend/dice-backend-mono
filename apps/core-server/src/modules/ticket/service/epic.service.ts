@@ -225,14 +225,6 @@ export default class EpicService {
   }
 
   /**
-   * Update Epic Due Date
-   * @param dto
-   */
-  public async updateEpicDueDate(dto: RequestEpicDueDateUpdateDto) {
-    await this.epicRepository.update(dto.epicId, { dueDate: dto.dueDate });
-  }
-
-  /**
    * Find Less Epic List
    * @param orderId
    * @param workspaceId
