@@ -34,6 +34,6 @@ export default class MailController {
     @Payload() data: SendMailDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    await this.mailService.sendMail(data);
+    // await this.mailService.sendMail(data);
   }
 }
