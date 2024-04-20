@@ -104,6 +104,7 @@ export default class BoardService {
   public async findBoardById(boardId: number) {
     const board = await this.boardRepository.findOne({
       where: { id: boardId, isDeleted: false },
+      relations: ['children', 'parent'],
     });
 
     if (!board) {
