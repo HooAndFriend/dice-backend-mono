@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "start": "nest start -b swc",
-    "dev": "cross-env NODE_ENV=development nest start -b swc -w",
+    "dev": "cross-env NODE_ENV=local nest start -b swc -w",
     "start:debug": "cross-env NODE_ENV=staging nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
     "test": "jest",
