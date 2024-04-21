@@ -18,11 +18,19 @@ import Qna from './domain/qna.entity';
 import QnaRepository from './repository/qna.repository';
 import QnaController from './controller/qna.controller';
 import QnaService from './service/qna.service';
+import CsCategory from './domain/cs-category.entity';
+import CsCategoryRepository from './repository/cs-category.repository';
+import CsCategoryService from './service/cs-category.service';
+import CsCategoryController from './controller/cs-category.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Faq, Qna]),
-    TypeOrmExModule.forCustomRepository([FaqRepository, QnaRepository]),
+    TypeOrmModule.forFeature([Faq, Qna, CsCategory]),
+    TypeOrmExModule.forCustomRepository([
+      FaqRepository,
+      QnaRepository,
+      CsCategoryRepository,
+    ]),
     ClientsModule.registerAsync([
       {
         name: 'RMQ_PUSH_QUE',
@@ -42,7 +50,7 @@ import QnaService from './service/qna.service';
     ]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
-  controllers: [FaqController, QnaController],
-  providers: [FaqService, QnaService],
+  controllers: [FaqController, QnaController, CsCategoryController],
+  providers: [FaqService, QnaService, CsCategoryService],
 })
 export default class CsModule {}

@@ -3,12 +3,15 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator';
-import CsCategoryEnum from '../domain/cs-category.enum';
 
 export default class RequestFaqUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   faqId: number;
+
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  csCategoryId: number;
 
   @ApiProperty({ example: '이거는 어떻게 해요?' })
   @IsString()
@@ -25,8 +28,4 @@ export default class RequestFaqUpdateDto {
   @ApiProperty({ example: true })
   @IsBoolean()
   isEnabled: boolean;
-
-  @ApiProperty({ example: CsCategoryEnum.BASIC, enum: CsCategoryEnum })
-  @IsEnum(CsCategoryEnum)
-  category: CsCategoryEnum;
 }

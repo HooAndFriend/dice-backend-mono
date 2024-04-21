@@ -4,15 +4,16 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { DataSource } from 'typeorm';
+
+// ** Custom Module Imports
 import FaqRepository from '../repository/faq.repository';
+
+// ** enum, dto, entity, types Imports
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestFaqUpdateDto from '../dto/faq.update.dto';
-
-// ** Custom Module Imports
-
-// ** enum, dto, entity, types Imports
+import CsCategory from '../domain/cs-category.entity';
 
 @Injectable()
 export default class FaqService {
@@ -30,16 +31,20 @@ export default class FaqService {
    * @param adminEmail
    * @returns
    */
-  public async saveFaq(dto: RequestFaqSaveDto, adminEmail: string) {
+  public async saveFaq(
+    dto: RequestFaqSaveDto,
+    adminEmail: string,
+    csCategory: CsCategory,
+  ) {
     await this.faqRepository.save(
       this.faqRepository.create({
         question: dto.question,
         answer: dto.answer,
-        category: dto.category,
         file: dto.file,
         createdId: adminEmail,
         modifiedId: adminEmail,
         isEnabled: dto.isEnabled,
+        csCategory,
       }),
     );
   }
@@ -58,11 +63,24 @@ export default class FaqService {
    */
   public async findFaq(id: number) {
     const faq = await this.faqRepository.findOne({ where: { id } });
+
     if (!faq) {
       throw new NotFoundException('Faq를 찾을 수 없습니다.');
     }
 
     return faq;
+  }
+
+  /**
+   * Existed Faq By Id
+   * @param faqId
+   */
+  public async existedFaqById(faqId: number) {
+    const faq = await this.faqRepository.exist({ where: { id: faqId } });
+
+    if (!faq) {
+      throw new NotFoundException('Faq를 찾을 수 없습니다.');
+    }
   }
 
   /**
@@ -78,14 +96,18 @@ export default class FaqService {
    * @param dto
    * @param adminEmail
    */
-  public async updateFaq(dto: RequestFaqUpdateDto, adminEmail: string) {
+  public async updateFaq(
+    dto: RequestFaqUpdateDto,
+    adminEmail: string,
+    csCategory: CsCategory,
+  ) {
     await this.faqRepository.update(dto.faqId, {
       question: dto.question,
       answer: dto.answer,
-      category: dto.category,
       file: dto.file,
       modifiedId: adminEmail,
       isEnabled: dto.isEnabled,
+      csCategory,
     });
   }
 }

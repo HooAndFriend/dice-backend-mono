@@ -38,12 +38,6 @@ export default class QnaRepository extends Repository<Qna> {
       });
     }
 
-    if (dto.category) {
-      queryBuilder.andWhere('qna.category = :category', {
-        category: dto.category,
-      });
-    }
-
     if (dto.question) {
       queryBuilder.andWhere('qna.title LIKE :question', {
         question: `%${dto.question}%`,

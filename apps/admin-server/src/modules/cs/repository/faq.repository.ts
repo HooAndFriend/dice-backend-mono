@@ -36,12 +36,6 @@ export default class FaqRepository extends Repository<Faq> {
       });
     }
 
-    if (dto.category) {
-      queryBuilder.andWhere('faq.category = :category', {
-        category: dto.category,
-      });
-    }
-
     if (dto.question) {
       queryBuilder.andWhere('faq.title LIKE :question', {
         question: `%${dto.question}%`,

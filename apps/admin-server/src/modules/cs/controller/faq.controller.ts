@@ -41,6 +41,7 @@ import Admin from '../../admin/domain/admin.entity';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
 import RequestFaqUpdateDto from '../dto/faq.update.dto';
+import CsCategoryService from '../service/cs-category.service';
 
 // ** Dto Imports
 
@@ -49,7 +50,10 @@ import RequestFaqUpdateDto from '../dto/faq.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/faq', version: '1' })
 export default class FaqController {
-  constructor(private readonly faqService: FaqService) {}
+  constructor(
+    private readonly faqService: FaqService,
+    private readonly csCategoryService: CsCategoryService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Faq 저장' })
@@ -61,7 +65,11 @@ export default class FaqController {
     @Body() dto: RequestFaqSaveDto,
     @GetAdmin() { email }: Admin,
   ) {
-    await this.faqService.saveFaq(dto, email);
+    const category = await this.csCategoryService.findCsCategoryById(
+      dto.csCategoryId,
+    );
+
+    await this.faqService.saveFaq(dto, email, category);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -128,8 +136,12 @@ export default class FaqController {
     @Body() dto: RequestFaqUpdateDto,
     @GetAdmin() { email }: Admin,
   ) {
-    await this.faqService.findFaq(dto.faqId);
-    await this.faqService.updateFaq(dto, email);
+    await this.faqService.existedFaqById(dto.faqId);
+
+    const category = await this.csCategoryService.findCsCategoryById(
+      dto.csCategoryId,
+    );
+    await this.faqService.updateFaq(dto, email, category);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

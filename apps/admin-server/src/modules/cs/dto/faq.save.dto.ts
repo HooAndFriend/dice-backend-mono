@@ -2,8 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsBoolean, IsEnum, IsString } from 'class-validator';
-import CsCategoryEnum from '../domain/cs-category.enum';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export default class RequestFaqSaveDto {
   @ApiProperty({ example: '이거는 어떻게 해요?' })
@@ -14,6 +13,10 @@ export default class RequestFaqSaveDto {
   @IsString()
   answer: string;
 
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  csCategoryId: number;
+
   @ApiProperty({ example: 'https://s3.bucket.com/123.pdf' })
   @IsString()
   file: string;
@@ -21,8 +24,4 @@ export default class RequestFaqSaveDto {
   @ApiProperty({ example: true })
   @IsBoolean()
   isEnabled: boolean;
-
-  @ApiProperty({ example: CsCategoryEnum.BASIC, enum: CsCategoryEnum })
-  @IsEnum(CsCategoryEnum)
-  category: CsCategoryEnum;
 }

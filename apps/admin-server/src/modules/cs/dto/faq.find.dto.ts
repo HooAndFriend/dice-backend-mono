@@ -12,7 +12,6 @@ import {
 } from 'class-validator';
 
 // ** Dto Imports
-import CsCategoryEnum from '../domain/cs-category.enum';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 
 export default class RequestFaqFindDto extends RequestPagingDto {
@@ -25,11 +24,6 @@ export default class RequestFaqFindDto extends RequestPagingDto {
   @IsOptional()
   @IsBoolean()
   isExpose: boolean;
-
-  @ApiProperty({ example: [CsCategoryEnum.BASIC], required: false })
-  @IsOptional()
-  @IsArray()
-  category: CsCategoryEnum[];
 
   @ApiProperty({ example: '이가인', required: false })
   @IsOptional()
