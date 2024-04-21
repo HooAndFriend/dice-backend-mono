@@ -14,16 +14,19 @@ export default class QnaRepository extends Repository<Qna> {
    * @returns
    */
   public async findQnaList(dto: RequestQnaFindDto) {
-    const queryBuilder = this.createQueryBuilder('qna').select([
-      'qna.id',
-      'qna.title',
-      'qna.category',
-      'qna.name',
-      'qna.email',
-      'qna.isAnswer',
-      'qna.answerDate',
-      'qna.createdDate',
-    ]);
+    const queryBuilder = this.createQueryBuilder('qna')
+      .select([
+        'qna.id',
+        'qna.title',
+        'qna.name',
+        'qna.email',
+        'qna.isAnswer',
+        'qna.answerDate',
+        'qna.createdDate',
+        'csCategory.id',
+        'csCategory.name',
+      ])
+      .leftJoin('qna.csCategory', 'csCategory');
 
     if (dto.isAnswer) {
       queryBuilder.where('qna.isAnswer = :isAnswer', {
