@@ -2,10 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsString } from 'class-validator';
-
-// ** Dto Imports
-import CsCategoryEnum from '../domain/cs-category.enum';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 
 export default class RequestQnaSaveDto {
   @ApiProperty({ example: '이가인' })
@@ -16,9 +13,9 @@ export default class RequestQnaSaveDto {
   @IsString()
   email: string;
 
-  @ApiProperty({ example: CsCategoryEnum.BASIC, enum: CsCategoryEnum })
-  @IsEnum(CsCategoryEnum)
-  category: CsCategoryEnum;
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  categoryId: number;
 
   @ApiProperty({ example: '질문 입니다.' })
   @IsString()

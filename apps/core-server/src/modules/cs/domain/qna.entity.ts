@@ -1,9 +1,15 @@
 // ** Typeorm Imports
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 // ** enum, dto, entity Imports
 import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
-import CsCategoryEnum from './cs-category.enum';
+import CsCategory from './cs-category.entity';
 
 @Entity({ name: 'TB_QNA' })
 export default class Qna extends BaseTimeEntity {
@@ -25,14 +31,6 @@ export default class Qna extends BaseTimeEntity {
     nullable: false,
   })
   email: string;
-
-  @Column({
-    type: 'enum',
-    enum: CsCategoryEnum,
-    comment: '카테고리',
-    nullable: false,
-  })
-  category: CsCategoryEnum;
 
   @Column({
     type: 'varchar',
@@ -87,4 +85,9 @@ export default class Qna extends BaseTimeEntity {
     nullable: false,
   })
   isAnswer: boolean;
+
+  @ManyToOne(() => CsCategory, (csCategory) => csCategory.qna, {
+    onDelete: 'CASCADE',
+  })
+  csCategory: Relation<CsCategory>;
 }

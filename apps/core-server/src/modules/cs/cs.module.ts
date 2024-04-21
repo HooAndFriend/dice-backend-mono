@@ -16,11 +16,17 @@ import Qna from './domain/qna.entity';
 import QnaRepository from './repository/qna.repository';
 import QnaController from './controller/qna.controller';
 import QnaService from './service/qna.service';
+import CsCategory from './domain/cs-category.entity';
+import CsCategoryRepository from './repository/cs-category.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Faq, Qna]),
-    TypeOrmExModule.forCustomRepository([FaqRepository, QnaRepository]),
+    TypeOrmModule.forFeature([Faq, CsCategory, Qna]),
+    TypeOrmExModule.forCustomRepository([
+      FaqRepository,
+      CsCategoryRepository,
+      QnaRepository,
+    ]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule],
   controllers: [FaqController, QnaController],
