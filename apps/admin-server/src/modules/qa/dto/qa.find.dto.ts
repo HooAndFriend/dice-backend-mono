@@ -2,41 +2,55 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsDateString,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 // ** Enum Imports
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 
 export default class RequestQaFindDto {
+  @ApiProperty({ example: 1 })
+  @Type(() => Number)
+  @IsNumber()
+  workspaceId: number;
+
   @ApiProperty({
     example: TaskStatusEnum.NOTHING,
     enum: TaskStatusEnum,
-    default: TaskStatusEnum.NOTHING,
     type: TaskStatusEnum,
+    required: false,
   })
+  @IsOptional()
   @IsEnum(TaskStatusEnum)
   status: TaskStatusEnum;
 
   @ApiProperty({ example: '2024-02-02', required: false })
-  @IsDate()
-  @Type(() => Date)
   @IsOptional()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  @IsDateString()
   createdDate: Date;
 
   @ApiProperty({ example: '2024-02-24', required: false })
-  @IsDate()
-  @Type(() => Date)
   @IsOptional()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  @IsDateString()
   modifiedDate: Date;
 
   @ApiProperty({ example: 'QA 제목입니다.', required: false })
-  @IsString()
   @IsOptional()
+  @IsString()
   title: string;
 
   @ApiProperty({ example: 'ISSUE-01', required: false })
-  @IsString()
   @IsOptional()
+  @IsString()
   code: string;
 }

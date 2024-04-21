@@ -24,7 +24,7 @@ export default class QaFile extends BaseCreatedTimeEntity {
   })
   url: string;
 
-  @ManyToOne(() => Qa, (qa) => qa.file, {
+  @ManyToOne(() => Qa, (qa) => qa.qaFile, {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
   })

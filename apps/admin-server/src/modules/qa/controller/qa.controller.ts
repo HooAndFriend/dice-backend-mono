@@ -1,5 +1,11 @@
 // ** Nest Imports
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
 // ** Module Imports
 import QaService from '../service/qa.service';
@@ -37,14 +43,14 @@ export default class QaController {
   @ApiOperation({ summary: 'QA 리스트 조회' })
   @ApiResponse(QaResponse.findQaList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/detail/')
-  public async findQaListByQuery(@Query() findquery: RequestQaFindDto) {
-    const qaList = await this.qaService.findQaListByQuery(findquery);
+  @Get('/')
+  public async findQaListByQuery(@Query(ValidationPipe) dto: RequestQaFindDto) {
+    const [data, count] = await this.qaService.findQaListByQuery(dto);
 
     return CommonResponse.createResponse({
+      data: { data, count },
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
-      data: qaList,
     });
   }
 }

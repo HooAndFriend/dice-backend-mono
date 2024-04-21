@@ -36,7 +36,8 @@ export default class QaRepository extends Repository<Qa> {
     return await queryBuilder.getManyAndCount();
   }
 
-  public async findQaListByQuery(findQuery: RequestQaFindDto) {
+  public async findQaListByQuery(dto: RequestQaFindDto) {
+    console.log(dto.workspaceId, typeof Number(dto.workspaceId));
     const queryBuilder = this.createQueryBuilder('qa')
       .select([
         'qa.id',
@@ -56,31 +57,38 @@ export default class QaRepository extends Repository<Qa> {
         'qa.modifiedDate',
       ])
       .leftJoin('qa.admin', 'admin')
-      .leftJoin('qa.qaFile', 'qaFile');
+      .leftJoin('qa.qaFile', 'qaFile')
+      .where('qa.workspaceId = :workspaceId', {
+        workspaceId: dto.workspaceId,
+      })
+      .orderBy('qa.createdDate', 'DESC');
 
-    if (findQuery.status !== TaskStatusEnum.NOTHING) {
+    if (dto.status) {
       queryBuilder.andWhere('qa.status = :status', {
-        status: findQuery.status,
+        status: dto.status,
       });
     }
-    if (findQuery.title) {
+
+    if (dto.title) {
       queryBuilder.andWhere('qa.title LIKE :title', {
-        title: `%${findQuery.title}%`,
+        title: `%${dto.title}%`,
       });
     }
-    if (findQuery.code) {
+    if (dto.code) {
       queryBuilder.andWhere('qa.code LIKE :code', {
-        number: `%${findQuery.code}%`,
+        number: `%${dto.code}%`,
       });
     }
-    if (findQuery.createdDate) {
+
+    if (dto.createdDate) {
       queryBuilder.andWhere('qa.createdDate >= :createdDate', {
-        createdDate: `${findQuery.createdDate}`,
+        createdDate: `${dto.createdDate}`,
       });
     }
-    if (findQuery.modifiedDate) {
+
+    if (dto.modifiedDate) {
       queryBuilder.andWhere('qa.modifiedDate <= :modifiedDate', {
-        modifiedDate: `${findQuery.modifiedDate}`,
+        modifiedDate: `${dto.modifiedDate}`,
       });
     }
 

@@ -79,7 +79,7 @@ export default class Qa extends BaseTimeEntity {
   comment: Relation<Comment>[];
 
   @OneToMany(() => File, (file) => file.qa, { nullable: true })
-  file: Relation<File>[];
+  qaFile: Relation<File>[];
 
   @ManyToOne(() => User, (user) => user.qa, {
     onDelete: 'CASCADE',
