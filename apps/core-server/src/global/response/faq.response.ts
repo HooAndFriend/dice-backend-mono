@@ -11,11 +11,14 @@ export const FaqResponse = {
       data: {
         data: [
           {
-            createdDate: '2024-02-06T06:34:36.422Z',
-            id: 2,
-            question: '이거는 어떻게 해요?123123123123',
+            createdDate: '2024-04-21T16:13:26.519Z',
+            id: 1,
+            question: '이거는 어떻게 해요?',
             answer: '이렇게 합니다.',
-            category: 'BASIC',
+            csCategory: {
+              id: 2,
+              name: '전체',
+            },
           },
         ],
         count: 1,
