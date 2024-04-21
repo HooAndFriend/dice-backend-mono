@@ -60,7 +60,10 @@ async function bootstrap() {
   // }
 
   // ** Swagger Setting
-  if (configService.get('NODE_ENV') === 'development') {
+  if (
+    configService.get('NODE_ENV') === 'development' ||
+    configService.get('NODE_ENV') === 'local'
+  ) {
     swaggerConfig(app);
   }
 
