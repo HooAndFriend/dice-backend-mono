@@ -6,6 +6,7 @@ import {
   IsArray,
   IsBoolean,
   IsDateString,
+  IsNumber,
   IsOptional,
   IsString,
   Matches,
@@ -13,8 +14,15 @@ import {
 
 // ** Dto Imports
 import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { Type } from 'class-transformer';
 
 export default class RequestFaqFindDto extends RequestPagingDto {
+  @ApiProperty({ example: 2, required: false })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  csCategoryId: number;
+
   @ApiProperty({ example: '이거는 어떻게 해요?', required: false })
   @IsOptional()
   @IsString()

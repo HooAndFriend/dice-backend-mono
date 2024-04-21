@@ -26,6 +26,12 @@ export default class FaqRepository extends Repository<Faq> {
       ])
       .leftJoin('faq.csCategory', 'csCategory');
 
+    if (dto.csCategoryId) {
+      queryBuilder.andWhere('csCategory.id = :csCategoryId', {
+        csCategoryId: dto.csCategoryId,
+      });
+    }
+
     if (dto.isExpose) {
       queryBuilder.where('faq.isExpose = :isExpose', {
         isExpose: dto.isExpose,
