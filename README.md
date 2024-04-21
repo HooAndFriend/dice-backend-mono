@@ -1,4 +1,4 @@
-# Dice Backend
+# Dice Backend Mono
 
 ## Description
 
