@@ -37,7 +37,6 @@ export default class QnaController {
     private readonly csCategoryService: CsCategoryService,
   ) {}
 
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Qna 생성' })
   @ApiBody({ type: RequestQnaSaveDto })
   @ApiResponse(QnaResponse.saveQna[200])
