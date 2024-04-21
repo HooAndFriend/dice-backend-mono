@@ -78,4 +78,21 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return await queryBuilder.getRawMany();
   }
+
+  public async findWorkspaceById(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.comment',
+        'workspace.profile',
+        'workspace.createdId',
+        'workspace.createdDate',
+        'workspaceUser.id',
+      ])
+      .leftJoin('workspace.workspaceUser', 'workspaceUser')
+      .where('workspace.id = :workspaceId', { workspaceId });
+
+    return await queryBuilder.getOne();
+  }
 }

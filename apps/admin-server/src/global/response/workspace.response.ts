@@ -100,4 +100,25 @@ export const WorkspaceResponse = {
       message: '워크스페이스 리스트를 조회합니다.',
     }),
   },
+
+  findWorkspace: {
+    200: createResponse({
+      data: {
+        id: 3,
+        name: 'HooAndFriend',
+        profile: 'https://file.hi-dice.com/dice-dev/logo.png',
+        comment: '인후와 친구들',
+        createdId: 'admin',
+        createdDate: '2024-04-01T06:33:20.111Z',
+        userCount: 9,
+      },
+      statusCode: 200,
+      message: '워크스페이스를 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Workspace',
+    }),
+  },
 };
