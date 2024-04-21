@@ -16,12 +16,15 @@ export const FaqResponse = {
       data: {
         data: [
           {
-            createdDate: '2024-02-06T06:10:25.464Z',
+            createdDate: '2024-04-21T16:13:26.519Z',
             id: 1,
             question: '이거는 어떻게 해요?',
-            category: 'BASIC',
             createdId: 'admin',
             isEnabled: true,
+            csCategory: {
+              id: 2,
+              name: '전체',
+            },
           },
         ],
         count: 1,

@@ -14,14 +14,17 @@ export default class FaqRepository extends Repository<Faq> {
    * @returns
    */
   public async findFaqList(dto: RequestFaqFindDto) {
-    const queryBuilder = this.createQueryBuilder('faq').select([
-      'faq.id',
-      'faq.question',
-      'faq.category',
-      'faq.createdId',
-      'faq.createdDate',
-      'faq.isEnabled',
-    ]);
+    const queryBuilder = this.createQueryBuilder('faq')
+      .select([
+        'faq.id',
+        'faq.question',
+        'faq.createdId',
+        'faq.createdDate',
+        'faq.isEnabled',
+        'csCategory.id',
+        'csCategory.name',
+      ])
+      .leftJoin('faq.csCategory', 'csCategory');
 
     if (dto.isExpose) {
       queryBuilder.where('faq.isExpose = :isExpose', {

@@ -36,6 +36,7 @@ export default class FaqService {
     adminEmail: string,
     csCategory: CsCategory,
   ) {
+    console.log(1);
     await this.faqRepository.save(
       this.faqRepository.create({
         question: dto.question,

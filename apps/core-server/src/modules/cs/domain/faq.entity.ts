@@ -33,6 +33,14 @@ export default class Faq extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
+    length: 255,
+    comment: '파일',
+    nullable: false,
+  })
+  file: string;
+
+  @Column({
+    type: 'varchar',
     length: 120,
     comment: '생성자 ID',
     nullable: false,
