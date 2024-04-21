@@ -25,11 +25,11 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import RequestFaqFindDto from '../dto/faq.find.dto';
 import CommonResponse from '@/src/global/dto/api.response';
 import { FaqResponse } from '@/src/global/response/faq.response';
 
 // ** Dto Imports
+import RequestFaqFindDto from '../dto/faq.find.dto';
 
 @ApiTags('Faq')
 @ApiResponse(createServerExceptionResponse())
@@ -38,7 +38,6 @@ import { FaqResponse } from '@/src/global/response/faq.response';
 export default class FaqController {
   constructor(private readonly faqService: FaqService) {}
 
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Faq List 조회' })
   @ApiResponse(FaqResponse.findFaqList[200])
   @Get('/')

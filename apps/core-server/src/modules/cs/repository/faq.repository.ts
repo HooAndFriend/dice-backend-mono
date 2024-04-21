@@ -14,13 +14,16 @@ export default class FaqRepository extends Repository<Faq> {
    * @returns
    */
   public async findFaqList(dto: RequestFaqFindDto) {
-    const queryBuilder = this.createQueryBuilder('faq').select([
-      'faq.id',
-      'faq.question',
-      'faq.category',
-      'faq.answer',
-      'faq.createdDate',
-    ]);
+    const queryBuilder = this.createQueryBuilder('faq')
+      .select([
+        'faq.id',
+        'faq.question',
+        'faq.answer',
+        'faq.createdDate',
+        'csCategory.id',
+        'csCategory.name',
+      ])
+      .leftJoin('faq.csCategory', 'csCategory');
 
     if (dto.question) {
       queryBuilder.andWhere('faq.question LIKE :question', {
