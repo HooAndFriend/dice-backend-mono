@@ -1,5 +1,14 @@
 // ** Nest Imports
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import CsCategoryService from '../service/cs-category.service';
@@ -85,6 +94,22 @@ export default class CsCategoryController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update CsCategory Success',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'CS Category 삭제' })
+  @ApiResponse(CsCategoryResponse.deleteCsCategory[200])
+  @ApiResponse(CsCategoryResponse.deleteCsCategory[404])
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:id')
+  public async deleteCsCategory(@Param('id', ParseIntPipe) id: number) {
+    await this.csCategoryService.existedCsCategoryById(id);
+    await this.csCategoryService.deleteCsCategory(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete CsCategory Success',
     });
   }
 }

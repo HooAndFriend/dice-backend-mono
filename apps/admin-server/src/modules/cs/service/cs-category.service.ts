@@ -53,6 +53,28 @@ export default class CsCategoryService {
   }
 
   /**
+   * Existed CsCategory By Id
+   * @param csCategoryId
+   */
+  public async existedCsCategoryById(csCategoryId: number) {
+    const csCategory = await this.csCategoryRepository.findOne({
+      where: { id: csCategoryId },
+    });
+
+    if (!csCategory) {
+      throw new NotFoundException('Not Found CsCategory');
+    }
+  }
+
+  /**
+   * Delete CsCategory
+   * @param csCategoryId
+   */
+  public async deleteCsCategory(csCategoryId: number) {
+    await this.csCategoryRepository.delete(csCategoryId);
+  }
+
+  /**
    * Save CsCategory
    * @param name
    * @param adminEmail

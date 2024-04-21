@@ -37,4 +37,15 @@ export const CsCategoryResponse = {
       error: 'NOT FOUND',
     }),
   },
+  deleteCsCategory: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete CsCategory Success',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      message: 'Not Found CsCategory',
+      error: 'NOT FOUND',
+    }),
+  },
 };
