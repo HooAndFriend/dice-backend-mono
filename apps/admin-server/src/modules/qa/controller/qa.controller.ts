@@ -2,6 +2,8 @@
 import {
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Query,
   UseGuards,
   ValidationPipe,
@@ -51,6 +53,22 @@ export default class QaController {
       data: { data, count },
       statusCode: 200,
       message: 'Qa리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'QA를 조회합니다.' })
+  @ApiResponse(QaResponse.findQa[200])
+  @ApiResponse(QaResponse.findQa[404])
+  @UseGuards(JwtAccessGuard)
+  @Get('/:id')
+  public async findQa(@Param('id', ParseIntPipe) id: number) {
+    const qa = await this.qaService.findQaById(id);
+
+    return CommonResponse.createResponse({
+      data: qa,
+      statusCode: 200,
+      message: 'Qa를 조회합니다.',
     });
   }
 }

@@ -40,4 +40,32 @@ export const QaResponse = {
       message: 'qa 리스트를 조회합니다.',
     }),
   },
+  findQa: {
+    200: createResponse({
+      data: {
+        createdDate: '2024-04-14T07:41:14.805Z',
+        modifiedDate: '2024-04-14T07:41:14.805Z',
+        id: 35,
+        code: '',
+        status: 'NOTHING',
+        title: 'Qa Code',
+        asIs: '',
+        toBe: '',
+        memo: null,
+        admin: {
+          email: 'admin',
+          nickname: 'DICE ADMIN',
+          profile: 'https://file.hi-dice.com/file//workspaceLogo.png',
+        },
+        qaFile: [],
+      },
+      statusCode: 200,
+      message: 'Qa를 조회합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Qa',
+    }),
+  },
 };

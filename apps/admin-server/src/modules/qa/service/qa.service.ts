@@ -8,6 +8,7 @@ import QaFileRepository from '../repository/qa.file.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class QaService {
@@ -24,5 +25,20 @@ export default class QaService {
    */
   public async findQaListByQuery(dto: RequestQaFindDto) {
     return await this.qaRepository.findQaListByQuery(dto);
+  }
+
+  /**
+   * Find Qa By Id
+   * @param qaId
+   * @returns
+   */
+  public async findQaById(qaId: number) {
+    const qa = await this.qaRepository.findQaById(qaId);
+
+    if (!qa) {
+      throw new NotFoundException('Not Found Qa');
+    }
+
+    return qa;
   }
 }
