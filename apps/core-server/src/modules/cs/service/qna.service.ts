@@ -10,6 +10,7 @@ import QnaRepository from '../repository/qna.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
+import CsCategory from '../domain/cs-category.entity';
 
 @Injectable()
 export default class QnaService {
@@ -25,11 +26,12 @@ export default class QnaService {
    * Save Qna
    * @param dto
    */
-  public async saveQna(dto: RequestQnaSaveDto) {
+  public async saveQna(dto: RequestQnaSaveDto, csCategory: CsCategory) {
     await this.qnaRepository.save(
       this.qnaRepository.create({
         ...dto,
         isAnswer: false,
+        csCategory,
       }),
     );
   }

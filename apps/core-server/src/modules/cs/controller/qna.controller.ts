@@ -25,13 +25,17 @@ import { QnaResponse } from '@/src/global/response/qna.response';
 // ** Dto Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
 import CommonResponse from '@/src/global/dto/api.response';
+import CsCategoryService from '../service/cs-category.service';
 
 @ApiTags('Qna')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/qna', version: '1' })
 export default class QnaController {
-  constructor(private readonly qnaService: QnaService) {}
+  constructor(
+    private readonly qnaService: QnaService,
+    private readonly csCategoryService: CsCategoryService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Qna 생성' })
@@ -39,7 +43,9 @@ export default class QnaController {
   @ApiResponse(QnaResponse.saveQna[200])
   @Post('/')
   public async saveQna(@Body() dto: RequestQnaSaveDto) {
-    await this.qnaService.saveQna(dto);
+    const qna = await this.csCategoryService.findCsCategoryById(dto.categoryId);
+
+    await this.qnaService.saveQna(dto, qna);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

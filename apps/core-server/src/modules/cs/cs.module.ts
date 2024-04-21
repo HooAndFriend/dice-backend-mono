@@ -18,6 +18,7 @@ import QnaController from './controller/qna.controller';
 import QnaService from './service/qna.service';
 import CsCategory from './domain/cs-category.entity';
 import CsCategoryRepository from './repository/cs-category.repository';
+import CsCategoryService from './service/cs-category.service';
 
 @Module({
   imports: [
@@ -28,8 +29,14 @@ import CsCategoryRepository from './repository/cs-category.repository';
       QnaRepository,
     ]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [
+    TypeOrmExModule,
+    TypeOrmModule,
+    FaqService,
+    QnaService,
+    CsCategoryService,
+  ],
   controllers: [FaqController, QnaController],
-  providers: [FaqService, QnaService],
+  providers: [FaqService, QnaService, CsCategoryService],
 })
 export default class CsModule {}
