@@ -10,6 +10,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@/src/global/exception/CustomException';
+import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
 
 @Injectable()
 export default class CsCategoryService {
@@ -64,5 +65,20 @@ export default class CsCategoryService {
         modifiedId: adminEmail,
       }),
     );
+  }
+
+  /**
+   * Update CsCategory
+   * @param dto
+   * @param adminEmail
+   */
+  public async updateCsCategory(
+    dto: RequestCsCategoryUpdateDto,
+    adminEmail: string,
+  ) {
+    await this.csCategoryRepository.update(dto.csCategoryId, {
+      name: dto.name,
+      modifiedId: adminEmail,
+    });
   }
 }

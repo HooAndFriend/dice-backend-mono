@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import CsCategoryService from '../service/cs-category.service';
@@ -28,6 +28,8 @@ import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
 // ** Dto Imports
 import RequestCsCategorySaveDto from '../dto/cs-category.save';
 import Admin from '../../admin/domain/admin.entity';
+import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
+import { BadRequestException } from '@/src/global/exception/CustomException';
 
 @ApiTags('Cs Category')
 @ApiResponse(createServerExceptionResponse())
@@ -43,7 +45,7 @@ export default class CsCategoryController {
   @ApiResponse(CsCategoryResponse.saveCsCategory[400])
   @UseGuards(JwtAccessGuard)
   @Post('/')
-  public async saveFaq(
+  public async saveCsCategory(
     @Body() dto: RequestCsCategorySaveDto,
     @GetAdmin() { email }: Admin,
   ) {
@@ -53,6 +55,36 @@ export default class CsCategoryController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save CsCategory Success',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'CS Category 수정' })
+  @ApiBody({ type: RequestCsCategoryUpdateDto })
+  @ApiResponse(CsCategoryResponse.updateCsCategory[200])
+  @ApiResponse(CsCategoryResponse.updateCsCategory[400.1])
+  @ApiResponse(CsCategoryResponse.updateCsCategory[400.2])
+  @ApiResponse(CsCategoryResponse.updateCsCategory[404])
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateCsCategory(
+    @Body() dto: RequestCsCategoryUpdateDto,
+    @GetAdmin() { email }: Admin,
+  ) {
+    const csCategory = await this.csCategoryService.findCsCategoryById(
+      dto.csCategoryId,
+    );
+
+    if (csCategory.name === dto.name) {
+      throw new BadRequestException('Current name is same with new name');
+    }
+
+    await this.csCategoryService.existedCsCategoryByName(dto.name);
+    await this.csCategoryService.updateCsCategory(dto, email);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update CsCategory Success',
     });
   }
 }
