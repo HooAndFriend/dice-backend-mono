@@ -6,7 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class CsCategoryService {
@@ -32,5 +35,34 @@ export default class CsCategoryService {
     }
 
     return csCategory;
+  }
+
+  /**
+   * Existed CsCategory By Name
+   * @param name
+   */
+  public async existedCsCategoryByName(name: string) {
+    const csCategory = await this.csCategoryRepository.findOne({
+      where: { name },
+    });
+
+    if (csCategory) {
+      throw new BadRequestException('Already existed category name');
+    }
+  }
+
+  /**
+   * Save CsCategory
+   * @param name
+   * @param adminEmail
+   */
+  public async saveCsCategory(name: string, adminEmail: string) {
+    await this.csCategoryRepository.save(
+      this.csCategoryRepository.create({
+        name,
+        createdId: adminEmail,
+        modifiedId: adminEmail,
+      }),
+    );
   }
 }
