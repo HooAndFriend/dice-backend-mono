@@ -48,4 +48,23 @@ export const CsCategoryResponse = {
       error: 'NOT FOUND',
     }),
   },
+  findCsCategoryList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2024-04-21T15:53:14.233Z',
+            modifiedDate: '2024-04-21T15:53:14.233Z',
+            id: 2,
+            name: '전체',
+            createdId: 'admin',
+            modifiedId: 'admin',
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Delete CsCategory Success',
+    }),
+  },
 };

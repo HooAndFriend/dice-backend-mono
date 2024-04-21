@@ -67,6 +67,14 @@ export default class CsCategoryService {
   }
 
   /**
+   * Find CsCategory List
+   * @returns
+   */
+  public async findCsCategoryList() {
+    return await this.csCategoryRepository.findAndCount();
+  }
+
+  /**
    * Delete CsCategory
    * @param csCategoryId
    */

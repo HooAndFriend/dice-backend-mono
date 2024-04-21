@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -46,6 +47,21 @@ import { BadRequestException } from '@/src/global/exception/CustomException';
 @Controller({ path: '/cs-category', version: '1' })
 export default class CsCategoryController {
   constructor(private readonly csCategoryService: CsCategoryService) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'CS Category 리스트 조회' })
+  @ApiResponse(CsCategoryResponse.findCsCategoryList[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findCsCategoryList() {
+    const [data, count] = await this.csCategoryService.findCsCategoryList();
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Delete CsCategory Success',
+    });
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'CS Category 저장' })
