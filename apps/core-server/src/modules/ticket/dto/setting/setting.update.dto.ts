@@ -13,6 +13,10 @@ export default class RequestSettingUpdateDto {
   @IsString()
   color: string;
 
+  @ApiProperty({ example: 'ffffff' })
+  @IsString()
+  textColor: string;
+
   @ApiProperty({ example: 'SCN' })
   @IsString()
   type: string;

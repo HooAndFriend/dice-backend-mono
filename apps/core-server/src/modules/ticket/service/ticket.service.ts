@@ -664,6 +664,7 @@ export default class TicketService {
     return this.ticketSettingRepository.update(dto.settingId, {
       type: dto.type,
       color: dto.color,
+      textColor: dto.textColor,
       description: dto.description,
     });
   }
