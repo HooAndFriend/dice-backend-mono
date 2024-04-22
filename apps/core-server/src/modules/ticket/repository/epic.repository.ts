@@ -34,6 +34,7 @@ export default class EpicRepository extends Repository<Epic> {
         'worker.profile',
         'ticketSetting.id',
         'ticketSetting.color',
+        'ticketSetting.textColor',
         'ticketSetting.type',
       ])
       .leftJoin('epic.ticket', 'ticket')

@@ -21,6 +21,7 @@ export const TicketResponse = {
             ticketSetting: {
               id: 11,
               color: '#c89898',
+              textColor: '#ffffff',
               type: '123',
             },
             worker: {
@@ -153,6 +154,7 @@ export const TicketResponse = {
         ticketSetting: {
           id: 11,
           color: '#c89898',
+          textColor: '#ffffff',
           type: '123',
         },
         epic: {
@@ -296,6 +298,7 @@ export const TicketResponse = {
                   id: 11,
                   color: '#c89898',
                   type: '123',
+                  textColor: '#ffffff',
                 },
                 worker: {
                   id: 5,

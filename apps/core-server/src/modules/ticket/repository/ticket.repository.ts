@@ -35,6 +35,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticketFile.url',
         'ticketSetting.id',
         'ticketSetting.color',
+        'ticketSetting.textColor',
         'ticketSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
@@ -101,6 +102,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'epic.name',
         'ticketSetting.id',
         'ticketSetting.color',
+        'ticketSetting.textColor',
         'ticketSetting.type',
       ])
       .leftJoin('ticket.workspace', 'workspace')

@@ -29,6 +29,16 @@ export default class TicketSetting extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
+    length: 10,
+    name: 'text_color',
+    comment: '글자 색',
+    default: '#ffffff',
+    nullable: false,
+  })
+  textColor: string;
+
+  @Column({
+    type: 'varchar',
     length: 20,
     name: 'type',
     comment: '티켓 타입 명',
