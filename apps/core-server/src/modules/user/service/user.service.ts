@@ -88,6 +88,21 @@ export default class UserService {
   }
 
   /**
+   * Find User By Email
+   * @param email
+   * @returns
+   */
+  public async findUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException('Not Found User');
+    }
+
+    return user;
+  }
+
+  /**
    * Update User Fcm Token
    * @param userId
    * @param fcmToken

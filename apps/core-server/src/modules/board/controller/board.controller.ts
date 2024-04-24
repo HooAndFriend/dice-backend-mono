@@ -49,13 +49,17 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
+import UserService from '../../user/service/user.service';
 
 @ApiTags('Board')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/board', version: '1' })
 export default class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(
+    private readonly boardService: BoardService,
+    private readonly userService: UserService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Board 생성' })
@@ -191,8 +195,17 @@ export default class BoardController {
   public async findBoard(@Param('boardId', ParseIntPipe) boardId: number) {
     const board = await this.boardService.findBoardById(boardId);
 
+    const user = await this.userService.findUserByEmail(board.createdId);
+
     return CommonResponse.createResponse({
-      data: board,
+      data: {
+        ...board,
+        createdUser: {
+          id: user.id,
+          profile: user.profile,
+          nickname: user.nickname,
+        },
+      },
       statusCode: 200,
       message: 'Board를 조회합니다.',
     });

@@ -11,12 +11,14 @@ import BoardRepository from './repository/board.repository';
 import BoardController from './controller/board.controller';
 import BoardService from './service/board.service';
 import WorkspaceModule from '../workspace/workspace.module';
+import UserModule from '../user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Board]),
     TypeOrmExModule.forCustomRepository([BoardRepository]),
     forwardRef(() => WorkspaceModule),
+    forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, BoardService],
   controllers: [BoardController],
