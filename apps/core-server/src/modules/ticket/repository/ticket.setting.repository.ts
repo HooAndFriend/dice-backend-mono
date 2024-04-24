@@ -14,6 +14,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.id',
         'setting.color',
         'setting.type',
+        'setting.textColor',
         'setting.description',
       ])
       .leftJoin('setting.workspace', 'workspace')
@@ -27,6 +28,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
         'setting.id',
         'setting.color',
         'setting.type',
+        'setting.textColor',
         'setting.description',
         'workspace.id',
       ])
@@ -41,6 +43,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
       .select([
         'setting.id',
         'setting.color',
+        'setting.textColor',
         'setting.type',
         'setting.description',
       ])
