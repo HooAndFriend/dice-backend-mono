@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "^17.0.12",
     "eslint": "^8.34.0",
     "ts-node": "^10.9.1",
@@ -19,7 +20,10 @@
     "@nestjs/common": "^9.3.9",
     "@nestjs/core": "^9.0.0",
     "@nestjs/microservices": "^10.3.0",
+    "@nestjs/swagger": "^7.1.12",
     "@types/amqplib": "^0.10.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0"
   }
