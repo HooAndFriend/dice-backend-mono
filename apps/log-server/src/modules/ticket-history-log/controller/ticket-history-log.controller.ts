@@ -44,7 +44,7 @@ export default class TicketHistoryLogController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Ticket의 히스토리 리스트 조회' })
   @ApiResponse(TicketHistoryLogResponse.findTicketHistoryList[200])
-  @UseGuards(JwtAccessGuard)
+  // @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findTicketHistoryList(@Param('id') id: number) {
     const [data, count] =
