@@ -21,8 +21,8 @@ import CommonResponse from '@/src/global/dto/api.response';
 import { NotificationResponse } from '@/src/global/response/notification.response';
 
 // ** Utils Imports
-import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
 import { GetUser } from '@/src/global/decorators/user/user.decorators';
+import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Dto Imports
 

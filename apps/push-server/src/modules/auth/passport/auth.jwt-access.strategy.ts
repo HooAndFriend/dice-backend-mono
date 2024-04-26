@@ -7,7 +7,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 // ** Dto, Type, enum Import
-import { JwtPayload } from '../../global/types';
+import { JwtPayload } from '../../../global/types';
 
 @Injectable()
 export default class JwtAccessStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +19,7 @@ export default class JwtAccessStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public validate(payload: JwtPayload) {
+  public async validate(payload: JwtPayload): Promise<any> {
     return payload;
   }
 }

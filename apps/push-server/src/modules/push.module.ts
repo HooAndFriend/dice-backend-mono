@@ -7,26 +7,11 @@ import { PassportModule } from '@nestjs/passport';
 import MailModule from './mail/mail.module';
 import WebPushModule from './webpush/webpush.module';
 import NotificationModule from './notification/notification.module';
-import JwtAccessStrategy from '../global/guard/auth.jwt-access.strategy';
-import { ConfigService } from '@nestjs/config';
+import AuthModule from './auth/auth.module';
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get('JWT_ACCESS_TOKEN_SECRET'),
-        signOptions: {
-          expiresIn: config.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
-        },
-      }),
-    }),
-    forwardRef(() => MailModule),
-    // forwardRef(() => WebPushModule),
-    forwardRef(() => NotificationModule),
-  ],
-  providers: [JwtAccessStrategy],
+  imports: [PassportModule, MailModule, NotificationModule, AuthModule],
+  providers: [],
   exports: [],
   controllers: [],
 })
