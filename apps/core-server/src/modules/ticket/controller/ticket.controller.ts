@@ -48,7 +48,7 @@ import {
 import User from '../../user/domain/user.entity';
 import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { RoleEnum } from '@repo/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';

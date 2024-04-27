@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 // ** Dto Imports
 import UserRepository from '../../user/repository/user.repository';
 import { BadRequestException } from '@repo/common';
-import SendMailDto from '@/src/global/dto/mail-send.dto';
+import { SendMailDto } from '@repo/common';
 import Team from '../domain/team.entity';
 import { RoleEnum } from '@repo/common';
 import User from '../../user/domain/user.entity';

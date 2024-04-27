@@ -25,7 +25,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { FaqResponse } from '@/src/global/response/faq.response';
 
 // ** Dto Imports

@@ -40,7 +40,7 @@ import { WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { RoleEnum } from '@repo/common';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';

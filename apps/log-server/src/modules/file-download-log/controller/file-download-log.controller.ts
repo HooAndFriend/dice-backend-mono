@@ -16,7 +16,7 @@ import { FileDownloadLogResponse } from '@/src/global/response/file-download-log
 
 // ** Dto Imports
 import RequestFileDownloadLogSaveDto from '../dto/file-download-log.save.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 
 @ApiTags('File Download Log')
 @ApiResponse(createServerExceptionResponse())

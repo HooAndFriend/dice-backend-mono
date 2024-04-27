@@ -31,7 +31,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Dto Imports
 import RequestUserFindDto from '../dto/user.find.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import TeamUserService from '../../team/service/team-user.service';
 import WorkspaceUserService from '../../workspace/service/workspace-user.service';
 import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';

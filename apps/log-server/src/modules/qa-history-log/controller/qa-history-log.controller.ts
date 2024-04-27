@@ -23,7 +23,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { QaHistoryLogResponse } from '@/src/global/response/qa-history-log.response';
 
 // ** Utils Imports

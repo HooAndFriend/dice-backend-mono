@@ -21,7 +21,7 @@ import {
 } from '../../../global/response/common';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())

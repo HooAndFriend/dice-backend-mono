@@ -7,7 +7,7 @@ import StateRepository from '../repository/state.repository';
 import RequestStateSaveDto from '../dto/state.save.dto';
 import RequestStateUpdateDto from '../dto/state.update.dto';
 import { Not } from 'typeorm';
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 
 // ** Utils Imports
 

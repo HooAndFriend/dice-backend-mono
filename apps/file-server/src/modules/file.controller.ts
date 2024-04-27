@@ -14,11 +14,8 @@ import FileService from './file.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // ** Response Imports
-import {
-  createServerExceptionResponse,
-  createUnauthorizedResponse,
-} from '@/src/global/response/common';
-import CommonResponse from '../global/dto/api.response';
+import { createServerExceptionResponse } from '@/src/global/response/common';
+import { CommonResponse } from '@repo/common';
 import { FileResponse } from '../global/response/file.response';
 
 @ApiTags('File')

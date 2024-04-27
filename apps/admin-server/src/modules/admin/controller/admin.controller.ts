@@ -39,7 +39,7 @@ import { AdminResponse } from '@/src/global/response/admin.response';
 // ** Dto Imports
 import RequestAdminSaveDto from '../dto/admin.save.dto';
 import Admin from '../domain/admin.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import RequestAdminFindDto from '../dto/admin.find.dto';
 import RequestAdminUpdateDto from '../dto/admin.update.dto';
 import RequestAdminPasswordUpdateDto from '../dto/admin.update-password.dto';

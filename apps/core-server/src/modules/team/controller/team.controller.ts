@@ -41,7 +41,7 @@ import { TeamResponse } from '@/src/global/response/team.response';
 // ** Dto Imports
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import User from '../../user/domain/user.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { RoleEnum } from '@repo/common';
 import Team from '../domain/team.entity';
 import RequestTeamUpdateDto from '../dto/team.update.dto';

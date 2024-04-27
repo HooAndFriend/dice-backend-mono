@@ -1,7 +1,7 @@
 // ** Pipe Imports
 import { IsOptional, IsString } from 'class-validator';
 
-export default class SendMailDto {
+export class SendMailDto {
   constructor(email: string, subject: string, text: string, html: string) {
     this.email = email;
     this.subject = subject;

@@ -21,7 +21,7 @@ import {
 } from '@/src/global/response/common';
 
 // ** Dto Imports
-import SendPushDto from '../dto/push.send';
+import { SendPushDto } from '@repo/common';
 import SendMultiPushDto from '../dto/push-multi.send';
 import SaveNotificatioNDto from '../../notification/dto/notification.save.dto';
 import SaveMultiNotificatioNDto from '../../notification/dto/notification-multi.save.dto';

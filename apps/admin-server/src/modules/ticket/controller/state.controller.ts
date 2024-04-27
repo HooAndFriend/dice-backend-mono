@@ -33,10 +33,10 @@ import {
 } from '../../../global/response/common';
 import { StateResponse } from '@/src/global/response/state.response';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import RequestStateSaveDto from '../dto/state.save.dto';
 import RequestStateUpdateDto from '../dto/state.update.dto';
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 
 // ** Dto Imports
 

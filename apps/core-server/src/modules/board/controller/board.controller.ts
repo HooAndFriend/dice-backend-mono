@@ -39,7 +39,7 @@ import {
   GetWorkspace,
   WorkspaceRole,
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { BoardResponse } from '@/src/global/response/board.response';
 
 // ** Dto Imports

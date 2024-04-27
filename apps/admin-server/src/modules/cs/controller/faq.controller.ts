@@ -36,7 +36,7 @@ import {
 import { FaqResponse } from '@/src/global/response/faq.response';
 
 // ** Dto Imports
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import Admin from '../../admin/domain/admin.entity';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';

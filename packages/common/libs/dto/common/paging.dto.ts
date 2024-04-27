@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 // ** Pipe Imports
 import { IsNumber, IsOptional } from 'class-validator';
 
-export default class RequestPagingDto {
+export class RequestPagingDto {
   @ApiProperty({ example: 0, required: false })
   @IsOptional()
   @Type(() => Number)

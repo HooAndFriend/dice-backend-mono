@@ -38,7 +38,7 @@ import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import {
   GetTeam,
   TeamRole,

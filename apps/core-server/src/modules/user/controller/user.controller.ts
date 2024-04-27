@@ -46,7 +46,7 @@ import { GetUser } from '../../../global/decorators/user/user.decorators';
 // ** Dto Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import Team from '../../team/domain/team.entity';
 import { RoleEnum } from '@repo/common';
 import TeamService from '../../team/service/team.service';

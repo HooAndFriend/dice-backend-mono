@@ -15,7 +15,7 @@ import type { CommonResponseType } from '../types';
 // ** Utils Imports
 import { parse } from 'url';
 import { ClientProxy } from '@nestjs/microservices';
-import RequestLogDto from '@/src/modules/request-log/dto/request-log.dto';
+import { RequestLogDto } from '@repo/common';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

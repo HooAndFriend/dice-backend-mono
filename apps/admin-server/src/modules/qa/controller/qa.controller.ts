@@ -32,7 +32,7 @@ import {
 
 // ** Dto Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())

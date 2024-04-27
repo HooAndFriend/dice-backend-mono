@@ -2,9 +2,10 @@
 import { IsEnum, IsString } from 'class-validator';
 
 // ** Dto Imports
-import { NotificationStatusEnum, NotificationTypeEnum } from '@repo/common';
+import { NotificationStatusEnum } from '../../enum/notification/NotificationStatus.enum';
+import { NotificationTypeEnum } from '../../enum/notification/NotificationType.enum';
 
-export default class SendPushDto {
+export class SendPushDto {
   @IsString()
   fcmToken: string;
 

@@ -17,7 +17,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { NotificationResponse } from '@/src/global/response/notification.response';
 
 // ** Utils Imports

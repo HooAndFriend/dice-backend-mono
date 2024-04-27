@@ -4,7 +4,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 
 // ** Dto Imports
-import SendPushDto from '@/src/global/dto/push.send.dto';
+import { SendPushDto } from '@repo/common';
 
 @Injectable()
 export class QaNotificationListener {

@@ -20,7 +20,7 @@ import {
 } from '@/src/global/response/common';
 
 // ** Dto Imports
-import SendMailDto from '../dto/mail.send.dto';
+import { SendMailDto } from '@repo/common';
 
 @ApiTags('Mail')
 @ApiResponse(createServerExceptionResponse())

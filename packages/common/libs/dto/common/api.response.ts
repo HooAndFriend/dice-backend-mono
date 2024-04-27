@@ -1,7 +1,7 @@
 // ** Nest Imports
-import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
-export default class CommonResponse<T> {
+export class CommonResponse<T> {
   private constructor(payload: {
     readonly data?: T;
     readonly statusCode: number;

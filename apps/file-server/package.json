@@ -26,6 +26,7 @@
     "@nestjs/microservices": "^10.3.0",
     "@nestjs/platform-express": "^10.2.6",
     "@nestjs/swagger": "^7.1.12",
+    "@repo/common": "workspace:^",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
     "aws-sdk": "^2.1601.0",

@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 
 // ** Dto Imports
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 import { Type } from 'class-transformer';
 
 export default class RequestFaqFindDto extends RequestPagingDto {

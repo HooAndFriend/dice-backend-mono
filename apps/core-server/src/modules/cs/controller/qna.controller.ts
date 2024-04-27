@@ -24,7 +24,7 @@ import { QnaResponse } from '@/src/global/response/qna.response';
 
 // ** Dto Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import CsCategoryService from '../service/cs-category.service';
 
 @ApiTags('Qna')

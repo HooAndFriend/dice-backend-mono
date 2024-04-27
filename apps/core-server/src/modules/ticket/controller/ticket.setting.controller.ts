@@ -39,7 +39,7 @@ import {
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 
 // ** Dto Imports
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import { RoleEnum } from '@repo/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';

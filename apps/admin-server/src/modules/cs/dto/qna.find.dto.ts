@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 
 // ** Dto Imports
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 
 export default class RequestQnaFindDto extends RequestPagingDto {
   @ApiProperty({ example: '이거는 어떻게 해요?', required: false })

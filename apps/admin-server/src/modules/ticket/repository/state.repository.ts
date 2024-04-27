@@ -6,7 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import State from '../domain/state.entity';
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 
 @CustomRepository(State)
 export default class StateRepository extends Repository<State> {

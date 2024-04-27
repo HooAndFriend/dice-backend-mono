@@ -41,7 +41,7 @@ import { WorkspaceFunctionResponse } from '@/src/global/response/workspace-funct
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
 import { RoleEnum } from '@repo/common';
 import Workspace from '../domain/workspace.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import RequestRemoveWorkspaceFunctionDto from '../dto/workspace-function.remove.dto';
 
 @ApiTags('Workspace Function')

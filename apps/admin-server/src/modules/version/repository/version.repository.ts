@@ -6,7 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import Version from '../domain/version.entity';
-import RequestPagingDto from '@/src/global/dto/paging.dto';
+import { RequestPagingDto } from '@repo/common';
 
 @CustomRepository(Version)
 export default class VersionRepository extends Repository<Version> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import RequestLogRepository from '../repository/comment.repository';
-import RequestLogDto from '../dto/request-log.dto';
+import { RequestLogDto } from '@repo/common';
 import RequestLog from '../domain/request-log.entity';
 
 @Injectable()

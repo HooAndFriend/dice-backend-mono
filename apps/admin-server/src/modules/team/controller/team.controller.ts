@@ -32,7 +32,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Dto Imports
 import RequestTeamFindDto from '../dto/team.find.dto';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 
 @ApiTags('Team')
 @ApiResponse(createServerExceptionResponse())
@@ -81,8 +81,9 @@ export default class TeamController {
   @UseGuards(JwtAccessGuard)
   @Get('/workspace/:id')
   public async findWorkspaceListByTeamId(@Param('id') id: number) {
-    const [data, count] =
-      await this.workspaceService.findWorksapceListByTeamId(id);
+    const [data, count] = await this.workspaceService.findWorksapceListByTeamId(
+      id,
+    );
 
     return CommonResponse.createResponse({
       data: { data, count },

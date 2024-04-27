@@ -51,7 +51,7 @@ import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import User from '../../user/domain/user.entity';
 import { RoleEnum } from '@repo/common';
 import Team from '../../team/domain/team.entity';
-import CommonResponse from '@/src/global/dto/api.response';
+import { CommonResponse } from '@repo/common';
 import TeamUser from '../../team/domain/team-user.entity';
 import Workspace from '../domain/workspace.entity';
 import QaService from '../../qa/service/qa.service';
