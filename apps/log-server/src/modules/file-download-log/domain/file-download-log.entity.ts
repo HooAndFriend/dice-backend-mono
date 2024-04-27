@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
+import { BaseCreatedTimeEntity } from '@repo/common';
 import VersionTypeEnum from './version-type.enum';
 
 @Entity({ name: 'TB_FILE_DOWNLOAD_LOG' })

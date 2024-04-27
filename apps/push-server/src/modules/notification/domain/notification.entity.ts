@@ -1,10 +1,10 @@
 // ** Typeorm Imports
-import BaseTimeEntity from '@/src/global/domain/BaseTime.Entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
 import NotificationStatusEnum from './notification-status.enum';
 import NotificationTypeEnum from './notification-type.enum';
+import { BaseTimeEntity } from '@repo/common';
 
 @Entity({ name: 'TB_NOTIFICATION' })
 export default class Notification extends BaseTimeEntity {

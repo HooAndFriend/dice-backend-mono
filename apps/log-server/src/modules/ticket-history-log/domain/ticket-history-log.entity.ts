@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseCreatedTimeEntity from '@/src/global/domain/BaseCreatedTime.entity';
+import { BaseCreatedTimeEntity } from '@repo/common';
 import QaHistoryTypeEnum from './ticket-history-log-type.enum';
 
 @Entity({ name: 'TB_TICKET_HISTORY_LOG' })
