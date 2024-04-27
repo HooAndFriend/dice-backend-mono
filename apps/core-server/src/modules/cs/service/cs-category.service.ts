@@ -7,7 +7,7 @@ import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestFaqFindDto from '../dto/faq.find.dto';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 
 @Injectable()
 export default class CsCategoryService {

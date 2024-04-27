@@ -12,7 +12,7 @@ import { Between, DataSource } from 'typeorm';
 import EpicRepository from '../repository/epic.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 import Epic from '../domain/epic.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';

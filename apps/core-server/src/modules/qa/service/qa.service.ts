@@ -14,7 +14,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
-} from '../../../global/exception/CustomException';
+} from '@repo/common';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';

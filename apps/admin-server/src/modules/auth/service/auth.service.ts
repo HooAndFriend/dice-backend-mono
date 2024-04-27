@@ -16,10 +16,7 @@ import * as bcrypt from 'bcryptjs';
 
 // ** enum, dto, entity, types Imports
 import RequestAdminLoginDto from '../dto/admin.login.dto';
-import {
-  BadRequestException,
-  NotFoundException,
-} from '@/src/global/exception/CustomException';
+import { BadRequestException, NotFoundException } from '@repo/common';
 import { JwtPayload } from '@/src/global/types';
 import RequestAdminFindPasswordDto from '../dto/admin.find-password.dto';
 import SendMailDto from '@/src/global/dto/mail-send.dto';

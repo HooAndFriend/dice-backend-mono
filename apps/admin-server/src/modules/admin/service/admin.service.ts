@@ -8,10 +8,7 @@ import * as bcrypt from 'bcryptjs';
 // ** enum, dto, entity, types Imports
 import AdminRepository from '../repository/admin.repository';
 import RequestAdminSaveDto from '../dto/admin.save.dto';
-import {
-  BadRequestException,
-  NotFoundException,
-} from '@/src/global/exception/CustomException';
+import { BadRequestException, NotFoundException } from '@repo/common';
 import RequestAdminFindDto from '../dto/admin.find.dto';
 import { Not } from 'typeorm';
 import RequestAdminUpdateDto from '../dto/admin.update.dto';

@@ -9,7 +9,7 @@ import TeamRepository from '../repository/team.repository';
 
 // ** enum, dto, entity Imports
 import RequestTeamFindDto from '../dto/team.find.dto';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 
 @Injectable()
 export default class TeamService {

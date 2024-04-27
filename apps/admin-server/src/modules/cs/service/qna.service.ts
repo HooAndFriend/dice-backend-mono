@@ -10,10 +10,7 @@ import QnaRepository from '../repository/qna.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQnaFindDto from '../dto/qna.find.dto';
-import {
-  BadRequestException,
-  NotFoundException,
-} from '@/src/global/exception/CustomException';
+import { BadRequestException, NotFoundException } from '@repo/common';
 import RequestQnaAnswerDto from '../dto/qna.answer.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import SendMailDto from '@/src/global/dto/mail-send.dto';

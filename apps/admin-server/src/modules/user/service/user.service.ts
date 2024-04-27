@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
 import RequestUserFindDto from '../dto/user.find.dto';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
 
 @Injectable()

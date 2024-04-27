@@ -22,7 +22,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
-} from '../../../global/exception/CustomException';
+} from '@repo/common';
 import { JwtPayload } from '../../../global/types';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';

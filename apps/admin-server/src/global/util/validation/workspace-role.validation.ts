@@ -1,5 +1,5 @@
 import Role from '../../enum/Role';
-import { WorkspaceForbiddenException } from '../../exception/CustomException';
+import { WorkspaceForbiddenException } from '@repo/common';
 
 export const validationWorkspaceAdminRole = (role: Role) => {
   if (role !== Role.ADMIN) {

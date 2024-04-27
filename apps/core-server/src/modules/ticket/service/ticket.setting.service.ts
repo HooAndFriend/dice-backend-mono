@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 
 @Injectable()
 export default class TicketSettingService {

@@ -39,7 +39,7 @@ import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
 import RequestCsCategorySaveDto from '../dto/cs-category.save';
 import Admin from '../../admin/domain/admin.entity';
 import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
-import { BadRequestException } from '@/src/global/exception/CustomException';
+import { BadRequestException } from '@repo/common';
 
 @ApiTags('Cs Category')
 @ApiResponse(createServerExceptionResponse())

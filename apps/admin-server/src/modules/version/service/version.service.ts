@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 // ** Module Imports
 import VersionRepository from '../repository/version.repository';
 import RequestVersionSaveDto from '../dto/version.save.dto';
-import { BadRequestException } from '@/src/global/exception/CustomException';
+import { BadRequestException } from '@repo/common';
 import RequestPagingDto from '@/src/global/dto/paging.dto';
 import RequestVersionUpdateDto from '../dto/version.update.dto';
 import VersionTypeEnum from '../domain/version-type.enum';

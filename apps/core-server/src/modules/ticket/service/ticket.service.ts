@@ -34,7 +34,7 @@ import TicketComment from '../domain/ticket.comment.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import { NotFoundException } from '@repo/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
