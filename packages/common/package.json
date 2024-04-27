@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "tsup ./index.ts --dts --watch",
+    "start:dev": "tsup ./index.ts --dts --watch",
     "build": "tsup ./index.ts --dts --minify"
   },
   "author": "",
