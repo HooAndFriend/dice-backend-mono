@@ -17,20 +17,12 @@ node : v18.18.2
 $ pnpm compodoc
 ```
 
-## Api Document
-
-```
-/api-docs
-```
-
-## Installation
-
-```bash
-$ pnpm install
-```
-
 ## Running the app
 
 ```bash
+pnpm install
+
+pnpm build:package
+
 pnpm dev
 ```

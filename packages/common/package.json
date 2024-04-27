@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start:dev": "tsup ./index.ts --dts --watch",
-    "build": "tsup ./index.ts --dts --minify"
+    "build:package": "tsup ./index.ts --dts --minify"
   },
   "author": "",
   "license": "ISC",

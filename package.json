@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build:package": "turbo build:package",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
