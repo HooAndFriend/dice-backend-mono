@@ -9,7 +9,7 @@ import User from '../domain/user.entity';
 import RequestUserFindDto from '../dto/user.find.dto';
 import UserStatusEnum from '../domain/user-status.enum';
 import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
-import { UserType } from '@/src/global/enum/UserType.enum';
+import { UserType } from '@repo/common';
 
 @CustomRepository(User)
 export default class UserRepository extends Repository<User> {

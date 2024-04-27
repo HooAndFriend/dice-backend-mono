@@ -43,7 +43,7 @@ import {
   GetTeam,
   TeamRole,
 } from '@/src/global/decorators/team-role/team-role.decorator';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 import Team from '../domain/team.entity';
 

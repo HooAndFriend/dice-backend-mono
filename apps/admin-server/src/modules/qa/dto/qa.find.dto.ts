@@ -14,7 +14,7 @@ import {
 import { Type } from 'class-transformer';
 
 // ** Enum Imports
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 
 export default class RequestQaFindDto {
   @ApiProperty({ example: 1 })

@@ -44,7 +44,7 @@ import { BoardResponse } from '@/src/global/response/board.response';
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';

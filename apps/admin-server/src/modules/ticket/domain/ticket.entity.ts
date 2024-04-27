@@ -15,7 +15,7 @@ import User from '../../user/domain/user.entity';
 import Epic from './epic.entity';
 import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 import TicketSetting from './ticket.setting.entity';
 
 @Entity({ name: 'TB_TICKET' })

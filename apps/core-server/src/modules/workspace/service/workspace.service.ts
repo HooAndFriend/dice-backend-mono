@@ -19,7 +19,7 @@ import { NotFoundException } from '@repo/common';
 // ** enum, dto, entity, types Imports
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
-import Role from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import TeamUser from '../../team/domain/team-user.entity';
 
 @Injectable()
@@ -52,7 +52,7 @@ export default class WorkspaceService {
       workspaceUser: [
         this.workspaceUserRepository.create({
           teamUser,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
         }),
       ],
     });

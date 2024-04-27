@@ -7,7 +7,7 @@ import {
 
 // ** Custom Module Imports
 import WorkspaceFunctionRepository from '../repository/workspace-function.repository';
-import DiceFunction from '@/src/global/enum/DiceFunction';
+import { DiceFunction } from '@repo/common';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
 import WorkspaceRepository from '../repository/workspace.repository';

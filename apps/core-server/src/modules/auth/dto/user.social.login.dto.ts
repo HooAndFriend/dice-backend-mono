@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { UserType } from '../../../global/enum/UserType.enum';
+import { UserType } from '@repo/common';
 
 export default class RequestSocialUserLoginDto {
   @ApiProperty({ example: 'op973GfpO2U13FbxPed1E5AcgHd2' })

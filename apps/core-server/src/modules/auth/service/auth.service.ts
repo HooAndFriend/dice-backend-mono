@@ -2,6 +2,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { UserType, RoleEnum } from '@repo/common';
 
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
@@ -28,13 +29,11 @@ import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
-import { UserType } from '../../../global/enum/UserType.enum';
+
 import User from '../../user/domain/user.entity';
-import Role from '@/src/global/enum/Role';
 import UserStatusEnum from '../../user/domain/user-status.enum';
-import { waitForDebugger } from 'inspector';
 import WorkspaceFunctionRepository from '../../workspace/repository/workspace-function.repository';
-import DiceFunction from '@/src/global/enum/DiceFunction';
+import { DiceFunction } from '@repo/common';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 @Injectable()
@@ -134,7 +133,7 @@ export default class AuthService {
         this.teamUserRepository.create({
           user,
           team,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
       );
@@ -168,7 +167,7 @@ export default class AuthService {
         this.workspaceUserRepository.create({
           workspace,
           teamUser,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
       );
@@ -321,7 +320,7 @@ export default class AuthService {
         this.teamUserRepository.create({
           user,
           team,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
       );
@@ -355,7 +354,7 @@ export default class AuthService {
         this.workspaceUserRepository.create({
           workspace,
           teamUser,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
       );
@@ -461,10 +460,10 @@ export default class AuthService {
   private getRole(redisValue: string) {
     const role = redisValue.split('&&')[1];
 
-    if (role === 'VIEWER') return Role.VIEWER;
-    if (role === 'WRITER') return Role.WRITER;
+    if (role === 'VIEWER') return RoleEnum.VIEWER;
+    if (role === 'WRITER') return RoleEnum.WRITER;
 
-    return Role.ADMIN;
+    return RoleEnum.ADMIN;
   }
 
   /**

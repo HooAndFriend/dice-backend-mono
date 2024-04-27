@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { TEAM_ROLE_KEY } from './team-role.decorator';
 import TeamUserRepository from '@/src/modules/team/repository/team-user.repository';
-import RoleEnum from '../../enum/Role';
+import { RoleEnum } from '@repo/common';
 
 @Injectable()
 export class TeamRoleGuard implements CanActivate {

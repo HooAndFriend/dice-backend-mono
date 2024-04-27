@@ -36,7 +36,7 @@ import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@repo/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';

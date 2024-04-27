@@ -8,11 +8,9 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 
 // ** Custom Module Imports
 import TeamUserRepository from '../repository/team-user.repository';
-import CommonResponse from '@/src/global/dto/api.response';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
 import TeamRepository from '../repository/team.repository';
-import Role from '@/src/global/enum/Role';
 import dayjs from 'dayjs';
 
 // ** Dto Imports
@@ -20,7 +18,7 @@ import UserRepository from '../../user/repository/user.repository';
 import { BadRequestException } from '@repo/common';
 import SendMailDto from '@/src/global/dto/mail-send.dto';
 import Team from '../domain/team.entity';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import User from '../../user/domain/user.entity';
 
 @Injectable()
@@ -136,7 +134,7 @@ export default class TeamUserService {
   private async setTeamRedis(
     email: string,
     uuid: string,
-    role: Role,
+    role: RoleEnum,
     createdId: string,
   ) {
     await this.redis.set(

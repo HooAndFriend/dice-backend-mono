@@ -24,7 +24,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { TicketResponse } from '@/src/global/response/ticket.response';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestTicketFindDto from '../dto/ticket.find.dto';
-import RoleEnum from '@/src/global/enum/Role';
+
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())

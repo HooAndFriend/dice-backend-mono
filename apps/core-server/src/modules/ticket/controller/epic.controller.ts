@@ -47,7 +47,7 @@ import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import CommonResponse from '@/src/global/dto/api.response';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';

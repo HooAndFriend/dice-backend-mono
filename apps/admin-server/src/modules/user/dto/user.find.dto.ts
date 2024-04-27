@@ -1,6 +1,6 @@
 // ** Swagger Imports
 import RequestPagingDto from '@/src/global/dto/paging.dto';
-import { UserType } from '@/src/global/enum/UserType.enum';
+import { UserType } from '@repo/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 

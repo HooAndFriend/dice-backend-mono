@@ -11,7 +11,7 @@ import {
 import { BaseTimeEntity } from '@repo/common';
 import Workspace from './workspace.entity';
 import TeamUser from '../../team/domain/team-user.entity';
-import Role from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
@@ -20,11 +20,11 @@ export default class WorkspaceUser extends BaseTimeEntity {
 
   @Column({
     type: 'enum',
-    enum: Role,
+    enum: RoleEnum,
     comment: '역할',
     nullable: false,
   })
-  role: Role;
+  role: RoleEnum;
 
   @Column({
     type: 'varchar',

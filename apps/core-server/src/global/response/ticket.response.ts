@@ -1,4 +1,4 @@
-import { TaskStatusEnum } from '../enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 import {
   createErrorResponse,
   createMessageResponse,

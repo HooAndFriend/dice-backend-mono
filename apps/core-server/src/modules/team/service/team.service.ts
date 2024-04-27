@@ -23,7 +23,7 @@ import { createCode } from '@/src/global/util/generator/code.generate';
 import User from '../../user/domain/user.entity';
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import TeamUserRepository from '../repository/team-user.repository';
-import Role from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import RequestTeamUpdateDto from '../dto/team.update.dto';
 
 @Injectable()
@@ -67,7 +67,7 @@ export default class TeamService {
         this.teamUserRepository.create({
           user,
           team,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
         }),
       );
 
@@ -87,7 +87,7 @@ export default class TeamService {
         this.workspaceUserRepository.create({
           workspace,
           teamUser,
-          role: Role.ADMIN,
+          role: RoleEnum.ADMIN,
         }),
       );
 

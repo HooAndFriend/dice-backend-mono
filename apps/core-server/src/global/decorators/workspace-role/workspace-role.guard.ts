@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { WORKSPACE_ROLE_KEY } from './workspace-role.decorator';
 import WorkspaceUserRepository from '@/src/modules/workspace/repository/workspace-user.repository';
-import RoleEnum from '../../enum/Role';
+import { RoleEnum } from '@repo/common';
 
 @Injectable()
 export class WorkspaceRoleGuard implements CanActivate {

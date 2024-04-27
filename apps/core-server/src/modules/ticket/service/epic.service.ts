@@ -20,7 +20,7 @@ import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 
 @Injectable()
 export default class EpicService {

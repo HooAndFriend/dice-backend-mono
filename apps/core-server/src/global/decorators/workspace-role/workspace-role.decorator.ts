@@ -4,7 +4,7 @@ import {
   SetMetadata,
   createParamDecorator,
 } from '@nestjs/common';
-import RoleEnum from '../../enum/Role';
+import { RoleEnum } from '@repo/common';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 
 export const WORKSPACE_ROLE_KEY = 'workspace-role';

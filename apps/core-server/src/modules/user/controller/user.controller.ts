@@ -48,7 +48,7 @@ import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import Team from '../../team/domain/team.entity';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import TeamService from '../../team/service/team.service';
 import RequestUserFcmUpdateDto from '../dto/user-fcm.update.dto';
 

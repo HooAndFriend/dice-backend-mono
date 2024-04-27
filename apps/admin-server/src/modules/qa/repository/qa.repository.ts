@@ -8,7 +8,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Qa from '../domain/qa.entity';
 // ** Emum Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 
 @CustomRepository(Qa)
 export default class QaRepository extends Repository<Qa> {

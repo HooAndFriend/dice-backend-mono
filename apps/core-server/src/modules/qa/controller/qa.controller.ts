@@ -59,7 +59,11 @@ import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 // ** Emum Imports
-import RoleEnum from '@/src/global/enum/Role';
+import {
+  RoleEnum,
+  NotificationStatusEnum,
+  NotificationTypeEnum,
+} from '@repo/common';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
@@ -67,8 +71,6 @@ import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
-import NotificationStatusEnum from '@/src/global/enum/notification-status.enum';
-import NotificationTypeEnum from '@/src/global/enum/notification-type.enum';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())

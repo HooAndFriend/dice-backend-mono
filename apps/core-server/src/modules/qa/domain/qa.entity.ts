@@ -15,7 +15,7 @@ import Comment from '@/src/modules/qa/domain/qa.comment.entity';
 import File from '@/src/modules/qa/domain/qa.file.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 import { BaseTimeEntity } from '@repo/common';
 
 @Entity({ name: 'TB_QA' })

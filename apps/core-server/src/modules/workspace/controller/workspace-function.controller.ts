@@ -39,7 +39,7 @@ import { WorkspaceFunctionResponse } from '@/src/global/response/workspace-funct
 
 // ** Dto Imports
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
-import RoleEnum from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import Workspace from '../domain/workspace.entity';
 import CommonResponse from '@/src/global/dto/api.response';
 import RequestRemoveWorkspaceFunctionDto from '../dto/workspace-function.remove.dto';

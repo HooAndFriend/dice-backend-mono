@@ -6,7 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import User from '../domain/user.entity';
-import { UserType } from '@/src/global/enum/UserType.enum';
+import { UserType } from '@repo/common';
 
 @CustomRepository(User)
 export default class UserRepository extends Repository<User> {

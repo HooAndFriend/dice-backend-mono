@@ -1,5 +1,5 @@
 // ** Swagger Imports
-import Role from '@/src/global/enum/Role';
+import { RoleEnum } from '@repo/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
@@ -10,7 +10,7 @@ export default class RequestWorkspaceUserSaveDto {
   @IsArray()
   teamUserId: number[];
 
-  @ApiProperty({ example: Role.VIEWER, enum: Role })
-  @IsEnum(Role)
-  role: Role;
+  @ApiProperty({ example: RoleEnum.VIEWER, enum: RoleEnum })
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
 }

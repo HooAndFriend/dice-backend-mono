@@ -6,7 +6,6 @@ import { Between, DataSource, LessThan } from 'typeorm';
 import QaRepository from '../repository/qa.repository';
 import FileRepository from '../repository/qa.file.repository';
 import UserRepository from '@/src/modules/user/repository/user.repository';
-import WorkspaceRepository from '@/src/modules/workspace/repository/workspace.repository';
 import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
 
 // ** enum, dto, entity, types Imports
@@ -27,7 +26,7 @@ import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
-import { TaskStatusEnum } from '@/src/global/enum/TaskStatus.enum';
+import { TaskStatusEnum } from '@repo/common';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 
 @Injectable()
