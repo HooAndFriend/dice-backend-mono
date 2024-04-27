@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -27,6 +27,8 @@ import RequestLogDto from '../dto/request-log.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/request-log', version: '1' })
 export default class RequestLogController {
+  private readonly logger = new Logger(RequestLogController.name);
+
   constructor(private readonly requestLogService: RequestLogService) {}
 
   @MessagePattern('request-log')
@@ -34,6 +36,9 @@ export default class RequestLogController {
     @Payload() data: RequestLogDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(
+      `[${data.serverName}] Request Log ${data.requestMethod} : ${data.requestUrl} (${data.userId} / ${data.ip})`,
+    );
     await this.requestLogService.saveRequestLog(data);
   }
 }
