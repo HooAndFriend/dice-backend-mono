@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -27,6 +27,7 @@ import SendMailDto from '../dto/mail.send.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/mail', version: '1' })
 export default class MailController {
+  private readonly logger = new Logger(MailController.name);
   constructor(private readonly mailService: MailService) {}
 
   @MessagePattern('send-single-mail')
@@ -34,6 +35,9 @@ export default class MailController {
     @Payload() data: SendMailDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(
+      `Send Mail ${JSON.stringify(data.email)} : ${data.subject}`,
+    );
     // await this.mailService.sendMail(data);
   }
 }
