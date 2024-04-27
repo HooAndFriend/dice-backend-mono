@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   Ctx,
@@ -31,6 +31,7 @@ import SaveMultiNotificatioNDto from '../../notification/dto/notification-multi.
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/web-push', version: '1' })
 export default class WebPushController {
+  private readonly logger = new Logger(WebPushController.name);
   constructor(
     private readonly webPushService: WebPushService,
     private readonly eventEmitter: EventEmitter2,
@@ -41,6 +42,9 @@ export default class WebPushController {
     @Payload() data: SendPushDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(
+      `Single Push ${data.email}[${data.fcmToken}] : ${data.title}[${data.type}] - ${data.body}`,
+    );
     // await this.webPushService.sendPushMessage(
     //   data.title,
     //   data.body,
@@ -65,6 +69,11 @@ export default class WebPushController {
     @Payload() data: SendMultiPushDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(
+      `Multi Push ${JSON.stringify(data.email)}[${JSON.stringify(
+        data.fcmToken,
+      )}] : ${data.title}[${data.type}] - ${data.body}`,
+    );
     // await this.webPushService.sendPushMessageToMultiple(
     //   data.title,
     //   data.body,
