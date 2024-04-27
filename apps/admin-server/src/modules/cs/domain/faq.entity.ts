@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import BaseTimeEntity from '../../../global/domain/BaseTime.Entity';
+import { BaseTimeEntity } from '@repo/common';
 import CsCategory from './cs-category.entity';
 
 @Entity({ name: 'TB_FAQ' })
