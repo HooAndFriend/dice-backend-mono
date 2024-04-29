@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 // ** Enum Imports
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 
 export default class RequestQaFindDto {
   @ApiProperty({

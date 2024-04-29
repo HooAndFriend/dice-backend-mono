@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseCreatedTimeEntity } from '@repo/common';
+import { BaseCreatedTimeEntity } from '@hi-dice/common';
 import QaHistoryTypeEnum from './qa-history-log-type.enum';
 
 @Entity({ name: 'TB_QA_HISTORY_LOG' })

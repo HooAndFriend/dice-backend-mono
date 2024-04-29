@@ -1,5 +1,5 @@
-import { RoleEnum } from '@repo/common';
-import { WorkspaceForbiddenException } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
+import { WorkspaceForbiddenException } from '@hi-dice/common';
 
 export const validationWorkspaceAdminRole = (role: RoleEnum) => {
   if (role !== RoleEnum.ADMIN) {

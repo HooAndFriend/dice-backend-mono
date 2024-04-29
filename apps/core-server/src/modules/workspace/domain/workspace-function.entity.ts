@@ -9,8 +9,8 @@ import {
 
 // ** enum, dto, entity Imports
 import Workspace from './workspace.entity';
-import { BaseCreatedTimeEntity } from '@repo/common';
-import { DiceFunction } from '@repo/common';
+import { BaseCreatedTimeEntity } from '@hi-dice/common';
+import { DiceFunction } from '@hi-dice/common';
 
 @Entity({ name: 'TB_WORKSPACE_FUNCTION' })
 export default class WorkspaceFunction extends BaseCreatedTimeEntity {

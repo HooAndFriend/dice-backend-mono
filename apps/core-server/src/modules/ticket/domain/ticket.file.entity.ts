@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import Ticket from './ticket.entity';
 
 @Entity({ name: 'TB_TICKET_FILE' })

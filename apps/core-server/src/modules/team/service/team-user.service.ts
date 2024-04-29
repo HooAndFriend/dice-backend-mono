@@ -15,10 +15,10 @@ import dayjs from 'dayjs';
 
 // ** Dto Imports
 import UserRepository from '../../user/repository/user.repository';
-import { BadRequestException } from '@repo/common';
-import { SendMailDto } from '@repo/common';
+import { BadRequestException } from '@hi-dice/common';
+import { SendMailDto } from '@hi-dice/common';
 import Team from '../domain/team.entity';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
 
 @Injectable()

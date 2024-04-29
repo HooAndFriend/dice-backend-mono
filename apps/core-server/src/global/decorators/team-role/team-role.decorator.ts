@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import Team from '@/src/modules/team/domain/team.entity';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 
 export const TEAM_ROLE_KEY = 'team-role';
 export const TeamRole = (role: RoleEnum) => SetMetadata(TEAM_ROLE_KEY, role);

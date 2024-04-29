@@ -21,7 +21,7 @@ import {
   createUnauthorizedResponse,
 } from '../../../global/response/common';
 import RequestAdminLoginDto from '../dto/admin.login.dto';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import { AuthResponse } from '@/src/global/response/auth.response';
 import RequestAdminReissueDto from '../dto/admin.reissue.dto';
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';

@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 
 // ** Dto Imports
-import { RequestPagingDto } from '@repo/common';
+import { RequestPagingDto } from '@hi-dice/common';
 import { Type } from 'class-transformer';
 
 export default class RequestFaqFindDto extends RequestPagingDto {

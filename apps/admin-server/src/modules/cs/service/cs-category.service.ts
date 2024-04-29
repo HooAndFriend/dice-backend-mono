@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** enum, dto, entity, types Imports
-import { BadRequestException, NotFoundException } from '@repo/common';
+import { BadRequestException, NotFoundException } from '@hi-dice/common';
 import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
 
 @Injectable()

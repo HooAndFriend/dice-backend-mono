@@ -33,7 +33,7 @@ import {
 import { QnaResponse } from '@/src/global/response/qna.response';
 
 // ** Dto Imports
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import RequestQnaFindDto from '../dto/qna.find.dto';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 import Admin from '../../admin/domain/admin.entity';

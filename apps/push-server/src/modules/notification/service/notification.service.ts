@@ -6,7 +6,7 @@ import NotificationRepository from '../repository/notification.repository';
 
 // ** enum, dto, entity, types Imports
 import SaveNotificatioNDto from '../dto/notification.save.dto';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 import NotificationStatusEnum from '../domain/notification-status.enum';
 
 @Injectable()

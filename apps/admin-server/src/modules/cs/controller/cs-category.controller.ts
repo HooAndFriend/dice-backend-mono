@@ -32,14 +32,14 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
 
 // ** Dto Imports
 import RequestCsCategorySaveDto from '../dto/cs-category.save';
 import Admin from '../../admin/domain/admin.entity';
 import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
-import { BadRequestException } from '@repo/common';
+import { BadRequestException } from '@hi-dice/common';
 
 @ApiTags('Cs Category')
 @ApiResponse(createServerExceptionResponse())

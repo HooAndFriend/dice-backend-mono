@@ -39,9 +39,9 @@ import { WorkspaceFunctionResponse } from '@/src/global/response/workspace-funct
 
 // ** Dto Imports
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import RequestRemoveWorkspaceFunctionDto from '../dto/workspace-function.remove.dto';
 
 @ApiTags('Workspace Function')

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
 // ** enum, dto, entity, types Imports
-import { SendMailDto } from '@repo/common';
+import { SendMailDto } from '@hi-dice/common';
 
 @Injectable()
 export default class MailService {

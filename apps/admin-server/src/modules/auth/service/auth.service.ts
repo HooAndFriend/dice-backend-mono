@@ -16,10 +16,10 @@ import * as bcrypt from 'bcryptjs';
 
 // ** enum, dto, entity, types Imports
 import RequestAdminLoginDto from '../dto/admin.login.dto';
-import { BadRequestException, NotFoundException } from '@repo/common';
+import { BadRequestException, NotFoundException } from '@hi-dice/common';
 import { JwtPayload } from '@/src/global/types';
 import RequestAdminFindPasswordDto from '../dto/admin.find-password.dto';
-import { SendMailDto } from '@repo/common';
+import { SendMailDto } from '@hi-dice/common';
 import RequestAdminUpdatePasswordDto from '../dto/admin.update-password';
 
 @Injectable()

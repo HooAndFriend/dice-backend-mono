@@ -33,7 +33,7 @@ import { WorkspaceResponse } from '@/src/global/response/workspace.response';
 
 // ** Dto Imports
 import RequestWorkspaceFindDto from '../dto/workspace.find.dto';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())

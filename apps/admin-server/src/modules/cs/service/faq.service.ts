@@ -11,7 +11,7 @@ import FaqRepository from '../repository/faq.repository';
 // ** enum, dto, entity, types Imports
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 import RequestFaqUpdateDto from '../dto/faq.update.dto';
 import CsCategory from '../domain/cs-category.entity';
 

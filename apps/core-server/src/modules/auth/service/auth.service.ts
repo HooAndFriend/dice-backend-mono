@@ -2,7 +2,7 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UserType, RoleEnum } from '@repo/common';
+import { UserType, RoleEnum } from '@hi-dice/common';
 
 // ** Custom Module Imports
 import UserRepository from '../../user/repository/user.repository';
@@ -23,7 +23,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
-} from '@repo/common';
+} from '@hi-dice/common';
 import { JwtPayload } from '../../../global/types';
 import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
@@ -33,7 +33,7 @@ import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import User from '../../user/domain/user.entity';
 import UserStatusEnum from '../../user/domain/user-status.enum';
 import WorkspaceFunctionRepository from '../../workspace/repository/workspace-function.repository';
-import { DiceFunction } from '@repo/common';
+import { DiceFunction } from '@hi-dice/common';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 @Injectable()

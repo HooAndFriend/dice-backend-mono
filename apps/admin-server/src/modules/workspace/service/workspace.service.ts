@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import WorkspaceRepository from '../repository/workspace.repository';
 import RequestWorkspaceFindDto from '../dto/workspace.find.dto';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 
 // ** Custom Module Imports
 
