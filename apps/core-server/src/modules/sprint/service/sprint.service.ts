@@ -23,4 +23,19 @@ export default class SprintService {
       }
     );
   }
+
+  public async findSprint(sprintId: number) {
+    const findSprint = await this.sprintRepository.findOne({
+      where: {
+        id: sprintId,
+      },
+    });
+
+    if(!findSprint) {
+      throw new Error('Not Found Sprint');
+    }
+
+    return findSprint;
+  }
+
 }

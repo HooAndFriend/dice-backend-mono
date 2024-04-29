@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -73,10 +74,29 @@ export default class SprintController {
     });
   }
 
-  //sprint 리스트 조회
-  //sprint 수정
   //sprint 조회
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.findSprint[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/:sprintId')
+  public async findSprint(
+    @Param('sprintId') sprintId: number,
+  ) {
+    const sprint = await this.sprintService.findSprint(sprintId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Sprint를 조회합니다.',
+      data: sprint,
+    });
+  }
+  //sprint 수정
   //sprint 삭제
+  //sprint 리스트 조회
   //sprint에 티켓 추가
   //sprint에 티켓 제거
 }

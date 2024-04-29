@@ -1,3 +1,4 @@
+import { find } from 'rxjs';
 import {
     createErrorResponse,
     createMessageResponse,
@@ -11,4 +12,17 @@ export const SprintResponse = {
             message: 'Sprint를 생성합니다.',
         }),
     },
+    findSprint: {
+        200: createResponse({
+            data: {
+              id: 1,
+              name: '스프린트1',
+              startDate: '2021-01-01',
+              endDate: '2021-01-31',
+              orderId: 1,
+            },
+            statusCode: 200,
+            message: 'Sprint를 조회합니다.',
+          }),
+        },
 };
