@@ -463,9 +463,19 @@ export default class TicketService {
     }
   }
 
+  /**
+   * Update Multi Ticket Status
+   * @param ids
+   * @param status
+   */
   @Transactional()
   public async multiTicketStatusUpdate(ids: number[], status: TaskStatusEnum) {
     await this.ticketRepository.update({ id: In(ids) }, { status });
+  }
+
+  @Transactional()
+  public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
+    await this.ticketRepository.update({ id: In(ids) }, { dueDate });
   }
 
   /**

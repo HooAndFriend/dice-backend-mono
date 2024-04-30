@@ -61,6 +61,7 @@ import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.dto';
 import RequestTicketOrderUpdateDto from '../dto/ticket/ticket-order.update.dto';
 import RequestMultiTicketStatusUpdateDto from '../dto/ticket/ticket-multi.status.dto';
+import RequestMultiTicketDueDateUpdateDto from '../dto/ticket/ticket-multi.duedate.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -192,7 +193,7 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'TICKET 수정' })
+  @ApiOperation({ summary: 'MULTI TICKET STATUS 수정' })
   @ApiBody({ type: RequestMultiTicketStatusUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
   @WorkspaceRole(RoleEnum.WRITER)
@@ -203,6 +204,29 @@ export default class TicketController {
     @Body() dto: RequestMultiTicketStatusUpdateDto,
   ) {
     await this.ticketService.multiTicketStatusUpdate(dto.ticketIds, dto.status);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'MULTI TICKET Due Date수정' })
+  @ApiBody({ type: RequestMultiTicketDueDateUpdateDto })
+  @ApiResponse(TicketResponse.updateTicket[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/multi/due-date')
+  public async multiTicketDueDateUpdate(
+    @Body() dto: RequestMultiTicketDueDateUpdateDto,
+  ) {
+    await this.ticketService.multiTicketDueDateUpdate(
+      dto.ticketIds,
+      dto.dueDate,
+    );
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
