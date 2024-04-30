@@ -503,9 +503,27 @@ export default class TicketService {
     );
   }
 
+  /**
+   * Update Multi Ticket Due Date
+   * @param ids
+   * @param dueDate
+   */
   @Transactional()
   public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
     await this.ticketRepository.update({ id: In(ids) }, { dueDate });
+  }
+
+  /**
+   * Update Multi Ticket Due Date
+   * @param ids
+   * @param dueDate
+   */
+  @Transactional()
+  public async multiTicketSettingUpdate(
+    ids: number[],
+    ticketSetting: TicketSetting,
+  ) {
+    await this.ticketRepository.update({ id: In(ids) }, { ticketSetting });
   }
 
   /**

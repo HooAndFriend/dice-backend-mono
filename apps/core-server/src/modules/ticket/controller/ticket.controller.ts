@@ -62,6 +62,7 @@ import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.d
 import RequestTicketOrderUpdateDto from '../dto/ticket/ticket-order.update.dto';
 import RequestMultiTicketStatusUpdateDto from '../dto/ticket/ticket-multi.status.dto';
 import RequestMultiTicketDueDateUpdateDto from '../dto/ticket/ticket-multi.duedate.dto';
+import RequestMultiTicketSettingUpdateDto from '../dto/ticket/ticket-multi.setting.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -225,6 +226,34 @@ export default class TicketController {
     await this.ticketService.multiTicketDueDateUpdate(
       dto.ticketIds,
       dto.dueDate,
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'MULTI TICKET Setting 수정' })
+  @ApiBody({ type: RequestMultiTicketSettingUpdateDto })
+  @ApiResponse(TicketResponse.multiTicketSettingUpdate[200])
+  @ApiResponse(TicketResponse.multiTicketSettingUpdate[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/multi/ticket-setting')
+  public async multiTicketSettingUpdate(
+    @Body() dto: RequestMultiTicketSettingUpdateDto,
+  ) {
+    const ticketSetting = await this.ticketSettingService.findTicketSettingById(
+      dto.settingId,
+    );
+
+    await this.ticketService.multiTicketSettingUpdate(
+      dto.ticketIds,
+      ticketSetting,
     );
 
     return CommonResponse.createResponseMessage({

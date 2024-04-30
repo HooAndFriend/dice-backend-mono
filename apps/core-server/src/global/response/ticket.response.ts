@@ -210,6 +210,17 @@ export const TicketResponse = {
       message: 'Epic 정보를 찾을 수 없습니다.',
     }),
   },
+  multiTicketSettingUpdate: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket Setting을 수정합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Ticket Setting 정보를 찾을 수 없습니다.',
+    }),
+  },
   updateTicket: {
     200: createMessageResponse({
       statusCode: 200,
