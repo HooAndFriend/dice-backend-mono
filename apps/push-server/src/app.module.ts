@@ -11,7 +11,11 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import PushModule from '@/src/modules/push.module';
+
+// ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Module({
   imports: [
@@ -27,31 +31,40 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         port: +process.env.REDIS_PORT,
       },
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      entities: ['dist/modules/**/*.entity.js'],
-      synchronize: true,
-      logging: true,
-      logger: 'file',
-      charset: 'utf8mb4_unicode_ci',
-      timezone: '+09:00',
-      replication: {
-        master: {
-          host: process.env.DB_MASTER_HOST,
-          port: +process.env.DB_MASTER_PORT,
-          username: process.env.DB_MASTER_USERNAME,
-          password: process.env.DB_MASTER_PASSWORD,
-          database: process.env.DB_MASTER_DATABASE,
-        },
-        slaves: [
-          {
-            host: process.env.DB_MASTER_HOST,
-            port: +process.env.DB_MASTER_PORT,
-            username: process.env.DB_MASTER_USERNAME,
-            password: process.env.DB_MASTER_PASSWORD,
-            database: process.env.DB_MASTER_DATABASE,
+    TypeOrmModule.forRootAsync({
+      useFactory() {
+        return {
+          type: 'mysql',
+          entities: ['dist/modules/**/*.entity.js'],
+          synchronize: true,
+          logging: true,
+          logger: 'file',
+          charset: 'utf8mb4_unicode_ci',
+          timezone: '+09:00',
+          replication: {
+            master: {
+              host: process.env.DB_MASTER_HOST,
+              port: +process.env.DB_MASTER_PORT,
+              username: process.env.DB_MASTER_USERNAME,
+              password: process.env.DB_MASTER_PASSWORD,
+              database: process.env.DB_MASTER_DATABASE,
+            },
+            slaves: [
+              {
+                host: process.env.DB_MASTER_HOST,
+                port: +process.env.DB_MASTER_PORT,
+                username: process.env.DB_MASTER_USERNAME,
+                password: process.env.DB_MASTER_PASSWORD,
+                database: process.env.DB_MASTER_DATABASE,
+              },
+            ],
           },
-        ],
+        };
+      },
+      async dataSourceFactory(option) {
+        if (!option) throw new Error('Invalid options passed');
+
+        return addTransactionalDataSource(new DataSource(option));
       },
     }),
     ClientsModule.registerAsync([
