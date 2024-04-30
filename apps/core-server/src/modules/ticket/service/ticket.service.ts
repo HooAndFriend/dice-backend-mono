@@ -470,7 +470,37 @@ export default class TicketService {
    */
   @Transactional()
   public async multiTicketStatusUpdate(ids: number[], status: TaskStatusEnum) {
-    await this.ticketRepository.update({ id: In(ids) }, { status });
+    const now = new Date();
+
+    if (status === TaskStatusEnum.REOPEN) {
+      await this.ticketRepository.update(
+        { id: In(ids) },
+        {
+          status,
+          reopenDate: now,
+          completeDate: null,
+        },
+      );
+
+      return;
+    } else if (status === TaskStatusEnum.COMPLETE) {
+      await this.ticketRepository.update(
+        { id: In(ids) },
+        {
+          status,
+          completeDate: now,
+        },
+      );
+
+      return;
+    }
+
+    await this.ticketRepository.update(
+      { id: In(ids) },
+      {
+        status,
+      },
+    );
   }
 
   @Transactional()
