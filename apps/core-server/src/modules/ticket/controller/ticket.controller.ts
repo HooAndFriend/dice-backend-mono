@@ -60,6 +60,7 @@ import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.dto';
 import RequestTicketOrderUpdateDto from '../dto/ticket/ticket-order.update.dto';
+import RequestMultiTicketStatusUpdateDto from '../dto/ticket/ticket-multi.status.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -183,6 +184,25 @@ export default class TicketController {
     @GetUser() user: User,
   ) {
     await this.ticketService.updateTicket(dto, user);
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 수정합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 수정' })
+  @ApiBody({ type: RequestMultiTicketStatusUpdateDto })
+  @ApiResponse(TicketResponse.updateTicket[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/multi/status')
+  public async multiTicketStatusUpdate(
+    @Body() dto: RequestMultiTicketStatusUpdateDto,
+  ) {
+    await this.ticketService.multiTicketStatusUpdate(dto.ticketIds, dto.status);
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',

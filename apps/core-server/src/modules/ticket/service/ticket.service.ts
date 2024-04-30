@@ -7,14 +7,12 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
-import { Between, DataSource, Equal, LessThan, Not } from 'typeorm';
+import { Between, DataSource, Equal, In, LessThan, Not } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
-import EpicRepository from '../repository/epic.repository';
-import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
@@ -463,6 +461,11 @@ export default class TicketService {
       }
       throw new InternalServerErrorException('Internal Server Error');
     }
+  }
+
+  @Transactional()
+  public async multiTicketStatusUpdate(ids: number[], status: TaskStatusEnum) {
+    await this.ticketRepository.update({ id: In(ids) }, { status });
   }
 
   /**
