@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -42,6 +43,7 @@ import RequestSprintSaveDto from '../dto/sprint.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { CommonResponse, RoleEnum } from '@repo/common';
+import RequestSprintUpdateDto from '../dto/sprint.update.dto';
 
 @ApiTags('SPRINT')
 @ApiResponse(createServerExceptionResponse())
@@ -106,7 +108,7 @@ export default class SprintController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateSprint(
-    @Body() dto: RequestSprintSaveDto,
+    @Body() dto: RequestSprintUpdateDto,
   ) {
     await this.sprintService.updateSprint(dto);
 
@@ -116,6 +118,25 @@ export default class SprintController {
     });
   }
   //sprint 삭제
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 삭제' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.deleteSprint[200])
+  @ApiResponse(SprintResponse.deleteSprint[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/:sprintId')
+  public async deleteSprint(
+    @Param('sprintId') sprintId: number,
+  ) {
+    await this.sprintService.deleteSprint(sprintId);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint를 삭제합니다.',
+    });
+  }
   //sprint 리스트 조회
   //sprint에 티켓 추가
   //sprint에 티켓 제거

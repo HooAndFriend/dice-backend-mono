@@ -53,4 +53,8 @@ export default class SprintService {
     findSprint.updateSprintFromDto(dto, findTickets);
   }
 
+  public async deleteSprint(sprintId: number) {
+    await this.sprintRepository.delete(sprintId);
+  }
+
 }

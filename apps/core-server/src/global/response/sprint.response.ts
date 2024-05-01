@@ -36,4 +36,15 @@ export const SprintResponse = {
             message: 'Sprint 정보를 찾을 수 없습니다.',
         }),
     },
+    deleteSprint: {
+        200: createMessageResponse({
+            statusCode: 200,
+            message: 'Sprint를 삭제합니다.',
+        }),
+        404: createErrorResponse({
+            statusCode: 404,
+            error: 'NOT FOUND',
+            message: 'Sprint 정보를 찾을 수 없습니다.',
+        }),
+    },
 };
