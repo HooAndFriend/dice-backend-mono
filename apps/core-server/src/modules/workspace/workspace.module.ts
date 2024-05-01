@@ -23,6 +23,7 @@ import WorkspaceFunctionService from './service/workspace-function.service';
 import WorkspaceUserService from './service/workspace-user.service';
 import WorkspaceFunctionController from './controller/workspace-function.controller';
 import WorkspaceUserController from './controller/workspace-user.controller';
+import SprintModule from '../sprint/sprint.module';
 
 @Module({
   imports: [
