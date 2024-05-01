@@ -83,8 +83,11 @@ export default class SprintController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:sprintId')
-  public async findSprint(@Param('sprintId') sprintId: number) {
-    const sprint = await this.sprintService.findSprint(sprintId);
+  public async findSprint(
+    @Param('sprintId') sprintId: number,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    const sprint = await this.sprintService.findSprint(sprintId, workspace.id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
