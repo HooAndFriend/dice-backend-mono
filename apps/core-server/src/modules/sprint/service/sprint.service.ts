@@ -18,12 +18,15 @@ export default class SprintService {
   ) {}
 
   public async saveSprint(dto: RequestSprintSaveDto) {
+    const findTickets = await this.ticketRepository.findBy({ id: In(dto.ticketIds) });
+
     await this.sprintRepository.save(
       {
         name: dto.sprintName,
         startDate: dto.startDate,
         endDate: dto.endDate,
         orderId: dto.orderId,
+        ticket: findTickets,
       }
     );
   }
