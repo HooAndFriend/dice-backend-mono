@@ -63,6 +63,7 @@ import RequestTicketOrderUpdateDto from '../dto/ticket/ticket-order.update.dto';
 import RequestMultiTicketStatusUpdateDto from '../dto/ticket/ticket-multi.status.dto';
 import RequestMultiTicketDueDateUpdateDto from '../dto/ticket/ticket-multi.duedate.dto';
 import RequestMultiTicketSettingUpdateDto from '../dto/ticket/ticket-multi.setting.dto';
+import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -167,6 +168,24 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 생성합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 삭제' })
+  @ApiBody({ type: RequestSimpleTicketSaveDto })
+  @ApiResponse(TicketResponse.multiTicketDelete[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/multi/delete')
+  public async multiTicketDelete(@Body() dto: RequestTicketDeleteDto) {
+    await this.ticketService.deleteTicketList(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket을 삭제합니다.',
     });
   }
 

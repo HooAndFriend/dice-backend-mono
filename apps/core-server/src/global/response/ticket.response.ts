@@ -183,6 +183,12 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  multiTicketDelete: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket을 삭제합니다.',
+    }),
+  },
   saveSimpleTicket: {
     200: createMessageResponse({
       statusCode: 200,

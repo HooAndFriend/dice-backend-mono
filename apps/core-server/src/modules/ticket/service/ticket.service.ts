@@ -41,6 +41,7 @@ import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto'
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import TicketSetting from '../domain/ticket.setting.entity';
+import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 
 @Injectable()
 export default class TicketService {
@@ -511,6 +512,14 @@ export default class TicketService {
   @Transactional()
   public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
     await this.ticketRepository.update({ id: In(ids) }, { dueDate });
+  }
+
+  /**
+   * Delete Tickets
+   * @param dto
+   */
+  public async deleteTicketList(dto: RequestTicketDeleteDto) {
+    await this.ticketRepository.delete({ id: In(dto.ticketIds) });
   }
 
   /**
