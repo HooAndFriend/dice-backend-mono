@@ -50,10 +50,7 @@ import RequestSprintUpdateDto from '../dto/sprint.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/sprint', version: '1' })
 export default class SprintController {
-  constructor(
-    private readonly sprintService: SprintService,
-  ) {}
-
+  constructor(private readonly sprintService: SprintService) {}
 
   //sprint 생성
   @ApiBearerAuth('access-token')
@@ -66,14 +63,14 @@ export default class SprintController {
   @Post('/')
   public async saveSprint(
     @Body() dto: RequestSprintSaveDto,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.sprintService.saveSprint(dto);
+    await this.sprintService.saveSprint(dto, workspace);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Sprint를 생성합니다.',
-      data: {
-      },
+      data: {},
     });
   }
 
@@ -86,9 +83,7 @@ export default class SprintController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:sprintId')
-  public async findSprint(
-    @Param('sprintId') sprintId: number,
-  ) {
+  public async findSprint(@Param('sprintId') sprintId: number) {
     const sprint = await this.sprintService.findSprint(sprintId);
 
     return CommonResponse.createResponse({
@@ -109,8 +104,9 @@ export default class SprintController {
   @Put('/')
   public async updateSprint(
     @Body() dto: RequestSprintUpdateDto,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.sprintService.updateSprint(dto);
+    await this.sprintService.updateSprint(dto, workspace);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -127,9 +123,7 @@ export default class SprintController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:sprintId')
-  public async deleteSprint(
-    @Param('sprintId') sprintId: number,
-  ) {
+  public async deleteSprint(@Param('sprintId') sprintId: number) {
     await this.sprintService.deleteSprint(sprintId);
 
     return CommonResponse.createResponseMessage({
