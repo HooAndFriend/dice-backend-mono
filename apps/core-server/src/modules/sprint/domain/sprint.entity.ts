@@ -57,7 +57,7 @@ import RequestSprintUpdateDto from '../dto/sprint.update.dto';
         onDelete: 'CASCADE',
     })
     workspace: Relation<Workspace>;
-
+    
     updateSprintFromDto(dto: RequestSprintUpdateDto, tickets: Ticket[]) {
         this.name = dto.name;
         this.startDate = new Date(dto.startDate);

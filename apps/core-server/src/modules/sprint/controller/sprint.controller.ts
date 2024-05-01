@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 
@@ -95,6 +96,25 @@ export default class SprintController {
     });
   }
   //sprint 수정
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.updateSprint[200])
+  @ApiResponse(SprintResponse.updateSprint[404])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateSprint(
+    @Body() dto: RequestSprintSaveDto,
+  ) {
+    await this.sprintService.updateSprint(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint를 수정합니다.',
+    });
+  }
   //sprint 삭제
   //sprint 리스트 조회
   //sprint에 티켓 추가
