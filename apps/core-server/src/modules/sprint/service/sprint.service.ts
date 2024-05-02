@@ -70,6 +70,8 @@ export default class SprintService {
       });
 
       findSprint.updateSprintFromDto(dto, findTickets);
+
+      await this.sprintRepository.save(findSprint);
     } catch (error) {
       this.logger.log(error);
 

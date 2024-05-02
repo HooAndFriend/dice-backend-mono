@@ -50,7 +50,7 @@ export default class Sprint extends BaseTimeEntity {
   })
   orderId: number;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.id, { nullable: true })
+  @OneToMany(() => Ticket, (ticket) => ticket.sprint, { nullable: true })
   ticket: Relation<Ticket>[];
 
   @ManyToOne(() => Workspace, (workspace) => workspace.sprint, {
@@ -58,11 +58,12 @@ export default class Sprint extends BaseTimeEntity {
   })
   workspace: Relation<Workspace>;
 
-  updateSprintFromDto(dto: RequestSprintUpdateDto, tickets: Ticket[]) {
-    this.name = dto.name;
-    this.startDate = new Date(dto.startDate);
-    this.endDate = new Date(dto.endDate);
-    this.orderId = dto.orderId;
+  updateSprintFromDto(dto: RequestSprintUpdateDto, tickets: Ticket[]): void {
+    const { name, startDate, endDate, orderId } = dto;
+    this.name = name;
+    this.startDate = new Date(startDate);
+    this.endDate = new Date(endDate);
+    this.orderId = orderId;
     this.ticket = tickets;
   }
 }
