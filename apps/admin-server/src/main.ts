@@ -2,7 +2,9 @@
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { Transport } from '@nestjs/microservices';
+
+// ** TypeORM Transactional Context
+import { initializeTransactionalContext } from 'typeorm-transactional';
 
 // ** Custom Module Imports
 import { AppModule } from './app.module';
@@ -22,6 +24,9 @@ import csurf from 'csurf';
 import helmet from 'helmet';
 
 async function bootstrap() {
+  // ** TypeORM Transactional Context
+  initializeTransactionalContext();
+
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,

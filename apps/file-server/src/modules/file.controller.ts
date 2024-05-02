@@ -15,7 +15,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // ** Response Imports
 import { createServerExceptionResponse } from '@/src/global/response/common';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import { FileResponse } from '../global/response/file.response';
 
 @ApiTags('File')

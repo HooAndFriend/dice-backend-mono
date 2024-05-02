@@ -22,7 +22,7 @@ import {
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { TicketResponse } from '@/src/global/response/ticket.response';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import RequestTicketFindDto from '../dto/ticket.find.dto';
 
 @ApiTags('Workspace Ticket')

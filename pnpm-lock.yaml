@@ -23,6 +23,9 @@ importers:
 
   apps/admin-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -59,9 +62,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.0
         version: 10.0.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.17)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       '@types/redis':
         specifier: ^4.0.11
         version: 4.0.11
@@ -128,6 +128,9 @@ importers:
       typeorm:
         specifier: ^0.3.17
         version: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+      typeorm-transactional:
+        specifier: ^0.5.0
+        version: 0.5.0(reflect-metadata@0.1.14)(typeorm@0.3.17)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -213,6 +216,9 @@ importers:
 
   apps/auth-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -234,9 +240,6 @@ importers:
       '@nestjs/swagger':
         specifier: ^7.1.12
         version: 7.1.17(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       amqp-connection-manager:
         specifier: ^4.1.14
         version: 4.1.14(amqplib@0.10.3)
@@ -244,7 +247,7 @@ importers:
         specifier: ^0.10.3
         version: 0.10.3
       axios:
-        specifier: ^1.5.1
+        specifier: ^1.6.2
         version: 1.6.2
       bcryptjs:
         specifier: ^2.4.3
@@ -361,6 +364,9 @@ importers:
 
   apps/core-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -400,9 +406,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.0
         version: 10.0.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.17)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       '@types/redis':
         specifier: ^4.0.11
         version: 4.0.11
@@ -469,6 +472,9 @@ importers:
       typeorm:
         specifier: ^0.3.17
         version: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+      typeorm-transactional:
+        specifier: ^0.5.0
+        version: 0.5.0(reflect-metadata@0.1.14)(typeorm@0.3.17)
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -554,6 +560,9 @@ importers:
 
   apps/file-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -575,9 +584,6 @@ importers:
       '@nestjs/swagger':
         specifier: ^7.1.12
         version: 7.1.17(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       amqp-connection-manager:
         specifier: ^4.1.14
         version: 4.1.14(amqplib@0.10.3)
@@ -711,6 +717,9 @@ importers:
 
   apps/log-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -741,9 +750,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.0
         version: 10.0.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.17)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       '@types/redis':
         specifier: ^4.0.11
         version: 4.0.11
@@ -804,6 +810,9 @@ importers:
       typeorm:
         specifier: ^0.3.17
         version: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+      typeorm-transactional:
+        specifier: ^0.5.0
+        version: 0.5.0(reflect-metadata@0.1.14)(typeorm@0.3.17)
     devDependencies:
       '@compodoc/compodoc':
         specifier: ^1.1.21
@@ -886,6 +895,9 @@ importers:
 
   apps/push-server:
     dependencies:
+      '@hi-dice/common':
+        specifier: ^1.0.0
+        version: link:../../packages/common
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -922,9 +934,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.0
         version: 10.0.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.17)
-      '@repo/common':
-        specifier: workspace:^
-        version: link:../../packages/common
       '@types/redis':
         specifier: ^4.0.11
         version: 4.0.11
@@ -988,6 +997,9 @@ importers:
       typeorm:
         specifier: ^0.3.17
         version: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+      typeorm-transactional:
+        specifier: ^0.5.0
+        version: 0.5.0(reflect-metadata@0.1.14)(typeorm@0.3.17)
     devDependencies:
       '@compodoc/compodoc':
         specifier: ^1.1.21
@@ -4249,6 +4261,12 @@ packages:
       '@types/responselike': 1.0.3
     dev: true
 
+  /@types/cls-hooked@4.3.8:
+    resolution: {integrity: sha512-tf/7H883gFA6MPlWI15EQtfNZ+oPL0gLKkOlx9UHFrun1fC/FkuyNBpTKq1B5E3T4fbvjId6WifHUdSGsMMuPg==}
+    dependencies:
+      '@types/node': 17.0.45
+    dev: false
+
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
@@ -5286,6 +5304,13 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /async-hook-jl@1.7.6:
+    resolution: {integrity: sha512-gFaHkFfSxTjvoxDMYqDuGHlcRyUuamF8s+ZTtJdDzqjws4mCt7v0vuV79/E2Wr2/riMQgtG4/yUtXWs1gZ7JMg==}
+    engines: {node: ^4.7 || >=6.9 || >=7.3}
+    dependencies:
+      stack-chain: 1.3.7
+    dev: false
+
   /async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
     requiresBuild: true
@@ -5974,6 +5999,15 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
     dev: true
+
+  /cls-hooked@4.2.2:
+    resolution: {integrity: sha512-J4Xj5f5wq/4jAvcdgoGsL3G103BtWpZrMo8NEinRltN+xpTZdI+M38pyQqhuFU/P792xkMFvnKSf+Lm81U1bxw==}
+    engines: {node: ^4.7 || >=6.9 || >=7.3 || >=8.2.1}
+    dependencies:
+      async-hook-jl: 1.7.6
+      emitter-listener: 1.1.2
+      semver: 5.7.2
+    dev: false
 
   /cluster-key-slot@1.1.2:
     resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
@@ -6673,6 +6707,12 @@ packages:
   /emitter-component@1.1.2:
     resolution: {integrity: sha512-QdXO3nXOzZB4pAjM0n6ZE+R9/+kPpECA/XSELIcc54NeYVnBqIk+4DFiBgK+8QbV3mdvTG6nedl7dTYgO+5wDw==}
     dev: true
+
+  /emitter-listener@1.1.2:
+    resolution: {integrity: sha512-Bt1sBAGFHY9DKY+4/2cV6izcKJUf5T7/gkdmkxzX/qv9CcGH8xSwVRW5mtX03SWJtRTWSOpzCuWN9rBFYZepZQ==}
+    dependencies:
+      shimmer: 1.2.1
+    dev: false
 
   /emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -11921,6 +11961,10 @@ packages:
       rechoir: 0.6.2
     dev: true
 
+  /shimmer@1.2.1:
+    resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
+    dev: false
+
   /side-channel@1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
     dependencies:
@@ -12067,6 +12111,10 @@ packages:
   /sqlstring@2.3.3:
     resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /stack-chain@1.3.7:
+    resolution: {integrity: sha512-D8cWtWVdIe/jBA7v5p5Hwl5yOSOrmZPWDPe2KxQ5UAGD+nxbxU0lKXA4h85Ta6+qgdKVL3vUxsbIZjc1kBG7ug==}
     dev: false
 
   /stack-utils@2.0.6:
@@ -12903,6 +12951,20 @@ packages:
 
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+
+  /typeorm-transactional@0.5.0(reflect-metadata@0.1.14)(typeorm@0.3.17):
+    resolution: {integrity: sha512-53/CwnXpOIJnWU3oVCNbhHB95FwciKSGbY+m/Hw4e2dBM2c4toiOHwf4pmk83Ne7guznmDgVr/5IUfbp+JTPCg==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      reflect-metadata: '>= 0.1.12'
+      typeorm: '>= 0.2.8'
+    dependencies:
+      '@types/cls-hooked': 4.3.8
+      cls-hooked: 4.2.2
+      reflect-metadata: 0.1.14
+      semver: 7.5.4
+      typeorm: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+    dev: false
 
   /typeorm@0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1):
     resolution: {integrity: sha512-UDjUEwIQalO9tWw9O2A4GU+sT3oyoUXheHJy4ft+RFdnRdQctdQ34L9SqE2p7LdwzafHx1maxT+bqXON+Qnmig==}

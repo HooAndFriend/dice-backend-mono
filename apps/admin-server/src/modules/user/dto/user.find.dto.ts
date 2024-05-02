@@ -1,6 +1,6 @@
 // ** Swagger Imports
-import { RequestPagingDto } from '@repo/common';
-import { UserType } from '@repo/common';
+import { RequestPagingDto } from '@hi-dice/common';
+import { UserType } from '@hi-dice/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 

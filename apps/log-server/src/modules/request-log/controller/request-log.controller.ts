@@ -20,7 +20,7 @@ import {
 } from '@/src/global/response/common';
 
 // ** Dto Imports
-import { RequestLogDto } from '@repo/common';
+import { RequestLogDto } from '@hi-dice/common';
 
 @ApiTags('Request Log')
 @ApiResponse(createServerExceptionResponse())

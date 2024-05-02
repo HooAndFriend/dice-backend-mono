@@ -9,7 +9,7 @@ import {
 
 // ** enum, dto, entity Imports
 import Qa from '@/src/modules/qa/domain/qa.entity';
-import { BaseCreatedTimeEntity } from '@repo/common';
+import { BaseCreatedTimeEntity } from '@hi-dice/common';
 
 @Entity({ name: 'TB_QA_FILE' })
 export default class QaFile extends BaseCreatedTimeEntity {

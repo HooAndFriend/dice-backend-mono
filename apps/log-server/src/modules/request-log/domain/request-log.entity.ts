@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseCreatedTimeEntity } from '@repo/common';
+import { BaseCreatedTimeEntity } from '@hi-dice/common';
 
 @Entity({ name: 'TB_REQUEST_LOG' })
 export default class RequestLog extends BaseCreatedTimeEntity {

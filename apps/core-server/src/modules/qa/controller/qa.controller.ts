@@ -44,7 +44,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 
 // ** Dto Imports
 import RequestQaSaveDto from '../dto/qa.save.dto';
@@ -63,7 +63,7 @@ import {
   RoleEnum,
   NotificationStatusEnum,
   NotificationTypeEnum,
-} from '@repo/common';
+} from '@hi-dice/common';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';

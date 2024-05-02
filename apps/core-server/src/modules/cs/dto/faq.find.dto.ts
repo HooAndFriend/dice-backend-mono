@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 // ** Dto Imports
-import { RequestPagingDto } from '@repo/common';
+import { RequestPagingDto } from '@hi-dice/common';
 
 export default class RequestFaqFindDto extends RequestPagingDto {
   @ApiProperty({ example: '이거는 어떻게 해요?', required: false })

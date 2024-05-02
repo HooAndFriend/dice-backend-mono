@@ -33,7 +33,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import VersionTypeEnum from '../domain/version-type.enum';
 import { VersionResponse } from '@/src/global/response/version.response';
 

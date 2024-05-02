@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import Faq from './faq.entity';
 import Qna from './qna.entity';
 

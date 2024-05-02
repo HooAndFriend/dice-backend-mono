@@ -32,7 +32,7 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Dto Imports
 import RequestTeamFindDto from '../dto/team.find.dto';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 
 @ApiTags('Team')
 @ApiResponse(createServerExceptionResponse())

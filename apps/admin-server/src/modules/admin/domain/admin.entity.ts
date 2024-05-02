@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import AdminRoleEnum from './admin-role.enum';
 
 @Entity({ name: 'TB_ADMIN' })

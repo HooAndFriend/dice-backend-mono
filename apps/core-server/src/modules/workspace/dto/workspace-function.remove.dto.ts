@@ -1,5 +1,5 @@
 // ** Swagger Imports
-import { DiceFunction } from '@repo/common';
+import { DiceFunction } from '@hi-dice/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports

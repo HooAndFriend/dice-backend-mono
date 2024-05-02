@@ -19,8 +19,12 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // ** Security Imports
 import csurf from 'csurf';
 import helmet from 'helmet';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function bootstrap() {
+  // ** TypeORM Transactional Context
+  initializeTransactionalContext();
+
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,

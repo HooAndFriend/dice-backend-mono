@@ -38,9 +38,9 @@ import { VersionResponse } from '@/src/global/response/version.response';
 
 // ** Dto Imports
 import Admin from '../../admin/domain/admin.entity';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import RequestVersionSaveDto from '../dto/version.save.dto';
-import { RequestPagingDto } from '@repo/common';
+import { RequestPagingDto } from '@hi-dice/common';
 import RequestVersionUpdateDto from '../dto/version.update.dto';
 
 @ApiTags('Version')

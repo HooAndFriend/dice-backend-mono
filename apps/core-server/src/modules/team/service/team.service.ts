@@ -23,7 +23,7 @@ import { createCode } from '@/src/global/util/generator/code.generate';
 import User from '../../user/domain/user.entity';
 import RequestTeamSaveDto from '../dto/team.save.dto';
 import TeamUserRepository from '../repository/team-user.repository';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import RequestTeamUpdateDto from '../dto/team.update.dto';
 
 @Injectable()

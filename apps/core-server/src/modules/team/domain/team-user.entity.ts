@@ -9,11 +9,11 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
 import Team from './team.entity';
 import WorkspaceUser from '../../workspace/domain/workspace-user.entity';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 
 @Entity({ name: 'TB_TEAM_USER' })
 export default class TeamUser extends BaseTimeEntity {

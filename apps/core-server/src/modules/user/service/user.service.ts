@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 
 // ** Custom Module Imports
 import UserRepository from '../repository/user.repository';
