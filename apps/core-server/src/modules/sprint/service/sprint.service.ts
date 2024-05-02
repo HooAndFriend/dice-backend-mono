@@ -9,7 +9,7 @@ import TicketRepository from '../../ticket/repository/ticket.repository';
 // ** enum, dto, entity, types Imports
 import RequestSprintSaveDto from '../dto/sprint.save.dto';
 import RequestSprintUpdateDto from '../dto/sprint.update.dto';
-import { InternalServerErrorException } from '@repo/common';
+import { InternalServerErrorException } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
