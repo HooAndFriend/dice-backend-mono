@@ -8,7 +8,7 @@ import WorkspaceModule from './workspace/workspace.module';
 import TeamModule from './team/team.module';
 import QaModule from './qa/qa.module';
 import TicketModule from './ticket/ticket.module';
-import CsModule from './cs/cs.module';
+import CsModule from './cs/qna/qna.module';
 import AdminModule from './admin/admin.module';
 import VersionModule from './version/version.module';
 import BoardModule from './board/board.module';

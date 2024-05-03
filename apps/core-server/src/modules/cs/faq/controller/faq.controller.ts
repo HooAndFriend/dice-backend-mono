@@ -24,7 +24,7 @@ import {
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../global/response/common';
+} from '../../../../global/response/common';
 import { CommonResponse } from '@hi-dice/common';
 import { FaqResponse } from '@/src/global/response/faq.response';
 

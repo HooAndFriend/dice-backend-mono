@@ -9,8 +9,8 @@ import {
 
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
-import Faq from './faq.entity';
-import Qna from './qna.entity';
+import Faq from '../../faq/domain/faq.entity';
+import Qna from '../../qna/domain/qna.entity';
 
 @Entity({ name: 'TB_CS_CATEGORY' })
 export default class CsCategory extends BaseTimeEntity {

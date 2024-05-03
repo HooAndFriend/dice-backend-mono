@@ -6,7 +6,6 @@ import { ConfigService } from '@nestjs/config';
 import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** enum, dto, entity, types Imports
-import RequestFaqFindDto from '../dto/faq.find.dto';
 import { NotFoundException } from '@hi-dice/common';
 
 @Injectable()

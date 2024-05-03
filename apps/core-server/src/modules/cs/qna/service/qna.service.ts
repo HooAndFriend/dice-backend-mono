@@ -10,7 +10,7 @@ import QnaRepository from '../repository/qna.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
-import CsCategory from '../domain/cs-category.entity';
+import CsCategory from '../../category/domain/cs-category.entity';
 
 @Injectable()
 export default class QnaService {

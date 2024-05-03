@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export default class RequestQnaSaveDto {
   @ApiProperty({ example: '이가인' })

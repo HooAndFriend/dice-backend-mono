@@ -19,13 +19,13 @@ import {
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../global/response/common';
+} from '../../../../global/response/common';
 import { QnaResponse } from '@/src/global/response/qna.response';
 
 // ** Dto Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
 import { CommonResponse } from '@hi-dice/common';
-import CsCategoryService from '../service/cs-category.service';
+import CsCategoryService from '../../category/service/cs-category.service';
 
 @ApiTags('Qna')
 @ApiResponse(createServerExceptionResponse())

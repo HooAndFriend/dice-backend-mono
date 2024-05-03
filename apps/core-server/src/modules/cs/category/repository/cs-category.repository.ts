@@ -2,7 +2,7 @@
 import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
-import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
+import CustomRepository from '../../../../global/repository/typeorm-ex.decorator';
 import CsCategory from '../domain/cs-category.entity';
 
 @CustomRepository(CsCategory)
