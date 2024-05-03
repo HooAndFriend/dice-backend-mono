@@ -37,7 +37,7 @@ export default class TeamRepository extends Repository<Team> {
     }
 
     if (dto.page && dto.pageSize) {
-      queryBuilder.skip((dto.page - 1) * dto.pageSize).take(dto.pageSize);
+      queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
     if (dto.createdId) {
