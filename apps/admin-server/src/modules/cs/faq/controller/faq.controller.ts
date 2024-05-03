@@ -14,6 +14,7 @@ import {
 
 // ** Module Imports
 import FaqService from '../service/faq.service';
+import CsCategoryService from '../../category/service/cs-category.service';
 
 // ** Swagger Imports
 import {
@@ -25,23 +26,22 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '../../../auth/passport/auth.jwt-access.guard';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../global/response/common';
+} from '../../../../global/response/common';
 import { FaqResponse } from '@/src/global/response/faq.response';
 
 // ** Dto Imports
 import { CommonResponse } from '@hi-dice/common';
-import Admin from '../../admin/domain/admin.entity';
 import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
 import RequestFaqUpdateDto from '../dto/faq.update.dto';
-import CsCategoryService from '../service/cs-category.service';
+import Admin from '@/src/modules/admin/domain/admin.entity';
 
 // ** Dto Imports
 

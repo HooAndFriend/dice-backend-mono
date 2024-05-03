@@ -2,9 +2,9 @@
 import { Repository } from 'typeorm';
 
 // ** Custom Module Imports
-import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 import Faq from '../domain/faq.entity';
 import RequestFaqFindDto from '../dto/faq.find.dto';
+import CustomRepository from '@/src/global/repository/typeorm-ex.decorator';
 
 @CustomRepository(Faq)
 export default class FaqRepository extends Repository<Faq> {

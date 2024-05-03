@@ -24,20 +24,20 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '../../../auth/passport/auth.jwt-access.guard';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../global/response/common';
+} from '../../../../global/response/common';
 import { CommonResponse } from '@hi-dice/common';
 import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
 
 // ** Dto Imports
 import RequestCsCategorySaveDto from '../dto/cs-category.save';
-import Admin from '../../admin/domain/admin.entity';
+import Admin from '../../../admin/domain/admin.entity';
 import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
 import { BadRequestException } from '@hi-dice/common';
 

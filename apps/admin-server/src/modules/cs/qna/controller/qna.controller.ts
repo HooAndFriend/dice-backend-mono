@@ -23,20 +23,20 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '../../../auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../global/response/common';
+} from '../../../../global/response/common';
 import { QnaResponse } from '@/src/global/response/qna.response';
 
 // ** Dto Imports
 import { CommonResponse } from '@hi-dice/common';
 import RequestQnaFindDto from '../dto/qna.find.dto';
 import { GetAdmin } from '@/src/global/decorators/user/admin.decorators';
-import Admin from '../../admin/domain/admin.entity';
+import Admin from '../../../admin/domain/admin.entity';
 import RequestQnaAnswerDto from '../dto/qna.answer.dto';
 
 @ApiTags('Qna')

@@ -13,7 +13,7 @@ import RequestFaqSaveDto from '../dto/faq.save.dto';
 import RequestFaqFindDto from '../dto/faq.find.dto';
 import { NotFoundException } from '@hi-dice/common';
 import RequestFaqUpdateDto from '../dto/faq.update.dto';
-import CsCategory from '../domain/cs-category.entity';
+import CsCategory from '../../category/domain/cs-category.entity';
 
 @Injectable()
 export default class FaqService {
@@ -36,7 +36,6 @@ export default class FaqService {
     adminEmail: string,
     csCategory: CsCategory,
   ) {
-    console.log(1);
     await this.faqRepository.save(
       this.faqRepository.create({
         question: dto.question,
