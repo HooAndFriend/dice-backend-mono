@@ -41,6 +41,7 @@ import { SprintResponse } from '@/src/global/response/sprint.response';
 // ** Dto Imports
 import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
 import RequestSprintUpdateDto from '../dto/sprint/sprint.update.info.dto';
+import RequestSprintSaveTicketDto from '../dto/sprint/sprint.save.ticket.dto';
 // ** Entity Imports
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
@@ -51,10 +52,7 @@ import { CommonResponse, RoleEnum } from '@hi-dice/common';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/sprint', version: '1' })
 export default class SprintController {
-  constructor(
-    private readonly sprintService: SprintService,
-    private readonly ticketService: TicketService,
-  ) {}
+  constructor(private readonly sprintService: SprintService) {}
 
   //sprint 생성
   @ApiBearerAuth('access-token')
@@ -160,5 +158,25 @@ export default class SprintController {
     });
   }
   //sprint에 티켓 추가
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 티켓 추가' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.saveSprintToTicket[200])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/ticket')
+  public async saveTicketToSprint(
+    @Body() dto: RequestSprintSaveTicketDto,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    await this.sprintService.saveTicketToSprint(dto, workspace);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint에 티켓을 추가합니다.',
+    });
+  }
   //sprint에 티켓 제거
+  //sprint 순서 변경
 }

@@ -1,22 +1,23 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 // ** Custom Module Imports
 import SprintRepository from '../repository/sprint.repository';
+import TicketRepository from '../repository/ticket.repository';
+import { In } from 'typeorm';
 
 // ** enum, dto, entity, types Imports
 import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
 import RequestSprintUpdateInfoDto from '../dto/sprint/sprint.update.info.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestSprintSaveTicketDto from '../dto/sprint/sprint.save.ticket.dto';
 
 @Injectable()
 export default class SprintService {
-  constructor(private readonly sprintRepository: SprintRepository) {}
+  constructor(
+    private readonly sprintRepository: SprintRepository,
+    private readonly ticketRepository: TicketRepository,
+  ) {}
 
   /**
    * Save Sprint
@@ -34,6 +35,40 @@ export default class SprintService {
       name: dto.sprintName,
       workspace: workspace,
       orderId: orderId + 1,
+    });
+  }
+
+  /**
+   * Save Sprint To Ticket
+   * @param dto
+   * @param Workspace
+   */
+  public async saveTicketToSprint(
+    dto: RequestSprintSaveTicketDto,
+    workspace: Workspace,
+  ) {
+    const findTicket = await this.ticketRepository.findOne({
+      where: {
+        id: dto.ticketId,
+        workspace: { id: workspace.id },
+      },
+    });
+
+    if (!findTicket) {
+      throw new NotFoundException('Not Found Ticket');
+    }
+
+    const existTickets = await this.ticketRepository.find({
+      where: {
+        sprint: { id: dto.sprintId },
+        workspace: { id: workspace.id },
+      },
+    });
+    existTickets.push(findTicket);
+
+    await this.sprintRepository.save({
+      id: dto.sprintId,
+      ticket: existTickets,
     });
   }
 

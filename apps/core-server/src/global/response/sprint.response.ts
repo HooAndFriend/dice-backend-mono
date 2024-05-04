@@ -12,6 +12,12 @@ export const SprintResponse = {
       message: 'Sprint를 생성합니다.',
     }),
   },
+  saveSprintToTicket: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Sprint에 티켓을 추가합니다.',
+    }),
+  },
   findSprint: {
     200: createResponse({
       data: {
