@@ -178,5 +178,25 @@ export default class SprintController {
     });
   }
   //sprint에 티켓 제거
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 티켓 제거' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.deleteTicketToSprint[200])
+  @ApiResponse(SprintResponse.deleteTicketToSprint[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/ticket/:ticketId')
+  public async deleteTicketToSprint(
+    @GetWorkspace() workspace: Workspace,
+    @Param('ticketId') ticketId: number,
+  ) {
+    await this.sprintService.deleteTicketToSprint(ticketId, workspace);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint에 티켓을 삭제합니다.',
+    });
+  }
   //sprint 순서 변경
 }

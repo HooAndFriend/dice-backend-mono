@@ -73,6 +73,35 @@ export default class SprintService {
   }
 
   /**
+   * Delete Ticket To Sprint
+   * @param ticketId
+   * @param Workspace
+   */
+  public async deleteTicketToSprint(ticketId: number, workspace: Workspace) {
+    const findSprint = await this.sprintRepository.findOne({
+      where: {
+        ticket: { id: ticketId },
+        workspace: { id: workspace.id },
+      },
+    });
+
+    if (!findSprint) {
+      throw new NotFoundException('Not Found Sprint');
+    }
+
+    const findTickets = await this.ticketRepository.find({
+      where: {
+        sprint: { id: findSprint.id },
+        workspace: { id: workspace.id },
+      },
+    });
+
+    findSprint.ticket = findTickets.filter((ticket) => ticket.id != ticketId);
+
+    await this.sprintRepository.save(findSprint);
+  }
+
+  /**
    * Find Sprint
    * @param sprintId
    * @param workspaceId
