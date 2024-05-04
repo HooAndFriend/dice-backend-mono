@@ -14,7 +14,6 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@hi-dice/common';
-import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
@@ -47,7 +46,7 @@ export default class QaService {
    * @param admin
    * @param workspace
    */
-  public async saveSimpleQa(
+  public async saveQa(
     dto: RequestSimpleQaSaveDto,
     admin: User,
     workspace: Workspace,
@@ -130,66 +129,6 @@ export default class QaService {
     await this.fileRepository.delete(qaFileId);
   }
 
-  /**
-   * Save Qa
-   * @param dto
-   * @param admin
-   * @param workspace
-   */
-  public async saveQa(
-    dto: RequestQaSaveDto,
-    admin: User,
-    workspace: Workspace,
-  ) {
-    const findWorker = await this.findQaUser(dto.workerId, workspace.id);
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const files = await queryRunner.manager.save(
-        dto.fileurls.map((fileURL) =>
-          this.fileRepository.create({
-            url: fileURL.url,
-          }),
-        ),
-      );
-      const qaCount =
-        (await this.qaRepository.count({
-          where: { workspace: { id: workspace.id } },
-        })) + 1;
-      const qaNumber = workspace.code + '-' + qaCount;
-
-      await queryRunner.manager.save(
-        this.qaRepository.create({
-          code: qaNumber,
-          title: dto.title,
-          asIs: dto.asIs,
-          toBe: dto.toBe,
-          memo: dto.memo,
-          dueDate: dto.dueDate,
-          admin: admin,
-          worker: findWorker,
-          qaFile: files,
-          workspace: workspace,
-          orderId: qaCount,
-        }),
-      );
-
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.log(error);
-      await queryRunner.rollbackTransaction();
-
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
-    }
-  }
   /**
    * Update Qa
    * @param dto

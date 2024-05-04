@@ -44,10 +44,9 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse } from '@hi-dice/common';
+import { CommonResponse, RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 
 // ** Dto Imports
-import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaCommentSaveDto from '../dto/comment.save.dto';
 import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
@@ -140,29 +139,8 @@ export default class QaController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
   ) {
-    await this.qaService.saveSimpleQa(dto, user, workspace);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Qa를 생성합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 생성' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiBody({ type: RequestQaSaveDto })
-  @ApiResponse(QaResponse.saveQa[200])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/')
-  public async saveQa(
-    @Body() dto: RequestQaSaveDto,
-    @GetWorkspace() workspace: Workspace,
-    @GetUser() user: User,
-  ) {
     await this.qaService.saveQa(dto, user, workspace);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa를 생성합니다.',
@@ -467,5 +445,13 @@ export default class QaController {
       statusCode: 200,
       message: '댓글을 삭제합니다.',
     });
+  }
+
+  /**
+   * Send Ticket Queue
+   * @param event
+   */
+  private sendQaQueue(event: RequestQaHistoryLogSaveDto) {
+    this.eventEmitter.emit('qa.send-change-history', event);
   }
 }
