@@ -27,3 +27,6 @@ export * from './libs/enum/notification/NotificationStatus.enum';
 export * from './libs/enum/notification/NotificationType.enum';
 export * from './libs/enum/log/QaHistoryLogType.enum';
 export * from './libs/enum/log/TicketHistoryLogType.enum';
+
+// ** Guard
+export * from './libs/guard/internal/internal.guard';
