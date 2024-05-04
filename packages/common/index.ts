@@ -25,5 +25,5 @@ export * from './libs/enum/common/UseYn.enum';
 export * from './libs/enum/common/UserType.enum';
 export * from './libs/enum/notification/NotificationStatus.enum';
 export * from './libs/enum/notification/NotificationType.enum';
-export * from './libs/enum/log/qa-history-log-type.enum';
-export * from './libs/enum/log/ticket-history-log-type.enum';
+export * from './libs/enum/log/QaHistoryLogType.enum';
+export * from './libs/enum/log/TicketHistoryLogType.enum';

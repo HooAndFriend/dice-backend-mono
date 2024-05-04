@@ -1,4 +1,4 @@
-enum QaHistoryTypeEnum {
+export enum QaHistoryTypeEnum {
   DUE_DATE = 'DUE_DATE',
   STATUS = 'STATUS',
   WORKER = 'WORKER',
@@ -10,5 +10,3 @@ enum QaHistoryTypeEnum {
   TITLE = 'TITLE',
   SP = 'SP',
 }
-
-export default QaHistoryTypeEnum;

@@ -1,6 +1,6 @@
 {
-  "name": "@hi-dice/common",
-  "version": "1.0.2",
+  "name": "@hi-dice/common-",
+  "version": "1.0.4",
   "description": "",
   "licenses": "MIT",
   "main": "dist/index.js",

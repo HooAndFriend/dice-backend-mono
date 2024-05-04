@@ -1,6 +1,6 @@
-import TicketHistoryTypeEnum from '../../enum/log/ticket-history-log-type.enum';
+import { TicketHistoryTypeEnum } from '../../enum/log/TicketHistoryLogType.enum';
 
-export default class RequestTicketHistoryLogSaveDto {
+export class RequestTicketHistoryLogSaveDto {
   ticketId: number;
   email: string;
   type: TicketHistoryTypeEnum;

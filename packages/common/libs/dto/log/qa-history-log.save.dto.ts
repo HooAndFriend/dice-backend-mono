@@ -1,6 +1,6 @@
-import QaHistoryTypeEnum from '../../enum/log/qa-history-log-type.enum';
+import { QaHistoryTypeEnum } from '../../enum/log/QaHistoryLogType.enum';
 
-export default class RequestQaHistoryLogSaveDto {
+export class RequestQaHistoryLogSaveDto {
   qaId: number;
   email: string;
   type: QaHistoryTypeEnum;

@@ -1,4 +1,4 @@
-enum TicketHistoryTypeEnum {
+export enum TicketHistoryTypeEnum {
   DUE_DATE = 'DUE_DATE',
   STATUS = 'STATUS',
   WORKER = 'WORKER',
@@ -10,5 +10,3 @@ enum TicketHistoryTypeEnum {
   TITLE = 'TITLE',
   SP = 'SP',
 }
-
-export default TicketHistoryTypeEnum;
