@@ -22,7 +22,6 @@ import UserRepository from '../../user/repository/user.repository';
 // ** enum, dto, entity, types Imports
 import User from '../../user/domain/user.entity';
 import TicketFile from '../domain/ticket.file.entity';
-import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
@@ -292,35 +291,6 @@ export default class TicketService {
     }
 
     return data;
-  }
-
-  /**
-   * Save ticket
-   * @param dto
-   * @param user
-   */
-  public async saveTicket(
-    epic: Epic,
-    dto: RequestTicketSaveDto,
-    user: User,
-    workspace: Workspace,
-  ) {
-    const ticketCount =
-      (await this.ticketRepository.count({
-        where: { workspace: { id: workspace.id } },
-      })) + 1;
-    const ticketNumber = workspace.code + '-' + ticketCount;
-
-    await this.ticketRepository.save(
-      this.ticketRepository.create({
-        admin: user,
-        epic,
-        code: ticketNumber,
-        workspace,
-        name: dto.name,
-        status: TaskStatusEnum.NOTHING,
-      }),
-    );
   }
 
   /**

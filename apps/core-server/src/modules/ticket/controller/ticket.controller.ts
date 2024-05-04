@@ -46,14 +46,12 @@ import {
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
 import { CommonResponse } from '@hi-dice/common';
 import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
-import TicketHistoryTypeEnum from '../domain/ticket-history-log-type.enum';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
@@ -112,31 +110,6 @@ export default class TicketController {
       statusCode: 200,
       message: 'Finding Tickets',
       data,
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'TICKET 생성' })
-  @ApiBody({ type: RequestTicketSaveDto })
-  @ApiResponse(TicketResponse.saveTicket[200])
-  @ApiResponse(TicketResponse.saveTicket[400])
-  @ApiResponse(TicketResponse.saveTicket[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/')
-  public async saveTicket(
-    @Body() dto: RequestTicketSaveDto,
-    @GetUser() user: User,
-    @GetWorkspace() workspace: Workspace,
-  ) {
-    const epic = await this.epicService.findEpicById(dto.epicId);
-    await this.ticketService.saveTicket(epic, dto, user, workspace);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Ticket을 생성합니다.',
     });
   }
 
@@ -466,5 +439,13 @@ export default class TicketController {
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
     });
+  }
+
+  /**
+   * Send Ticket Queue
+   * @param event
+   */
+  private sendTicketQueue(event: RequestTicketUserUpdateDto) {
+    this.eventEmitter.emit('ticket.send-change-history', event);
   }
 }

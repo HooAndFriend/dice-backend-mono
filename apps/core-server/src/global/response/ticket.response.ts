@@ -200,22 +200,6 @@ export const TicketResponse = {
       message: 'Not Found Ticket Setting',
     }),
   },
-  saveTicket: {
-    200: createMessageResponse({
-      statusCode: 200,
-      message: 'Ticket을 생성합니다.',
-    }),
-    400: createErrorResponse({
-      statusCode: 400,
-      error: 'BAD REQUEST',
-      message: '파일은 최대 4개입니다.',
-    }),
-    404: createErrorResponse({
-      statusCode: 404,
-      error: 'NOT FOUND',
-      message: 'Epic 정보를 찾을 수 없습니다.',
-    }),
-  },
   multiTicketSettingUpdate: {
     200: createMessageResponse({
       statusCode: 200,
