@@ -24,6 +24,7 @@ import Comment from './domain/qa.comment.entity';
 import File from './domain/qa.file.entity';
 import { QaNotificationListener } from './listener/qa-notification.listener';
 import QaCommentController from './controller/qa.comment.controller';
+import QaFileController from './controller/qa.file.controller';
 
 @Module({
   imports: [
@@ -70,7 +71,7 @@ import QaCommentController from './controller/qa.comment.controller';
     forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],
-  controllers: [QaController, QaCommentController],
+  controllers: [QaController, QaCommentController, QaFileController],
   providers: [
     QaService,
     CommentService,
