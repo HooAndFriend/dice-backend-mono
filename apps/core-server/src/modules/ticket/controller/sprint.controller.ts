@@ -46,6 +46,7 @@ import RequestSprintSaveTicketDto from '../dto/sprint/sprint.save.ticket.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { CommonResponse, RoleEnum } from '@hi-dice/common';
+import RequestSprintUpdateOrderIdDto from '../dto/sprint/sprint.update.orderid.dto';
 
 @ApiTags('SPRINT')
 @ApiResponse(createServerExceptionResponse())
@@ -104,7 +105,7 @@ export default class SprintController {
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(SprintResponse.updateSprint[200])
   @ApiResponse(SprintResponse.updateSprint[404])
-  @WorkspaceRole(RoleEnum.VIEWER)
+  @WorkspaceRole(RoleEnum.ADMIN)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/')
@@ -199,4 +200,24 @@ export default class SprintController {
     });
   }
   //sprint 순서 변경
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 순서 변경' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.updateSprintOrderId[200])
+  @ApiResponse(SprintResponse.updateSprintOrderId[404])
+  @WorkspaceRole(RoleEnum.ADMIN)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/order')
+  public async updateSprintOrderId(
+    @Body() dto: RequestSprintUpdateOrderIdDto,
+    @GetWorkspace() workspace: Workspace,
+  ) {
+    await this.sprintService.updateSprintOrder(dto, workspace);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint 순서를 변경합니다.',
+    });
+  }
 }
