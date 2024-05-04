@@ -27,10 +27,6 @@ export default class RequestSprintSaveDto {
   @IsDateString()
   endDate: string;
 
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  orderId: number;
-
   @ApiProperty({ example: [1, 2, 3] })
   @IsArray()
   ticketIds: number[];

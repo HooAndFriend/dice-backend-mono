@@ -82,6 +82,22 @@ export default class TicketService {
   }
 
   /**
+   * Find Tikcets by Sprint
+   * @param ids
+   */
+  public async findTicketsBySprint(id: number) {
+    const findTickets = await this.ticketRepository.find({
+      where: { sprint: { id } },
+    });
+
+    if (!findTickets) {
+      throw new NotFoundException('Cannot Find Tickets.');
+    }
+
+    return findTickets;
+  }
+
+  /**
    * Find Ticket By Id With Worker And Admin
    * @param ticketId
    * @returns

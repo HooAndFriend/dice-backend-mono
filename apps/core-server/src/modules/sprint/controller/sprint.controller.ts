@@ -12,6 +12,7 @@ import {
 
 // ** Module Imports
 import SprintService from '../service/sprint.service';
+import TicketService from '../../ticket/service/ticket.service';
 
 // ** Swagger Imports
 import {
@@ -50,7 +51,10 @@ import RequestSprintUpdateDto from '../dto/sprint.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/sprint', version: '1' })
 export default class SprintController {
-  constructor(private readonly sprintService: SprintService) {}
+  constructor(
+    private readonly sprintService: SprintService,
+    private readonly ticketService: TicketService,
+  ) {}
 
   //sprint 생성
   @ApiBearerAuth('access-token')
@@ -67,10 +71,9 @@ export default class SprintController {
   ) {
     await this.sprintService.saveSprint(dto, workspace);
 
-    return CommonResponse.createResponse({
+    return CommonResponse.createMessageResponse({
       statusCode: 200,
       message: 'Sprint를 생성합니다.',
-      data: {},
     });
   }
 
@@ -88,7 +91,7 @@ export default class SprintController {
     @GetWorkspace() workspace: Workspace,
   ) {
     const sprint = await this.sprintService.findSprint(sprintId, workspace.id);
-
+    sprint.ticket = await this.ticketService.findTicketsBySprint(sprintId);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Sprint를 조회합니다.',

@@ -26,12 +26,16 @@ export default class SprintService {
       id: In(dto.ticketIds),
       workspace: { id: workspace.id },
     });
+
+    if (!findTickets) {
+      throw new Error('Not Found Ticket');
+    }
+
     try {
       await this.sprintRepository.save({
         name: dto.sprintName,
         startDate: dto.startDate,
         endDate: dto.endDate,
-        orderId: dto.orderId,
         ticket: findTickets,
         workspace: workspace,
       });
@@ -68,6 +72,10 @@ export default class SprintService {
         id: In(dto.ticketIds),
         workspace: { id: workspace.id },
       });
+
+      if (!findTickets) {
+        throw new Error('Not Found Tickets');
+      }
 
       findSprint.updateSprintFromDto(dto, findTickets);
 
