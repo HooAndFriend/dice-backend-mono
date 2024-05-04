@@ -2,8 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseCreatedTimeEntity } from '@hi-dice/common';
-import QaHistoryTypeEnum from './qa-history-log-type.enum';
+import { BaseCreatedTimeEntity, QaHistoryTypeEnum } from '@hi-dice/common';
 
 @Entity({ name: 'TB_QA_HISTORY_LOG' })
 export default class QaHistoryLog extends BaseCreatedTimeEntity {
@@ -19,20 +18,11 @@ export default class QaHistoryLog extends BaseCreatedTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
-    comment: '변경한 유저 닉네임',
+    length: 120,
+    comment: '이메일',
     nullable: false,
   })
-  username: string;
-
-  @Column({
-    type: 'varchar',
-    length: 50,
-    comment: '보조 유저 닉네임',
-    name: 'sub_username',
-    nullable: true,
-  })
-  subUsername: string;
+  email: string;
 
   @Column({
     type: 'enum',
@@ -41,20 +31,6 @@ export default class QaHistoryLog extends BaseCreatedTimeEntity {
     nullable: false,
   })
   type: QaHistoryTypeEnum;
-
-  @Column({
-    type: 'text',
-    comment: '변경 후',
-    nullable: true,
-  })
-  after: string;
-
-  @Column({
-    type: 'text',
-    comment: '변경 전',
-    nullable: true,
-  })
-  before: string;
 
   @Column({
     type: 'text',

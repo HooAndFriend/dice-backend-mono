@@ -1,5 +1,10 @@
+// ** Nest Imports
 import { Injectable } from '@nestjs/common';
+
+// ** Custom Module Imports
 import RequestLogRepository from '../repository/comment.repository';
+
+// ** Dto Imports
 import { RequestLogDto } from '@hi-dice/common';
 import RequestLog from '../domain/request-log.entity';
 

@@ -23,14 +23,13 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { CommonResponse } from '@hi-dice/common';
 import { QaHistoryLogResponse } from '@/src/global/response/qa-history-log.response';
 
 // ** Utils Imports
 import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
 
 // ** Dto Imports
-import RequestQaHistoryLogSaveDto from '../dto/qa-history-log.save.dto';
+import { CommonResponse, RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 
 @ApiTags('Qa History Log')
 @ApiResponse(createServerExceptionResponse())

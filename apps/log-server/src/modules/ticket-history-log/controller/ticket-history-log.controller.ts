@@ -23,14 +23,16 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { CommonResponse } from '@hi-dice/common';
 import { TicketHistoryLogResponse } from '@/src/global/response/ticket-history-log.response';
 
 // ** Utils Imports
 import JwtAccessGuard from '@/src/global/guard/auth.jwt-access.guard';
 
 // ** Dto Imports
-import RequestTicketHistoryLogSaveDto from '../dto/ticket-history-log.save.dto';
+import {
+  CommonResponse,
+  RequestTicketHistoryLogSaveDto,
+} from '@hi-dice/common';
 
 @ApiTags('Ticket History Log')
 @ApiResponse(createServerExceptionResponse())

@@ -1,6 +1,11 @@
+// ** Nest Imports
 import { Injectable } from '@nestjs/common';
+
+// ** Custom Module Imports
 import QaHistoryLogRepository from '../repository/qa-history-log.repository';
-import RequestQaHistoryLogSaveDto from '../dto/qa-history-log.save.dto';
+
+// ** Dto Imports
+import { RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 
 @Injectable()
 export default class QaHistoryLogService {
@@ -15,13 +20,7 @@ export default class QaHistoryLogService {
   public async saveQaHistoryLog(dto: RequestQaHistoryLogSaveDto) {
     await this.qaHistoryLogRepository.save(
       this.qaHistoryLogRepository.create({
-        qaId: dto.qaId,
-        username: dto.username,
-        subUsername: dto.subUsername,
-        type: dto.type,
-        after: dto.after,
-        before: dto.before,
-        log: dto.log,
+        ...dto,
       }),
     );
   }
