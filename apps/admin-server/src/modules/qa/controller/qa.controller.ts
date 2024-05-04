@@ -32,7 +32,7 @@ import {
 
 // ** Dto Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())

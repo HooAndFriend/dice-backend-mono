@@ -22,6 +22,7 @@
     "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
+    "@hi-dice/common": "^1.0.0",
     "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.2.6",
@@ -34,7 +35,6 @@
     "@nestjs/platform-express": "^10.2.6",
     "@nestjs/swagger": "^7.1.12",
     "@nestjs/typeorm": "^10.0.0",
-    "@repo/common": "workspace:^",
     "@types/redis": "^4.0.11",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
@@ -57,6 +57,7 @@
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^4.6.3",
     "typeorm": "^0.3.17",
+    "typeorm-transactional": "^0.5.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

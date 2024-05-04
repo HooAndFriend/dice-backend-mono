@@ -39,12 +39,12 @@ import {
   GetWorkspace,
   WorkspaceRole,
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import { BoardResponse } from '@/src/global/response/board.response';
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';

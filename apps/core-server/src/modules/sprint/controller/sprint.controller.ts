@@ -42,7 +42,7 @@ import RequestSprintSaveDto from '../dto/sprint.save.dto';
 // ** Entity Imports
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
-import { CommonResponse, RoleEnum } from '@repo/common';
+import { CommonResponse, RoleEnum } from '@hi-dice/common';
 import RequestSprintUpdateDto from '../dto/sprint.update.dto';
 
 @ApiTags('SPRINT')

@@ -13,6 +13,7 @@ import AdminModule from './admin/admin.module';
 import VersionModule from './version/version.module';
 import BoardModule from './board/board.module';
 import SprintModule from './sprint/sprint.module';
+import InternalModule from './internal/internal.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import SprintModule from './sprint/sprint.module';
     AdminModule,
     VersionModule,
     BoardModule,
+    InternalModule,
   ],
   providers: [],
   exports: [],

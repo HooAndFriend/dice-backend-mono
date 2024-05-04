@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
-import { UserType } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
+import { UserType } from '@hi-dice/common';
 import TeamUser from '../../team/domain/team-user.entity';
 import Epic from '../../ticket/domain/epic.entity';
 import Qa from '@/src/modules/qa/domain/qa.entity';

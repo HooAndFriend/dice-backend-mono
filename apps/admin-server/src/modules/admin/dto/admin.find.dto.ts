@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import AdminRoleEnum from '../domain/admin-role.enum';
-import { RequestPagingDto } from '@repo/common';
+import { RequestPagingDto } from '@hi-dice/common';
 
 export default class RequestAdminFindDto extends RequestPagingDto {
   @ApiProperty({ example: 'subAdmin', required: false })

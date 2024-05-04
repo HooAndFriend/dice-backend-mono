@@ -1,4 +1,4 @@
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 import {
   createErrorResponse,
   createMessageResponse,
@@ -183,6 +183,12 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  multiTicketDelete: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket을 삭제합니다.',
+    }),
+  },
   saveSimpleTicket: {
     200: createMessageResponse({
       statusCode: 200,
@@ -208,6 +214,17 @@ export const TicketResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: 'Epic 정보를 찾을 수 없습니다.',
+    }),
+  },
+  multiTicketSettingUpdate: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Ticket Setting을 수정합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Ticket Setting 정보를 찾을 수 없습니다.',
     }),
   },
   updateTicket: {

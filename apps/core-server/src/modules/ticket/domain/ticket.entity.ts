@@ -9,13 +9,13 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import Epic from './epic.entity';
 import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 import TicketSetting from './ticket.setting.entity';
 import Sprint from '../../sprint/domain/sprint.entity';
 

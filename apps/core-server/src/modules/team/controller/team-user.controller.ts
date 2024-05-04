@@ -38,12 +38,12 @@ import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
 import RequestTeamUserSaveDto from '../dto/team-user.save.dto';
 import RequestTeamUserUpdateDto from '../dto/team-user.update.dto';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import {
   GetTeam,
   TeamRole,
 } from '@/src/global/decorators/team-role/team-role.decorator';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 import Team from '../domain/team.entity';
 

@@ -7,14 +7,12 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
-import { Between, DataSource, Equal, LessThan, Not } from 'typeorm';
+import { Between, DataSource, Equal, In, LessThan, Not } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
-import EpicRepository from '../repository/epic.repository';
-import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
@@ -34,15 +32,16 @@ import TicketComment from '../domain/ticket.comment.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import TicketSetting from '../domain/ticket.setting.entity';
+import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 
 @Injectable()
 export default class TicketService {
@@ -463,6 +462,77 @@ export default class TicketService {
       }
       throw new InternalServerErrorException('Internal Server Error');
     }
+  }
+
+  /**
+   * Update Multi Ticket Status
+   * @param ids
+   * @param status
+   */
+  @Transactional()
+  public async multiTicketStatusUpdate(ids: number[], status: TaskStatusEnum) {
+    const now = new Date();
+
+    if (status === TaskStatusEnum.REOPEN) {
+      await this.ticketRepository.update(
+        { id: In(ids) },
+        {
+          status,
+          reopenDate: now,
+          completeDate: null,
+        },
+      );
+
+      return;
+    } else if (status === TaskStatusEnum.COMPLETE) {
+      await this.ticketRepository.update(
+        { id: In(ids) },
+        {
+          status,
+          completeDate: now,
+        },
+      );
+
+      return;
+    }
+
+    await this.ticketRepository.update(
+      { id: In(ids) },
+      {
+        status,
+      },
+    );
+  }
+
+  /**
+   * Update Multi Ticket Due Date
+   * @param ids
+   * @param dueDate
+   */
+  @Transactional()
+  public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
+    await this.ticketRepository.update({ id: In(ids) }, { dueDate });
+  }
+
+  /**
+   * Delete Tickets
+   * @param dto
+   */
+  public async deleteTicketList(dto: RequestTicketDeleteDto) {
+    await this.ticketRepository.delete({ id: In(dto.ticketIds) });
+  }
+
+  /**
+   * Update Multi Ticket Due Date
+   * @param ids
+   * @param dueDate
+   */
+  @Transactional()
+  public async multiTicketSettingUpdate(
+    ids: number[],
+    ticketSetting: TicketSetting,
+  ) {
+    await this.ticketRepository.update({ id: In(ids) }, { ticketSetting });
   }
 
   /**

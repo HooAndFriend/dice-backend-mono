@@ -8,7 +8,7 @@ import QaFileRepository from '../repository/qa.file.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestQaFindDto from '../dto/qa.find.dto';
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 
 @Injectable()
 export default class QaService {

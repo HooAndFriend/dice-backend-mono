@@ -22,7 +22,7 @@ import {
 } from '../../../global/response/common';
 import { AuthorityResponse } from '@/src/global/response/authority.response';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import RequestAuthorityUpdateDto from '../dto/authority.update.dto';
 
 // ** Dto Imports

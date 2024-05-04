@@ -1,5 +1,5 @@
 // ** Swagger Imports
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports

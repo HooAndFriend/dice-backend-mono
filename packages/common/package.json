@@ -1,7 +1,8 @@
 {
-  "name": "@repo/common",
+  "name": "@hi-dice/common",
   "version": "1.0.0",
   "description": "",
+  "licenses": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

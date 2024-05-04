@@ -37,11 +37,10 @@ export default class EpicRepository extends Repository<Epic> {
         'ticketSetting.textColor',
         'ticketSetting.type',
       ])
-      .leftJoin('epic.ticket', 'ticket')
+      .leftJoin('epic.ticket', 'ticket', 'ticket.isDeleted = false')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
-      .where('ticket.isDeleted = false')
-      .andWhere('epic.workspace = :workspaceId', { workspaceId })
+      .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC')
       .addOrderBy('ticket.orderId', 'ASC');

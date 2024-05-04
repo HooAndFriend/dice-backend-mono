@@ -14,12 +14,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 
 // ** enum, dto, entity, types Imports
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
-import { RoleEnum } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
 import TeamUser from '../../team/domain/team-user.entity';
 
 @Injectable()

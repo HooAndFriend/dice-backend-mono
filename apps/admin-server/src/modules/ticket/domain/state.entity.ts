@@ -2,7 +2,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 
 @Entity({ name: 'TB_STATE' })
 @Unique(['name', 'color'])

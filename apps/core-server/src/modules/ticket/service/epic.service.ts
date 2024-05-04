@@ -12,7 +12,7 @@ import { Between, DataSource } from 'typeorm';
 import EpicRepository from '../repository/epic.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@repo/common';
+import { NotFoundException } from '@hi-dice/common';
 import Epic from '../domain/epic.entity';
 import RequestEpicSaveDto from '../dto/epic/epic.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
@@ -20,7 +20,7 @@ import User from '../../user/domain/user.entity';
 import RequestEpicUpdateDto from '../dto/epic/epic.update.dto';
 import RequestEpicDueDateUpdateDto from '../dto/epic/epic-duedate.dto';
 import RequestEpicFindDto from '../dto/epic/epic.find.dto';
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 
 @Injectable()
 export default class EpicService {

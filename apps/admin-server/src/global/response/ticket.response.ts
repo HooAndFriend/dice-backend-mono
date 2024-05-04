@@ -1,4 +1,4 @@
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 import { createResponse } from './common';
 
 export const TicketResponse = {

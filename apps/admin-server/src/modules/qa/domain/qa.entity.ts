@@ -13,8 +13,8 @@ import Comment from '@/src/modules/qa/domain/qa.comment.entity';
 import File from '@/src/modules/qa/domain/qa.file.entity';
 import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import { TaskStatusEnum } from '@repo/common';
-import { BaseTimeEntity } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 
 @Entity({ name: 'TB_QA' })
 export default class Qa extends BaseTimeEntity {

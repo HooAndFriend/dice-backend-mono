@@ -13,7 +13,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
   NotFoundException,
-} from '@repo/common';
+} from '@hi-dice/common';
 import RequestQaSaveDto from '../dto/qa.save.dto';
 import RequestQaUpdateDto from '../dto/qa.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
@@ -26,7 +26,7 @@ import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
-import { TaskStatusEnum } from '@repo/common';
+import { TaskStatusEnum } from '@hi-dice/common';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 
 @Injectable()

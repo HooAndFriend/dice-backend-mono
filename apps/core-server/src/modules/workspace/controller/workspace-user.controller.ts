@@ -44,8 +44,8 @@ import {
 // ** Dto Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
-import { RoleEnum } from '@repo/common';
-import { CommonResponse } from '@repo/common';
+import { RoleEnum } from '@hi-dice/common';
+import { CommonResponse } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import {

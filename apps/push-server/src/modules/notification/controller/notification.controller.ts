@@ -17,7 +17,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { CommonResponse } from '@repo/common';
+import { CommonResponse } from '@hi-dice/common';
 import { NotificationResponse } from '@/src/global/response/notification.response';
 
 // ** Utils Imports

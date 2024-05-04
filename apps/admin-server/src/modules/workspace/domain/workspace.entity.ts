@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@repo/common';
+import { BaseTimeEntity } from '@hi-dice/common';
 import WorkspaceUser from './workspace-user.entity';
 import WorkspaceFunction from './workspace-function.entity';
 import Team from '../../team/domain/team.entity';
