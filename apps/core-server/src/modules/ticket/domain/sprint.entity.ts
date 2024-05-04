@@ -30,7 +30,7 @@ export default class Sprint extends BaseTimeEntity {
     type: 'date',
     name: 'start_date',
     comment: '시작일',
-    nullable: false,
+    nullable: true,
   })
   startDate: Date;
 
@@ -38,7 +38,7 @@ export default class Sprint extends BaseTimeEntity {
     type: 'date',
     name: 'end_date',
     comment: '마감일',
-    nullable: false,
+    nullable: true,
   })
   endDate: Date;
 
