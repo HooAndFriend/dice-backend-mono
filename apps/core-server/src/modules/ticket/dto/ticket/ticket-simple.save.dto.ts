@@ -9,7 +9,7 @@ export default class RequestSimpleTicketSaveDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ example: '게시판', required: false })
+  @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsNumber()
   typeId: number;

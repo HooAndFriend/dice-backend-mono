@@ -397,9 +397,7 @@ export default class TicketService {
    * @param dto
    */
   public async updateTicketDueDate(dto: RequestTicketDueDateUpdateDto) {
-    const findTicket = await this.findTicketById(dto.ticketId);
-
-    await this.ticketRepository.update(findTicket.id, {
+    await this.ticketRepository.update(dto.ticketId, {
       dueDate: dto.dueDate,
     });
   }

@@ -47,8 +47,12 @@ import {
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import { CommonResponse } from '@hi-dice/common';
-import { RoleEnum } from '@hi-dice/common';
+import {
+  RoleEnum,
+  CommonResponse,
+  RequestTicketHistoryLogSaveDto,
+  TicketHistoryTypeEnum,
+} from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
@@ -131,12 +135,19 @@ export default class TicketController {
     const ticketSetting = await this.ticketSettingService.findTicketSettingById(
       dto.typeId,
     );
-    await this.ticketService.saveSimpleTicket(
+    const ticket = await this.ticketService.saveSimpleTicket(
       dto,
       user,
       workspace,
       ticketSetting,
     );
+
+    this.sendTicketQueue({
+      ticketId: ticket.id,
+      email: user.email,
+      type: TicketHistoryTypeEnum.CREATE,
+      log: '티켓을 생성했습니다.',
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -178,6 +189,7 @@ export default class TicketController {
     @GetUser() user: User,
   ) {
     await this.ticketService.updateTicket(dto, user);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -264,9 +276,22 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/')
-  public async updateSimpleTicket(@Body() dto: RequestTicketSimpleUpdateDto) {
+  public async updateSimpleTicket(
+    @Body() dto: RequestTicketSimpleUpdateDto,
+    @GetUser() { email }: User,
+  ) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
     await this.ticketService.updateSimpleTicket(ticket, dto);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      email: email,
+      type: this.getTicketHistoryLogEnum(dto.type),
+      log:
+        dto.type === 'storypoint'
+          ? `${ticket.storypoint} -> ${dto.storypoint}`
+          : `${ticket[dto.type]} -> ${dto.value}`,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -330,8 +355,21 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/dueDate')
-  public async updateTicketDueDate(@Body() dto: RequestTicketDueDateUpdateDto) {
+  public async updateTicketDueDate(
+    @Body() dto: RequestTicketDueDateUpdateDto,
+    @GetUser() { email }: User,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+
     await this.ticketService.updateTicketDueDate(dto);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      email: email,
+      type: TicketHistoryTypeEnum.DUE_DATE,
+      log: `${ticket.dueDate} -> ${dto.dueDate}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket due date를 수정합니다.',
@@ -356,17 +394,15 @@ export default class TicketController {
     const user = await this.userService.findUserById(dto.userId);
     await this.ticketService.updateTicketUser(dto, user);
 
-    // this.eventEmitter.emit('ticket.send-change-history', {
-    //   qaId: dto.ticketId,
-    //   username: user?.nickname,
-    //   before:
-    //     dto.type === 'admin' ? ticket.admin.nickname : ticket.worker.nickname,
-    //   after: user.nickname,
-    //   type:
-    //     dto.type === 'admin'
-    //       ? TicketHistoryTypeEnum.ADMIN
-    //       : TicketHistoryTypeEnum.WORKER,
-    // });
+    this.sendTicketQueue({
+      ticketId: ticket.id,
+      email: user.email,
+      type:
+        dto.type === 'admin'
+          ? TicketHistoryTypeEnum.ADMIN
+          : TicketHistoryTypeEnum.WORKER,
+      log: `${ticket.worker.nickname} -> ${user.nickname}`,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -417,7 +453,7 @@ export default class TicketController {
     );
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Ticket 상태를 변경합니다.',
+      message: 'Ticket 정렬을 변경합니다.',
     });
   }
 
@@ -431,10 +467,21 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/status')
-  public async updateTicketState(@Body() dto: RequestTicketStatusUpdateDto) {
-    await this.ticketService.isExistedTicketById(dto.ticketId);
+  public async updateTicketState(
+    @Body() dto: RequestTicketStatusUpdateDto,
+    @GetUser() { email }: User,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
 
     await this.ticketService.updateTicketStatus(dto);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      email: email,
+      type: TicketHistoryTypeEnum.STATUS,
+      log: `${ticket.status} -> ${dto.status}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
@@ -445,7 +492,28 @@ export default class TicketController {
    * Send Ticket Queue
    * @param event
    */
-  private sendTicketQueue(event: RequestTicketUserUpdateDto) {
+  private sendTicketQueue(event: RequestTicketHistoryLogSaveDto) {
     this.eventEmitter.emit('ticket.send-change-history', event);
+  }
+
+  /**
+   * Get Ticket History Log Enum
+   * @param type
+   * @returns
+   */
+  private getTicketHistoryLogEnum(type: 'content' | 'name' | 'storypoint') {
+    if (type === 'content') {
+      return TicketHistoryTypeEnum.CONTENT;
+    }
+
+    if (type === 'name') {
+      return TicketHistoryTypeEnum.TITLE;
+    }
+
+    if (type === 'storypoint') {
+      return TicketHistoryTypeEnum.SP;
+    }
+
+    return TicketHistoryTypeEnum.CREATE;
   }
 }

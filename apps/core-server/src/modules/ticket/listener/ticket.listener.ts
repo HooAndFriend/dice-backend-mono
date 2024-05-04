@@ -3,7 +3,8 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 
-import RequestTicketHistoryLogSaveDto from '../dto/ticket/ticket-history-log.save.dto';
+// ** dto Imports
+import { RequestTicketHistoryLogSaveDto } from '@hi-dice/common';
 
 @Injectable()
 export class TicketSendChangeHistoryListener {
