@@ -58,6 +58,22 @@ export default class SprintService {
   }
 
   /**
+   * Find All Sprint
+   * @param workspaceId
+   */
+  public async findSprintList(workspaceId: number) {
+    const [data, count] = await this.sprintRepository.findSprintList(
+      workspaceId,
+    );
+
+    if (!data) {
+      throw new NotFoundException('Not Found Sprint');
+    }
+
+    return { data, count };
+  }
+
+  /**
    * Update Sprint
    * @param dto
    * @param workspace
@@ -66,7 +82,7 @@ export default class SprintService {
     dto: RequestSprintUpdateInfoDto,
     workspace: Workspace,
   ) {
-    const findSprint = await this.findSprint(dto.sprintId, workspace.id);
+    const findSprint = await this.findOneSprint(dto.sprintId, workspace.id);
 
     if (!findSprint) {
       throw new NotFoundException('Not Found Sprint');

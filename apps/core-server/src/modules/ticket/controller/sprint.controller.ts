@@ -141,6 +141,24 @@ export default class SprintController {
   }
 
   //sprint 리스트 조회
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint 리스트 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.findSprint[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findSprintList(@GetWorkspace() workspace: Workspace) {
+    const { data, count } = await this.sprintService.findSprintList(
+      workspace.id,
+    );
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Sprint 리스트를 조회합니다.',
+      data: { data, count },
+    });
+  }
   //sprint에 티켓 추가
   //sprint에 티켓 제거
 }

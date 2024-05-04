@@ -36,6 +36,10 @@ import TicketFileService from './service/ticket.file.service';
 import TicketFileController from './controller/ticket.file.controller';
 import EpicService from './service/epic.service';
 import TicketSettingService from './service/ticket.setting.service';
+import SprintController from './controller/sprint.controller';
+import Sprint from './domain/sprint.entity';
+import SprintRepository from './repository/sprint.repository';
+import SprintService from './service/sprint.service';
 
 @Module({
   imports: [
@@ -45,6 +49,7 @@ import TicketSettingService from './service/ticket.setting.service';
       TicketFile,
       TicketComment,
       TicketSetting,
+      Sprint,
       State,
     ]),
     TypeOrmExModule.forCustomRepository([
@@ -53,6 +58,7 @@ import TicketSettingService from './service/ticket.setting.service';
       TicketFileRepository,
       TicketCommentRepository,
       TicketSettingRepository,
+      SprintRepository,
       StateRepository,
     ]),
     ClientsModule.registerAsync([
@@ -83,11 +89,13 @@ import TicketSettingService from './service/ticket.setting.service';
     TicketFileService,
     EpicService,
     TicketSettingService,
+    SprintService,
   ],
   controllers: [
     TicketController,
     StateController,
     EpicController,
+    SprintController,
     TicketCommentController,
     TicketSettingController,
     TicketFileController,
@@ -99,6 +107,7 @@ import TicketSettingService from './service/ticket.setting.service';
     TicketFileService,
     EpicService,
     TicketSettingService,
+    SprintService,
   ],
 })
 export default class TicketModule {}

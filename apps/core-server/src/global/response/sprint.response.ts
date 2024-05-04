@@ -1,3 +1,4 @@
+import { count } from 'console';
 import {
   createErrorResponse,
   createMessageResponse,
@@ -22,6 +23,39 @@ export const SprintResponse = {
       },
       statusCode: 200,
       message: 'Sprint를 조회합니다.',
+    }),
+  },
+  findSprintList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 1,
+            name: '스프린트1',
+            startDate: '2021-01-01',
+            endDate: '2021-01-31',
+            orderId: 1,
+            ticket: [
+              {
+                createdDate: '2024-04-14T11:03:27.788Z',
+                modifiedDate: '2024-05-04T15:42:30.826Z',
+                id: 1,
+                name: '티켓1',
+                status: 'DONE',
+                content: null,
+                code: 'DWW-1',
+                storypoint: null,
+                dueDate: null,
+                completeDate: null,
+                reopenDate: null,
+              },
+            ],
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Sprint 리스트를 조회합니다.',
     }),
   },
   updateSprint: {
