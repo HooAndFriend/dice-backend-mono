@@ -17,7 +17,7 @@ import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
 import { TaskStatusEnum } from '@hi-dice/common';
 import TicketSetting from './ticket.setting.entity';
-import Sprint from '../../sprint/domain/sprint.entity';
+import Sprint from './sprint.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {

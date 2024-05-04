@@ -9,5 +9,4 @@ import Sprint from '../domain/sprint.entity';
 // ** Emum Imports
 
 @CustomRepository(Sprint)
-export default class SprintRepository extends Repository<Sprint> {
-}
+export default class SprintRepository extends Repository<Sprint> {}

@@ -9,11 +9,11 @@ import {
 // ** Custom Module Imports
 import { In } from 'typeorm';
 import SprintRepository from '../repository/sprint.repository';
-import TicketRepository from '../../ticket/repository/ticket.repository';
+import TicketRepository from '../repository/ticket.repository';
 
 // ** enum, dto, entity, types Imports
-import RequestSprintSaveDto from '../dto/sprint.save.dto';
-import RequestSprintUpdateInfoDto from '../dto/sprint.update.info.dto';
+import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
+import RequestSprintUpdateInfoDto from '../dto/sprint/sprint.update.info.dto';
 import { InternalServerErrorException } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 
@@ -81,8 +81,8 @@ export default class SprintService {
       throw new NotFoundException('Not Found Sprint');
     }
     findSprint.name = dto.name;
-    findSprint.startDate = new Date(dto.startDate); // Convert string to Date
-    findSprint.endDate = new Date(dto.endDate); // Convert string to Date
+    findSprint.startDate = new Date(dto.startDate);
+    findSprint.endDate = new Date(dto.endDate);
 
     await this.sprintRepository.save(findSprint);
   }

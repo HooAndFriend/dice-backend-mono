@@ -18,7 +18,7 @@ import Ticket from '../../ticket/domain/ticket.entity';
 import TicketSetting from '../../ticket/domain/ticket.setting.entity';
 import Qa from '../../qa/domain/qa.entity';
 import Board from '../../board/domain/board.entity';
-import Sprint from '../../sprint/domain/sprint.entity';
+import Sprint from '../../ticket/domain/sprint.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {

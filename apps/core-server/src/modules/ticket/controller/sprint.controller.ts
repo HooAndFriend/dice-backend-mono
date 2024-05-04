@@ -12,7 +12,7 @@ import {
 
 // ** Module Imports
 import SprintService from '../service/sprint.service';
-import TicketService from '../../ticket/service/ticket.service';
+import TicketService from '../service/ticket.service';
 
 // ** Swagger Imports
 import {
@@ -39,12 +39,12 @@ import {
 import { SprintResponse } from '@/src/global/response/sprint.response';
 
 // ** Dto Imports
-import RequestSprintSaveDto from '../dto/sprint.save.dto';
+import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
 // ** Entity Imports
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { CommonResponse, RoleEnum } from '@hi-dice/common';
-import RequestSprintUpdateDto from '../dto/sprint.update.info.dto';
+import RequestSprintUpdateDto from '../dto/sprint/sprint.update.info.dto';
 
 @ApiTags('SPRINT')
 @ApiResponse(createServerExceptionResponse())
@@ -71,7 +71,7 @@ export default class SprintController {
   ) {
     await this.sprintService.saveSprint(dto, workspace);
 
-    return CommonResponse.createMessageResponse({
+    return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Sprint를 생성합니다.',
     });
