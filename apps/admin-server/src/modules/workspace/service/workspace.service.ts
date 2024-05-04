@@ -29,7 +29,19 @@ export default class WorkspaceService {
    * @returns Workspace[]
    */
   public async findWorkspaceList(dto: RequestWorkspaceFindDto) {
-    return await this.workspaceRepository.findWorkspaceList(dto);
+    const [data, count] = await this.workspaceRepository.findWorkspaceList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.id,
+        name: item.name,
+        comment: item.comment,
+        createdId: item.createdId,
+        createdDate: item.createdDate,
+        workspaceUserCount: item.workspaceUser.length,
+      })),
+      count,
+    ];
   }
 
   /**

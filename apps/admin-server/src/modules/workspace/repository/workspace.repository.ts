@@ -39,10 +39,9 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.comment',
         'workspace.createdId',
         'workspace.createdDate',
+        'workspaceUser.id',
       ])
-      .addSelect('COUNT(workspaceUser.id)', 'workspaceUserCount')
-      .leftJoin('workspace.workspaceUser', 'workspaceUser')
-      .groupBy('workspace.id');
+      .leftJoin('workspace.workspaceUser', 'workspaceUser');
 
     if (dto.name) {
       queryBuilder.where('workspace.name like :name', {
@@ -51,7 +50,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
     }
 
     if (dto.page && dto.pageSize) {
-      queryBuilder.skip((dto.page - 1) * dto.pageSize).take(dto.pageSize);
+      queryBuilder.skip(dto.page * dto.pageSize).take(dto.pageSize);
     }
 
     if (dto.createdId) {
@@ -76,7 +75,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
       );
     }
 
-    return await queryBuilder.getRawMany();
+    return await queryBuilder.getManyAndCount();
   }
 
   public async findWorkspaceById(workspaceId: number) {
