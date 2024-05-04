@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -36,6 +36,7 @@ import { CommonResponse, RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/qa-history-log', version: '1' })
 export default class QaHistoryLogController {
+  private logger = new Logger(QaHistoryLogController.name);
   constructor(private readonly qaHistoryLogService: QaHistoryLogService) {}
 
   @ApiBearerAuth('access-token')
@@ -58,6 +59,7 @@ export default class QaHistoryLogController {
     @Payload() data: RequestQaHistoryLogSaveDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(`[Qa History Log] Message : ${JSON.stringify(data)}`);
     await this.qaHistoryLogService.saveQaHistoryLog(data);
   }
 }
