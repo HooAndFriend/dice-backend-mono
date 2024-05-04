@@ -6,6 +6,9 @@ enum TicketHistoryTypeEnum {
   CONTENT = 'CONTENT',
   UPLOAD_FILE = 'UPLOAD_FILE',
   DELETE_FILE = 'DELETE_FILE',
+  CREATE = 'CREATE',
+  TITLE = 'TITLE',
+  SP = 'SP',
 }
 
 export default TicketHistoryTypeEnum;
