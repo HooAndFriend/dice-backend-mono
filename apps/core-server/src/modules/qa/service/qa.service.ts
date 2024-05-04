@@ -57,7 +57,7 @@ export default class QaService {
       })) + 1;
     const qaNumber = workspace.code + '-' + qaCount;
 
-    await this.qaRepository.save(
+    return await this.qaRepository.save(
       this.qaRepository.create({
         code: qaNumber,
         title: dto.title,
@@ -265,33 +265,23 @@ export default class QaService {
    * @param dto
    * @param workspace
    */
-  public async updateQaStatus(
-    dto: RequestQaStatusUpdateDto,
-    workspace: Workspace,
-  ) {
-    const findQa = await this.findQa(dto.qaId, workspace.id);
-
-    if (findQa.status === TaskStatusEnum.COMPLETE) {
+  public async updateQaStatus(qa: Qa, dto: RequestQaStatusUpdateDto) {
+    if (qa.status === TaskStatusEnum.COMPLETE) {
       if (dto.status === TaskStatusEnum.COMPLETE) {
-        findQa.completeDate = new Date();
+        qa.completeDate = new Date();
       } else {
-        findQa.completeDate = null;
+        qa.completeDate = null;
       }
     }
 
-    findQa.status = dto.status;
+    qa.status = dto.status;
 
-    await this.qaRepository.save(findQa);
+    await this.qaRepository.save(qa);
   }
 
-  public async updateQaDueDate(
-    dto: RequestQaDueDateUpdateDto,
-    workspace: Workspace,
-  ) {
-    const findQa = await this.findQa(dto.qaId, workspace.id);
-
-    findQa.dueDate = new Date(dto.dueDate);
-    await this.qaRepository.save(findQa);
+  public async updateQaDueDate(qa: Qa, dto: RequestQaDueDateUpdateDto) {
+    qa.dueDate = new Date(dto.dueDate);
+    await this.qaRepository.save(qa);
   }
   /**
    * Delete Qa

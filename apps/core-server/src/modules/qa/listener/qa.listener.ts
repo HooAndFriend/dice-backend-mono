@@ -4,7 +4,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { ClientProxy } from '@nestjs/microservices';
 
 // ** Dto Imports
-import RequestQaHistoryLogSaveDto from '../dto/qa-history-log.save.dto';
+import { RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 
 @Injectable()
 export class QaSendChangeHistoryListener {

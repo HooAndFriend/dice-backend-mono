@@ -44,7 +44,6 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse, RequestQaHistoryLogSaveDto } from '@hi-dice/common';
 
 // ** Dto Imports
 import RequestQaUpdateDto from '../dto/qa.update.dto';
@@ -62,11 +61,13 @@ import {
   RoleEnum,
   NotificationStatusEnum,
   NotificationTypeEnum,
+  CommonResponse,
+  RequestQaHistoryLogSaveDto,
+  QaHistoryTypeEnum,
 } from '@hi-dice/common';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
-import QaHistoryTypeEnum from '../domain/qa-history-log-type.enum';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
@@ -139,7 +140,14 @@ export default class QaController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
   ) {
-    await this.qaService.saveQa(dto, user, workspace);
+    const { id } = await this.qaService.saveQa(dto, user, workspace);
+
+    this.sendQaQueue({
+      qaId: id,
+      email: user.email,
+      type: QaHistoryTypeEnum.CREATE,
+      log: 'QA를 생성했습니다.',
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -190,7 +198,7 @@ export default class QaController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 수정' })
+  @ApiOperation({ summary: 'QA 정렬 순서 수정' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiBody({ type: RequestQaOrderUpdateDto })
   @ApiResponse(QaResponse.updateQa[200])
@@ -227,8 +235,19 @@ export default class QaController {
   public async updateStatusQa(
     @Body() dto: RequestQaStatusUpdateDto,
     @GetWorkspace() workspace: Workspace,
+    @GetUser() { email }: User,
   ) {
-    await this.qaService.updateQaStatus(dto, workspace);
+    const qa = await this.qaService.findQa(dto.qaId, workspace.id);
+
+    await this.qaService.updateQaStatus(qa, dto);
+
+    this.sendQaQueue({
+      qaId: qa.id,
+      email: email,
+      type: QaHistoryTypeEnum.STATUS,
+      log: `${qa.status} -> ${dto.status}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Qa상태를 수정합니다.',
@@ -248,8 +267,19 @@ export default class QaController {
   public async updatedueDateQa(
     @Body() dto: RequestQaDueDateUpdateDto,
     @GetWorkspace() workspace: Workspace,
+    @GetUser() { email }: User,
   ) {
-    await this.qaService.updateQaDueDate(dto, workspace);
+    const qa = await this.qaService.findQa(dto.qaId, workspace.id);
+
+    await this.qaService.updateQaDueDate(qa, dto);
+
+    this.sendQaQueue({
+      qaId: qa.id,
+      email: email,
+      type: QaHistoryTypeEnum.DUE_DATE,
+      log: `${qa.dueDate} -> ${dto.dueDate}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'qa dueDate를 수정합니다.',
@@ -269,22 +299,22 @@ export default class QaController {
   @Put('/user')
   public async updateUserQa(
     @Body() dto: RequestQaUserUpdateDto,
-    @GetUser() { nickname }: User,
-    @GetWorkspace() workspace: Workspace,
+    @GetUser() { nickname, email }: User,
   ) {
     const qa = await this.qaService.findQaByIdWithWorkerAndAdmin(dto.qaId);
     const user = await this.userService.findUserById(dto.userId);
     await this.qaService.updateUserQa(dto, user);
 
-    this.eventEmitter.emit('qa.send-change-history', {
-      qaId: dto.qaId,
-      username: user.nickname,
-      before: dto.type === 'admin' ? qa.admin.nickname : qa.worker.nickname,
-      after: user.nickname,
+    this.sendQaQueue({
+      qaId: qa.id,
+      email: email,
       type:
         dto.type === 'admin'
           ? QaHistoryTypeEnum.ADMIN
           : QaHistoryTypeEnum.WORKER,
+      log: `${
+        dto.type === 'admin' ? qa.admin.nickname : qa.worker.nickname
+      } -> ${user.nickname}`,
     });
 
     console.log(1);
