@@ -90,8 +90,10 @@ export default class SprintController {
     @Param('sprintId') sprintId: number,
     @GetWorkspace() workspace: Workspace,
   ) {
-    const sprint = await this.sprintService.findSprint(sprintId, workspace.id);
-    sprint.ticket = await this.ticketService.findTicketsBySprint(sprintId);
+    const sprint = await this.sprintService.findOneSprint(
+      sprintId,
+      workspace.id,
+    );
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Sprint를 조회합니다.',

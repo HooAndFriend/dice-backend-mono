@@ -42,7 +42,7 @@ export default class SprintService {
    * @param sprintId
    * @param workspaceId
    */
-  public async findSprint(sprintId: number, workspaceId: number) {
+  public async findOneSprint(sprintId: number, workspaceId: number) {
     const findSprint = await this.sprintRepository.findOne({
       where: {
         id: sprintId,
