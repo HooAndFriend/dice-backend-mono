@@ -1,13 +1,14 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
-import UserModule from '../../user/user.module';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Custom Module Imports
+import UserModule from '../../user/user.module';
+import InternalAuthController from './controller/internal-auth.controller';
 
 @Module({
-  imports: [UserModule],
+  imports: [forwardRef(() => UserModule)],
   providers: [],
   exports: [],
-  controllers: [],
+  controllers: [InternalAuthController],
 })
 export default class InternalAuthModule {}
