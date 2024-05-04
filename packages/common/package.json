@@ -1,13 +1,14 @@
 {
   "name": "@hi-dice/common",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "licenses": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "start:dev": "tsup ./index.ts --dts --watch",
-    "build:package": "tsup ./index.ts --dts --minify"
+    "build:package": "tsup ./index.ts --dts --minify",
+    "deploy": "npm publish --access public"
   },
   "author": "",
   "license": "ISC",

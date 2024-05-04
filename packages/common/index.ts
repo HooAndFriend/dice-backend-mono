@@ -1,5 +1,7 @@
 // ** Dto
 export * from './libs/dto/log/request-log.dto';
+export * from './libs/dto/log/qa-history-log.save.dto';
+export * from './libs/dto/log/ticket-history-log.save.dto';
 export * from './libs/dto/common/api.response';
 export * from './libs/dto/common/paging.dto';
 export * from './libs/dto/push/push.send.dto';
@@ -23,3 +25,5 @@ export * from './libs/enum/common/UseYn.enum';
 export * from './libs/enum/common/UserType.enum';
 export * from './libs/enum/notification/NotificationStatus.enum';
 export * from './libs/enum/notification/NotificationType.enum';
+export * from './libs/enum/log/qa-history-log-type.enum';
+export * from './libs/enum/log/ticket-history-log-type.enum';
