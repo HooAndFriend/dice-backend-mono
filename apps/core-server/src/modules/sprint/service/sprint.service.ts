@@ -1,5 +1,10 @@
 // ** Nest Imports
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 
 // ** Custom Module Imports
 import { In } from 'typeorm';
@@ -8,7 +13,7 @@ import TicketRepository from '../../ticket/repository/ticket.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestSprintSaveDto from '../dto/sprint.save.dto';
-import RequestSprintUpdateDto from '../dto/sprint.update.dto';
+import RequestSprintUpdateInfoDto from '../dto/sprint.update.info.dto';
 import { InternalServerErrorException } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 
@@ -21,35 +26,24 @@ export default class SprintService {
 
   private logger = new Logger(SprintService.name);
 
+  /**
+   * Save Sprint
+   * @param dto
+   * @param Workspace
+   */
   public async saveSprint(dto: RequestSprintSaveDto, workspace: Workspace) {
-    const findTickets = await this.ticketRepository.findBy({
-      id: In(dto.ticketIds),
-      workspace: { id: workspace.id },
+    await this.sprintRepository.save({
+      name: dto.sprintName,
+      startDate: dto.startDate,
+      endDate: dto.endDate,
+      workspace: workspace,
     });
-
-    if (!findTickets) {
-      throw new Error('Not Found Ticket');
-    }
-
-    try {
-      await this.sprintRepository.save({
-        name: dto.sprintName,
-        startDate: dto.startDate,
-        endDate: dto.endDate,
-        ticket: findTickets,
-        workspace: workspace,
-      });
-    } catch (error) {
-      this.logger.log(error);
-
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    }
   }
-
+  /**
+   * Find Sprint
+   * @param sprintId
+   * @param workspaceId
+   */
   public async findSprint(sprintId: number, workspaceId: number) {
     const findSprint = await this.sprintRepository.findOne({
       where: {
@@ -59,38 +53,37 @@ export default class SprintService {
     });
 
     if (!findSprint) {
-      throw new Error('Not Found Sprint');
+      throw new NotFoundException('Not Found Sprint');
     }
 
     return findSprint;
   }
 
-  public async updateSprint(dto: RequestSprintUpdateDto, workspace: Workspace) {
+  /**
+   * Update Sprint
+   * @param dto
+   * @param workspace
+   */
+  public async updateSprintInfo(
+    dto: RequestSprintUpdateInfoDto,
+    workspace: Workspace,
+  ) {
     const findSprint = await this.findSprint(dto.sprintId, workspace.id);
-    try {
-      const findTickets = await this.ticketRepository.findBy({
-        id: In(dto.ticketIds),
-        workspace: { id: workspace.id },
-      });
 
-      if (!findTickets) {
-        throw new Error('Not Found Tickets');
-      }
-
-      findSprint.updateSprintFromDto(dto, findTickets);
-
-      await this.sprintRepository.save(findSprint);
-    } catch (error) {
-      this.logger.log(error);
-
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
+    if (!findSprint) {
+      throw new NotFoundException('Not Found Sprint');
     }
+    findSprint.name = dto.name;
+    findSprint.startDate = new Date(dto.startDate); // Convert string to Date
+    findSprint.endDate = new Date(dto.endDate); // Convert string to Date
+
+    await this.sprintRepository.save(findSprint);
   }
 
+  /**
+   * Delete Sprint
+   * @param sprintId
+   */
   public async deleteSprint(sprintId: number) {
     await this.sprintRepository.delete(sprintId);
   }

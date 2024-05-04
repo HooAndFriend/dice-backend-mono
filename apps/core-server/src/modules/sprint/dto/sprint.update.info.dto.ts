@@ -2,8 +2,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsArray, IsNumber, IsString } from 'class-validator';
-export default class RequestSprintUpdateDto {
+import { IsNumber, IsString } from 'class-validator';
+export default class RequestSprintUpdateInfoDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
   sprintId: number;
@@ -19,12 +19,4 @@ export default class RequestSprintUpdateDto {
   @ApiProperty({ example: '2024-04-04' })
   @IsString()
   endDate: string;
-
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  orderId: number;
-
-  @ApiProperty({ example: [1, 2, 3] })
-  @IsArray()
-  ticketIds: number[];
 }

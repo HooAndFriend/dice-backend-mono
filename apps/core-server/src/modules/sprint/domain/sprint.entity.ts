@@ -12,7 +12,7 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Ticket from '../../ticket/domain/ticket.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import RequestSprintUpdateDto from '../dto/sprint.update.dto';
+import RequestSprintUpdateDto from '../dto/sprint.update.info.dto';
 
 @Entity({ name: 'TB_SPRINT' })
 export default class Sprint extends BaseTimeEntity {
@@ -57,13 +57,4 @@ export default class Sprint extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   workspace: Relation<Workspace>;
-
-  updateSprintFromDto(dto: RequestSprintUpdateDto, tickets: Ticket[]): void {
-    const { name, startDate, endDate, orderId } = dto;
-    this.name = name;
-    this.startDate = new Date(startDate);
-    this.endDate = new Date(endDate);
-    this.orderId = orderId;
-    this.ticket = tickets;
-  }
 }

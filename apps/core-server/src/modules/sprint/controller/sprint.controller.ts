@@ -44,7 +44,7 @@ import RequestSprintSaveDto from '../dto/sprint.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { CommonResponse, RoleEnum } from '@hi-dice/common';
-import RequestSprintUpdateDto from '../dto/sprint.update.dto';
+import RequestSprintUpdateDto from '../dto/sprint.update.info.dto';
 
 @ApiTags('SPRINT')
 @ApiResponse(createServerExceptionResponse())
@@ -112,7 +112,7 @@ export default class SprintController {
     @Body() dto: RequestSprintUpdateDto,
     @GetWorkspace() workspace: Workspace,
   ) {
-    await this.sprintService.updateSprint(dto, workspace);
+    await this.sprintService.updateSprintInfo(dto, workspace);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
