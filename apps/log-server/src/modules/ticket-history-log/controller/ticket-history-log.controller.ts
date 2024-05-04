@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -39,6 +39,8 @@ import {
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/ticket-history-log', version: '1' })
 export default class TicketHistoryLogController {
+  private logger = new Logger(TicketHistoryLogController.name);
+
   constructor(
     private readonly ticketHistoryLogService: TicketHistoryLogService,
   ) {}
@@ -64,6 +66,7 @@ export default class TicketHistoryLogController {
     @Payload() data: RequestTicketHistoryLogSaveDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
+    this.logger.log(`[Ticket History Log] Message : ${JSON.stringify(data)}`);
     await this.ticketHistoryLogService.saveTicketHistoryLog(data);
   }
 }
