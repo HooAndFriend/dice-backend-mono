@@ -23,12 +23,11 @@ export default class TeamRepository extends Repository<Team> {
         'team.description',
         'team.createdId',
         'team.createdDate',
+        'teamUser.id',
+        'workspace.id',
       ])
-      .addSelect('COUNT(teamUser.id)', 'teamUserCount')
-      .addSelect('COUNT(workspace.id)', 'workspaceCount')
       .leftJoin('team.teamUser', 'teamUser')
-      .leftJoin('team.workspace', 'workspace')
-      .groupBy('team.id');
+      .leftJoin('team.workspace', 'workspace');
 
     if (dto.name) {
       queryBuilder.where('team.name like :name', {
@@ -62,7 +61,7 @@ export default class TeamRepository extends Repository<Team> {
       );
     }
 
-    return await queryBuilder.getRawMany();
+    return await queryBuilder.getManyAndCount();
   }
 
   /**

@@ -24,7 +24,20 @@ export default class TeamService {
    * @returns Team
    */
   public async findTeamList(dto: RequestTeamFindDto) {
-    return await this.teamRepository.findTeamList(dto);
+    const [data, count] = await this.teamRepository.findTeamList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        createdid: item.createdId,
+        createdDate: item.createdDate,
+        teamUserCount: item.teamUser.length,
+        workspaceCount: item.workspace.length,
+      })),
+      count,
+    ];
   }
 
   /**
