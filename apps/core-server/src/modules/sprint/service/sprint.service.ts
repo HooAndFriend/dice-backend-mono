@@ -32,11 +32,18 @@ export default class SprintService {
    * @param Workspace
    */
   public async saveSprint(dto: RequestSprintSaveDto, workspace: Workspace) {
+    const orderId = await this.sprintRepository.count({
+      where: {
+        workspace: { id: workspace.id },
+      },
+    });
+
     await this.sprintRepository.save({
       name: dto.sprintName,
       startDate: dto.startDate,
       endDate: dto.endDate,
       workspace: workspace,
+      orderId: orderId,
     });
   }
   /**
