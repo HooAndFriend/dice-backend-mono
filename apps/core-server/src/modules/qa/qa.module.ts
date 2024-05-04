@@ -23,6 +23,7 @@ import Qa from './domain/qa.entity';
 import Comment from './domain/qa.comment.entity';
 import File from './domain/qa.file.entity';
 import { QaNotificationListener } from './listener/qa-notification.listener';
+import QaCommentController from './controller/qa.comment.controller';
 
 @Module({
   imports: [
@@ -69,7 +70,7 @@ import { QaNotificationListener } from './listener/qa-notification.listener';
     forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],
-  controllers: [QaController],
+  controllers: [QaController, QaCommentController],
   providers: [
     QaService,
     CommentService,
