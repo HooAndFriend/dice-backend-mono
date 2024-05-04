@@ -40,11 +40,11 @@ import { SprintResponse } from '@/src/global/response/sprint.response';
 
 // ** Dto Imports
 import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
+import RequestSprintUpdateDto from '../dto/sprint/sprint.update.info.dto';
 // ** Entity Imports
 import Workspace from '../../workspace/domain/workspace.entity';
 // ** Emum Imports
 import { CommonResponse, RoleEnum } from '@hi-dice/common';
-import RequestSprintUpdateDto from '../dto/sprint/sprint.update.info.dto';
 
 @ApiTags('SPRINT')
 @ApiResponse(createServerExceptionResponse())
@@ -137,6 +137,7 @@ export default class SprintController {
       message: 'Sprint를 삭제합니다.',
     });
   }
+
   //sprint 리스트 조회
   //sprint에 티켓 추가
   //sprint에 티켓 제거

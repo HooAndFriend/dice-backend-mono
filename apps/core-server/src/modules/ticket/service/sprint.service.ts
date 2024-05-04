@@ -7,24 +7,16 @@ import {
 } from '@nestjs/common';
 
 // ** Custom Module Imports
-import { In } from 'typeorm';
 import SprintRepository from '../repository/sprint.repository';
-import TicketRepository from '../repository/ticket.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestSprintSaveDto from '../dto/sprint/sprint.save.dto';
 import RequestSprintUpdateInfoDto from '../dto/sprint/sprint.update.info.dto';
-import { InternalServerErrorException } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 
 @Injectable()
 export default class SprintService {
-  constructor(
-    private readonly sprintRepository: SprintRepository,
-    private readonly ticketRepository: TicketRepository,
-  ) {}
-
-  private logger = new Logger(SprintService.name);
+  constructor(private readonly sprintRepository: SprintRepository) {}
 
   /**
    * Save Sprint
@@ -40,12 +32,11 @@ export default class SprintService {
 
     await this.sprintRepository.save({
       name: dto.sprintName,
-      startDate: dto.startDate,
-      endDate: dto.endDate,
       workspace: workspace,
-      orderId: orderId,
+      orderId: orderId + 1,
     });
   }
+
   /**
    * Find Sprint
    * @param sprintId

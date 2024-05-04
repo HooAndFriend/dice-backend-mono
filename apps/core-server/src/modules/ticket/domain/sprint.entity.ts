@@ -12,7 +12,6 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Ticket from './ticket.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import RequestSprintUpdateDto from '../dto/sprint/sprint.update.info.dto';
 
 @Entity({ name: 'TB_SPRINT' })
 export default class Sprint extends BaseTimeEntity {
