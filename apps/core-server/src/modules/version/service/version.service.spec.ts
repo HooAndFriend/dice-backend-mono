@@ -25,20 +25,28 @@ describe('Version Service', () => {
 
   describe('find Lastest Vesrion', () => {
     it('해당 Type의 버전이 없습니다.', () => {
+      // ** Given
       jest.spyOn(repository, 'findOne').mockReturnValue(null);
 
-      expect(() =>
-        service.findLastestVesrion(VersionTypeEnum.MAC),
-      ).rejects.toThrowError(
+      // ** When
+      const response = service.findLastestVesrion(VersionTypeEnum.MAC);
+
+      // ** Then
+      expect(response).rejects.toThrowError(
         new NotFoundException('해당 type 버전이 없습니다.'),
       );
     });
 
     it('해당 Type의 Version이 있을 경우 Version을 반환합니다.', () => {
-      jest.spyOn(repository, 'findOne').mockReturnValue(getVersion());
-      expect(service.findLastestVesrion(VersionTypeEnum.MAC)).resolves.toEqual(
-        getVersion(),
-      );
+      // ** Given
+      const version = getVersion();
+      jest.spyOn(repository, 'findOne').mockReturnValue(version);
+
+      // ** When
+      const response = service.findLastestVesrion(VersionTypeEnum.MAC);
+
+      // ** Then
+      expect(response).resolves.toEqual(version);
     });
   });
 });
