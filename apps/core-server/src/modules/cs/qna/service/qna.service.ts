@@ -1,9 +1,5 @@
 // ** Nest Imports
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-
-// ** Typeorm Imports
-import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import QnaRepository from '../repository/qna.repository';
@@ -14,11 +10,7 @@ import CsCategory from '../../category/domain/cs-category.entity';
 
 @Injectable()
 export default class QnaService {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly qnaRepository: QnaRepository,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(private readonly qnaRepository: QnaRepository) {}
 
   private logger = new Logger(QnaService.name);
 

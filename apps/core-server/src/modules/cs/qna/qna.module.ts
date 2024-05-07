@@ -12,13 +12,11 @@ import Qna from './domain/qna.entity';
 import QnaRepository from './repository/qna.repository';
 import QnaController from './controller/qna.controller';
 import QnaService from './service/qna.service';
-import CsCategoryModule from '../category/cs-category.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Qna]),
     TypeOrmExModule.forCustomRepository([QnaRepository]),
-    CsCategoryModule,
   ],
   exports: [TypeOrmExModule, TypeOrmModule, QnaService],
   controllers: [QnaController],
