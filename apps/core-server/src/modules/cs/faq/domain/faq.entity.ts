@@ -35,7 +35,7 @@ export default class Faq extends BaseTimeEntity {
     type: 'varchar',
     length: 255,
     comment: '파일',
-    nullable: false,
+    nullable: true,
   })
   file: string;
 
