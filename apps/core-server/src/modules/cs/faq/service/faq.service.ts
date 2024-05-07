@@ -1,9 +1,5 @@
 // ** Nest Imports
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-
-// ** Typeorm Imports
-import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import FaqRepository from '../repository/faq.repository';
@@ -13,11 +9,7 @@ import RequestFaqFindDto from '../dto/faq.find.dto';
 
 @Injectable()
 export default class FaqService {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly faqRepository: FaqRepository,
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(private readonly faqRepository: FaqRepository) {}
 
   private logger = new Logger(FaqService.name);
 

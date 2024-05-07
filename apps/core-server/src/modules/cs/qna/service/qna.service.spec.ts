@@ -8,7 +8,7 @@ import QnaRepository from '../repository/qna.repository';
 // ** Entity Imports
 import Qna from '../domain/qna.entity';
 
-describe('Qns Service Test', () => {
+describe('Qna Service Test', () => {
   let service;
   let repository;
 
