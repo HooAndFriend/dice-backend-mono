@@ -12,10 +12,7 @@ import VersionTypeEnum from '../domain/version-type.enum';
 
 @Injectable()
 export default class VersionService {
-  constructor(
-    private readonly versionRepository: VersionRepository,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly versionRepository: VersionRepository) {}
 
   /**
    * Find Lastest Version
