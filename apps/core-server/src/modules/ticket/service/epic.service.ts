@@ -206,6 +206,15 @@ export default class EpicService {
   }
 
   /**
+   * Find Epic List
+   * @param workspaceId
+   * @returns
+   */
+  public async findEpicList(workspaceId: number) {
+    return await this.epicRepository.findEpicList(workspaceId);
+  }
+
+  /**
    * Find All epic
    * @param id
    */

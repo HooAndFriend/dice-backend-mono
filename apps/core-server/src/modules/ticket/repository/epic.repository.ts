@@ -10,6 +10,16 @@ import RequestEpicFindDto from '../dto/epic/epic.find.dto';
 
 @CustomRepository(Epic)
 export default class EpicRepository extends Repository<Epic> {
+  public async findEpicList(workspaceId: number) {
+    const querybuilder = this.createQueryBuilder('epic')
+      .select(['epic.id', 'epic.name', 'epic.code', 'epic.orderId'])
+      .where('epic.workspace = :workspaceId', { workspaceId })
+      .andWhere('epic.isDeleted = false')
+      .orderBy('epic.orderId', 'ASC');
+
+    return await querybuilder.getManyAndCount();
+  }
+
   public async findAllByWorkspaceId(
     workspaceId: number,
     dto: RequestEpicFindDto,

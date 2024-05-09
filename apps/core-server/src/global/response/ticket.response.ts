@@ -276,6 +276,71 @@ export const TicketResponse = {
       message: 'Ticket 정보를 찾을 수 없습니다.',
     }),
   },
+  findEpicList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            id: 6,
+            name: 'DICE 로그인 수정',
+            orderId: 1,
+            code: 'ADM-1',
+          },
+          {
+            id: 7,
+            name: '감자',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 33,
+            name: '토마토',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 34,
+            name: '사과',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 35,
+            name: '바나나',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 36,
+            name: '수박',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 37,
+            name: '오이',
+            orderId: 1,
+            code: 'ADM-2',
+          },
+          {
+            id: 38,
+            name: '123123',
+            orderId: 1,
+            code: 'ADM-8',
+          },
+          {
+            id: 39,
+            name: '11',
+            orderId: 1,
+            code: 'ADM-9',
+          },
+        ],
+        count: 9,
+      },
+      statusCode: 200,
+      message: 'Epic을 전체 조회합니다.',
+    }),
+  },
   findAllEpic: {
     200: createResponse({
       data: {

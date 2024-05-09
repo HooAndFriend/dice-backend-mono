@@ -87,6 +87,24 @@ export default class EpicController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC 리스트 조회' })
+  @ApiResponse(TicketResponse.findEpicList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/list')
+  public async findEpicList(@GetWorkspace() { id }: Workspace) {
+    const [data, count] = await this.epicService.findEpicList(id);
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Epic을 전체 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 생성' })
   @ApiBody({ type: RequestEpicSaveDto })
   @ApiResponse(TicketResponse.saveEpic[200])
