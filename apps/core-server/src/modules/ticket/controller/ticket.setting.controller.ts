@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -86,8 +87,10 @@ export default class TicketSettingController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:settingId')
-  public async deleteSetting(@Param('settingId') id: number) {
-    await this.ticketService.deleteSetting(id);
+  public async deleteSetting(@Param('settingId', ParseIntPipe) id: number) {
+    await this.ticketSettingService.existedTicketSettingById(id);
+    await this.ticketSettingService.deleteTicketSetting(id);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Setting',

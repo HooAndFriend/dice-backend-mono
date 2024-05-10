@@ -40,18 +40,28 @@ export default class TicketSettingService {
   }
 
   /**
-   * Existed Setting Type
-   * @param type
-   * @param workspaceId
+   * Delete Ticket Setting
+   * @param ticketSettingId
    */
-  public async existedTicketSetting(name: string, workspaceId: number) {
+  public async deleteTicketSetting(ticketSettingId: number) {
+    await this.ticketSettingRepository.delete(ticketSettingId);
+  }
+
+  /**
+   * Existed Ticket Setting By Id
+   * @param ticketSettingId
+   * @returns
+   */
+  public async existedTicketSettingById(ticketSettingId: number) {
     const ticketSetting = await this.ticketSettingRepository.exist({
-      where: { name, workspace: { id: workspaceId } },
+      where: { id: ticketSettingId },
     });
 
-    if (ticketSetting) {
-      throw new BadRequestException('Already exist setting');
+    if (!ticketSetting) {
+      throw new NotFoundException('Not Found Ticket Setting');
     }
+
+    return ticketSetting;
   }
 
   /**
