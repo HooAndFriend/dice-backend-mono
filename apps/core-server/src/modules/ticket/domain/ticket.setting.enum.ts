@@ -3,7 +3,6 @@ enum TicketSettingEnum {
   YELLOW = 'YELLOW',
   RED = 'RED',
   BLUE = 'BLUE',
-  ORANGE = 'ORANGE',
   PURPLE = 'PURPLE',
   BLACK = 'BLACK',
   PINK = 'PINK',

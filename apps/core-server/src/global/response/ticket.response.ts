@@ -19,10 +19,9 @@ export const TicketResponse = {
             completeDate: null,
             reopenDate: null,
             ticketSetting: {
-              id: 11,
-              color: '#c89898',
-              textColor: '#ffffff',
-              type: '123',
+              id: 13,
+              type: 'OTHER',
+              name: 'FUNC',
             },
             worker: {
               id: 5,
@@ -152,10 +151,9 @@ export const TicketResponse = {
         reopenDate: null,
         ticketFile: [],
         ticketSetting: {
-          id: 11,
-          color: '#c89898',
-          textColor: '#ffffff',
-          type: '123',
+          id: 13,
+          type: 'OTHER',
+          name: 'FUNC',
         },
         epic: {
           id: 1,
@@ -361,10 +359,9 @@ export const TicketResponse = {
                 completeDate: null,
                 reopenDate: null,
                 ticketSetting: {
-                  id: 11,
-                  color: '#c89898',
-                  type: '123',
-                  textColor: '#ffffff',
+                  id: 13,
+                  type: 'OTHER',
+                  name: 'FUNC',
                 },
                 worker: {
                   id: 5,
@@ -696,16 +693,14 @@ export const TicketResponse = {
         data: [
           {
             id: 10,
-            color: 'ff8080',
-            textColor: 'ffffff',
-            type: 'FUNC',
+            type: 'OTHER',
+            name: 'FUNC',
             description: '냐',
           },
           {
             id: 11,
-            color: 'ffffff',
-            textColor: 'ffffff',
-            type: 'SCN',
+            type: 'OTHER',
+            name: 'FUNC',
             description: 'description',
           },
         ],
@@ -724,9 +719,8 @@ export const TicketResponse = {
     200: createResponse({
       data: {
         id: 10,
-        color: 'ff8080',
-        type: 'FUNC',
-        textColor: 'ffffff',
+        type: 'OTHER',
+        name: 'FUNC',
         description: '냐',
         workspace: {
           id: 1,
