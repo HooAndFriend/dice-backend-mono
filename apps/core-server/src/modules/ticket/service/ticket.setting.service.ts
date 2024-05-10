@@ -9,6 +9,8 @@ import TicketSettingRepository from '../repository/ticket.setting.repository';
 import { BadRequestException, NotFoundException } from '@hi-dice/common';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export default class TicketSettingService {
@@ -65,6 +67,20 @@ export default class TicketSettingService {
 
     if (ticketSetting) {
       throw new BadRequestException('Already exist setting');
+    }
+  }
+
+  /**
+   * Update Ticket Setting
+   * @param dto
+   */
+  @Transactional()
+  public async updateTicketSetting(dto: RequestSettingUpdateDto) {
+    for await (const item of dto.data) {
+      const ticketSetting = await this.findTicketSettingById(item.settingId);
+      ticketSetting.changeTicketSetting(item);
+
+      await this.ticketSettingRepository.save(ticketSetting);
     }
   }
 }

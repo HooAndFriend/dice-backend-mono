@@ -2,26 +2,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray } from 'class-validator';
+import TicketSettingEnum from '../../domain/ticket.setting.enum';
 
 export default class RequestSettingUpdateDto {
-  @ApiProperty({ example: 1 })
-  @IsNumber()
+  @ApiProperty({
+    example: [
+      {
+        settingId: 1,
+        name: '123',
+        type: TicketSettingEnum.BLACK,
+        description: '123',
+      },
+    ],
+  })
+  @IsArray()
+  data: SettingUpdate[];
+}
+
+export interface SettingUpdate {
   settingId: number;
-
-  @ApiProperty({ example: 'ffffff' })
-  @IsString()
-  color: string;
-
-  @ApiProperty({ example: 'ffffff' })
-  @IsString()
-  textColor: string;
-
-  @ApiProperty({ example: 'SCN' })
-  @IsString()
-  type: string;
-
-  @ApiProperty({ example: 'description' })
-  @IsString()
+  name: string;
+  type: TicketSettingEnum;
   description: string;
 }

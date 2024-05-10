@@ -12,6 +12,7 @@ import {
 
 // ** Module Imports
 import TicketService from '../service/ticket.service';
+import TicketSettingService from '../service/ticket.setting.service';
 
 // ** Swagger Imports
 import {
@@ -44,7 +45,6 @@ import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
-import TicketSettingService from '../service/ticket.setting.service';
 
 @ApiTags('Ticket Setting')
 @ApiResponse(createServerExceptionResponse())
@@ -91,11 +91,9 @@ export default class TicketSettingController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/')
-  public async updateSetting(
-    @GetWorkspace() workspace: Workspace,
-    @Body() dto: RequestSettingUpdateDto,
-  ) {
-    await this.ticketService.updateSetting(dto, workspace);
+  public async updateSetting(@Body() dto: RequestSettingUpdateDto) {
+    await this.ticketSettingService.updateTicketSetting(dto);
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Setting',

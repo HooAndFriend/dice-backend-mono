@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 
 // ** Typeorm Imports
-import { Between, DataSource, Equal, In, LessThan, Not } from 'typeorm';
+import { Between, DataSource, In, LessThan } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
@@ -29,8 +29,6 @@ import Ticket from '../domain/ticket.entity';
 import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
-import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
-import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 import { NotFoundException } from '@hi-dice/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import { TaskStatusEnum } from '@hi-dice/common';
@@ -657,54 +655,6 @@ export default class TicketService {
     ticketId: number,
   ) {
     await this.ticketRepository.update(ticketId, { ticketSetting });
-  }
-
-  /**
-   * Save Setting
-   * @param dto
-   * @param workspace
-   * @param user
-   */
-  public async saveSetting(dto: RequestSettingSaveDto, workspace: Workspace) {
-    await this.settingTypeValidation(dto.type, workspace.id);
-
-    const setting = this.ticketSettingRepository.create({
-      color: dto.color,
-      description: dto.description,
-      type: dto.type,
-      workspace,
-    });
-
-    return await this.ticketSettingRepository.save(setting);
-  }
-
-  /**
-   * Update Setting
-   * @param dto
-   * @param workspace
-   */
-  public async updateSetting(
-    dto: RequestSettingUpdateDto,
-    workspace: Workspace,
-  ) {
-    const isDuplicationType = await this.ticketSettingRepository.findOne({
-      where: {
-        type: dto.type,
-        id: Not(dto.settingId),
-        workspace: Equal(workspace.id),
-      },
-    });
-
-    if (isDuplicationType) {
-      throw new BadRequestException('Setting type is already exist');
-    }
-
-    return this.ticketSettingRepository.update(dto.settingId, {
-      type: dto.type,
-      color: dto.color,
-      textColor: dto.textColor,
-      description: dto.description,
-    });
   }
 
   /**

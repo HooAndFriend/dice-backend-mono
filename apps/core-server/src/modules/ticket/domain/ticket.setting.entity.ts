@@ -13,6 +13,7 @@ import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import Ticket from './ticket.entity';
 import TicketSettingEnum from './ticket.setting.enum';
+import { SettingUpdate } from '../dto/setting/setting.update.dto';
 
 @Entity({ name: 'TB_TICKET_SETTING' })
 export default class TicketSetting extends BaseTimeEntity {
@@ -53,4 +54,10 @@ export default class TicketSetting extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => ticket.ticketSetting)
   ticket: Relation<Ticket>[];
+
+  public changeTicketSetting(data: SettingUpdate) {
+    this.name = data.name;
+    this.description = data.description;
+    this.type = data.type;
+  }
 }
