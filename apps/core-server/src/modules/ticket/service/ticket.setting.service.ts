@@ -65,6 +65,16 @@ export default class TicketSettingService {
   }
 
   /**
+   * Find all Setting
+   * @param workspaceId
+   */
+  public async findAllSetting(workspaceId: number) {
+    return await this.ticketSettingRepository.findSettingByWorkspaceId(
+      workspaceId,
+    );
+  }
+
+  /**
    * Update Ticket Setting
    * @param dto
    */

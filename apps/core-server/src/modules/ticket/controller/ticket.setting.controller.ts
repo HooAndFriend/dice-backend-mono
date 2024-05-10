@@ -107,7 +107,7 @@ export default class TicketSettingController {
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllSetting(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllSetting(id);
+    const [data, count] = await this.ticketSettingService.findAllSetting(id);
 
     return CommonResponse.createResponse({
       data: { data, count },
@@ -125,8 +125,9 @@ export default class TicketSettingController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/:settingId')
-  public async findSetting(@Param('settingId') id: number) {
-    const setting = await this.ticketService.findSettingById(id);
+  public async findSetting(@Param('settingId', ParseIntPipe) id: number) {
+    const setting = await this.ticketSettingService.findTicketSettingById(id);
+
     return CommonResponse.createResponse({
       data: setting,
       message: 'Find Setting',
