@@ -16,7 +16,6 @@ import { Transactional } from 'typeorm-transactional';
 import TicketRepository from '../repository/ticket.repository';
 import TicketFileRepository from '../repository/ticket.file.repository';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
-import TicketSettingRepository from '../repository/ticket.setting.repository';
 import UserRepository from '../../user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
@@ -46,7 +45,6 @@ export default class TicketService {
     private readonly ticketRepository: TicketRepository,
     private readonly ticketFileRepository: TicketFileRepository,
     private readonly ticketCommentRepository: TicketCommentRepository,
-    private readonly ticketSettingRepository: TicketSettingRepository,
     private readonly userRepository: UserRepository,
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -107,6 +105,18 @@ export default class TicketService {
     } else {
       await this.ticketRepository.update(dto.ticketId, { worker: user });
     }
+  }
+
+  /**
+   * Update Ticket Setting
+   * @param ticketSetting
+   * @param ticketId
+   */
+  public async updateTicketSetting(
+    ticketSetting: TicketSetting,
+    ticketId: number,
+  ) {
+    await this.ticketRepository.update(ticketId, { ticketSetting });
   }
 
   /**
@@ -228,22 +238,6 @@ export default class TicketService {
     });
 
     return { ticketCount, yesterDayTicketCount };
-  }
-
-  /**
-   * Find Setting by Id
-   * @param settingId
-   */
-  public async findSettingById(settingId: number) {
-    const findSetting = await this.ticketSettingRepository.findSettingById(
-      settingId,
-    );
-
-    if (!findSetting) {
-      throw new NotFoundException('Cannot Find Setting.');
-    }
-
-    return findSetting;
   }
 
   /**
@@ -601,27 +595,6 @@ export default class TicketService {
     return await this.ticketRepository.findMyTeamTicketList(teamId, month);
   }
 
-  // ** Setting Service
-
-  /**
-   * Setting validation
-   * @param type
-   * @param workspaceId
-   */
-  public async settingTypeValidation(type: string, workspaceId: number) {
-    const findSetting =
-      await this.ticketSettingRepository.findOneByTypeAndWorkspaceId(
-        type,
-        workspaceId,
-      );
-
-    if (findSetting) {
-      throw new BadRequestException('Setting is already exist');
-    }
-
-    return findSetting;
-  }
-
   /**
    * Existed Ticket By Id
    * @param ticketId
@@ -643,38 +616,6 @@ export default class TicketService {
    */
   public async updateTicketEpic(epic: Epic, ticketId: number) {
     await this.ticketRepository.update(ticketId, { epic });
-  }
-
-  /**
-   * Update Ticket Setting
-   * @param ticketSetting
-   * @param ticketId
-   */
-  public async updateTicketSetting(
-    ticketSetting: TicketSetting,
-    ticketId: number,
-  ) {
-    await this.ticketRepository.update(ticketId, { ticketSetting });
-  }
-
-  /**
-   * Delete Setting
-   * @param id
-   */
-  public async deleteSetting(id: number) {
-    await this.findSettingById(id);
-
-    return this.ticketSettingRepository.delete(id);
-  }
-
-  /**
-   * Find all Setting
-   * @param workspaceId
-   */
-  public async findAllSetting(workspaceId: number) {
-    return await this.ticketSettingRepository.findSettingByWorkspaceId(
-      workspaceId,
-    );
   }
 
   /**
