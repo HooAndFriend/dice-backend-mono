@@ -75,12 +75,28 @@ export default class TicketSettingService {
    * @param dto
    */
   @Transactional()
-  public async updateTicketSetting(dto: RequestSettingUpdateDto) {
+  public async updateTicketSetting(
+    dto: RequestSettingUpdateDto,
+    workspace: Worksapce,
+  ) {
     for await (const item of dto.data) {
-      const ticketSetting = await this.findTicketSettingById(item.settingId);
-      ticketSetting.changeTicketSetting(item);
+      if (item.settingId) {
+        const ticketSetting = await this.findTicketSettingById(item.settingId);
+        ticketSetting.changeTicketSetting(item);
 
-      await this.ticketSettingRepository.save(ticketSetting);
+        await this.ticketSettingRepository.save(ticketSetting);
+
+        continue;
+      }
+
+      await this.ticketSettingRepository.save(
+        this.ticketSettingRepository.create({
+          name: item.name,
+          description: item.description,
+          type: item.type,
+          workspace,
+        }),
+      );
     }
   }
 }

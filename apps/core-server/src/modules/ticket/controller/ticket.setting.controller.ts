@@ -91,8 +91,11 @@ export default class TicketSettingController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/')
-  public async updateSetting(@Body() dto: RequestSettingUpdateDto) {
-    await this.ticketSettingService.updateTicketSetting(dto);
+  public async updateSetting(
+    @Body() dto: RequestSettingUpdateDto,
+    @GetWorkspace() worksapce: Workspace,
+  ) {
+    await this.ticketSettingService.updateTicketSetting(dto, worksapce);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
