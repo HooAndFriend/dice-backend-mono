@@ -12,9 +12,8 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
     const querybuilder = this.createQueryBuilder('setting')
       .select([
         'setting.id',
-        'setting.color',
+        'setting.name',
         'setting.type',
-        'setting.textColor',
         'setting.description',
       ])
       .leftJoin('setting.workspace', 'workspace')
@@ -26,9 +25,8 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
     const querybuilder = this.createQueryBuilder('setting')
       .select([
         'setting.id',
-        'setting.color',
+        'setting.name',
         'setting.type',
-        'setting.textColor',
         'setting.description',
         'workspace.id',
       ])
