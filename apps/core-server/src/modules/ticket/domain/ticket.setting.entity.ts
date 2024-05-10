@@ -26,35 +26,16 @@ export default class TicketSetting extends BaseTimeEntity {
     nullable: false,
     default: TicketSettingEnum.OTHER,
   })
-  profile: TicketSettingEnum;
-
-  @Column({
-    type: 'varchar',
-    length: 10,
-    name: 'color',
-    comment: '타입 색',
-    nullable: false,
-  })
-  color: string;
-
-  @Column({
-    type: 'varchar',
-    length: 10,
-    name: 'text_color',
-    comment: '글자 색',
-    default: '#ffffff',
-    nullable: false,
-  })
-  textColor: string;
+  type: TicketSettingEnum;
 
   @Column({
     type: 'varchar',
     length: 20,
-    name: 'type',
+    name: 'name',
     comment: '티켓 타입 명',
     nullable: false,
   })
-  type: string;
+  name: string;
 
   @Column({
     type: 'varchar',
