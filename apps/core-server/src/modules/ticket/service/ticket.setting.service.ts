@@ -5,12 +5,13 @@ import { ConfigService } from '@nestjs/config';
 // ** Custom Module Imports
 import TicketSettingRepository from '../repository/ticket.setting.repository';
 
+// ** Typeorm Imports
+import { Transactional } from 'typeorm-transactional';
+
 // ** enum, dto, entity, types Imports
 import { BadRequestException, NotFoundException } from '@hi-dice/common';
-import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export default class TicketSettingService {
@@ -39,23 +40,6 @@ export default class TicketSettingService {
   }
 
   /**
-   * Save Setting
-   * @param dto
-   * @param workspace
-   * @param user
-   */
-  public async saveSetting(dto: RequestSettingSaveDto, workspace: Workspace) {
-    return await this.ticketSettingRepository.save(
-      this.ticketSettingRepository.create({
-        name: dto.name,
-        description: dto.description,
-        type: dto.type,
-        workspace,
-      }),
-    );
-  }
-
-  /**
    * Existed Setting Type
    * @param type
    * @param workspaceId
@@ -77,7 +61,7 @@ export default class TicketSettingService {
   @Transactional()
   public async updateTicketSetting(
     dto: RequestSettingUpdateDto,
-    workspace: Worksapce,
+    workspace: Workspace,
   ) {
     for await (const item of dto.data) {
       if (item.settingId) {

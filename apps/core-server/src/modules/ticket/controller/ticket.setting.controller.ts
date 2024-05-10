@@ -43,7 +43,6 @@ import {
 import { CommonResponse } from '@hi-dice/common';
 import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
-import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
 
 @ApiTags('Ticket Setting')
@@ -55,31 +54,6 @@ export default class TicketSettingController {
     private readonly ticketService: TicketService,
     private readonly ticketSettingService: TicketSettingService,
   ) {}
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'Setting 생성' })
-  @ApiBody({ type: RequestSettingSaveDto })
-  @ApiResponse(TicketResponse.saveSetting[200])
-  @ApiResponse(TicketResponse.saveSetting[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/')
-  public async saveSetting(
-    @GetWorkspace() workspace: Workspace,
-    @Body() dto: RequestSettingSaveDto,
-  ) {
-    await this.ticketSettingService.existedTicketSetting(
-      dto.name,
-      workspace.id,
-    );
-    await this.ticketSettingService.saveSetting(dto, workspace);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Save Setting',
-    });
-  }
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
