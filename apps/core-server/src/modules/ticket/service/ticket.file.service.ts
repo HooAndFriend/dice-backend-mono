@@ -50,4 +50,22 @@ export default class TicketFileService {
       throw new NotFoundException('Not Found Ticket File');
     }
   }
+
+  /**
+   * Find Ticket File
+   * @param ticketFileId
+   * @returns
+   */
+  public async findTicketFile(ticketFileId: number) {
+    const ticketFile = await this.ticketFileRepository.findOne({
+      where: { id: ticketFileId },
+      relations: ['ticket'],
+    });
+
+    if (!ticketFile) {
+      throw new NotFoundException('Not Found Ticket File');
+    }
+
+    return ticketFile;
+  }
 }

@@ -3,14 +3,12 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
-  Patch,
+  ParseIntPipe,
   Post,
-  Query,
   UseGuards,
-  ValidationPipe,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import TicketService from '../service/ticket.service';
@@ -40,10 +38,12 @@ import { WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import { CommonResponse } from '@hi-dice/common';
+import {
+  CommonResponse,
+  RequestTicketHistoryLogSaveDto,
+  TicketHistoryTypeEnum,
+} from '@hi-dice/common';
 import { RoleEnum } from '@hi-dice/common';
-import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
-import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import TicketFileService from '../service/ticket.file.service';
 import RequestTicketFileSaveDto from '../dto/file/file.save.dto';
 
@@ -55,6 +55,7 @@ export default class TicketFileController {
   constructor(
     private readonly ticketService: TicketService,
     private readonly ticketFileService: TicketFileService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @ApiBearerAuth('access-token')
@@ -74,6 +75,13 @@ export default class TicketFileController {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
     await this.ticketFileService.saveTicketFile(ticket, dto.file);
 
+    this.sendTicketQueue({
+      ticketId: ticket.id,
+      email: user.email,
+      type: TicketHistoryTypeEnum.UPLOAD_FILE,
+      log: dto.file,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Ticket File',
@@ -89,13 +97,31 @@ export default class TicketFileController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:fileId')
-  public async deleteTicketFile(@Param('fileId') fileId: number) {
-    await this.ticketFileService.isExistedTicketFile(fileId);
+  public async deleteTicketFile(
+    @Param('fileId', ParseIntPipe) fileId: number,
+    @GetUser() user: User,
+  ) {
+    const ticketFile = await this.ticketFileService.findTicketFile(fileId);
     await this.ticketFileService.deleteTicketFile(fileId);
+
+    this.sendTicketQueue({
+      ticketId: ticketFile.ticket.id,
+      email: user.email,
+      type: TicketHistoryTypeEnum.UPLOAD_FILE,
+      log: ticketFile.url,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Ticket File',
     });
+  }
+
+  /**
+   * Send Ticket Queue
+   * @param event
+   */
+  private sendTicketQueue(event: RequestTicketHistoryLogSaveDto) {
+    this.eventEmitter.emit('ticket.send-change-history', event);
   }
 }
