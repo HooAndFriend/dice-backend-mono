@@ -22,7 +22,6 @@ import User from '../../user/domain/user.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
-import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import { TaskStatusEnum } from '@hi-dice/common';
@@ -93,20 +92,6 @@ export default class QaService {
   }
 
   /**
-   * Save Qa File
-   * @param qa
-   * @param dto
-   */
-  public async saveQaFile(qa: Qa, dto: RequestQaFileSaveDto) {
-    await this.fileRepository.save(
-      this.fileRepository.create({
-        url: dto.url,
-        qa,
-      }),
-    );
-  }
-
-  /**
    * Find Qa List By Date
    * @param workspaceId
    * @param userId
@@ -119,14 +104,6 @@ export default class QaService {
     dto: RequestWorkspaceTaskFindDto,
   ) {
     return await this.qaRepository.findQaListByDate(workspaceId, userId, dto);
-  }
-
-  /**
-   * Delete Qa File By Id
-   * @param qaFileId
-   */
-  public async deleteQaFile(qaFileId: number) {
-    await this.fileRepository.delete(qaFileId);
   }
 
   /**
@@ -429,20 +406,6 @@ export default class QaService {
 
     if (!findQa) {
       throw new NotFoundException('Not Found Qa');
-    }
-  }
-
-  /**
-   * Existed Qa By Id
-   * @param qaId
-   */
-  public async isExistedFileById(fileId: number) {
-    const findQa = await this.fileRepository.exist({
-      where: { id: fileId },
-    });
-
-    if (!findQa) {
-      throw new NotFoundException('Not Found File');
     }
   }
 

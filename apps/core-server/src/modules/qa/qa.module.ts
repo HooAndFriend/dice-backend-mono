@@ -25,6 +25,7 @@ import File from './domain/qa.file.entity';
 import { QaNotificationListener } from './listener/qa-notification.listener';
 import QaCommentController from './controller/qa.comment.controller';
 import QaFileController from './controller/qa.file.controller';
+import QaFileService from './service/qa.file.service';
 
 @Module({
   imports: [
@@ -70,13 +71,20 @@ import QaFileController from './controller/qa.file.controller';
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule, QaService, CommentService],
+  exports: [
+    TypeOrmExModule,
+    TypeOrmModule,
+    QaService,
+    CommentService,
+    QaFileService,
+  ],
   controllers: [QaController, QaCommentController, QaFileController],
   providers: [
     QaService,
     CommentService,
     QaSendChangeHistoryListener,
     QaNotificationListener,
+    QaFileService,
   ],
 })
 export default class QaModule {}
