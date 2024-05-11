@@ -184,9 +184,19 @@ export default class QaController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/')
-  public async updateSimpleQa(@Body() dto: RequestQaSimpleUpdateDto) {
+  public async updateSimpleQa(
+    @Body() dto: RequestQaSimpleUpdateDto,
+    @GetUser() { email }: User,
+  ) {
     const qa = await this.qaService.findQaById(dto.qaId);
     await this.qaService.updateQaSimple(qa, dto);
+
+    this.sendQaQueue({
+      qaId: qa.id,
+      email: email,
+      type: dto.changeQaHistoryTypeEnum(),
+      log: dto.changeLog(qa),
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
