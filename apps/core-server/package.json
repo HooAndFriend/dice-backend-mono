@@ -22,7 +22,7 @@
     "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
-    "@hi-dice/common": "^1.0.6",
+    "@hi-dice/common": "^1.0.8",
     "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.2.6",
