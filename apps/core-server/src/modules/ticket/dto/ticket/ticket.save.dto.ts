@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 // ** Pipe Imports
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export default class RequestSimpleTicketSaveDto {
+export default class RequestTicketSaveDto {
   @ApiProperty({ example: '게시판' })
   @IsString()
   name: string;
@@ -12,5 +12,10 @@ export default class RequestSimpleTicketSaveDto {
   @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsNumber()
-  typeId: number;
+  settingId: number;
+
+  @ApiProperty({ example: 1, required: false })
+  @IsOptional()
+  @IsNumber()
+  epicId: number;
 }

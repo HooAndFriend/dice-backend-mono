@@ -187,15 +187,20 @@ export const TicketResponse = {
       message: 'Ticket을 삭제합니다.',
     }),
   },
-  saveSimpleTicket: {
+  saveTicket: {
     200: createMessageResponse({
       statusCode: 200,
       message: 'Ticket을 생성합니다.',
     }),
-    404: createErrorResponse({
+    404.1: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',
       message: 'Not Found Ticket Setting',
+    }),
+    404.2: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Epic',
     }),
   },
   multiTicketSettingUpdate: {

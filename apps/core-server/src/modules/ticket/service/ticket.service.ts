@@ -34,7 +34,7 @@ import { TaskStatusEnum } from '@hi-dice/common';
 import RequestWorkspaceTaskFindDto from '../../workspace/dto/workspace-task.find.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
-import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
+import RequestSimpleTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import TicketSetting from '../domain/ticket.setting.entity';
 import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
@@ -291,12 +291,14 @@ export default class TicketService {
    * @param user
    * @param workspace
    * @param ticketSetting
+   * @param epic
    */
-  public async saveSimpleTicket(
+  public async saveTicket(
     dto: RequestSimpleTicketSaveDto,
     user: User,
     workspace: Workspace,
     ticketSetting: TicketSetting,
+    epic: Epic,
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
@@ -313,6 +315,7 @@ export default class TicketService {
         name: dto.name,
         status: TaskStatusEnum.NOTHING,
         ticketSetting,
+        epic,
       }),
     );
   }

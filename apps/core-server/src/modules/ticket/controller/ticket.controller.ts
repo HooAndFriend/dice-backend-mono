@@ -57,7 +57,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
-import RequestSimpleTicketSaveDto from '../dto/ticket/ticket-simple.save.dto';
+import RequestTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 import RequestTicketSettingUpdateDto from '../dto/ticket/ticket-setting.update.dto';
@@ -119,27 +119,32 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'TICKET 간단 생성' })
-  @ApiBody({ type: RequestSimpleTicketSaveDto })
-  @ApiResponse(TicketResponse.saveSimpleTicket[200])
-  @ApiResponse(TicketResponse.saveSimpleTicket[404])
+  @ApiOperation({ summary: 'TICKET 생성' })
+  @ApiBody({ type: RequestTicketSaveDto })
+  @ApiResponse(TicketResponse.saveTicket[200])
+  @ApiResponse(TicketResponse.saveTicket[404.1])
+  @ApiResponse(TicketResponse.saveTicket[404.2])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Post('/simple')
-  public async saveSimpleTicket(
-    @Body() dto: RequestSimpleTicketSaveDto,
+  @Post('/')
+  public async saveTicket(
+    @Body() dto: RequestTicketSaveDto,
     @GetUser() user: User,
     @GetWorkspace() workspace: Workspace,
   ) {
     const ticketSetting = await this.ticketSettingService.findTicketSettingById(
-      dto.typeId,
+      dto.settingId,
     );
-    const ticket = await this.ticketService.saveSimpleTicket(
+
+    const epic = await this.epicService.findEpicById(dto.epicId);
+
+    const ticket = await this.ticketService.saveTicket(
       dto,
       user,
       workspace,
       ticketSetting,
+      epic,
     );
 
     this.sendTicketQueue({
@@ -158,7 +163,6 @@ export default class TicketController {
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 삭제' })
-  @ApiBody({ type: RequestSimpleTicketSaveDto })
   @ApiResponse(TicketResponse.multiTicketDelete[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
