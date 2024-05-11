@@ -365,8 +365,8 @@ importers:
   apps/core-server:
     dependencies:
       '@hi-dice/common':
-        specifier: ^1.0.8
-        version: 1.0.8(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+        specifier: ^1.0.9
+        version: 1.0.9(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -727,8 +727,8 @@ importers:
   apps/log-server:
     dependencies:
       '@hi-dice/common':
-        specifier: ^1.0.8
-        version: 1.0.8(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+        specifier: ^1.0.9
+        version: 1.0.9(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -3173,8 +3173,8 @@ packages:
       - typeorm-aurora-data-api-driver
     dev: false
 
-  /@hi-dice/common@1.0.8(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1):
-    resolution: {integrity: sha512-Rzr+8CIJeESxNwwPOXsPvobuux6BfQnz00HvTspPGbStDK972Q1AOMb1a1g+47vj4plyVaKMsng0cRUAyGz7Yw==}
+  /@hi-dice/common@1.0.9(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1):
+    resolution: {integrity: sha512-LP9wECbXM9eT5kZ4ltsIdcg5Ds5JzpfRxLfbrWD/N263CMg/pAWoXsGFdDTrscop5iSIr2CvP8uGcrtTFGUg6g==}
     dependencies:
       '@nestjs/common': 9.4.3(cache-manager@5.3.2)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.3.0)(@nestjs/platform-express@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
