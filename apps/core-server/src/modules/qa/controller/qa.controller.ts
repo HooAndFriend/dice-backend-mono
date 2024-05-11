@@ -47,8 +47,6 @@ import {
 
 // ** Dto Imports
 import RequestQaUpdateDto from '../dto/qa.update.dto';
-import RequestQaCommentSaveDto from '../dto/comment.save.dto';
-import RequestQaCommentUpdateDto from '../dto/comment.update.dto';
 import RequestQaStatusUpdateDto from '../dto/qa.status.update.dto';
 import RequestQaFindDto from '../dto/qa.find.dto';
 
@@ -67,7 +65,6 @@ import {
 } from '@hi-dice/common';
 import RequestSimpleQaSaveDto from '../dto/qa-simple.save';
 import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
-import RequestQaFileSaveDto from '../dto/qa-file.save.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
@@ -374,106 +371,6 @@ export default class QaController {
       statusCode: 200,
       message: '댓글을 조회합니다.',
       data: { data, count },
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 댓글 생성' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiBody({ type: RequestQaCommentSaveDto })
-  @ApiResponse(CommentResponse.saveComment[200])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/comment')
-  public async saveComment(
-    @Body() dto: RequestQaCommentSaveDto,
-    @GetWorkspace() workspace: Workspace,
-    @GetUser() user: User,
-  ) {
-    await this.qaCommentService.saveComment(dto, workspace, user);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 생성합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 댓글 수정' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiBody({ type: RequestQaCommentUpdateDto })
-  @ApiResponse(CommentResponse.updateComment[200])
-  @ApiResponse(CommentResponse.updateComment[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Put('/comment')
-  public async updateComment(
-    @Body() dto: RequestQaCommentUpdateDto,
-    @GetUser() user: User,
-  ) {
-    await this.qaCommentService.updateComment(dto, user);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 수정합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 파일 등록' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiBody({ type: RequestQaFileSaveDto })
-  @ApiResponse(QaResponse.saveQaFile[200])
-  @ApiResponse(QaResponse.saveQaFile[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Post('/file')
-  public async saveQaFile(@Body() dto: RequestQaFileSaveDto) {
-    const qa = await this.qaService.findQaById(dto.qaId);
-
-    await this.qaService.saveQaFile(qa, dto);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Save Qa File',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 파일 삭제' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(QaResponse.deleteQaFile[200])
-  @ApiResponse(QaResponse.deleteQaFile[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Delete('/file/:fileId')
-  public async deleteQaFile(@Param('fileId') fileId: number) {
-    await this.qaService.isExistedFileById(fileId);
-
-    await this.qaService.deleteQaFile(fileId);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Delete Qa File',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 댓글 삭제' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(CommentResponse.deleteComment[200])
-  @ApiResponse(CommentResponse.deleteComment[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Delete('/comment/:id')
-  public async deleteComment(@Param('id') id: number, @GetUser() user: User) {
-    await this.qaCommentService.deleteComment(id, user);
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: '댓글을 삭제합니다.',
     });
   }
 
