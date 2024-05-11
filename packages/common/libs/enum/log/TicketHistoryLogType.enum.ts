@@ -9,4 +9,7 @@ export enum TicketHistoryTypeEnum {
   CREATE = 'CREATE',
   TITLE = 'TITLE',
   SP = 'SP',
+  SAVE_COMMENT = 'SAVE_COMMENT',
+  DELETE_COMMENT = 'DELETE_COMMENT',
+  UPDATE_COMMENT = 'UPDATE_COMMENT',
 }

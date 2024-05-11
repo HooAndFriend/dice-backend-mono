@@ -12,4 +12,7 @@ export enum QaHistoryTypeEnum {
   MEMO = 'MEMO',
   ASIS = 'ASIS',
   TOBE = 'TOBE',
+  SAVE_COMMENT = 'SAVE_COMMENT',
+  DELETE_COMMENT = 'DELETE_COMMENT',
+  UPDATE_COMMENT = 'UPDATE_COMMENT',
 }
