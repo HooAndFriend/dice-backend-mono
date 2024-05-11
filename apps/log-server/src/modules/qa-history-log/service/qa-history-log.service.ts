@@ -40,6 +40,10 @@ export default class QaHistoryLogService {
       order: { createdDate: 'DESC' },
     });
 
+    if (count < 1) {
+      return [data, count];
+    }
+
     const userList = await this.findUserProfileList(
       data.map((item) => item.email),
     );
