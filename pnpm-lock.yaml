@@ -365,8 +365,8 @@ importers:
   apps/core-server:
     dependencies:
       '@hi-dice/common':
-        specifier: ^1.0.5
-        version: 1.0.5(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
+        specifier: ^1.0.6
+        version: 1.0.6(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(ioredis@5.3.2)
@@ -439,6 +439,9 @@ importers:
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -1115,6 +1118,9 @@ importers:
       class-validator:
         specifier: ^0.14.0
         version: 0.14.0
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.14
@@ -3164,8 +3170,8 @@ packages:
       - typeorm-aurora-data-api-driver
     dev: false
 
-  /@hi-dice/common@1.0.5(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1):
-    resolution: {integrity: sha512-eLHScdBqFNKxAxxO0nL0NRH3HGOkh3kpRwTCHiDMJCg+to8QF8pgSO/mZbCKbEAPFDkxqAs3pSIfwsHVkhWkQQ==}
+  /@hi-dice/common@1.0.6(@nestjs/platform-express@10.3.0)(amqp-connection-manager@4.1.14)(amqplib@0.10.3)(cache-manager@5.3.2)(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1):
+    resolution: {integrity: sha512-1hz8BPNoZAhAGW4ur0gv08E876NRDDIqZIp1D7L+pjBxtsOEfBEEi88N5L1gE0MsP7qYrUczNAMRYUAblzbxPQ==}
     dependencies:
       '@nestjs/common': 9.4.3(cache-manager@5.3.2)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.3.0)(@nestjs/platform-express@10.3.0)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -3175,6 +3181,7 @@ packages:
       '@types/amqplib': 0.10.5
       class-transformer: 0.5.1
       class-validator: 0.14.0
+      crypto-js: 4.2.0
       reflect-metadata: 0.1.14
       rxjs: 7.8.1
       typeorm: 0.3.17(ioredis@5.3.2)(mysql2@3.6.5)(redis@4.6.12)(ts-node@10.9.1)
@@ -6240,8 +6247,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001615
-      electron-to-chromium: 1.4.756
+      caniuse-lite: 1.0.30001617
+      electron-to-chromium: 1.4.763
       node-releases: 2.0.14
       update-browserslist-db: 1.0.15(browserslist@4.23.0)
     dev: true
@@ -6402,8 +6409,8 @@ packages:
     resolution: {integrity: sha512-tYq/6MoXhdezDLFZuCO/TKboTzuQ/xR5cFdgXPfDtM7/kchBO3b4VWghE/OAi/DV7tTdhmLjZiZBZi1fA/GheQ==}
     dev: true
 
-  /caniuse-lite@1.0.30001615:
-    resolution: {integrity: sha512-1IpazM5G3r38meiae0bHRnPhz+CBQ3ZLqbQMtrg+AsTPKAXgW38JNsXkyZ+v8waCsDmPq87lmfun5Q2AGysNEQ==}
+  /caniuse-lite@1.0.30001617:
+    resolution: {integrity: sha512-mLyjzNI9I+Pix8zwcrpxEbGlfqOkF9kM3ptzmKNw5tizSyYwMe+nGLTqMK9cO+0E+Bh6TsBxNAaHWEM8xwSsmA==}
     dev: true
 
   /chalk@2.4.2:
@@ -6877,7 +6884,6 @@ packages:
 
   /crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
-    dev: true
 
   /crypto@1.0.1:
     resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
@@ -7307,8 +7313,8 @@ packages:
     resolution: {integrity: sha512-1n7zWYh8eS0L9Uy+GskE0lkBUNK83cXTVJI0pU3mGprFsbfSdAc15VTFbo+A+Bq4pwstmL30AVcEU3Fo463lNg==}
     dev: true
 
-  /electron-to-chromium@1.4.756:
-    resolution: {integrity: sha512-RJKZ9+vEBMeiPAvKNWyZjuYyUqMndcP1f335oHqn3BEQbs2NFtVrnK5+6Xg5wSM9TknNNpWghGDUCKGYF+xWXw==}
+  /electron-to-chromium@1.4.763:
+    resolution: {integrity: sha512-k4J8NrtJ9QrvHLRo8Q18OncqBCB7tIUyqxRcJnlonQ0ioHKYB988GcDFF3ZePmnb8eHEopDs/wPHR/iGAFgoUQ==}
     dev: true
 
   /emitter-component@1.1.2:
@@ -7355,8 +7361,8 @@ packages:
       tapable: 2.2.1
     dev: true
 
-  /enhanced-resolve@5.16.0:
-    resolution: {integrity: sha512-O+QWCviPNSSLAD9Ucn8Awv+poAkqn3T1XY5/N7kR7rQO9yfSGWkYZDwpJ+iKF7B8rxaQKWngSqACpgzeapSyoA==}
+  /enhanced-resolve@5.16.1:
+    resolution: {integrity: sha512-4U5pNsuDl0EhuZpq46M5xPslstkviJuhrdobaRDBk2Jy2KO37FDAJl4lb2KlNabxT0m4MTK2UHNrsAcphE8nyw==}
     engines: {node: '>=10.13.0'}
     dependencies:
       graceful-fs: 4.2.11
@@ -14319,7 +14325,7 @@ packages:
       acorn-import-assertions: 1.9.0(acorn@8.11.3)
       browserslist: 4.23.0
       chrome-trace-event: 1.0.3
-      enhanced-resolve: 5.16.0
+      enhanced-resolve: 5.16.1
       es-module-lexer: 1.5.2
       eslint-scope: 5.1.1
       events: 3.3.0

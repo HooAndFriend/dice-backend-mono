@@ -22,7 +22,7 @@
     "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
-    "@hi-dice/common": "^1.0.5",
+    "@hi-dice/common": "^1.0.6",
     "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.2.6",
@@ -47,6 +47,7 @@
     "class-validator": "^0.14.0",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "ioredis": "^5.3.2",
     "loadsh": "^0.0.4",
