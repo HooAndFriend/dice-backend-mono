@@ -6,11 +6,13 @@ import TicketHistoryLogRepository from '../repository/ticket-history-log.reposit
 
 // ** Dto Imports
 import { RequestTicketHistoryLogSaveDto } from '@hi-dice/common';
+import InternalCoreSenderService from '../../internal/internal-core/service/internal-core.sender.service';
 
 @Injectable()
 export default class TicketHistoryLogService {
   constructor(
     private readonly ticketHistoryLogRepository: TicketHistoryLogRepository,
+    private readonly internalCoreSenderService: InternalCoreSenderService,
   ) {}
 
   /**
@@ -31,9 +33,34 @@ export default class TicketHistoryLogService {
    * @returns
    */
   public async findTicketHistoryList(ticketId: number) {
-    return await this.ticketHistoryLogRepository.findAndCount({
+    const [data, count] = await this.ticketHistoryLogRepository.findAndCount({
       where: { ticketId },
       order: { createdDate: 'DESC' },
     });
+
+    const userList = await this.findUserProfileList(
+      data.map((item) => item.email),
+    );
+
+    return [
+      data.map((item) => ({
+        ...item,
+        user: userList.find((_) => _.email === item.email) || null,
+      })),
+      count,
+    ];
+  }
+
+  /**
+   * find User Profile List
+   * @param emailList
+   * @returns
+   */
+  private async findUserProfileList(emailList: string[]) {
+    const { data } = await this.internalCoreSenderService.findUserProfileList(
+      emailList,
+    );
+
+    return data;
   }
 }
