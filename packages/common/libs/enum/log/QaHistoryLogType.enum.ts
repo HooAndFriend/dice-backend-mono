@@ -9,4 +9,7 @@ export enum QaHistoryTypeEnum {
   CREATE = 'CREATE',
   TITLE = 'TITLE',
   SP = 'SP',
+  MEMO = 'MEMO',
+  ASIS = 'ASIS',
+  TOBE = 'TOBE',
 }
