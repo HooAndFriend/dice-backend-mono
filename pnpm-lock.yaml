@@ -553,7 +553,7 @@ importers:
         version: 7.0.0
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.23.3)(jest@29.3.1)(typescript@4.9.5)
+        version: 29.1.1(@babel/core@7.24.5)(jest@29.3.1)(typescript@4.9.5)
       ts-loader:
         specifier: ^9.4.4
         version: 9.5.1(typescript@4.9.5)(webpack@5.91.0)
@@ -786,6 +786,9 @@ importers:
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -888,7 +891,7 @@ importers:
         version: 0.5.21
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.24.5)(jest@29.3.1)(typescript@4.9.5)
+        version: 29.1.1(@babel/core@7.23.3)(jest@29.3.1)(typescript@4.9.5)
       ts-loader:
         specifier: ^9.4.4
         version: 9.5.1(typescript@4.9.5)(webpack@5.91.0)
