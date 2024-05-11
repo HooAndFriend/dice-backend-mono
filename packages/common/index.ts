@@ -30,3 +30,6 @@ export * from './libs/enum/log/TicketHistoryLogType.enum';
 
 // ** Guard
 export * from './libs/guard/internal/internal.guard';
+
+// ** Utils
+export * from './libs/utils/aes';
