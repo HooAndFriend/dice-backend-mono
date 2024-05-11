@@ -5,15 +5,16 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
-  Query,
   UseGuards,
-  ValidationPipe,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
 import TicketService from '../service/ticket.service';
+import TicketCommentService from '../service/ticket.comment.service';
 
 // ** Swagger Imports
 import {
@@ -40,7 +41,11 @@ import { WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-
 
 // ** Dto Imports
 import User from '../../user/domain/user.entity';
-import { CommonResponse } from '@hi-dice/common';
+import {
+  CommonResponse,
+  RequestTicketHistoryLogSaveDto,
+  TicketHistoryTypeEnum,
+} from '@hi-dice/common';
 import { RoleEnum } from '@hi-dice/common';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
@@ -50,7 +55,10 @@ import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/ticket/comment', version: '1' })
 export default class TicketCommentController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(
+    private readonly ticketCommentService: TicketCommentService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -62,7 +70,7 @@ export default class TicketCommentController {
   @UseGuards(JwtAccessGuard)
   @Get('/:ticketId')
   public async findComment(@Param('ticketId') id: number) {
-    const [data, count] = await this.ticketService.findComment(id);
+    const [data, count] = await this.ticketCommentService.findComment(id);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -85,7 +93,15 @@ export default class TicketCommentController {
     @Body() dto: RequestTicketCommentSaveDto,
     @GetUser() user: User,
   ) {
-    await this.ticketService.saveComment(dto, user);
+    await this.ticketCommentService.saveComment(dto, user);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      email: user.email,
+      type: TicketHistoryTypeEnum.SAVE_COMMENT,
+      log: '댓글을 생성했습니다.',
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Comment',
@@ -106,7 +122,18 @@ export default class TicketCommentController {
     @Body() dto: RequestTicketCommentUpdateDto,
     @GetUser() user: User,
   ) {
-    await this.ticketService.updateComment(dto, user);
+    const comment = await this.ticketCommentService.findCommentDomainById(
+      dto.commentId,
+    );
+    await this.ticketCommentService.updateComment(dto, user);
+
+    this.sendTicketQueue({
+      ticketId: comment.ticket.id,
+      email: user.email,
+      type: TicketHistoryTypeEnum.UPDATE_COMMENT,
+      log: `${comment.content} -> ${dto.content}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Comment',
@@ -122,11 +149,32 @@ export default class TicketCommentController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete('/:commentId')
-  public async deleteComment(@Param('commentId') id: number) {
-    await this.ticketService.deleteComment(id);
+  public async deleteComment(
+    @Param('commentId', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ) {
+    const comment = await this.ticketCommentService.findCommentDomainById(id);
+
+    await this.ticketCommentService.deleteComment(id);
+
+    this.sendTicketQueue({
+      ticketId: comment.ticket.id,
+      email: user.email,
+      type: TicketHistoryTypeEnum.UPDATE_COMMENT,
+      log: comment.content,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Comment',
     });
+  }
+
+  /**
+   * Send Ticket Queue
+   * @param event
+   */
+  private sendTicketQueue(event: RequestTicketHistoryLogSaveDto) {
+    this.eventEmitter.emit('ticket.send-change-history', event);
   }
 }
