@@ -39,7 +39,6 @@ import { GetUser } from '@/src/global/decorators/user/user.decorators';
 
 // ** Response Imports
 import { QaResponse } from '../../../global/response/qa.response';
-import { CommentResponse } from '../../../global/response/comment.response';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
@@ -324,7 +323,6 @@ export default class QaController {
       } -> ${user.nickname}`,
     });
 
-    console.log(1);
     this.eventEmitter.emit('qa.notification', {
       fcmToken: user.fcmToken,
       email: user.email,

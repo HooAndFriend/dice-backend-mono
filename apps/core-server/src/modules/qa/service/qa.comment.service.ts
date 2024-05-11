@@ -29,6 +29,24 @@ export default class QaCommentService {
     return { data, count };
   }
 
+  /**
+   * Find Comment By Id
+   * @param commentId
+   * @returns
+   */
+  public async findQaCommentById(commentId: number) {
+    const comment = await this.qaCommentRepository.findOne({
+      where: { id: commentId },
+      relations: ['qa'],
+    });
+
+    if (!comment) {
+      throw new NotFoundException('Not Found Comment');
+    }
+
+    return comment;
+  }
+
   public async saveComment(
     dto: RequestCommentSaveDto,
     workspace: Workspace,
@@ -46,6 +64,11 @@ export default class QaCommentService {
     return;
   }
 
+  /**
+   * Update Comment
+   * @param dto
+   * @param user
+   */
   public async updateComment(dto: RequestQaCommentUpdateDto, user: User) {
     await this.qaCommentRepository.update(
       { id: dto.commentId, user: { id: user.id } },
@@ -53,18 +76,13 @@ export default class QaCommentService {
         content: dto.content,
       },
     );
-    return;
   }
 
-  public async deleteComment(commentid: number, user: User) {
-    const findComment = await this.qaCommentRepository.findOne({
-      where: { id: commentid, user: { id: user.id } },
-    });
-    if (!findComment) {
-      throw new NotFoundException('Not Found Comment');
-    }
-    await this.qaCommentRepository.remove(findComment);
-
-    return;
+  /**
+   * Delete Comment
+   * @param commentid
+   */
+  public async deleteComment(commentId: number) {
+    await this.qaCommentRepository.delete(commentId);
   }
 }

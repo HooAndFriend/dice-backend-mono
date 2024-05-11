@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -53,6 +54,7 @@ import {
   RoleEnum,
   CommonResponse,
   RequestQaHistoryLogSaveDto,
+  QaHistoryTypeEnum,
 } from '@hi-dice/common';
 
 @ApiTags('QA')
@@ -103,6 +105,14 @@ export default class QaCommentController {
     @GetUser() user: User,
   ) {
     await this.qaCommentService.saveComment(dto, workspace, user);
+
+    this.sendQaQueue({
+      qaId: dto.qaId,
+      email: user.email,
+      type: QaHistoryTypeEnum.SAVE_COMMENT,
+      log: '댓글을 생성했습니다.',
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 생성합니다.',
@@ -123,7 +133,18 @@ export default class QaCommentController {
     @Body() dto: RequestQaCommentUpdateDto,
     @GetUser() user: User,
   ) {
+    const comment = await this.qaCommentService.findQaCommentById(
+      dto.commentId,
+    );
     await this.qaCommentService.updateComment(dto, user);
+
+    this.sendQaQueue({
+      qaId: comment.qa.id,
+      email: user.email,
+      type: QaHistoryTypeEnum.DELETE_COMMENT,
+      log: `${comment.content} -> ${dto.content}`,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 수정합니다.',
@@ -138,9 +159,21 @@ export default class QaCommentController {
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Delete('/:id')
-  public async deleteComment(@Param('id') id: number, @GetUser() user: User) {
-    await this.qaCommentService.deleteComment(id, user);
+  @Delete('/:commentId')
+  public async deleteComment(
+    @Param('commentId', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ) {
+    const comment = await this.qaCommentService.findQaCommentById(id);
+    await this.qaCommentService.deleteComment(id);
+
+    this.sendQaQueue({
+      qaId: comment.qa.id,
+      email: user.email,
+      type: QaHistoryTypeEnum.DELETE_COMMENT,
+      log: comment.content,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '댓글을 삭제합니다.',
