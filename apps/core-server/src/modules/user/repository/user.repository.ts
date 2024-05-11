@@ -18,6 +18,14 @@ export default class UserRepository extends Repository<User> {
     return await queryBuilder.getOne();
   }
 
+  public async findUserProfileByEmailList(emailList: string[]) {
+    const queryBuilder = this.createQueryBuilder('user')
+      .select(['user.nickname', 'user.email', 'user.profile'])
+      .where('user.email IN (:...emailList)', { emailList });
+
+    return await queryBuilder.getMany();
+  }
+
   public async findUserWithWorkspace(email: string) {
     const queryBuilder = this.createQueryBuilder('user')
       .select([

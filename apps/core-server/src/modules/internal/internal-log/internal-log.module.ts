@@ -1,11 +1,12 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 
 // ** Custom Module Imports
 import InternalLogController from './controller/internal-log.controller';
+import UserModule from '../../user/user.module';
 
 @Module({
-  imports: [],
+  imports: [forwardRef(() => UserModule)],
   providers: [],
   exports: [],
   controllers: [InternalLogController],

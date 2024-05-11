@@ -73,6 +73,15 @@ export default class UserService {
   }
 
   /**
+   * Find User Profile By Email List
+   * @param emailList
+   * @returns
+   */
+  public async findUserProfileByEmailList(emailList: string[]) {
+    return await this.userRepository.findUserProfileByEmailList(emailList);
+  }
+
+  /**
    * Find User
    * @param user
    * @returns
