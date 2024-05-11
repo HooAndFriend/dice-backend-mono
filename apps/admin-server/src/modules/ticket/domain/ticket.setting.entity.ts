@@ -12,6 +12,7 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import Ticket from './ticket.entity';
+import TicketSettingEnum from './ticket.setting.enum';
 
 @Entity({ name: 'TB_TICKET_SETTING' })
 export default class TicketSetting extends BaseTimeEntity {
@@ -19,22 +20,22 @@ export default class TicketSetting extends BaseTimeEntity {
   id: number;
 
   @Column({
-    type: 'varchar',
-    length: 10,
-    name: 'color',
-    comment: '타입 색',
+    type: 'enum',
+    enum: TicketSettingEnum,
+    comment: '티켓 셋팅 타입',
     nullable: false,
+    default: TicketSettingEnum.OTHER,
   })
-  color: string;
+  type: TicketSettingEnum;
 
   @Column({
     type: 'varchar',
     length: 20,
-    name: 'type',
+    name: 'name',
     comment: '티켓 타입 명',
     nullable: false,
   })
-  type: string;
+  name: string;
 
   @Column({
     type: 'varchar',
