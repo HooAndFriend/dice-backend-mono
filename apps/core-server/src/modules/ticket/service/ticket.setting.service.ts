@@ -12,6 +12,7 @@ import { Transactional } from 'typeorm-transactional';
 import { BadRequestException, NotFoundException } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
+import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 
 @Injectable()
 export default class TicketSettingService {
@@ -71,6 +72,25 @@ export default class TicketSettingService {
   public async findAllSetting(workspaceId: number) {
     return await this.ticketSettingRepository.findSettingByWorkspaceId(
       workspaceId,
+    );
+  }
+
+  /**
+   * Save Ticket Setting
+   * @param dto
+   * @param workspace
+   */
+  public async saveTicketSetting(
+    dto: RequestSettingSaveDto,
+    workspace: Workspace,
+  ) {
+    await this.ticketSettingRepository.save(
+      this.ticketSettingRepository.create({
+        name: dto.name,
+        description: dto.description,
+        type: dto.type,
+        workspace,
+      }),
     );
   }
 

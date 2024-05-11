@@ -45,6 +45,7 @@ import { CommonResponse } from '@hi-dice/common';
 import { RoleEnum } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import RequestSettingUpdateDto from '../dto/setting/setting.update.dto';
+import RequestSettingSaveDto from '../dto/setting/setting.save.dto';
 
 @ApiTags('Ticket Setting')
 @ApiResponse(createServerExceptionResponse())
@@ -55,6 +56,27 @@ export default class TicketSettingController {
     private readonly ticketService: TicketService,
     private readonly ticketSettingService: TicketSettingService,
   ) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'Setting 저장' })
+  @ApiBody({ type: RequestSettingSaveDto })
+  @ApiResponse(TicketResponse.saveSetting[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/')
+  public async saveSetting(
+    @Body() dto: RequestSettingSaveDto,
+    @GetWorkspace() worksapce: Workspace,
+  ) {
+    await this.ticketSettingService.saveTicketSetting(dto, worksapce);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Setting',
+    });
+  }
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })

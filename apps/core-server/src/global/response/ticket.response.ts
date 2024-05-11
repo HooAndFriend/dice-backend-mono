@@ -740,11 +740,6 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Save Setting',
     }),
-    404: createErrorResponse({
-      statusCode: 404,
-      error: 'NOT FOUND',
-      message: 'Ticket 정보를 찾을 수 없습니다.',
-    }),
   },
   updateSetting: {
     200: createMessageResponse({
