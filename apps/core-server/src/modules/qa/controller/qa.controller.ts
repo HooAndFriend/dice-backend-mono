@@ -361,29 +361,6 @@ export default class QaController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'QA 댓글 조회' })
-  @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(CommentResponse.findComment[200])
-  @WorkspaceRole(RoleEnum.VIEWER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/comment/:qaId')
-  public async findQaComment(
-    @Param('qaId') qaId: number,
-    @GetWorkspace() workspace: Workspace,
-  ) {
-    const { data, count } = await this.qaCommentService.findQaComment(
-      qaId,
-      workspace,
-    );
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: '댓글을 조회합니다.',
-      data: { data, count },
-    });
-  }
-
   /**
    * Send Ticket Queue
    * @param event
