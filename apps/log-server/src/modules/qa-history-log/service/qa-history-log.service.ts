@@ -6,11 +6,13 @@ import QaHistoryLogRepository from '../repository/qa-history-log.repository';
 
 // ** Dto Imports
 import { RequestQaHistoryLogSaveDto } from '@hi-dice/common';
+import InternalCoreSenderService from '../../internal/internal-core/service/internal-core.sender.service';
 
 @Injectable()
 export default class QaHistoryLogService {
   constructor(
     private readonly qaHistoryLogRepository: QaHistoryLogRepository,
+    private readonly internalCoreSendService: InternalCoreSenderService,
   ) {}
 
   /**
@@ -31,11 +33,36 @@ export default class QaHistoryLogService {
    * @returns
    */
   public async findQaHistoryList(qaId: number) {
-    return await this.qaHistoryLogRepository.findAndCount({
+    const [data, count] = await this.qaHistoryLogRepository.findAndCount({
       where: {
         qaId,
       },
       order: { createdDate: 'DESC' },
     });
+
+    const userList = await this.findUserProfileList(
+      data.map((item) => item.email),
+    );
+
+    return [
+      data.map((item) => ({
+        ...item,
+        user: userList.find((_) => _.email === item.email) || null,
+      })),
+      count,
+    ];
+  }
+
+  /**
+   * find User Profile List
+   * @param emailList
+   * @returns
+   */
+  private async findUserProfileList(emailList: string[]) {
+    const { data } = await this.internalCoreSendService.findUserProfileList(
+      emailList,
+    );
+
+    return data;
   }
 }

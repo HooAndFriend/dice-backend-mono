@@ -42,7 +42,7 @@ export default class QaHistoryLogController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Qa 히스토리 리스트 조회' })
   @ApiResponse(QaHistoryLogResponse.findQaHistoryList[200])
-  // @UseGuards(JwtAccessGuard)
+  @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findQaHistoryList(@Param('id') id: number) {
     const [data, count] = await this.qaHistoryLogService.findQaHistoryList(id);
