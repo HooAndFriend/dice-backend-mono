@@ -538,56 +538,6 @@ export default class TicketService {
     });
   }
 
-  // ** Comment Service
-
-  /**
-   * Save Comment
-   * @param dto
-   * @param user
-   */
-  public async saveComment(dto: RequestTicketCommentSaveDto, user: User) {
-    const findTicket = await this.findTicketById(dto.ticketId);
-
-    const comment = this.ticketCommentRepository.create({
-      user: user,
-      content: dto.content,
-      ticket: findTicket,
-    });
-
-    return await this.ticketCommentRepository.save(comment);
-  }
-
-  /**
-   * Update Comment
-   * @param dto
-   * @param user
-   */
-  public async updateComment(dto: RequestTicketCommentUpdateDto, user: User) {
-    const findComment = await this.findCommentById(dto.commentId);
-
-    await this.ticketCommentRepository.update(findComment.id, {
-      content: dto.content,
-    });
-  }
-
-  /**
-   * Delete Comment
-   * @param id
-   */
-  public async deleteComment(id: number) {
-    const findComment = await this.findCommentById(id);
-
-    await this.ticketCommentRepository.delete(id);
-  }
-
-  /**
-   * Find Comment
-   * @param id
-   */
-  public async findComment(id: number) {
-    return await this.ticketCommentRepository.findAllCommentByTicketId(id);
-  }
-
   /**
    * Find My Ticket
    * @param teamId

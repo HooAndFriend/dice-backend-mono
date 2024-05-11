@@ -36,6 +36,7 @@ import TicketFileService from './service/ticket.file.service';
 import TicketFileController from './controller/ticket.file.controller';
 import EpicService from './service/epic.service';
 import TicketSettingService from './service/ticket.setting.service';
+import TicketCommentService from './service/ticket.comment.service';
 
 @Module({
   imports: [
@@ -83,6 +84,7 @@ import TicketSettingService from './service/ticket.setting.service';
     TicketFileService,
     EpicService,
     TicketSettingService,
+    TicketCommentService,
   ],
   controllers: [
     TicketController,
@@ -99,6 +101,7 @@ import TicketSettingService from './service/ticket.setting.service';
     TicketFileService,
     EpicService,
     TicketSettingService,
+    TicketCommentService,
   ],
 })
 export default class TicketModule {}
