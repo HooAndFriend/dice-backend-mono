@@ -67,6 +67,7 @@ import RequestQaUserUpdateDto from '../dto/qa.user.update.dto';
 import RequestQaDueDateUpdateDto from '../dto/qa.duedate.update.dto';
 import RequestQaSimpleUpdateDto from '../dto/qa-simple.update.dto';
 import RequestQaOrderUpdateDto from '../dto/qa-order.update.dto';
+import Qa from '../domain/qa.entity';
 
 @ApiTags('QA')
 @ApiResponse(createServerExceptionResponse())
@@ -193,8 +194,8 @@ export default class QaController {
     this.sendQaQueue({
       qaId: qa.id,
       email: email,
-      type: dto.changeQaHistoryTypeEnum(),
-      log: dto.changeLog(qa),
+      type: this.changeQaHistoryTypeEnum(dto.type),
+      log: this.changeLog(dto, qa),
     });
 
     return CommonResponse.createResponseMessage({
@@ -365,5 +366,31 @@ export default class QaController {
    */
   private sendQaQueue(event: RequestQaHistoryLogSaveDto) {
     this.eventEmitter.emit('qa.send-change-history', event);
+  }
+
+  private changeQaHistoryTypeEnum(type: 'title' | 'asIs' | 'toBe' | 'memo') {
+    switch (type) {
+      case 'title':
+        return QaHistoryTypeEnum.TITLE;
+      case 'asIs':
+        return QaHistoryTypeEnum.ASIS;
+      case 'toBe':
+        return QaHistoryTypeEnum.TOBE;
+      case 'memo':
+        return QaHistoryTypeEnum.MEMO;
+    }
+  }
+
+  private changeLog(dto: RequestQaSimpleUpdateDto, Qa: Qa) {
+    switch (dto.type) {
+      case 'title':
+        return `${Qa.title} -> ${dto.value}`;
+      case 'asIs':
+        return `${Qa.asIs} -> ${dto.value}`;
+      case 'toBe':
+        return `${Qa.toBe} -> ${dto.value}`;
+      case 'memo':
+        return `${Qa.memo} -> ${dto.value}`;
+    }
   }
 }
