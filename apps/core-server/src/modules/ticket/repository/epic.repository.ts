@@ -42,6 +42,7 @@ export default class EpicRepository extends Repository<Epic> {
         'worker.id',
         'worker.nickname',
         'worker.profile',
+        'worker.email',
         'ticketSetting.id',
         'ticketSetting.name',
         'ticketSetting.type',
