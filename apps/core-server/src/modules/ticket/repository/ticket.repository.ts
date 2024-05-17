@@ -26,9 +26,11 @@ export default class TicketRepository extends Repository<Ticket> {
         'epic.id',
         'epic.name',
         'admin.id',
+        'admin.email',
         'admin.nickname',
         'admin.profile',
         'worker.id',
+        'worker.email',
         'worker.nickname',
         'worker.profile',
         'ticketFile.id',
@@ -92,11 +94,9 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.reopenDate',
         'ticket.orderId',
         'worker.id',
+        'worker.email',
         'worker.nickname',
         'worker.profile',
-        'admin.id',
-        'admin.nickname',
-        'admin.profile',
         'epic.id',
         'epic.name',
         'ticketSetting.id',
@@ -106,7 +106,6 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.epic', 'epic')
       .where('ticket.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')

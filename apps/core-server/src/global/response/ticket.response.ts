@@ -26,107 +26,14 @@ export const TicketResponse = {
             worker: {
               id: 5,
               nickname: '유나나나나ㅏ나나나나ㅏ나',
+              email: '123',
               profile:
                 'http://125.133.34.224:9000/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
             },
-            admin: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
             epic: {
               id: 1,
               name: '1123123',
             },
-          },
-          {
-            id: 3,
-            name: '감자탕123123',
-            status: 'COMPLETE',
-            code: 'ADM-1',
-            dueDate: '2024-04-18',
-            completeDate: '2024-04-04',
-            reopenDate: '2024-04-04',
-            ticketSetting: null,
-            worker: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
-            admin: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
-            epic: {
-              id: 1,
-              name: '1123123',
-            },
-          },
-          {
-            id: 4,
-            name: '감자탕',
-            status: 'DOING',
-            code: 'ADM-1',
-            dueDate: '2024-04-04',
-            completeDate: null,
-            reopenDate: null,
-            ticketSetting: null,
-            worker: {
-              id: 4,
-              nickname: 'skskdldks12',
-              profile:
-                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-            },
-            admin: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
-            epic: {
-              id: 1,
-              name: '1123123',
-            },
-          },
-          {
-            id: 7,
-            name: '감자탕',
-            status: 'COMPLETE',
-            code: 'HAF-4',
-            dueDate: null,
-            completeDate: '2024-04-04',
-            reopenDate: null,
-            ticketSetting: null,
-            worker: null,
-            admin: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
-            epic: null,
-          },
-          {
-            id: 8,
-            name: '감자탕',
-            status: 'DONE',
-            code: 'HAF-5',
-            dueDate: null,
-            completeDate: null,
-            reopenDate: null,
-            ticketSetting: null,
-            worker: null,
-            admin: {
-              id: 1,
-              nickname: 'admin',
-              profile:
-                'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-            },
-            epic: null,
           },
         ],
         count: 5,
@@ -161,12 +68,14 @@ export const TicketResponse = {
         },
         admin: {
           id: 1,
+          email: '123',
           nickname: 'admin',
           profile:
             'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
         },
         worker: {
           id: 5,
+          email: '123',
           nickname: '유나나나나ㅏ나나나나ㅏ나',
           profile:
             'http://125.133.34.224:9000/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
@@ -371,113 +280,13 @@ export const TicketResponse = {
                 worker: {
                   id: 5,
                   nickname: '유나나나나ㅏ나나나나ㅏ나',
+                  email: '123',
                   profile:
                     'http://125.133.34.224:9000/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
                 },
               },
-              {
-                createdDate: '2024-03-31T07:46:33.453Z',
-                id: 3,
-                name: '감자탕123123',
-                status: 'COMPLETE',
-                code: 'ADM-1',
-                dueDate: '2024-04-18',
-                completeDate: '2024-04-04',
-                reopenDate: '2024-04-04',
-                ticketSetting: null,
-                worker: {
-                  id: 1,
-                  nickname: 'admin',
-                  profile:
-                    'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-                },
-              },
-              {
-                createdDate: '2024-03-31T07:46:33.453Z',
-                id: 4,
-                name: '감자탕',
-                status: 'DOING',
-                code: 'ADM-1',
-                dueDate: '2024-04-04',
-                completeDate: null,
-                reopenDate: null,
-                ticketSetting: null,
-                worker: {
-                  id: 4,
-                  nickname: 'skskdldks12',
-                  profile:
-                    'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-                },
-              },
             ],
             doneTicketCount: 1,
-          },
-          {
-            id: 2,
-            name: '123123123',
-            code: 'ADM-2',
-            dueDate: null,
-            ticket: [
-              {
-                createdDate: '2024-03-31T07:46:33.453Z',
-                id: 1,
-                name: '감자탕',
-                status: 'DOING',
-                code: 'ADM-1',
-                dueDate: '2024-04-24',
-                completeDate: null,
-                reopenDate: null,
-                ticketSetting: null,
-                worker: {
-                  id: 1,
-                  nickname: 'admin',
-                  profile:
-                    'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-                },
-              },
-              {
-                createdDate: '2024-04-03T17:41:41.922Z',
-                id: 5,
-                name: '감자탕',
-                status: 'WAITING',
-                code: 'ADM-2',
-                dueDate: null,
-                completeDate: null,
-                reopenDate: null,
-                ticketSetting: null,
-                worker: {
-                  id: 1,
-                  nickname: 'admin',
-                  profile:
-                    'http://125.133.34.224:9000/dice-dev/KakaoTalk_Image_2023-04-20-18-16-20-removebg-preview.png',
-                },
-              },
-            ],
-            doneTicketCount: 0,
-          },
-          {
-            id: 3,
-            name: '123123123122',
-            code: 'ADM-3',
-            dueDate: null,
-            ticket: [],
-            doneTicketCount: 0,
-          },
-          {
-            id: 4,
-            name: '1',
-            code: 'ADM-4',
-            dueDate: null,
-            ticket: [],
-            doneTicketCount: 0,
-          },
-          {
-            id: 5,
-            name: '123123',
-            code: 'ADM-5',
-            dueDate: null,
-            ticket: [],
-            doneTicketCount: 0,
           },
         ],
         count: 5,
