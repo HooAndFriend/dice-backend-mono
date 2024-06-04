@@ -63,7 +63,7 @@ export default class TicketService {
    */
   public async findTicketById(ticketId: number) {
     const findTicket = await this.ticketRepository.findOne({
-      where: { id: ticketId },
+      where: { ticketId },
     });
 
     if (!findTicket) {
@@ -80,7 +80,7 @@ export default class TicketService {
    */
   public async findTicketByIdWithWorkerAndAdmin(ticketId: number) {
     const ticket = await this.ticketRepository.findOne({
-      where: { id: ticketId },
+      where: { ticketId },
       relations: ['worker', 'admin'],
     });
 
@@ -140,13 +140,13 @@ export default class TicketService {
     today.setHours(0, 0, 0, 0);
 
     const ticketCount = await this.ticketRepository.count({
-      where: { workspace: { id: workspaceId }, dueDate: LessThan(today) },
+      where: { workspace: { workspaceId }, dueDate: LessThan(today) },
     });
 
     const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
     const yesterDayTicketCount = await this.ticketRepository.count({
-      where: { workspace: { id: workspaceId }, dueDate: LessThan(oneDayAgo) },
+      where: { workspace: { workspaceId }, dueDate: LessThan(oneDayAgo) },
     });
 
     return { ticketCount, yesterDayTicketCount };
@@ -159,12 +159,12 @@ export default class TicketService {
    */
   public async findTicketCountAll(workspaceId: number) {
     const ticketCount = await this.ticketRepository.count({
-      where: { workspace: { id: workspaceId } },
+      where: { workspace: { workspaceId } },
     });
 
     const ticketCompleteCount = await this.ticketRepository.count({
       where: {
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
         status: TaskStatusEnum.COMPLETE,
       },
     });
@@ -173,12 +173,12 @@ export default class TicketService {
     today.setHours(0, 0, 0, 0);
 
     const yesterDayTicketCount = await this.ticketRepository.count({
-      where: { workspace: { id: workspaceId }, dueDate: LessThan(today) },
+      where: { workspace: { workspaceId }, dueDate: LessThan(today) },
     });
 
     const yesterDayTicketCompleteCount = await this.ticketRepository.count({
       where: {
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
         status: TaskStatusEnum.COMPLETE,
       },
     });
@@ -221,14 +221,14 @@ export default class TicketService {
 
     const ticketCount = await this.ticketRepository.count({
       where: {
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
         status: TaskStatusEnum.COMPLETE,
       },
     });
 
     const yesterDayTicketCount = await this.ticketRepository.count({
       where: {
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
         completeDate: LessThan(today),
         status: TaskStatusEnum.COMPLETE,
       },
@@ -297,7 +297,7 @@ export default class TicketService {
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
-        where: { workspace: { id: workspace.id } },
+        where: { workspace: { workspaceId: workspace.workspaceId } },
       })) + 1;
 
     const ticketNumber = workspace.code + '-' + ticketCount;
@@ -343,7 +343,7 @@ export default class TicketService {
   public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
     const findTicket = await this.findTicketById(dto.ticketId);
 
-    await this.ticketNameValidation(dto.name, findTicket.workspace.id);
+    await this.ticketNameValidation(dto.name, findTicket.workspace.workspaceId);
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -360,7 +360,7 @@ export default class TicketService {
       });
 
       const findWorker = await this.userRepository.findOne({
-        where: { id: dto.workerId },
+        where: { userId: dto.workerId },
       });
       if (!findWorker) {
         throw new NotFoundException('Not Found User');
@@ -433,7 +433,7 @@ export default class TicketService {
 
     if (status === TaskStatusEnum.REOPEN) {
       await this.ticketRepository.update(
-        { id: In(ids) },
+        { ticketId: In(ids) },
         {
           status,
           reopenDate: now,
@@ -444,7 +444,7 @@ export default class TicketService {
       return;
     } else if (status === TaskStatusEnum.COMPLETE) {
       await this.ticketRepository.update(
-        { id: In(ids) },
+        { ticketId: In(ids) },
         {
           status,
           completeDate: now,
@@ -455,7 +455,7 @@ export default class TicketService {
     }
 
     await this.ticketRepository.update(
-      { id: In(ids) },
+      { ticketId: In(ids) },
       {
         status,
       },
@@ -469,7 +469,7 @@ export default class TicketService {
    */
   @Transactional()
   public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
-    await this.ticketRepository.update({ id: In(ids) }, { dueDate });
+    await this.ticketRepository.update({ ticketId: In(ids) }, { dueDate });
   }
 
   /**
@@ -477,7 +477,7 @@ export default class TicketService {
    * @param dto
    */
   public async deleteTicketList(dto: RequestTicketDeleteDto) {
-    await this.ticketRepository.delete({ id: In(dto.ticketIds) });
+    await this.ticketRepository.delete({ ticketId: In(dto.ticketIds) });
   }
 
   /**
@@ -490,7 +490,10 @@ export default class TicketService {
     ids: number[],
     ticketSetting: TicketSetting,
   ) {
-    await this.ticketRepository.update({ id: In(ids) }, { ticketSetting });
+    await this.ticketRepository.update(
+      { ticketId: In(ids) },
+      { ticketSetting },
+    );
   }
 
   /**
@@ -529,7 +532,7 @@ export default class TicketService {
    */
   public async findMyTicketCount(userId: number) {
     return await this.ticketRepository.count({
-      where: { worker: { id: userId } },
+      where: { worker: { userId } },
     });
   }
 
@@ -549,7 +552,7 @@ export default class TicketService {
    */
   public async isExistedTicketById(ticketId: number) {
     const ticket = await this.ticketRepository.exist({
-      where: { id: ticketId },
+      where: { ticketId },
     });
 
     if (!ticket) {
@@ -644,7 +647,7 @@ export default class TicketService {
     return await this.ticketRepository.find({
       where: {
         orderId: Between(orderId, targetOrderId),
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
       },
     });
   }
@@ -663,7 +666,7 @@ export default class TicketService {
     return await this.ticketRepository.find({
       where: {
         orderId: Between(targetOrderId, orderId),
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
       },
     });
   }

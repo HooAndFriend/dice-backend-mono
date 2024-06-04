@@ -19,7 +19,7 @@ import Board from '../../board/domain/board.entity';
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  workspaceId: number;
 
   @Column({
     type: 'varchar',

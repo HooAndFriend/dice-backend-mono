@@ -15,7 +15,7 @@ import { DiceFunction } from '@hi-dice/common';
 @Entity({ name: 'TB_WORKSPACE_FUNCTION' })
 export default class WorkspaceFunction extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  workspaceFunctionId: number;
 
   @Column({
     type: 'enum',

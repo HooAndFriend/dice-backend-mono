@@ -9,7 +9,7 @@ import TicketFile from '../domain/ticket.file.entity';
 export default class TicketFileRepository extends Repository<TicketFile> {
   public async findAllFileByTicketId(ticketId: number) {
     const querybuilder = this.createQueryBuilder('file')
-      .select(['file.id', 'file.url'])
+      .select(['file.ticketFileId', 'file.url'])
       .leftJoin('file.ticket', 'ticket')
       .leftJoin('ticket.admin', 'admin')
       .where('file.ticket = :ticketId', { ticketId });
@@ -22,7 +22,7 @@ export default class TicketFileRepository extends Repository<TicketFile> {
     file: Array<number>,
   ) {
     const querybuilder = this.createQueryBuilder('file')
-      .select(['file.id', 'file.url'])
+      .select(['file.ticketFileId', 'file.url'])
       .where('file.ticket = :ticketId', { ticketId })
       .andWhere('file.id NOT IN (:file)', { file });
 

@@ -84,7 +84,7 @@ export default class WorkspaceUserService {
    */
   public async findWorkspaceUserCount(workspaceId: number) {
     const worksapceUserCount = await this.workspaceUserRepository.count({
-      where: { workspace: { id: workspaceId } },
+      where: { workspace: { workspaceId } },
     });
 
     const today = new Date();
@@ -92,7 +92,7 @@ export default class WorkspaceUserService {
 
     const yesterDayworksapceUserCount =
       await this.workspaceUserRepository.count({
-        where: { workspace: { id: workspaceId }, createdDate: LessThan(today) },
+        where: { workspace: { workspaceId }, createdDate: LessThan(today) },
       });
 
     return { worksapceUserCount, yesterDayworksapceUserCount };
@@ -158,7 +158,7 @@ export default class WorkspaceUserService {
    */
   public async existedWorksapceUserById(workspaceUserId: number) {
     const workspaceUser = await this.workspaceUserRepository.exist({
-      where: { id: workspaceUserId },
+      where: { workspaceUserId },
     });
 
     if (!workspaceUser) {

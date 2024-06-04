@@ -20,7 +20,7 @@ export default class CsCategoryService {
    */
   public async findCsCategoryById(csCategoryId: number) {
     const csCategory = await this.csCategoryRepository.findOne({
-      where: { id: csCategoryId },
+      where: { csCategoryId },
     });
 
     if (!csCategory) {

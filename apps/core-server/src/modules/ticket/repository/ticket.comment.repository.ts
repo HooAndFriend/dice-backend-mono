@@ -9,7 +9,12 @@ import TicketComment from '../domain/ticket.comment.entity';
 export default class TicketCommentRepository extends Repository<TicketComment> {
   public async findCommentById(commentId: number) {
     const querybuilder = this.createQueryBuilder('comment')
-      .select(['comment.id', 'comment.content', 'user.id', 'ticket.id'])
+      .select([
+        'comment.ticketCommentId',
+        'comment.content',
+        'user.id',
+        'ticket.id',
+      ])
       .leftJoin('comment.ticket', 'ticket')
       .leftJoin('comment.user', 'user')
       .where('comment.id = :commentId', { commentId });
@@ -20,7 +25,7 @@ export default class TicketCommentRepository extends Repository<TicketComment> {
   public async findAllCommentByTicketId(ticketId: number) {
     const querybuilder = this.createQueryBuilder('comment')
       .select([
-        'comment.id',
+        'comment.ticketCommentId',
         'comment.content',
         'comment.createdDate',
         'comment.modifiedDate',

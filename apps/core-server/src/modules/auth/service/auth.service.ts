@@ -150,7 +150,7 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: user.id, email: user.email });
+      const token = this.generateToken({ id: user.userId, email: user.email });
 
       return {
         token,
@@ -158,11 +158,11 @@ export default class AuthService {
         workspace,
         workspaceFunction: [
           {
-            id: workspaceFunctionTicket.id,
+            id: workspaceFunctionTicket.workspaceFunctionId,
             function: workspaceFunctionTicket.function,
           },
           {
-            id: workspaceFunctionQa.id,
+            id: workspaceFunctionQa.workspaceFunctionId,
             function: workspaceFunctionQa.function,
           },
         ],
@@ -191,12 +191,12 @@ export default class AuthService {
       throw new NotFoundException('Not Found User');
     }
 
-    await this.userRepository.update(user.id, {
+    await this.userRepository.update(user.userId, {
       lastLoginDate: new Date(),
       fcmToken: dto.fcmToken,
     });
 
-    const token = this.generateToken({ id: user.id, email: user.email });
+    const token = this.generateToken({ id: user.userId, email: user.email });
 
     return { token, user };
   }
@@ -214,12 +214,12 @@ export default class AuthService {
       throw new BadRequestException('Wrong Password');
     }
 
-    await this.userRepository.update(user.id, {
+    await this.userRepository.update(user.userId, {
       lastLoginDate: new Date(),
       fcmToken: dto.fcmToken,
     });
 
-    const token = this.generateToken({ id: user.id, email: user.email });
+    const token = this.generateToken({ id: user.userId, email: user.email });
 
     return { token, user };
   }
@@ -315,7 +315,7 @@ export default class AuthService {
 
       await queryRunner.commitTransaction();
 
-      const token = this.generateToken({ id: user.id, email: user.email });
+      const token = this.generateToken({ id: user.userId, email: user.email });
 
       return {
         token,
@@ -323,11 +323,11 @@ export default class AuthService {
         workspace,
         workspaceFunction: [
           {
-            id: workspaceFunctionTicket.id,
+            id: workspaceFunctionTicket.workspaceFunctionId,
             function: workspaceFunctionTicket.function,
           },
           {
-            id: workspaceFunctionQa.id,
+            id: workspaceFunctionQa.workspaceFunctionId,
             function: workspaceFunctionQa.function,
           },
         ],
@@ -348,7 +348,7 @@ export default class AuthService {
 
   public async reissueToken(user: User) {
     const accessToken = this.jwtService.sign(
-      { id: user.id },
+      { id: user.userId },
       {
         secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
         expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
@@ -375,7 +375,9 @@ export default class AuthService {
   }
 
   public async findUserByJwt({ id }: JwtPayload): Promise<any> {
-    const findUser = await this.userRepository.findOne({ where: { id } });
+    const findUser = await this.userRepository.findOne({
+      where: { userId: id },
+    });
     if (!findUser) {
       throw new NotFoundException('Not Found User');
     }
@@ -383,7 +385,7 @@ export default class AuthService {
   }
 
   public async findRefreshToken({ id }: JwtPayload) {
-    return await this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.findOne({ where: { userId: id } });
   }
 
   /**

@@ -43,7 +43,7 @@ export default class TicketFileService {
    */
   public async isExistedTicketFile(ticketFileId: number) {
     const ticketFile = await this.ticketFileRepository.exist({
-      where: { id: ticketFileId },
+      where: { ticketFileId },
     });
 
     if (!ticketFile) {
@@ -58,7 +58,7 @@ export default class TicketFileService {
    */
   public async findTicketFile(ticketFileId: number) {
     const ticketFile = await this.ticketFileRepository.findOne({
-      where: { id: ticketFileId },
+      where: { ticketFileId },
       relations: ['ticket'],
     });
 

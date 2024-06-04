@@ -11,7 +11,7 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
   public async findSettingByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('setting')
       .select([
-        'setting.id',
+        'setting.ticketSettingId',
         'setting.name',
         'setting.type',
         'setting.description',
@@ -24,29 +24,31 @@ export default class TicketSettingRepository extends Repository<TicketSetting> {
   public async findOneByTypeAndWorkspaceId(type: string, workspaceId: number) {
     const querybuilder = this.createQueryBuilder('setting')
       .select([
-        'setting.id',
+        'setting.ticketSettingId',
         'setting.name',
         'setting.type',
         'setting.description',
-        'workspace.id',
+        'workspace.workspaceId',
       ])
       .leftJoin('setting.workspace', 'workspace')
       .where('setting.workspace = :workspaceId', { workspaceId })
       .andWhere('setting.type = :type', { type });
+
     return querybuilder.getOne();
   }
 
   public async findSettingById(settingId: number) {
     const querybuilder = this.createQueryBuilder('setting')
       .select([
-        'setting.id',
+        'setting.ticketSettingId',
         'setting.color',
         'setting.textColor',
         'setting.type',
         'setting.description',
       ])
       .leftJoin('setting.workspace', 'workspace')
-      .where('setting.id = :settingId', { settingId });
+      .where('setting.ticketSettingId = :settingId', { settingId });
+
     return await querybuilder.getOne();
   }
 }

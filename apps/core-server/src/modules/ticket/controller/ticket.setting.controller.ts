@@ -128,8 +128,10 @@ export default class TicketSettingController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findAllSetting(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketSettingService.findAllSetting(id);
+  public async findAllSetting(@GetWorkspace() { workspaceId }: Workspace) {
+    const [data, count] = await this.ticketSettingService.findAllSetting(
+      workspaceId,
+    );
 
     return CommonResponse.createResponse({
       data: { data, count },

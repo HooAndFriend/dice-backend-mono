@@ -128,7 +128,7 @@ export default class TicketCommentController {
     await this.ticketCommentService.updateComment(dto, user);
 
     this.sendTicketQueue({
-      ticketId: comment.ticket.id,
+      ticketId: comment.ticket.ticketId,
       email: user.email,
       type: TicketHistoryTypeEnum.UPDATE_COMMENT,
       log: `${comment.content} -> ${dto.content}`,
@@ -158,7 +158,7 @@ export default class TicketCommentController {
     await this.ticketCommentService.deleteComment(id);
 
     this.sendTicketQueue({
-      ticketId: comment.ticket.id,
+      ticketId: comment.ticket.ticketId,
       email: user.email,
       type: TicketHistoryTypeEnum.UPDATE_COMMENT,
       log: comment.content,

@@ -12,7 +12,7 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findTicketDetailById(ticketId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
         'ticket.content',
@@ -25,11 +25,11 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.modifiedDate',
         'epic.id',
         'epic.name',
-        'admin.id',
+        'admin.userId',
         'admin.email',
         'admin.nickname',
         'admin.profile',
-        'worker.id',
+        'worker.userId',
         'worker.email',
         'worker.nickname',
         'worker.profile',
@@ -44,7 +44,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.epic', 'epic')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
-      .where('ticket.id = :ticketId', { ticketId })
+      .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
 
     return await querybuilder.getOne();
@@ -65,14 +65,14 @@ export default class TicketRepository extends Repository<Ticket> {
 
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.dueDate',
         'ticket.createdDate',
       ])
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.worker', 'worker')
-      .where('workspace.id = :workspaceId', { workspaceId })
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('worker.id = :userId', { userId })
       .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
         startDate,
@@ -85,7 +85,7 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findAllTicketByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
         'ticket.code',
@@ -93,7 +93,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.completeDate',
         'ticket.reopenDate',
         'ticket.orderId',
-        'worker.id',
+        'worker.userId',
         'worker.email',
         'worker.nickname',
         'worker.profile',
@@ -124,18 +124,18 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findOneByNameAndWorkspaceId(name: string, workspaceId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
         'ticket.dueDate',
         'ticket.code',
         'ticket.completeDate',
         'ticket.reopenDate',
-        'workspace.id',
-        'worker.id',
+        'workspace.workspaceId',
+        'worker.userId',
         'worker.nickname',
         'worker.profile',
-        'admin.id',
+        'admin.userId',
         'admin.nickname',
         'admin.profile',
         'epic.id',
@@ -158,14 +158,13 @@ export default class TicketRepository extends Repository<Ticket> {
 
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
         'ticket.dueDate',
         'ticket.code',
       ])
       .leftJoin('ticket.workspace', 'workspace')
-      // .where('workspace.teamId = :teamId', { teamId })
       .where('ticket.dueDate BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
@@ -177,14 +176,14 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findTicketListByWorkerId(workerId: number) {
     const queryBuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.code',
         'ticket.status',
         'ticket.name',
         'ticket.createdDate',
       ])
       .leftJoin('ticket.worker', 'worker')
-      .where('worker.id = :workerId', { workerId })
+      .where('worker.userId = :workerId', { workerId })
       .andWhere('ticket.dueDate = :today', {
         today: dayjs().format('YYYY-MM-DD'),
       })

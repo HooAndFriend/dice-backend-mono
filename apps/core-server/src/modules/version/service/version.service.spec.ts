@@ -54,7 +54,7 @@ describe('Version Service', () => {
 const getVersion = () => {
   const version = new Version();
 
-  version.id = 1;
+  version.versionId = 1;
   version.memo = 'test';
   version.program = 'test';
   version.type = VersionTypeEnum.MAC;

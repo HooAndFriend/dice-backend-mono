@@ -20,7 +20,7 @@ import TicketSetting from './ticket.setting.entity';
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  ticketId: number;
 
   @Column({
     type: 'varchar',

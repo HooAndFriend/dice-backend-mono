@@ -128,9 +128,9 @@ export default class WorkspaceUserController {
   @ApiResponse(WorkspaceUserResponse.findUserWorkspaceList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/my')
-  public async findUserWorkspaceList(@GetUser() { id }: User) {
+  public async findUserWorkspaceList(@GetUser() { userId }: User) {
     const [data, count] = await this.workspaceUserService.findUserWorkspaceList(
-      id,
+      userId,
     );
 
     return CommonResponse.createResponse({
@@ -146,7 +146,7 @@ export default class WorkspaceUserController {
   @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
   @UseGuards(JwtAccessGuard)
   @Get('/team')
-  public async findMyWorkspaceList(@GetUser() { id: userId }: User) {
+  public async findMyWorkspaceList(@GetUser() { userId }: User) {
     // const [data, count] =
     //   await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
 
@@ -165,9 +165,11 @@ export default class WorkspaceUserController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findWorkspaceUserList(@GetWorkspace() { id }: Workspace) {
+  public async findWorkspaceUserList(
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
     const [data, count] = await this.workspaceUserService.findWorkspaceUserList(
-      id,
+      workspaceId,
     );
 
     return CommonResponse.createResponse({
@@ -185,8 +187,12 @@ export default class WorkspaceUserController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/count')
-  public async findWorkspaceUserCount(@GetWorkspace() { id }: Workspace) {
-    const data = await this.workspaceUserService.findWorkspaceUserCount(id);
+  public async findWorkspaceUserCount(
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    const data = await this.workspaceUserService.findWorkspaceUserCount(
+      workspaceId,
+    );
 
     return CommonResponse.createResponse({
       data,
@@ -227,11 +233,11 @@ export default class WorkspaceUserController {
   @Get('/search')
   public async searchWorkspaceUser(
     @Query(ValidationPipe) dto: RequestWorkspaceUserFindDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() { workspaceId }: Workspace,
   ) {
     const [data, count] = await this.workspaceUserService.searchWorkspaceUser(
       dto,
-      id,
+      workspaceId,
     );
 
     return CommonResponse.createResponse({

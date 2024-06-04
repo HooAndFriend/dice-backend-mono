@@ -12,7 +12,7 @@ export default class BoardRepository extends Repository<Board> {
   public async findBoardList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('board')
       .select([
-        'board.id',
+        'board.boardId',
         'board.title',
         'board.createdDate',
         'children.id',

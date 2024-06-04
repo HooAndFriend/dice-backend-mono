@@ -13,7 +13,7 @@ export default class UserRepository extends Repository<User> {
   public async findUser(userId: number) {
     const queryBuilder = this.createQueryBuilder('user')
       .select(['user.nickname', 'user.email', 'user.profile'])
-      .where('user.id = :userId', { userId });
+      .where('user.userId = :userId', { userId });
 
     return await queryBuilder.getOne();
   }
@@ -29,7 +29,7 @@ export default class UserRepository extends Repository<User> {
   public async findUserWithWorkspace(email: string) {
     const queryBuilder = this.createQueryBuilder('user')
       .select([
-        'user.id',
+        'user.userId',
         'user.nickname',
         'user.email',
         'user.fcmToken',
@@ -44,7 +44,7 @@ export default class UserRepository extends Repository<User> {
   public async findUserWithWorkspaceByToken(token: string, type: UserType) {
     const queryBuilder = this.createQueryBuilder('user')
       .select([
-        'user.id',
+        'user.userId',
         'user.nickname',
         'user.fcmToken',
         'user.email',

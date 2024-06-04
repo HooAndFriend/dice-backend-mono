@@ -76,7 +76,7 @@ export default class TicketFileController {
     await this.ticketFileService.saveTicketFile(ticket, dto.file);
 
     this.sendTicketQueue({
-      ticketId: ticket.id,
+      ticketId: ticket.ticketId,
       email: user.email,
       type: TicketHistoryTypeEnum.UPLOAD_FILE,
       log: dto.file,
@@ -105,7 +105,7 @@ export default class TicketFileController {
     await this.ticketFileService.deleteTicketFile(fileId);
 
     this.sendTicketQueue({
-      ticketId: ticketFile.ticket.id,
+      ticketId: ticketFile.ticket.ticketId,
       email: user.email,
       type: TicketHistoryTypeEnum.UPLOAD_FILE,
       log: ticketFile.url,

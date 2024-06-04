@@ -16,9 +16,9 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
   public async findWorkspaceUserList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
-        'workspaceUser.id',
+        'workspaceUser.workspaceUserId',
         'workspaceUser.role',
-        'user.id',
+        'user.userId',
         'user.nickname',
         'user.email',
         'user.profile',
@@ -37,7 +37,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
   public async findWorkspaceUserListByTeam(userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
-        'workspaceUser.id',
+        'workspaceUser.workspaceUserId',
         'workspaceUser.role',
         'workspace.id',
         'workspace.name',
@@ -50,8 +50,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .leftJoin('workspaceUser.workspace', 'workspace')
       .leftJoin('workspaceUser.user', 'user')
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      // .where('workspace.teamId = :teamId', { teamId })
-      .where('user.id = :userId', { userId });
+      .where('user.userId = :userId', { userId });
 
     return queryBuilder.getManyAndCount();
   }
@@ -64,7 +63,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
   public async findUserWorkspaceList(userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
-        'workspaceUser.id',
+        'workspaceUser.workspaceUserId',
         'workspaceUser.role',
         'workspace.id',
         'workspace.name',
@@ -73,7 +72,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
       .leftJoin('workspaceUser.user', 'user')
-      .where('user.id = :userId', { userId });
+      .where('user.userId = :userId', { userId });
 
     return await queryBuilder.getManyAndCount();
   }
@@ -84,9 +83,9 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
   ) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
-        'workspaceUser.id',
+        'workspaceUser.workspaceUserId',
         'workspaceUser.role',
-        'user.id',
+        'user.userId',
         'user.nickname',
         'user.email',
         'user.profile',

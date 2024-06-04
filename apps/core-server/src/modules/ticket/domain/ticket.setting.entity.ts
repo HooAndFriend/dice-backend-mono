@@ -18,7 +18,7 @@ import { SettingUpdate } from '../dto/setting/setting.update.dto';
 @Entity({ name: 'TB_TICKET_SETTING' })
 export default class TicketSetting extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  ticketSettingId: number;
 
   @Column({
     type: 'enum',

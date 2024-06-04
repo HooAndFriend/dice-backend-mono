@@ -86,8 +86,8 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findAllTicket(@GetWorkspace() { id }: Workspace) {
-    const [data, count] = await this.ticketService.findAllTicket(id);
+  public async findAllTicket(@GetWorkspace() { workspaceId }: Workspace) {
+    const [data, count] = await this.ticketService.findAllTicket(workspaceId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -146,7 +146,7 @@ export default class TicketController {
     );
 
     this.sendTicketQueue({
-      ticketId: ticket.id,
+      ticketId: ticket.ticketId,
       email: user.email,
       type: TicketHistoryTypeEnum.CREATE,
       log: '티켓을 생성했습니다.',
@@ -375,7 +375,7 @@ export default class TicketController {
     await this.ticketService.updateTicketUser(dto, user);
 
     this.sendTicketQueue({
-      ticketId: ticket.id,
+      ticketId: ticket.ticketId,
       email: user.email,
       type:
         dto.type === 'admin'
@@ -419,7 +419,7 @@ export default class TicketController {
   @Patch('/order')
   public async updateTicketOrder(
     @Body() dto: RequestTicketOrderUpdateDto,
-    @GetWorkspace() { id }: Workspace,
+    @GetWorkspace() { workspaceId }: Workspace,
   ) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
     const targetTicket = await this.ticketService.findTicketById(
@@ -429,7 +429,7 @@ export default class TicketController {
     await this.ticketService.updateTicketOrder(
       ticket,
       targetTicket.orderId,
-      id,
+      workspaceId,
     );
     return CommonResponse.createResponseMessage({
       statusCode: 200,

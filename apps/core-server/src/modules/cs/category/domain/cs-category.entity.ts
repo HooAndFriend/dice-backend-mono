@@ -15,7 +15,7 @@ import Qna from '../../qna/domain/qna.entity';
 @Entity({ name: 'TB_CS_CATEGORY' })
 export default class CsCategory extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  csCategoryId: number;
 
   @Column({
     type: 'varchar',

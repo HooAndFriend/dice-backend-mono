@@ -16,7 +16,7 @@ import Ticket from './ticket.entity';
 @Entity({ name: 'TB_TICKET_COMMENT' })
 export default class TicketComment extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  ticketCommentId: number;
 
   @Column({
     type: 'varchar',

@@ -14,7 +14,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
-        'workspaceUser.id',
+        'workspaceUser.workspaceUserId',
         'workspaceUser.role',
         'user.nickname',
         'user.email',
@@ -117,16 +117,16 @@ export default class WorkspaceRepository extends Repository<Workspace> {
   public async findWorkspaceTicketCount(teamId: number, userId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
-        'COUNT(CASE WHEN ticket.status = "COMPLETED" THEN ticket.id ELSE NULL END) AS completedCount',
-        'COUNT(CASE WHEN ticket.status != "COMPLETED" THEN ticket.id ELSE NULL END) AS otherStatusCount',
+        'COUNT(CASE WHEN ticket.status = "COMPLETED" THEN ticket.ticketId ELSE NULL END) AS completedCount',
+        'COUNT(CASE WHEN ticket.status != "COMPLETED" THEN ticket.ticketId ELSE NULL END) AS otherStatusCount',
       ])
       .leftJoin('workspace.ticket', 'ticket', 'ticket.workerId = :userId', {
         userId,
       })
       .where('workspace.teamId = :teamId', { teamId })
-      .groupBy('workspace.id');
+      .groupBy('workspace.workspaceId');
 
     return await queryBuilder.getRawMany();
   }

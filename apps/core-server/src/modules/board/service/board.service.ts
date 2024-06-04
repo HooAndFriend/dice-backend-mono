@@ -28,7 +28,7 @@ export default class BoardService {
     createdId: string,
     workspace: Workspace,
   ) {
-    const orderId = await this.getOrderId(workspace.id);
+    const orderId = await this.getOrderId(workspace.workspaceId);
 
     await this.boardRepository.save(
       this.boardRepository.create({
@@ -81,7 +81,7 @@ export default class BoardService {
     workspace: Workspace,
     board: Board,
   ) {
-    const orderId = await this.getOrderId(workspace.id);
+    const orderId = await this.getOrderId(workspace.workspaceId);
 
     await this.boardRepository.save(
       this.boardRepository.create({
@@ -103,7 +103,7 @@ export default class BoardService {
    */
   public async findBoardById(boardId: number) {
     const board = await this.boardRepository.findOne({
-      where: { id: boardId, isDeleted: false },
+      where: { boardId, isDeleted: false },
       relations: ['children', 'parent'],
     });
 
@@ -120,7 +120,7 @@ export default class BoardService {
    */
   public async existedBoardById(boardId: number) {
     const board = await this.boardRepository.exist({
-      where: { id: boardId, isDeleted: false },
+      where: { boardId, isDeleted: false },
     });
 
     if (!board) {
@@ -155,7 +155,7 @@ export default class BoardService {
    */
   private async getOrderId(workspaceId: number) {
     return await this.boardRepository.count({
-      where: { workspace: { id: workspaceId } },
+      where: { workspace: { workspaceId } },
     });
   }
 }

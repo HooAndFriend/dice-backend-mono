@@ -77,7 +77,7 @@ export default class TicketCommentService {
    */
   public async findCommentDomainById(commentId: number) {
     const comment = await this.ticketCommentRepository.findOne({
-      where: { id: commentId },
+      where: { ticketCommentId: commentId },
       relations: ['ticket'],
     });
 

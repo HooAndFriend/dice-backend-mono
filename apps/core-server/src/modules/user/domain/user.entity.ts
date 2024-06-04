@@ -20,7 +20,7 @@ import WorkspaceUser from '../../workspace/domain/workspace-user.entity';
 @Unique(['email', 'token'])
 export default class User extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
   @Column({
     type: 'varchar',

@@ -9,7 +9,10 @@ import WorkspaceFunction from '../domain/workspace-function.entity';
 export default class WorkspaceFunctionRepository extends Repository<WorkspaceFunction> {
   public async findWorkspaceFunctionList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceFunction')
-      .select(['workspaceFunction.id', 'workspaceFunction.function'])
+      .select([
+        'workspaceFunction.workspaceFunctionId',
+        'workspaceFunction.function',
+      ])
       .where('workspaceFunction.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getMany();
@@ -17,7 +20,10 @@ export default class WorkspaceFunctionRepository extends Repository<WorkspaceFun
 
   public async findFunctionList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceFunction')
-      .select(['workspaceFunction.id', 'workspaceFunction.function'])
+      .select([
+        'workspaceFunction.workspaceFunctionId',
+        'workspaceFunction.function',
+      ])
       .where('workspaceFunction.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getManyAndCount();

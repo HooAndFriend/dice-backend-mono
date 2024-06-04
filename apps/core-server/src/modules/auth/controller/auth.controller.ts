@@ -50,7 +50,7 @@ export default class AuthController {
           fcmToken: user.fcmToken,
         },
         workspace: {
-          id: workspace.id,
+          id: workspace.workspaceId,
           name: workspace.name,
           comment: workspace.comment,
           profile: workspace.profile,
@@ -135,7 +135,7 @@ export default class AuthController {
           fcmToken: user.fcmToken,
         },
         workspace: {
-          id: workspace.id,
+          id: workspace.workspaceId,
           name: workspace.name,
           comment: workspace.comment,
           profile: workspace.profile,

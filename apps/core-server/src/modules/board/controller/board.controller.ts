@@ -171,9 +171,9 @@ export default class BoardController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findBoardList(@GetWorkspace() { id }: Workspace) {
+  public async findBoardList(@GetWorkspace() { workspaceId }: Workspace) {
     const [data, count] = await this.boardService.findBoardListByWorkspaceId(
-      id,
+      workspaceId,
     );
 
     return CommonResponse.createResponse({
@@ -201,7 +201,7 @@ export default class BoardController {
       data: {
         ...board,
         createdUser: {
-          id: user.id,
+          id: user.userId,
           profile: user.profile,
           nickname: user.nickname,
         },

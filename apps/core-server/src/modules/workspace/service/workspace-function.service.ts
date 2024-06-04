@@ -82,7 +82,7 @@ export default class WorkspaceFunctionService {
     const isExistFunction = await this.workspaceFunctionRepository.exist({
       where: {
         function: diceFunction,
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
       },
     });
 
@@ -102,7 +102,7 @@ export default class WorkspaceFunctionService {
   ) {
     await this.workspaceFunctionRepository.delete({
       function: dto.function,
-      workspace: { id: workspace.id },
+      workspace: { workspaceId: workspace.workspaceId },
     });
   }
 
@@ -118,7 +118,7 @@ export default class WorkspaceFunctionService {
     const isExistFunction = await this.workspaceFunctionRepository.exist({
       where: {
         function: diceFunction,
-        workspace: { id: workspaceId },
+        workspace: { workspaceId },
       },
     });
 

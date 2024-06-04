@@ -83,7 +83,7 @@ export default class UserController {
     @Body() dto: RequestUserFcmUpdateDto,
     @GetUser() user: User,
   ) {
-    await this.userService.updateUserFcm(user.id, dto.fcmToken);
+    await this.userService.updateUserFcm(user.userId, dto.fcmToken);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -112,7 +112,7 @@ export default class UserController {
   @ApiResponse(UserResponse.findDashboardInfo[200])
   @UseGuards(JwtAccessGuard)
   @Get('/dashboard')
-  public async dashboardInfo(@GetUser() { id }: User) {
+  public async dashboardInfo(@GetUser() { userId }: User) {
     // const teamCount = await this.teamUserService.findTeamUserCount(id);
     // const ticketCount = await this.ticketService.findMyTicketCount(id);
 
@@ -152,7 +152,7 @@ export default class UserController {
   // @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/dashboard/workspace')
-  public async dashboardWorkspaceInfo(@GetUser() { id: userId }: User) {
+  public async dashboardWorkspaceInfo(@GetUser() { userId }: User) {
     // const data = await this.workspaceService.findWorkspaceCountAndUserCount(id);
     // const ticket = await this.workspaceService.findWorkspaceTicketCount(
     //   id,

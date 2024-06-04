@@ -8,7 +8,7 @@ import { BaseTimeEntity } from '@hi-dice/common';
 @Unique(['name', 'color'])
 export default class State extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  stateId: number;
 
   @Column({
     type: 'varchar',

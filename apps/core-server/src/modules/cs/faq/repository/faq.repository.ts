@@ -16,7 +16,7 @@ export default class FaqRepository extends Repository<Faq> {
   public async findFaqList(dto: RequestFaqFindDto) {
     const queryBuilder = this.createQueryBuilder('faq')
       .select([
-        'faq.id',
+        'faq.faqId',
         'faq.question',
         'faq.answer',
         'faq.createdDate',

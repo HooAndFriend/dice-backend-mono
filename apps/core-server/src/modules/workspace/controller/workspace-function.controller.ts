@@ -61,9 +61,11 @@ export default class WorkspaceFunctionController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/function')
-  public async findWorkspaceFunctionList(@GetWorkspace() { id }: Workspace) {
+  public async findWorkspaceFunctionList(
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
     const list = await this.workspaceFunctionService.findWorkspaceFunctionList(
-      id,
+      workspaceId,
     );
 
     return CommonResponse.createResponse({
@@ -92,7 +94,7 @@ export default class WorkspaceFunctionController {
     @GetWorkspace() workspace: Workspace,
   ) {
     await this.workspaceFunctionService.isExistedWorksapceFunction(
-      workspace.id,
+      workspace.workspaceId,
       dto.function,
     );
 
@@ -119,7 +121,7 @@ export default class WorkspaceFunctionController {
     @GetWorkspace() workspace: Workspace,
   ) {
     await this.workspaceFunctionService.isExistedWorksapceFunctionNot(
-      workspace.id,
+      workspace.workspaceId,
       dto.function,
     );
 

@@ -16,7 +16,7 @@ import User from '../../user/domain/user.entity';
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  workspaceUserId: number;
 
   @Column({
     type: 'enum',

@@ -14,7 +14,7 @@ import CsCategory from '../../category/domain/cs-category.entity';
 @Entity({ name: 'TB_FAQ' })
 export default class Faq extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  faqId: number;
 
   @Column({
     type: 'varchar',

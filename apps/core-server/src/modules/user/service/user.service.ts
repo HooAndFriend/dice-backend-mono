@@ -73,7 +73,7 @@ export default class UserService {
    * @returns
    */
   public async findUser(user: User) {
-    const findUser = await this.userRepository.findUser(user.id);
+    const findUser = await this.userRepository.findUser(user.userId);
 
     if (!findUser) {
       throw new NotFoundException('Not Found User');
@@ -112,7 +112,7 @@ export default class UserService {
    * @returns
    */
   public async findUserById(userId: number) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { userId } });
 
     if (!user) {
       throw new NotFoundException('Not Found User');

@@ -8,7 +8,7 @@ import VersionTypeEnum from './version-type.enum';
 @Entity({ name: 'TB_VERSION' })
 export default class Version extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  versionId: number;
 
   private _version: string;
 

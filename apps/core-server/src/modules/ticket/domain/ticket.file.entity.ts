@@ -14,7 +14,7 @@ import Ticket from './ticket.entity';
 @Entity({ name: 'TB_TICKET_FILE' })
 export default class TicketFile extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  ticketFileId: number;
 
   @Column({
     type: 'varchar',

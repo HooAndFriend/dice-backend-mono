@@ -30,7 +30,7 @@ export default class TicketSettingService {
    */
   public async findTicketSettingById(ticketSettingId: number) {
     const ticketSetting = await this.ticketSettingRepository.findOne({
-      where: { id: ticketSettingId },
+      where: { ticketSettingId },
     });
 
     if (!ticketSetting) {
@@ -55,7 +55,7 @@ export default class TicketSettingService {
    */
   public async existedTicketSettingById(ticketSettingId: number) {
     const ticketSetting = await this.ticketSettingRepository.exist({
-      where: { id: ticketSettingId },
+      where: { ticketSettingId },
     });
 
     if (!ticketSetting) {
