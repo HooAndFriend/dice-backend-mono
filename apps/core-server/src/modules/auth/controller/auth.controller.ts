@@ -7,6 +7,9 @@ import AuthService from '../service/auth.service';
 // ** Swagger Imports
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
+// ** Utils Imports
+import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
+
 // ** enum, dto, entity, types Imports
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
 import { AuthResponse } from '../../../global/response/auth.response';
@@ -14,7 +17,6 @@ import RequestSocialUserLoginDto from '../dto/user.social.login.dto';
 import RequestDiceUserLoginDto from '../dto/user.dice.login.dto';
 import RequestDiceUserSaveDto from '../dto/user.dice.save.dto';
 import RequestUserReissueDto from '../dto/user.reissue.dto';
-import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
@@ -35,7 +37,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveSocialUser[400])
   @Post('/social/user')
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
-    const { token, user, workspace, team, workspaceFunction } =
+    const { token, user, workspace, workspaceFunction } =
       await this.authService.saveSocialUser(dto);
 
     return CommonResponse.createResponse({
@@ -47,22 +49,13 @@ export default class AuthController {
           email: user.email,
           fcmToken: user.fcmToken,
         },
-        team: {
-          id: team.id,
-          name: team.name,
-          profile: team.profile,
-          uuid: team.uuid,
-          description: team.description,
-          workspace: [
-            {
-              id: workspace.id,
-              name: workspace.name,
-              comment: workspace.comment,
-              profile: workspace.profile,
-              uuid: workspace.uuid,
-              workspaceFunction,
-            },
-          ],
+        workspace: {
+          id: workspace.id,
+          name: workspace.name,
+          comment: workspace.comment,
+          profile: workspace.profile,
+          uuid: workspace.uuid,
+          workspaceFunction,
         },
       },
       statusCode: 200,
@@ -77,9 +70,8 @@ export default class AuthController {
   @Post('/social')
   public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
     const { user, token } = await this.authService.loginSocialUser(dto);
-    const team = await this.authService.findPersonalTeamAndWorkspaceList(
-      user.email,
-    );
+    const workspace =
+      await this.authService.findPersonalWorkspaceAndWorkspaceList(user.email);
 
     return CommonResponse.createResponse({
       data: {
@@ -90,7 +82,7 @@ export default class AuthController {
           email: user.email,
           fcmToken: user.fcmToken,
         },
-        team,
+        workspace,
       },
       statusCode: 200,
       message: 'Login Successed',
@@ -103,11 +95,10 @@ export default class AuthController {
   @ApiResponse(AuthResponse.loginDiceUser[400])
   @ApiResponse(AuthResponse.loginDiceUser[404])
   @Post('/')
-  public async loginDiceUser(@Ip() ip, @Body() dto: RequestDiceUserLoginDto) {
+  public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
     const { user, token } = await this.authService.loginDiceUser(dto);
-    const team = await this.authService.findPersonalTeamAndWorkspaceList(
-      user.email,
-    );
+    const workspace =
+      await this.authService.findPersonalWorkspaceAndWorkspaceList(user.email);
 
     return CommonResponse.createResponse({
       data: {
@@ -118,7 +109,7 @@ export default class AuthController {
           email: user.email,
           fcmToken: user.fcmToken,
         },
-        team,
+        workspace,
       },
       statusCode: 200,
       message: 'Login Successed',
@@ -131,7 +122,7 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveDiceUser[400])
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
-    const { token, user, workspace, team, workspaceFunction } =
+    const { token, user, workspace, workspaceFunction } =
       await this.authService.saveDiceUser(dto);
 
     return CommonResponse.createResponse({
@@ -143,22 +134,13 @@ export default class AuthController {
           email: user.email,
           fcmToken: user.fcmToken,
         },
-        team: {
-          id: team.id,
-          name: team.name,
-          profile: team.profile,
-          uuid: team.uuid,
-          description: team.description,
-          workspace: [
-            {
-              id: workspace.id,
-              name: workspace.name,
-              comment: workspace.comment,
-              profile: workspace.profile,
-              uuid: workspace.uuid,
-              workspaceFunction,
-            },
-          ],
+        workspace: {
+          id: workspace.id,
+          name: workspace.name,
+          comment: workspace.comment,
+          profile: workspace.profile,
+          uuid: workspace.uuid,
+          workspaceFunction,
         },
       },
       statusCode: 200,

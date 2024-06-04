@@ -48,24 +48,14 @@ import { RoleEnum } from '@hi-dice/common';
 import { CommonResponse } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
 import User from '../../user/domain/user.entity';
-import {
-  GetTeam,
-  TeamRole,
-} from '@/src/global/decorators/team-role/team-role.decorator';
-import Team from '../../team/domain/team.entity';
-import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
-import TeamService from '../../team/service/team.service';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/workspace-user', version: '1' })
 export default class WorkspaceUserController {
-  constructor(
-    private readonly workspaceUserService: WorkspaceUserService,
-    private readonly teamService: TeamService,
-  ) {}
+  constructor(private readonly workspaceUserService: WorkspaceUserService) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -154,21 +144,16 @@ export default class WorkspaceUserController {
   @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '워크스페이스 리스트 조회 조회 By Team' })
   @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
-  @TeamRole(RoleEnum.VIEWER)
-  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/team')
-  public async findMyWorkspaceList(
-    @GetTeam() { id }: Team,
-    @GetUser() { id: userId }: User,
-  ) {
-    const [data, count] =
-      await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
+  public async findMyWorkspaceList(@GetUser() { id: userId }: User) {
+    // const [data, count] =
+    //   await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace List',
-      data: { data, count },
+      data: { data: [], count: 0 },
     });
   }
 
@@ -219,16 +204,16 @@ export default class WorkspaceUserController {
   @UseGuards(JwtAccessGuard)
   @Get('/invite')
   public async findInviteUserList(@GetWorkspace() workspace: Workspace) {
-    const team = await this.teamService.findTeamByWorkspaceId(workspace.id);
-    const list = await this.workspaceUserService.findInviteUserList(
-      workspace,
-      team,
-    );
+    // const team = await this.teamService.findTeamByWorkspaceId(workspace.id);
+    // const list = await this.workspaceUserService.findInviteUserList(
+    //   workspace,
+    //   team,
+    // );
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Team List to invite workspace',
-      data: { data: list, count: list.length },
+      data: { data: [], count: 0 },
     });
   }
 

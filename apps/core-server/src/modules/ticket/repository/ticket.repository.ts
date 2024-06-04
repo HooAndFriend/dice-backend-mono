@@ -97,18 +97,25 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
-        'epic.id',
-        'epic.name',
         'ticketSetting.id',
         'ticketSetting.name',
         'ticketSetting.type',
+        'subTickets.id',
+        'subTickets.name',
+        'subTickets.status',
+        'subTickets.code',
+        'subTickets.dueDate',
+        'subTickets.completeDate',
+        'subTickets.reopenDate',
+        'subTickets.orderId',
       ])
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.epic', 'epic')
+      .leftJoin('ticket.subTickets', 'subTickets') // 하위 티켓 조인
       .where('ticket.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
+      .andWhere('ticket.parentTicket IS NULL') // 상위 티켓만 조회
       .orderBy('ticket.orderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
@@ -158,8 +165,8 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.code',
       ])
       .leftJoin('ticket.workspace', 'workspace')
-      .where('workspace.teamId = :teamId', { teamId })
-      .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
+      // .where('workspace.teamId = :teamId', { teamId })
+      .where('ticket.dueDate BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
       })

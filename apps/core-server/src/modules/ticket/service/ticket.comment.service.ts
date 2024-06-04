@@ -2,7 +2,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
-
+import TicketService from './ticket.service';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
 
 // ** enum, dto, entity, types Imports
@@ -10,7 +10,6 @@ import User from '../../user/domain/user.entity';
 import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import { NotFoundException } from '@hi-dice/common';
-import TicketService from './ticket.service';
 
 @Injectable()
 export default class TicketCommentService {

@@ -12,11 +12,8 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import WorkspaceUser from './workspace-user.entity';
 import WorkspaceFunction from './workspace-function.entity';
-import Team from '../../team/domain/team.entity';
-import Epic from '../../ticket/domain/epic.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
 import TicketSetting from '../../ticket/domain/ticket.setting.entity';
-import Qa from '../../qa/domain/qa.entity';
 import Board from '../../board/domain/board.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
@@ -70,6 +67,13 @@ export default class Workspace extends BaseTimeEntity {
   })
   createdId: string;
 
+  @Column({
+    type: 'boolean',
+    comment: '개인 워크스페이스 여부',
+    nullable: false,
+  })
+  isPersonal: boolean;
+
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace, {
     cascade: true,
   })
@@ -81,12 +85,6 @@ export default class Workspace extends BaseTimeEntity {
   )
   workspaceFunction: Relation<WorkspaceFunction>[];
 
-  @OneToMany(() => Qa, (qa) => qa.workspace)
-  qa: Relation<Qa>[];
-
-  @OneToMany(() => Epic, (epic) => epic.workspace)
-  epic: Relation<Epic>[];
-
   @OneToMany(() => Ticket, (ticket) => ticket.workspace)
   ticket: Relation<Ticket>[];
 
@@ -95,10 +93,4 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Board, (board) => board.workspace)
   board: Relation<Board>[];
-
-  @ManyToOne(() => Team, (team) => team.workspace, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
-  team: Relation<Team>;
 }

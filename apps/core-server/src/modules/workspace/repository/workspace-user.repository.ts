@@ -18,14 +18,12 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .select([
         'workspaceUser.id',
         'workspaceUser.role',
-        'teamUser.id',
         'user.id',
         'user.nickname',
         'user.email',
         'user.profile',
       ])
-      .leftJoin('workspaceUser.teamUser', 'teamUser')
-      .leftJoin('teamUser.user', 'user')
+      .leftJoin('workspaceUser.user', 'user')
       .where('workspaceUser.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getManyAndCount();
@@ -36,7 +34,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(teamId: number, userId: number) {
+  public async findWorkspaceUserListByTeam(userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
         'workspaceUser.id',
@@ -50,10 +48,10 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspaceFunction.function',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
-      .leftJoin('workspaceUser.teamUser', 'teamUser')
+      .leftJoin('workspaceUser.user', 'user')
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
-      .where('workspace.teamId = :teamId', { teamId })
-      .andWhere('teamUser.userId = :userId', { userId });
+      // .where('workspace.teamId = :teamId', { teamId })
+      .where('user.id = :userId', { userId });
 
     return queryBuilder.getManyAndCount();
   }
@@ -74,8 +72,8 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspace.uuid',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
-      .leftJoin('workspaceUser.teamUser', 'teamUser')
-      .where('teamUser.userId = :userId', { userId });
+      .leftJoin('workspaceUser.user', 'user')
+      .where('user.id = :userId', { userId });
 
     return await queryBuilder.getManyAndCount();
   }
@@ -88,14 +86,12 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .select([
         'workspaceUser.id',
         'workspaceUser.role',
-        'teamUser.id',
         'user.id',
         'user.nickname',
         'user.email',
         'user.profile',
       ])
-      .leftJoin('workspaceUser.teamUser', 'teamUser')
-      .leftJoin('teamUser.user', 'user')
+      .leftJoin('workspaceUser.user', 'user')
       .where('workspaceUser.workspaceId = :workspaceId', { workspaceId });
 
     if (dto.name) {

@@ -16,17 +16,34 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.comment',
         'workspaceUser.id',
         'workspaceUser.role',
-        'teamUser.id',
         'user.nickname',
         'user.email',
         'user.profile',
       ])
       .leftJoin('workspace.workspaceUser', 'workspaceUser')
-      .leftJoin('workspaceUser.teamUser', 'teamUser')
-      .leftJoin('teamUser.user', 'user')
+      .leftJoin('workspaceUser.user', 'user')
       .where('workspace.id = :workspaceId', { workspaceId });
 
     return await queryBuilder.getOne();
+  }
+
+  public async findPersonalWorkspaceList(email: string) {
+    const queryBuilder = this.createQueryBuilder('workspace')
+      .select([
+        'workspace.id',
+        'workspace.name',
+        'workspace.profile',
+        'workspace.comment',
+        'workspace.isPersonal',
+        'workspace.uuid',
+        'workspaceFunction.id',
+        'workspaceFunction.function',
+      ])
+      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
+      .where('workspace.createdId = :email', { email })
+      .andWhere('workspace.isPersonal = true');
+
+    return await queryBuilder.getMany();
   }
 
   public async findMainWorkspace(workspaceId: number) {

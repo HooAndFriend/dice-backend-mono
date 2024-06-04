@@ -11,13 +11,10 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import { UserType } from '@hi-dice/common';
-import TeamUser from '../../team/domain/team-user.entity';
-import Epic from '../../ticket/domain/epic.entity';
-import Qa from '@/src/modules/qa/domain/qa.entity';
-import Comment from '@/src/modules/qa/domain/qa.comment.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
 import TicketComment from '../../ticket/domain/ticket.comment.entity';
 import UserStatusEnum from './user-status.enum';
+import WorkspaceUser from '../../workspace/domain/workspace-user.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -115,23 +112,14 @@ export default class User extends BaseTimeEntity {
   })
   deletedReason: string;
 
-  @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
-  teamUser: Relation<TeamUser>[];
-
-  @OneToMany(() => Epic, (epic) => epic.admin)
-  epic: Relation<Epic>[];
+  @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.user)
+  workspaceUser: Relation<WorkspaceUser>[];
 
   @OneToMany(() => Ticket, (ticket) => [ticket.admin, ticket.worker])
   ticket: Relation<Ticket>[];
 
   @OneToMany(() => TicketComment, (ticketComment) => ticketComment.user)
   ticketComment: Relation<TicketComment>[];
-
-  @OneToMany(() => Qa, (qa) => [qa.admin, qa.worker])
-  qa: Relation<Qa>[];
-
-  @OneToMany(() => Comment, (comment) => comment.user)
-  comment: Relation<Comment>[];
 
   public updateUserProfile(profile: string, nickname: string) {
     this.profile = profile;

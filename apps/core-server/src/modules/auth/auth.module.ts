@@ -11,12 +11,10 @@ import JwtAccessStrategy from './passport/auth.jwt-access.strategy';
 import JwtRefreshStrategy from './passport/auth.jwt-refresh.strategy';
 import UserModule from '../user/user.module';
 import WorkspaceModule from '../workspace/workspace.module';
-import TeamModule from '../team/team.module';
 
 @Module({
   imports: [
     PassportModule,
-    forwardRef(() => TeamModule),
     forwardRef(() => UserModule),
     forwardRef(() => WorkspaceModule),
     JwtModule.registerAsync({

@@ -1,9 +1,5 @@
 // ** Nest Imports
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-
-// ** Typeorm Imports
-import { DataSource } from 'typeorm';
 
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
@@ -20,7 +16,7 @@ import { NotFoundException } from '@hi-dice/common';
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
-import TeamUser from '../../team/domain/team-user.entity';
+import User from '../../user/domain/user.entity';
 
 @Injectable()
 export default class WorkspaceService {
@@ -37,21 +33,17 @@ export default class WorkspaceService {
    * @param user
    * @returns
    */
-  public async saveTeamWorksapce(
-    dto: RequestWorksapceSaveDto,
-    teamUser: TeamUser,
-  ) {
+  public async saveWorkspace(dto: RequestWorksapceSaveDto, user: User) {
     const workspace = this.workspaceRepository.create({
       name: dto.name,
       comment: dto.comment,
       profile: dto.profile,
       uuid: uuidv4(),
       code: createCode(dto.name),
-      team: teamUser.team,
-      createdId: teamUser.user.email,
+      createdId: user.email,
       workspaceUser: [
         this.workspaceUserRepository.create({
-          teamUser,
+          user,
           role: RoleEnum.ADMIN,
         }),
       ],

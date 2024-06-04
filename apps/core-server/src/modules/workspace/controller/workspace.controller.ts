@@ -27,12 +27,6 @@ import {
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../global/decorators/user/user.decorators';
 import {
-  GetTeam,
-  GetTeamUser,
-  TeamRole,
-} from '@/src/global/decorators/team-role/team-role.decorator';
-import { TeamRoleGuard } from '@/src/global/decorators/team-role/team-role.guard';
-import {
   GetWorkspace,
   WorkspaceRole,
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
@@ -50,11 +44,8 @@ import RequestWorkspaceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import User from '../../user/domain/user.entity';
 import { RoleEnum } from '@hi-dice/common';
-import Team from '../../team/domain/team.entity';
 import { CommonResponse } from '@hi-dice/common';
-import TeamUser from '../../team/domain/team-user.entity';
 import Workspace from '../domain/workspace.entity';
-import QaService from '../../qa/service/qa.service';
 import TicketService from '../../ticket/service/ticket.service';
 import RequestWorkspaceTaskFindDto from '../dto/workspace-task.find.dto';
 import dayjs from 'dayjs';
@@ -66,7 +57,6 @@ import dayjs from 'dayjs';
 export default class WorkspaceController {
   constructor(
     private readonly workspaceService: WorkspaceService,
-    private readonly qaService: QaService,
     private readonly ticketService: TicketService,
   ) {}
 
@@ -79,16 +69,13 @@ export default class WorkspaceController {
   @ApiBody({ type: RequestWorkspaceSaveDto })
   @ApiResponse(WorkspaceResponse.saveWorksapce[200])
   @ApiResponse(WorkspaceResponse.saveWorksapce[400])
-  @TeamRole(RoleEnum.ADMIN)
-  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveWorkspace(
     @Body() dto: RequestWorkspaceSaveDto,
     @GetUser() user: User,
-    @GetTeamUser() teamUser: TeamUser,
   ) {
-    await this.workspaceService.saveTeamWorksapce(dto, teamUser);
+    await this.workspaceService.saveWorkspace(dto, user);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -122,19 +109,17 @@ export default class WorkspaceController {
   @ApiOperation({ summary: '워크스페이스 리스트 조회(With Count)' })
   @ApiHeader({ name: 'team-code', required: true })
   @ApiResponse(WorkspaceResponse.findWorkspaceListWithCount[200])
-  @TeamRole(RoleEnum.VIEWER)
-  @UseGuards(TeamRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/list/popup')
-  public async findWorkspaceListWithCount(@GetTeam() team: Team) {
-    const data = await this.workspaceService.findWorkspaceListWithCount(
-      team.id,
-    );
+  public async findWorkspaceListWithCount() {
+    // const data = await this.workspaceService.findWorkspaceListWithCount(
+    //   team.id,
+    // );
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace List',
-      data: { data, count: data.length },
+      data: { data: [], count: 0 },
     });
   }
 
@@ -185,7 +170,7 @@ export default class WorkspaceController {
   @UseGuards(JwtAccessGuard)
   @Get('/task')
   public async findWorksapceTaskList(@GetUser() { id }: User) {
-    const qaList = await this.qaService.findQaListByWorkerId(id);
+    // const qaList = await this.qaService.findQaListByWorkerId(id);
     const ticketList = await this.ticketService.findTicketListByWorkerId(id);
 
     return CommonResponse.createResponse({
@@ -193,7 +178,7 @@ export default class WorkspaceController {
       message: 'Find Workspace Task List',
       data: {
         data: [
-          ...qaList,
+          // ...qaList,
           ...ticketList.map((item) => ({
             id: item.id,
             code: item.code,
@@ -202,7 +187,7 @@ export default class WorkspaceController {
             createdDate: item.createdDate,
           })),
         ],
-        count: qaList.length + ticketList.length,
+        count: ticketList.length,
       },
     });
   }
@@ -216,7 +201,7 @@ export default class WorkspaceController {
   @UseGuards(JwtAccessGuard)
   @Get('/task/count')
   public async findWorksapceTaskCount(@GetWorkspace() { id }: Workspace) {
-    const { qaCount, yesterDayQaCount } = await this.qaService.findQaCount(id);
+    // const { qaCount, yesterDayQaCount } = await this.qaService.findQaCount(id);
     const { ticketCount, yesterDayTicketCount } =
       await this.ticketService.findTicketCount(id);
 
@@ -224,8 +209,8 @@ export default class WorkspaceController {
       statusCode: 200,
       message: 'Find Workspace Today Task Count',
       data: {
-        count: qaCount + ticketCount,
-        yesterdayCount: yesterDayQaCount + yesterDayTicketCount,
+        count: ticketCount,
+        yesterdayCount: yesterDayTicketCount,
       },
     });
   }
@@ -241,12 +226,12 @@ export default class WorkspaceController {
   public async findWorksapceTaskProgressCount(
     @GetWorkspace() { id }: Workspace,
   ) {
-    const {
-      qaCount,
-      qaCompleteCount,
-      yesterDayQaCompleteCount,
-      yesterDayQaCount,
-    } = await this.qaService.findQaCountAll(id);
+    // const {
+    //   qaCount,
+    //   qaCompleteCount,
+    //   yesterDayQaCompleteCount,
+    //   yesterDayQaCount,
+    // } = await this.qaService.findQaCountAll(id);
     const {
       ticketCount,
       yesterDayTicketCount,
@@ -254,11 +239,10 @@ export default class WorkspaceController {
       yesterDayTicketCompleteCount,
     } = await this.ticketService.findTicketCountAll(id);
 
-    const completeTodayTaskCount = qaCompleteCount + ticketCompleteCount;
-    const completeYesterdayTaskCount =
-      yesterDayQaCompleteCount + yesterDayTicketCompleteCount;
-    const todayTaskCount = qaCount + ticketCount;
-    const yesterdayTaskCount = yesterDayQaCount + yesterDayTicketCount;
+    const completeTodayTaskCount = ticketCompleteCount;
+    const completeYesterdayTaskCount = yesterDayTicketCompleteCount;
+    const todayTaskCount = ticketCount;
+    const yesterdayTaskCount = yesterDayTicketCount;
 
     return CommonResponse.createResponse({
       statusCode: 200,
@@ -285,9 +269,9 @@ export default class WorkspaceController {
   @UseGuards(JwtAccessGuard)
   @Get('/task/done')
   public async findWorksapceDoneTaskCount(@GetWorkspace() { id }: Workspace) {
-    const { qaCount, yesterDayQaCount } = await this.qaService.findQaDoneCount(
-      id,
-    );
+    // const { qaCount, yesterDayQaCount } = await this.qaService.findQaDoneCount(
+    //   id,
+    // );
     const { ticketCount, yesterDayTicketCount } =
       await this.ticketService.findTicketDoneCount(id);
 
@@ -295,8 +279,8 @@ export default class WorkspaceController {
       statusCode: 200,
       message: 'Find Workspace Total Done Task Count',
       data: {
-        count: qaCount + ticketCount,
-        yesterdayCount: yesterDayQaCount + yesterDayTicketCount,
+        count: ticketCount,
+        yesterdayCount: yesterDayTicketCount,
       },
     });
   }
@@ -320,17 +304,17 @@ export default class WorkspaceController {
       query,
     );
 
-    const qaList = await this.qaService.findQaListByDate(id, userId, query);
+    // const qaList = await this.qaService.findQaListByDate(id, userId, query);
 
     const data = [
       ...ticketList.map((item) => ({ ...item, type: 'ticket' })),
-      ...qaList.map((item) => ({
-        id: item.id,
-        name: item.title,
-        dueDate: item.dueDate,
-        type: 'QA',
-        createdDate: item.createdDate,
-      })),
+      // ...qaList.map((item) => ({
+      //   id: item.id,
+      //   name: item.title,
+      //   dueDate: item.dueDate,
+      //   type: 'QA',
+      //   createdDate: item.createdDate,
+      // })),
     ].sort((a, b) => dayjs(a.dueDate).diff(dayjs(b.dueDate)));
 
     return CommonResponse.createResponse({

@@ -8,8 +8,6 @@ import { UserType, RoleEnum } from '@hi-dice/common';
 import UserRepository from '../../user/repository/user.repository';
 import { DataSource } from 'typeorm';
 import WorkspaceRepository from '../../workspace/repository/workspace.repository';
-import TeamUserRepository from '../../team/repository/team-user.repository';
-import TeamRepository from '../../team/repository/team.repository';
 import WorkspaceUserRepository from '../../workspace/repository/workspace-user.repository';
 
 // ** Utils Imports
@@ -44,8 +42,6 @@ export default class AuthService {
     private readonly configService: ConfigService,
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly dataSource: DataSource,
-    private readonly teamUserRepository: TeamUserRepository,
-    private readonly teamRepository: TeamRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly workspaceFunctionRepository: WorkspaceFunctionRepository,
     @InjectRedis() private readonly redis: Redis,
@@ -100,15 +96,15 @@ export default class AuthService {
         const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
 
         if (redisValue) {
-          const findTeam = await this.teamRepository.findOne({
+          const findWorkspace = await this.workspaceRepository.findOne({
             where: { uuid: dto.uuid },
           });
 
-          if (findTeam) {
+          if (findWorkspace) {
             await queryRunner.manager.save(
-              this.teamUserRepository.create({
-                team: findTeam,
+              this.workspaceUserRepository.create({
                 user,
+                workspace: findWorkspace,
                 role: this.getRole(redisValue),
                 invitedId: this.getInviteId(redisValue),
               }),
@@ -117,35 +113,14 @@ export default class AuthService {
         }
       }
 
-      const team = await queryRunner.manager.save(
-        this.teamRepository.create({
-          name: dto.nickname,
-          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          description: '',
-          isPersonal: true,
-          code: createCode(dto.nickname),
-          createdId: user.email,
-          uuid: uuidv4(),
-        }),
-      );
-
-      const teamUser = await queryRunner.manager.save(
-        this.teamUserRepository.create({
-          user,
-          team,
-          role: RoleEnum.ADMIN,
-          invitedId: user.email,
-        }),
-      );
-
       const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           comment: '',
-          team,
           code: createCode(dto.nickname),
           uuid: uuidv4(),
+          isPersonal: true,
           createdId: user.email,
         }),
       );
@@ -156,6 +131,7 @@ export default class AuthService {
           function: DiceFunction.TICKET,
         }),
       );
+
       const workspaceFunctionQa = await queryRunner.manager.save(
         this.workspaceFunctionRepository.create({
           workspace,
@@ -166,7 +142,7 @@ export default class AuthService {
       await queryRunner.manager.save(
         this.workspaceUserRepository.create({
           workspace,
-          teamUser,
+          user,
           role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
@@ -180,7 +156,6 @@ export default class AuthService {
         token,
         user,
         workspace,
-        team,
         workspaceFunction: [
           {
             id: workspaceFunctionTicket.id,
@@ -287,15 +262,15 @@ export default class AuthService {
         const redisValue = await this.getTeamRedisValue(dto.email, dto.uuid);
 
         if (redisValue) {
-          const findTeam = await this.teamRepository.findOne({
+          const findWorkspace = await this.workspaceRepository.findOne({
             where: { uuid: dto.uuid },
           });
 
-          if (findTeam) {
+          if (findWorkspace) {
             await queryRunner.manager.save(
-              this.teamUserRepository.create({
-                team: findTeam,
+              this.workspaceUserRepository.create({
                 user,
+                workspace: findWorkspace,
                 role: this.getRole(redisValue),
                 invitedId: this.getInviteId(redisValue),
               }),
@@ -304,35 +279,14 @@ export default class AuthService {
         }
       }
 
-      const team = await queryRunner.manager.save(
-        this.teamRepository.create({
-          name: dto.nickname,
-          profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
-          description: '',
-          isPersonal: true,
-          createdId: user.email,
-          code: createCode(dto.nickname),
-          uuid: uuidv4(),
-        }),
-      );
-
-      const teamUser = await queryRunner.manager.save(
-        this.teamUserRepository.create({
-          user,
-          team,
-          role: RoleEnum.ADMIN,
-          invitedId: user.email,
-        }),
-      );
-
       const workspace = await queryRunner.manager.save(
         this.workspaceRepository.create({
           name: dto.nickname,
           profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
           comment: '',
-          team,
           createdId: user.email,
           code: createCode(dto.nickname),
+          isPersonal: true,
           uuid: uuidv4(),
         }),
       );
@@ -353,7 +307,7 @@ export default class AuthService {
       await queryRunner.manager.save(
         this.workspaceUserRepository.create({
           workspace,
-          teamUser,
+          user,
           role: RoleEnum.ADMIN,
           invitedId: user.email,
         }),
@@ -367,7 +321,6 @@ export default class AuthService {
         token,
         user,
         workspace,
-        team,
         workspaceFunction: [
           {
             id: workspaceFunctionTicket.id,
@@ -448,8 +401,8 @@ export default class AuthService {
    * @param userId
    * @returns
    */
-  public async findPersonalTeamAndWorkspaceList(userEmail: string) {
-    return await this.teamRepository.findPersonalTeamWithWorkspace(userEmail);
+  public async findPersonalWorkspaceAndWorkspaceList(userEmail: string) {
+    return await this.workspaceRepository.findPersonalWorkspaceList(userEmail);
   }
 
   /**

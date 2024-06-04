@@ -1,10 +1,5 @@
 // ** Nest Imports
-import {
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { NotFoundException } from '@hi-dice/common';
@@ -15,7 +10,6 @@ import UserRepository from '../repository/user.repository';
 // ** enum, dto, entity, types Imports
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
-import Team from '../../team/domain/team.entity';
 
 @Injectable()
 export default class UserService {
@@ -33,43 +27,35 @@ export default class UserService {
    * @param user
    * @param team
    */
-  public async updateUser(dto: RequestUserUpdateDto, user: User, team: Team) {
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      await queryRunner.commitTransaction();
-
-      const workspace = team.workspace.filter(
-        (item) => item.name === user.nickname,
-      );
-
-      if (workspace.length > 0) {
-        const personalWorksapce = workspace[0];
-        personalWorksapce.name = dto.nickname;
-        personalWorksapce.profile = dto.profile;
-        await queryRunner.manager.save(personalWorksapce);
-      }
-
-      user.updateUserProfile(dto.profile, dto.nickname);
-      team.updateTeamProfile(dto.profile, dto.nickname);
-
-      await queryRunner.manager.save(user);
-      await queryRunner.manager.save(team);
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-
-      throw new InternalServerErrorException('Internal Server Error');
-    } finally {
-      await queryRunner.release();
-    }
+  public async updateUser(dto: RequestUserUpdateDto, user: User) {
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
+    // try {
+    //   await queryRunner.commitTransaction();
+    //   const workspace = team.workspace.filter(
+    //     (item) => item.name === user.nickname,
+    //   );
+    //   if (workspace.length > 0) {
+    //     const personalWorksapce = workspace[0];
+    //     personalWorksapce.name = dto.nickname;
+    //     personalWorksapce.profile = dto.profile;
+    //     await queryRunner.manager.save(personalWorksapce);
+    //   }
+    //   user.updateUserProfile(dto.profile, dto.nickname);
+    //   team.updateTeamProfile(dto.profile, dto.nickname);
+    //   await queryRunner.manager.save(user);
+    //   await queryRunner.manager.save(team);
+    // } catch (error) {
+    //   this.logger.error(error);
+    //   await queryRunner.rollbackTransaction();
+    //   if (error instanceof HttpException) {
+    //     throw new HttpException(error.message, error.getStatus());
+    //   }
+    //   throw new InternalServerErrorException('Internal Server Error');
+    // } finally {
+    //   await queryRunner.release();
+    // }
   }
 
   /**

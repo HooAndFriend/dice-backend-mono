@@ -12,9 +12,7 @@ import WorkspaceRepository from './repository/workspace.repository';
 import WorkspaceService from './service/workspace.service';
 import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
-import TeamModule from '../team/team.module';
 import TicketModule from '../ticket/ticket.module';
-import QaModule from '../qa/qa.module';
 import WorkspaceFunction from './domain/workspace-function.entity';
 import WorkspaceUser from './domain/workspace-user.entity';
 import WorkspaceFunctionRepository from './repository/workspace-function.repository';
@@ -32,9 +30,7 @@ import WorkspaceUserController from './controller/workspace-user.controller';
       WorkspaceFunctionRepository,
       WorkspaceUserRepository,
     ]),
-    forwardRef(() => TeamModule),
     forwardRef(() => TicketModule),
-    forwardRef(() => QaModule),
   ],
   exports: [
     TypeOrmExModule,

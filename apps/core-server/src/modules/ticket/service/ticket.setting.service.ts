@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import TicketSettingRepository from '../repository/ticket.setting.repository';
 
 // ** Typeorm Imports
-import { Transactional } from 'typeorm-transactional';
+// import { Transactional } from 'typeorm-transactional';
 
 // ** enum, dto, entity, types Imports
 import { BadRequestException, NotFoundException } from '@hi-dice/common';
@@ -98,7 +98,7 @@ export default class TicketSettingService {
    * Update Ticket Setting
    * @param dto
    */
-  @Transactional()
+  // @Transactional()
   public async updateTicketSetting(
     dto: RequestSettingUpdateDto,
     workspace: Workspace,

@@ -1,27 +1,22 @@
 // ** Nest Imports
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+
+// ** TypeORM Imports
+import { LessThan } from 'typeorm';
 
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
-import WorkspaceRepository from '../repository/workspace.repository';
-import TeamUserRepository from '../../team/repository/team-user.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import Workspace from '../domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
-import Team from '../../team/domain/team.entity';
-import { LessThan } from 'typeorm';
 
 @Injectable()
 export default class WorkspaceUserService {
   constructor(
     private readonly workspaceUserRepository: WorkspaceUserRepository,
-    private readonly workspaceRepository: WorkspaceRepository,
-    private readonly teamUserRepository: TeamUserRepository,
-    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -44,17 +39,16 @@ export default class WorkspaceUserService {
     invitedId: string,
   ) {
     for (const item of dto.teamUserId) {
-      const teamUser = await this.teamUserRepository.findOne({
-        where: { id: item },
-      });
-
-      await this.workspaceUserRepository.save(
-        this.workspaceUserRepository.create({
-          workspace,
-          teamUser,
-          invitedId,
-        }),
-      );
+      // const teamUser = await this.teamUserRepository.findOne({
+      //   where: { id: item },
+      // });
+      // await this.workspaceUserRepository.save(
+      //   this.workspaceUserRepository.create({
+      //     workspace,
+      //     teamUser,
+      //     invitedId,
+      //   }),
+      // );
     }
   }
 
@@ -122,7 +116,6 @@ export default class WorkspaceUserService {
    */
   public async findWorkspaceUserListByTeam(teamId: number, userId: number) {
     return await this.workspaceUserRepository.findWorkspaceUserListByTeam(
-      teamId,
       userId,
     );
   }
@@ -141,19 +134,21 @@ export default class WorkspaceUserService {
    * @param workspaceId
    * @returns
    */
-  public async findInviteUserList(workspace: Workspace, team: Team) {
-    const [teamUserList] = await this.teamUserRepository.findTeamUserList(
-      team.id,
-    );
+  public async findInviteUserList(workspace: Workspace) {
+    // const [teamUserList] = await this.teamUserRepository.findTeamUserList(
+    //   team.id,
+    // );
 
-    const [workspaceUserList, count] =
-      await this.workspaceUserRepository.findWorkspaceUserList(workspace.id);
+    // const [workspaceUserList, count] =
+    //   await this.workspaceUserRepository.findWorkspaceUserList(workspace.id);
 
-    if (count === 0) return teamUserList;
+    // if (count === 0) return teamUserList;
 
-    return teamUserList.filter(
-      (item) => !workspaceUserList.some((_) => _.teamUser.id === item.id),
-    );
+    // return teamUserList.filter(
+    //   (item) => !workspaceUserList.some((_) => _.teamUser.id === item.id),
+    // );
+
+    return [];
   }
 
   /**

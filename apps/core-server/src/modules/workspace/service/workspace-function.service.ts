@@ -7,17 +7,16 @@ import {
 
 // ** Custom Module Imports
 import WorkspaceFunctionRepository from '../repository/workspace-function.repository';
+
+// ** Dto Imports
 import { DiceFunction } from '@hi-dice/common';
-import { CommonResponse } from '@hi-dice/common';
 import RequestSaveWorkspaceFunctionDto from '../dto/workspace-function.save.dto';
-import WorkspaceRepository from '../repository/workspace.repository';
 import Workspace from '../domain/workspace.entity';
 
 @Injectable()
 export default class WorkspaceFunctionService {
   constructor(
     private readonly workspaceFunctionRepository: WorkspaceFunctionRepository,
-    private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
   /**

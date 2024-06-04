@@ -11,7 +11,6 @@ import UserRepository from './repository/user.repository';
 import UserService from './service/user.service';
 import TicketModule from '../ticket/ticket.module';
 import WorkspaceModule from '../workspace/workspace.module';
-import TeamModule from '../team/team.module';
 
 // ** Entity Imports
 import User from './domain/user.entity';
@@ -22,7 +21,6 @@ import User from './domain/user.entity';
     TypeOrmExModule.forCustomRepository([UserRepository]),
     forwardRef(() => TicketModule),
     forwardRef(() => WorkspaceModule),
-    forwardRef(() => TeamModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, UserService],
   controllers: [AuthController],

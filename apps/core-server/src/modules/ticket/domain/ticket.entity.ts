@@ -12,7 +12,6 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import User from '../../user/domain/user.entity';
-import Epic from './epic.entity';
 import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
 import { TaskStatusEnum } from '@hi-dice/common';
@@ -110,11 +109,6 @@ export default class Ticket extends BaseTimeEntity {
   })
   workspace: Relation<Workspace>;
 
-  @ManyToOne(() => Epic, (epic) => epic.ticket, {
-    onDelete: 'CASCADE',
-  })
-  epic: Relation<Epic>;
-
   @ManyToOne(() => User, (user) => user.ticket, {
     onDelete: 'CASCADE',
   })
@@ -135,4 +129,12 @@ export default class Ticket extends BaseTimeEntity {
 
   @OneToMany(() => TicketComment, (comment) => comment.ticket)
   comment: Relation<TicketComment>[];
+
+  @ManyToOne(() => Ticket, (ticket) => ticket.subTickets, {
+    onDelete: 'SET NULL',
+  })
+  parentTicket: Relation<Ticket>;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
+  subTickets: Relation<Ticket>[];
 }

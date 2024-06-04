@@ -22,10 +22,7 @@ import UserRepository from '../../user/repository/user.repository';
 import User from '../../user/domain/user.entity';
 import TicketFile from '../domain/ticket.file.entity';
 import RequestTicketUpdateDto from '../dto/ticket/ticket.update.dto';
-import RequestTicketCommentSaveDto from '../dto/comment/comment.save.dto';
-import RequestTicketCommentUpdateDto from '../dto/comment/comment.update.dto';
 import Ticket from '../domain/ticket.entity';
-import Epic from '../domain/epic.entity';
 import TicketComment from '../domain/ticket.comment.entity';
 import Workspace from '../../workspace/domain/workspace.entity';
 import { NotFoundException } from '@hi-dice/common';
@@ -266,9 +263,7 @@ export default class TicketService {
    * @param workspaceId
    */
   public async findAllTicket(workspaceId: number) {
-    const [data, count] =
-      await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
-    return { data, count };
+    return await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
   }
 
   /**
@@ -298,7 +293,7 @@ export default class TicketService {
     user: User,
     workspace: Workspace,
     ticketSetting: TicketSetting,
-    epic: Epic,
+    parentTicket?: Ticket,
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
@@ -315,7 +310,7 @@ export default class TicketService {
         name: dto.name,
         status: TaskStatusEnum.NOTHING,
         ticketSetting,
-        epic,
+        parentTicket,
       }),
     );
   }
@@ -567,8 +562,8 @@ export default class TicketService {
    * @param epic
    * @param ticketId
    */
-  public async updateTicketEpic(epic: Epic, ticketId: number) {
-    await this.ticketRepository.update(ticketId, { epic });
+  public async updateTicketEpic(ticketId: number) {
+    // await this.ticketRepository.update(ticketId, { epic });
   }
 
   /**

@@ -10,8 +10,8 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from './workspace.entity';
-import TeamUser from '../../team/domain/team-user.entity';
 import { RoleEnum } from '@hi-dice/common';
+import User from '../../user/domain/user.entity';
 
 @Entity({ name: 'TB_WORKSPACE_USER' })
 export default class WorkspaceUser extends BaseTimeEntity {
@@ -34,10 +34,10 @@ export default class WorkspaceUser extends BaseTimeEntity {
   })
   invitedId: string;
 
-  @ManyToOne(() => TeamUser, (teamUser) => teamUser.workspaceUser, {
+  @ManyToOne(() => User, (user) => user.workspaceUser, {
     onDelete: 'CASCADE',
   })
-  teamUser: Relation<TeamUser>;
+  user: Relation<User>;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.workspaceUser, {
     onDelete: 'CASCADE',
