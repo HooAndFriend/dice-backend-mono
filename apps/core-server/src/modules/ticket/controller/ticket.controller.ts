@@ -179,29 +179,6 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'TICKET 수정' })
-  @ApiBody({ type: RequestTicketUpdateDto })
-  @ApiResponse(TicketResponse.updateTicket[200])
-  @ApiResponse(TicketResponse.updateTicket[400])
-  @ApiResponse(TicketResponse.updateTicket[404])
-  @WorkspaceRole(RoleEnum.WRITER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Put('/')
-  public async updateTicket(
-    @Body() dto: RequestTicketUpdateDto,
-    @GetUser() user: User,
-  ) {
-    await this.ticketService.updateTicket(dto, user);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Ticket을 수정합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'MULTI TICKET STATUS 수정' })
   @ApiBody({ type: RequestMultiTicketStatusUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])

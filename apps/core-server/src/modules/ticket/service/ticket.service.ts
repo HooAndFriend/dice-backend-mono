@@ -352,53 +352,6 @@ export default class TicketService {
   }
 
   /**
-   * Update ticket
-   * @param dto
-   * @param user
-   */
-  public async updateTicket(dto: RequestTicketUpdateDto, user: User) {
-    const findTicket = await this.findTicketById(dto.ticketId);
-
-    await this.ticketNameValidation(dto.name, findTicket.workspace.workspaceId);
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      await queryRunner.manager.delete(TicketFile, { ticket: dto.ticketId });
-
-      dto.file.forEach(async (url) => {
-        await this.ticketFileRepository.save({
-          admin: user,
-          ticket: findTicket,
-          url,
-        });
-      });
-
-      const findWorker = await this.userRepository.findOne({
-        where: { userId: dto.workerId },
-      });
-      if (!findWorker) {
-        throw new NotFoundException('Not Found User');
-      }
-      await this.ticketRepository.update(dto.ticketId, {
-        name: dto.name,
-        content: dto.content,
-        storypoint: dto.storypoint,
-        dueDate: dto.dueDate,
-        worker: findWorker,
-      });
-      queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(error);
-      await queryRunner.rollbackTransaction();
-      if (error instanceof HttpException) {
-        throw new HttpException(error.message, error.getStatus());
-      }
-      throw new InternalServerErrorException('Internal Server Error');
-    }
-  }
-  /**
    * Update ticket due date
    * @param dto
    */
