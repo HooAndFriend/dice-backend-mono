@@ -7,6 +7,7 @@ import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import WorkspaceService from '../../workspace/service/workspace.service';
 
 // ** Utils Imports
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
@@ -25,7 +26,6 @@ import {
 } from '../../../global/response/common';
 import User from '../../user/domain/user.entity';
 import { CommonResponse } from '@hi-dice/common';
-import WorkspaceService from '../../workspace/service/workspace.service';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
