@@ -74,6 +74,21 @@ export default class TicketService {
   }
 
   /**
+   * 부모로 사용할 티켓 조회
+   * @param ticketId
+   * @returns Ticket
+   */
+  public async findParentTicketById(ticketId?: number) {
+    if (!ticketId) {
+      return null;
+    }
+
+    return await this.ticketRepository.findOne({
+      where: { ticketId },
+    });
+  }
+
+  /**
    * Find Ticket By Id With Worker And Admin
    * @param ticketId
    * @returns

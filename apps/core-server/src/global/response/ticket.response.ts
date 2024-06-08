@@ -122,7 +122,7 @@ export const TicketResponse = {
   multiTicketDelete: {
     200: createMessageResponse({
       statusCode: 200,
-      message: 'Ticket을 삭제합니다.',
+      message: 'Ticket을 다중 삭제합니다.',
     }),
   },
   saveTicket: {

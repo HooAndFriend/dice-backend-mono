@@ -135,14 +135,16 @@ export default class TicketController {
       dto.settingId,
     );
 
-    // const parentTicket = await this.ticketService.findTicketById(dto.parentId);
+    const parentTicket = await this.ticketService.findParentTicketById(
+      dto.parentId,
+    );
 
     const ticket = await this.ticketService.saveTicket(
       dto,
       user,
       workspace,
       ticketSetting,
-      // parentTicket,
+      parentTicket,
     );
 
     this.sendTicketQueue({
@@ -160,7 +162,7 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: 'TICKET 삭제' })
+  @ApiOperation({ summary: 'TICKET 다중 삭제' })
   @ApiResponse(TicketResponse.multiTicketDelete[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
@@ -171,7 +173,7 @@ export default class TicketController {
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
-      message: 'Ticket을 삭제합니다.',
+      message: 'Ticket을 다중 삭제합니다.',
     });
   }
 
