@@ -97,10 +97,10 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
-        'ticketSetting.id',
+        'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
-        'subTickets.id',
+        'subTickets.ticketId',
         'subTickets.name',
         'subTickets.status',
         'subTickets.code',
@@ -108,14 +108,23 @@ export default class TicketRepository extends Repository<Ticket> {
         'subTickets.completeDate',
         'subTickets.reopenDate',
         'subTickets.orderId',
+        'subTicketWorker.userId', // Assuming sub-ticket worker exists
+        'subTicketWorker.email',
+        'subTicketWorker.nickname',
+        'subTicketWorker.profile',
+        'subTicketSetting.ticketSettingId',
+        'subTicketSetting.name',
+        'subTicketSetting.type',
       ])
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.subTickets', 'subTickets') // 하위 티켓 조인
-      .where('ticket.workspaceId = :workspaceId', { workspaceId })
+      .leftJoin('ticket.subTickets', 'subTickets')
+      .leftJoin('subTickets.ticketSetting', 'subTicketSetting') // Joining subTicketSetting
+      .leftJoin('subTickets.worker', 'subTicketWorker') // Joining subTicketWorker
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
-      .andWhere('ticket.parentTicket IS NULL') // 상위 티켓만 조회
+      .andWhere('ticket.parentTicket IS NULL')
       .orderBy('ticket.orderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
