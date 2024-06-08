@@ -23,8 +23,6 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.reopenDate',
         'ticket.createdDate',
         'ticket.modifiedDate',
-        'epic.id',
-        'epic.name',
         'admin.userId',
         'admin.email',
         'admin.nickname',
@@ -33,17 +31,35 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
-        'ticketFile.id',
+        'ticketFile.ticketFileId',
         'ticketFile.url',
-        'ticketSetting.id',
+        'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
+        'subTickets.ticketId',
+        'subTickets.name',
+        'subTickets.status',
+        'subTickets.code',
+        'subTickets.dueDate',
+        'subTickets.completeDate',
+        'subTickets.reopenDate',
+        'subTickets.orderId',
+        'subTicketWorker.userId',
+        'subTicketWorker.email',
+        'subTicketWorker.nickname',
+        'subTicketWorker.profile',
+        'subTicketSetting.ticketSettingId',
+        'subTicketSetting.name',
+        'subTicketSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
-      .leftJoin('ticket.epic', 'epic')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.subTickets', 'subTickets')
+      .leftJoin('subTickets.ticketSetting', 'subTicketSetting')
+      .leftJoin('subTickets.worker', 'subTicketWorker')
+
       .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
 

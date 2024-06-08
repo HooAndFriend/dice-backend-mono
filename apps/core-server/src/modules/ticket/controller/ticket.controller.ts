@@ -110,7 +110,7 @@ export default class TicketController {
 
     return CommonResponse.createResponse({
       statusCode: 200,
-      message: 'Finding Tickets',
+      message: 'Ticket을 상세 조회 합니다.',
       data,
     });
   }

@@ -267,8 +267,9 @@ export default class TicketService {
   }
 
   /**
-   * Find one ticket
+   * 티켓을 ID로 상세 조회
    * @param id
+   * @returns Ticket
    */
   public async findOneTicket(id: number) {
     const data = await this.ticketRepository.findTicketDetailById(id);
