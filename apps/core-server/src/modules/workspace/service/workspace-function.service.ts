@@ -126,4 +126,26 @@ export default class WorkspaceFunctionService {
       throw new NotFoundException('Not Found Function');
     }
   }
+
+  /**
+   * 워크스페이스의 초기 기능 저장
+   * @param workspace
+   */
+  public async saveWorkspaceInitFunction(workspace: Workspace) {
+    const boardFunction = await this.workspaceFunctionRepository.save(
+      this.workspaceFunctionRepository.create({
+        function: DiceFunction.BOARD,
+        workspace,
+      }),
+    );
+
+    const ticketFunction = await this.workspaceFunctionRepository.save(
+      this.workspaceFunctionRepository.create({
+        function: DiceFunction.TICKET,
+        workspace,
+      }),
+    );
+
+    return [boardFunction, ticketFunction];
+  }
 }

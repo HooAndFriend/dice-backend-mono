@@ -10,7 +10,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
   public async findWorkspace(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
@@ -30,13 +30,13 @@ export default class WorkspaceRepository extends Repository<Workspace> {
   public async findPersonalWorkspaceList(email: string) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
         'workspace.isPersonal',
         'workspace.uuid',
-        'workspaceFunction.id',
+        'workspaceFunction.workspaceFunctionId',
         'workspaceFunction.function',
       ])
       .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
@@ -49,7 +49,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
   public async findMainWorkspace(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
@@ -62,7 +62,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
   public async findTeamWorkspaceListWithCount(teamId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
       .select([
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.profile',
         'workspace.comment',
@@ -83,7 +83,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
    */
   public async findWorkspaceTeamId(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('workspace')
-      .select(['workspace.id', 'team.id'])
+      .select(['workspace.workspaceId', 'team.id'])
       .leftJoin('workspace.team', 'team')
       .where('workspace.id = :workspaceId', { workspaceId });
 

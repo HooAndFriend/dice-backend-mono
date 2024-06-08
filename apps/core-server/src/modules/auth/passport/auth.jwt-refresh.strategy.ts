@@ -8,9 +8,9 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 // ** Dto, Type, enum Import
 import { JwtPayload } from '../../../global/types';
-import AuthService from '../service/auth.service';
 
 // ** Custom Module Imports
+import UserService from '../../user/service/user.service';
 
 @Injectable()
 export default class JwtRefreshStrategy extends PassportStrategy(
@@ -19,7 +19,7 @@ export default class JwtRefreshStrategy extends PassportStrategy(
 ) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -33,6 +33,6 @@ export default class JwtRefreshStrategy extends PassportStrategy(
   }
 
   public async validate(req, payload: JwtPayload): Promise<any> {
-    return await this.authService.findRefreshToken(payload);
+    return await this.userService.findUserByPayload(payload);
   }
 }

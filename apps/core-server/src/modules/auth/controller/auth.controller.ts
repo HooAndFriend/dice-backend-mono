@@ -3,12 +3,14 @@ import { Controller, Post, Body, UseGuards, Get, Ip } from '@nestjs/common';
 
 // ** Module Imports
 import AuthService from '../service/auth.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 // ** Utils Imports
 import JwtRefreshGuard from '../passport/auth.jwt-refresh.guard';
+import { GetUser } from '../../../global/decorators/user/user.decorators';
 
 // ** enum, dto, entity, types Imports
 import RequestSocialUserSaveDto from '../dto/user.social.save.dto';
@@ -21,57 +23,33 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { GetUser } from '../../../global/decorators/user/user.decorators';
 import User from '../../user/domain/user.entity';
 import { CommonResponse } from '@hi-dice/common';
+import WorkspaceService from '../../workspace/service/workspace.service';
 
 @ApiTags('Auth')
 @ApiResponse(createServerExceptionResponse())
 @Controller({ path: '/auth', version: '1' })
 export default class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly workspaceService: WorkspaceService,
+  ) {}
 
-  @ApiOperation({ summary: '소셜 유저 생성' })
-  @ApiBody({ type: RequestSocialUserSaveDto })
-  @ApiResponse(AuthResponse.saveSocialUser[200])
-  @ApiResponse(AuthResponse.saveSocialUser[400])
-  @Post('/social/user')
-  public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
-    const { token, user, workspace, workspaceFunction } =
-      await this.authService.saveSocialUser(dto);
-
-    return CommonResponse.createResponse({
-      data: {
-        token: token,
-        user: {
-          nickname: user.nickname,
-          profile: user.profile,
-          email: user.email,
-          fcmToken: user.fcmToken,
-        },
-        workspace: {
-          id: workspace.workspaceId,
-          name: workspace.name,
-          comment: workspace.comment,
-          profile: workspace.profile,
-          uuid: workspace.uuid,
-          workspaceFunction,
-        },
-      },
-      statusCode: 200,
-      message: '회원가입 했습니다.',
-    });
-  }
-
-  @ApiOperation({ summary: '소셜 유저 로그인' })
-  @ApiBody({ type: RequestSocialUserLoginDto })
-  @ApiResponse(AuthResponse.loginSocialUser[200])
-  @ApiResponse(AuthResponse.loginSocialUser[404])
-  @Post('/social')
-  public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
-    const { user, token } = await this.authService.loginSocialUser(dto);
-    const workspace =
-      await this.authService.findPersonalWorkspaceAndWorkspaceList(user.email);
+  @ApiOperation({ summary: '다이스 유저 로그인' })
+  @ApiBody({ type: RequestDiceUserLoginDto })
+  @ApiResponse(AuthResponse.loginDiceUser[200])
+  @ApiResponse(AuthResponse.loginDiceUser[400])
+  @ApiResponse(AuthResponse.loginDiceUser[404])
+  @Post('/')
+  public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
+    const user = await this.userService.findUserWithWorkspaceByEmail(dto);
+    await this.userService.validationPassword(user, dto.password);
+    const token = this.authService.generateToken(user);
+    const workspace = await this.workspaceService.findPersonalWorkspaceList(
+      user.email,
+    );
 
     return CommonResponse.createResponse({
       data: {
@@ -89,16 +67,17 @@ export default class AuthController {
     });
   }
 
-  @ApiOperation({ summary: '다이스 유저 로그인' })
-  @ApiBody({ type: RequestDiceUserLoginDto })
-  @ApiResponse(AuthResponse.loginDiceUser[200])
-  @ApiResponse(AuthResponse.loginDiceUser[400])
-  @ApiResponse(AuthResponse.loginDiceUser[404])
-  @Post('/')
-  public async loginDiceUser(@Body() dto: RequestDiceUserLoginDto) {
-    const { user, token } = await this.authService.loginDiceUser(dto);
-    const workspace =
-      await this.authService.findPersonalWorkspaceAndWorkspaceList(user.email);
+  @ApiOperation({ summary: '소셜 유저 로그인' })
+  @ApiBody({ type: RequestSocialUserLoginDto })
+  @ApiResponse(AuthResponse.loginSocialUser[200])
+  @ApiResponse(AuthResponse.loginSocialUser[404])
+  @Post('/social')
+  public async loginSocialUser(@Body() dto: RequestSocialUserLoginDto) {
+    const user = await this.userService.findUserWithWorkspaceByToken(dto);
+    const token = this.authService.generateToken(user);
+    const workspace = await this.workspaceService.findPersonalWorkspaceList(
+      user.email,
+    );
 
     return CommonResponse.createResponse({
       data: {
@@ -122,8 +101,11 @@ export default class AuthController {
   @ApiResponse(AuthResponse.saveDiceUser[400])
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
-    const { token, user, workspace, workspaceFunction } =
-      await this.authService.saveDiceUser(dto);
+    await this.userService.existedUserByEmail(dto.email);
+    const { user, workspace, workspaceFunction } =
+      await this.userService.saveDiceUser(dto);
+
+    const token = this.authService.generateToken(user);
 
     return CommonResponse.createResponse({
       data: {
@@ -135,7 +117,43 @@ export default class AuthController {
           fcmToken: user.fcmToken,
         },
         workspace: {
-          id: workspace.workspaceId,
+          workspaceId: workspace.workspaceId,
+          name: workspace.name,
+          comment: workspace.comment,
+          profile: workspace.profile,
+          uuid: workspace.uuid,
+          workspaceFunction,
+        },
+      },
+      statusCode: 200,
+      message: '회원가입 했습니다.',
+    });
+  }
+
+  @ApiOperation({ summary: '소셜 유저 생성' })
+  @ApiBody({ type: RequestSocialUserSaveDto })
+  @ApiResponse(AuthResponse.saveSocialUser[200])
+  @ApiResponse(AuthResponse.saveSocialUser[400])
+  @Post('/social/user')
+  public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
+    await this.userService.existedUserByTokenAndType(dto.token, dto.type);
+    await this.userService.existedUserByEmail(dto.email);
+    const { user, workspace, workspaceFunction } =
+      await this.userService.saveSocialUser(dto);
+
+    const token = this.authService.generateToken(user);
+
+    return CommonResponse.createResponse({
+      data: {
+        token: token,
+        user: {
+          nickname: user.nickname,
+          profile: user.profile,
+          email: user.email,
+          fcmToken: user.fcmToken,
+        },
+        workspace: {
+          workspaceId: workspace.workspaceId,
           name: workspace.name,
           comment: workspace.comment,
           profile: workspace.profile,

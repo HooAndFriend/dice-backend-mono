@@ -17,12 +17,20 @@ import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
+import { ConfigService } from '@nestjs/config';
+import WorkspaceFunctionRepository from '../repository/workspace-function.repository';
+import WorkspaceFunctionService from './workspace-function.service';
+import WorkspaceUserService from './workspace-user.service';
+import { JwtPayload } from '@/src/global/types';
 
 @Injectable()
 export default class WorkspaceService {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
+    private readonly workspaceUserService: WorkspaceUserService,
+    private readonly workspaceFunctionService: WorkspaceFunctionService,
+    private readonly configService: ConfigService,
   ) {}
 
   private logger = new Logger(WorkspaceService.name);
@@ -108,6 +116,39 @@ export default class WorkspaceService {
     return await this.findTeamWorkspaceListWithCount(teamId);
   }
 
+  /**
+   * 워크스페이스 초기 생성
+   * @param user
+   */
+  public async saveInitSaveWorkspace(user: User) {
+    const workspace = await this.workspaceRepository.save(
+      this.workspaceRepository.create({
+        name: user.nickname,
+        profile: this.configService.get('DEFAULT_PROFILE_VALUE'),
+        comment: '',
+        createdId: user.email,
+        code: createCode(user.nickname),
+        isPersonal: true,
+        uuid: uuidv4(),
+      }),
+    );
+
+    const functionList =
+      await this.workspaceFunctionService.saveWorkspaceInitFunction(workspace);
+    await this.workspaceUserService.saveInitWorkspaceUser(workspace, user);
+
+    return { workspace, functionList };
+  }
+
+  /**
+   *
+   * @param userId
+   * @returns
+   */
+  public async findPersonalWorkspaceList(userEmail: string) {
+    return await this.workspaceRepository.findPersonalWorkspaceList(userEmail);
+  }
+
   //   /**
   //  * Find My Ticket By Status
   //  * @param userId
@@ -119,6 +160,15 @@ export default class WorkspaceService {
   //       where: { worker: { id: userId }, status },
   //     });
   //   }
+
+  /**
+   * 워크스페이스를 UUID로 조회
+   * @param uuid
+   * @returns workspace
+   */
+  public async findWorkspaceByUuid(uuid: string) {
+    return await this.workspaceRepository.findOne({ where: { uuid } });
+  }
 
   public async findWorkspaceCountAndUserCount(teamId: number) {
     const data =

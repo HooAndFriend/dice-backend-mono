@@ -10,13 +10,13 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from '../../../global/types';
 
 // ** Custom Module Imports
-import AuthService from '../service/auth.service';
+import UserService from '../../user/service/user.service';
 
 @Injectable()
 export default class JwtAccessStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -25,7 +25,7 @@ export default class JwtAccessStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(payload: JwtPayload): Promise<any> {
-    return await this.authService.findUserByJwt(payload);
+  public async validate(req, payload: JwtPayload): Promise<any> {
+    return await this.userService.findUserByPayload(payload);
   }
 }

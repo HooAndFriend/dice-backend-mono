@@ -12,6 +12,8 @@ import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
 import Workspace from '../domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
+import User from '../../user/domain/user.entity';
+import { RoleEnum } from '@hi-dice/common';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -74,6 +76,46 @@ export default class WorkspaceUserService {
     return await this.workspaceUserRepository.searchWorkspaceUser(
       dto,
       workspaceId,
+    );
+  }
+
+  /**
+   * 워크스페이스 생성 시의 기본 저장
+   * @param workspace
+   * @param user
+   * @returns workspaceUser
+   */
+  public async saveInitWorkspaceUser(workspace: Workspace, user: User) {
+    return await this.workspaceUserRepository.save(
+      this.workspaceUserRepository.create({
+        workspace,
+        user,
+        role: RoleEnum.ADMIN,
+        invitedId: user.email,
+      }),
+    );
+  }
+
+  /**
+   * 초대된 유저를 워크스페이스에 저장
+   * @param workspace
+   * @param user
+   * @param role
+   * @param invitedId
+   */
+  public async saveInviteWorkspaceUser(
+    workspace: Workspace,
+    user: User,
+    role: RoleEnum,
+    invitedId: string,
+  ) {
+    await this.workspaceUserRepository.save(
+      this.workspaceUserRepository.create({
+        workspace,
+        user,
+        role,
+        invitedId,
+      }),
     );
   }
 

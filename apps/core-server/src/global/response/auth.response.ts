@@ -6,32 +6,32 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzUxNjUyMSwiZXhwIjoxNzE3NTIwMTIxfQ.3bRh0fat1ZHZXs5MV1VX5qXBNFK80c4E0CyvaCkL_Uk',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJpbmhvMTIzbzIyM0BuYXZlci5jb20iLCJpYXQiOjE3MTc4MzMzNTUsImV4cCI6MTcxNzgzNjk1NX0.xf5uBVHJ-yRbfUiW4AX5p0W1wrppTvLwhJNJgabvGRY',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzUxNjUyMSwiZXhwIjoxNzE4MTIxMzIxfQ.52Y6y4Z5h6qCtvK7BoNJXwl4XUwN_hIgh2vS5jdhxiY',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJpbmhvMTIzbzIyM0BuYXZlci5jb20iLCJpYXQiOjE3MTc4MzMzNTUsImV4cCI6MTcxODQzODE1NX0.C732RrPfuUIX89P1BMLTbqefGneOLyafT8PTi4slxG4',
         },
         user: {
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-          email: 'inhoo23@naver.com',
+          email: 'inho123o223@naver.com',
           fcmToken: 'op973GfpO2U13FbxPed1E5AcgHd2',
         },
         workspace: {
-          id: 2,
+          workspaceId: 6,
           name: 'Pinomaker',
           comment: '',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-          uuid: 'be552447-a66a-48dc-aabe-eca8bf69feb6',
+          uuid: '1f71587c-2ecf-40c3-9c4a-bb759af8f397',
           workspaceFunction: [
             {
-              id: 3,
-              function: 'TICKET',
+              workspaceFunctionId: 11,
+              function: 'BOARD',
             },
             {
-              id: 4,
-              function: 'QA',
+              workspaceFunctionId: 12,
+              function: 'TICKET',
             },
           ],
         },
@@ -50,9 +50,9 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzUxNjU1MywiZXhwIjoxNzE3NTIwMTUzfQ.lgk5gSfQ-zi8yjDoZ9mAMQwGaFEgVW03e9BYjGKfAYQ',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzgzMzM4MiwiZXhwIjoxNzE3ODM2OTgyfQ.mM9RL5DVHULUUksvjK9zg26lnVV-b7NcjvHZ86CRpDY',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzUxNjU1MywiZXhwIjoxNzE4MTIxMzUzfQ.4HobpebjhTe1kU4Ln4KjsRonjMINaC4susvY2ss9ASk',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzgzMzM4MiwiZXhwIjoxNzE4NDM4MTgyfQ.IKbpM9J4g3VdOjeYcuO2vwWeFUg3zfGLLIpJPpGSr40',
         },
         user: {
           nickname: 'Pinomaker',
@@ -63,7 +63,7 @@ export const AuthResponse = {
         },
         workspace: [
           {
-            id: 2,
+            workspaceId: 2,
             name: 'Pinomaker',
             comment: '',
             profile:
@@ -72,12 +72,12 @@ export const AuthResponse = {
             isPersonal: true,
             workspaceFunction: [
               {
-                id: 4,
-                function: 'QA',
+                workspaceFunctionId: 3,
+                function: 'TICKET',
               },
               {
-                id: 3,
-                function: 'TICKET',
+                workspaceFunctionId: 4,
+                function: 'QA',
               },
             ],
           },
@@ -97,20 +97,21 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzUxNjQwNywiZXhwIjoxNzE3NTIwMDA3fQ.Q70zFl1yAcgr4gdc-qTIDWaBxRk5bOj9JNm8XJz5dec',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzgzMzA2NywiZXhwIjoxNzE3ODM2NjY3fQ.6YSBAge3huOgf1C45A-yx6ir9kxcd-hVpfXM-4YULRU',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzUxNjQwNywiZXhwIjoxNzE4MTIxMjA3fQ.u3G4YDUId-qAGOm4ToceE9JZxgjpSWDd5djXwHZvJ1A',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzgzMzA2NywiZXhwIjoxNzE4NDM3ODY3fQ.BKnJ1ObkUrZWI2Tt7F9a6b_Xzva249L5HlviUWH9jOQ',
         },
         user: {
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
           email: 'admin',
-          fcmToken: 'op973GfpO2U13FbxPed1E5AcgHd2',
+          fcmToken:
+            'c4S-OSrWtXXFo6ptFTF-SJ:APA91bGSJvdFT0tSCc0D49FwJl66F3h_eFNGBrGv7yfHC2FG2jYZYI_XmYT3CGtvQIpcnlUuN67jlcWK3EXkW7Hy6uhCCQr_INRs2jynpuB3ewOVw6yizJ-ydpeQeQJu3HDefmkaFgzG',
         },
         workspace: [
           {
-            id: 1,
+            workspaceId: 1,
             name: 'Pinomaker',
             comment: '',
             profile:
@@ -119,11 +120,11 @@ export const AuthResponse = {
             isPersonal: true,
             workspaceFunction: [
               {
-                id: 2,
+                workspaceFunctionId: 2,
                 function: 'QA',
               },
               {
-                id: 1,
+                workspaceFunctionId: 1,
                 function: 'TICKET',
               },
             ],
@@ -149,32 +150,32 @@ export const AuthResponse = {
       data: {
         token: {
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzUxNjI3NywiZXhwIjoxNzE3NTE5ODc3fQ.Uxmwka6Ewbpuq477k17UGBh30ho65Cpqv7XhOXt_GD4',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJhZG1pbjMzNCIsImlhdCI6MTcxNzgzMzIyMCwiZXhwIjoxNzE3ODM2ODIwfQ.MMIl4Pam5PvUGChzbAoEpEtFptj1HTPsSZi0VJjwlZY',
           refreshToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzUxNjI3NywiZXhwIjoxNzE4MTIxMDc3fQ.v7orh1twskfUC-hyGtaPq9gZSptKqlruRE_1VlhSOHI',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJhZG1pbjMzNCIsImlhdCI6MTcxNzgzMzIyMCwiZXhwIjoxNzE4NDM4MDIwfQ.uwC6eci5R5rhm4dKl7JKiJxz1o_Yq2lsZiAjipYXv04',
         },
         user: {
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-          email: 'admin',
+          email: 'admin334',
           fcmToken: 'op973GfpO2U13FbxPed1E5AcgHd2',
         },
         workspace: {
-          id: 1,
+          workspaceId: 4,
           name: 'Pinomaker',
           comment: '',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
-          uuid: '8c28b001-f824-4058-bb60-2b8b589031a6',
+          uuid: 'e872b611-b57d-47ac-a9a7-4476753a9eba',
           workspaceFunction: [
             {
-              id: 1,
-              function: 'TICKET',
+              workspaceFunctionId: 7,
+              function: 'BOARD',
             },
             {
-              id: 2,
-              function: 'QA',
+              workspaceFunctionId: 8,
+              function: 'TICKET',
             },
           ],
         },
