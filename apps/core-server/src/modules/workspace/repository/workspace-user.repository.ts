@@ -66,7 +66,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .select([
         'workspaceUser.workspaceUserId',
         'workspaceUser.role',
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.profile',
         'workspace.uuid',
