@@ -12,12 +12,12 @@ export default class TicketCommentRepository extends Repository<TicketComment> {
       .select([
         'comment.ticketCommentId',
         'comment.content',
-        'user.id',
-        'ticket.id',
+        'user.userId',
+        'ticket.ticketId',
       ])
       .leftJoin('comment.ticket', 'ticket')
       .leftJoin('comment.user', 'user')
-      .where('comment.id = :commentId', { commentId });
+      .where('comment.ticketCommentId = :commentId', { commentId });
 
     return querybuilder.getOne();
   }
@@ -29,7 +29,7 @@ export default class TicketCommentRepository extends Repository<TicketComment> {
         'comment.content',
         'comment.createdDate',
         'comment.modifiedDate',
-        'user.id',
+        'user.userId',
         'user.email',
         'user.nickname',
         'user.profile',
