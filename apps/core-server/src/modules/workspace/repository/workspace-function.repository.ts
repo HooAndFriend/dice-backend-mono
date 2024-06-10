@@ -13,7 +13,8 @@ export default class WorkspaceFunctionRepository extends Repository<WorkspaceFun
         'workspaceFunction.workspaceFunctionId',
         'workspaceFunction.function',
       ])
-      .where('workspaceFunction.workspaceId = :workspaceId', { workspaceId });
+      .leftJoin('workspaceFunction.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getMany();
   }
@@ -24,7 +25,8 @@ export default class WorkspaceFunctionRepository extends Repository<WorkspaceFun
         'workspaceFunction.workspaceFunctionId',
         'workspaceFunction.function',
       ])
-      .where('workspaceFunction.workspaceId = :workspaceId', { workspaceId });
+      .leftJoin('workspaceFunction.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getManyAndCount();
   }

@@ -54,7 +54,7 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.profile',
         'workspace.comment',
       ])
-      .where('workspace.id = :workspaceId', { workspaceId });
+      .where('workspace.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getOne();
   }

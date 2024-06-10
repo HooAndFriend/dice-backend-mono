@@ -24,7 +24,8 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'user.profile',
       ])
       .leftJoin('workspaceUser.user', 'user')
-      .where('workspaceUser.workspaceId = :workspaceId', { workspaceId });
+      .leftJoin('workspaceUser.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId });
 
     return await queryBuilder.getManyAndCount();
   }
