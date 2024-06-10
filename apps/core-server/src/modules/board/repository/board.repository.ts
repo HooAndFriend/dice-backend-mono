@@ -15,14 +15,16 @@ export default class BoardRepository extends Repository<Board> {
         'board.boardId',
         'board.title',
         'board.createdDate',
-        'children.id',
+        'children.boardId',
         'children.title',
         'children.createdDate',
       ])
+      .leftJoin('board.parent', 'parent')
       .leftJoin('board.children', 'children')
+      .leftJoin('board.workspace', 'workspace')
       .where('children.isDeleted = false')
-      .where('board.parentId is null')
-      .andWhere('board.workspaceId = :workspaceId', { workspaceId })
+      .where('parent.boardId is null')
+      .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
 
       .orderBy('board.orderId', 'ASC');

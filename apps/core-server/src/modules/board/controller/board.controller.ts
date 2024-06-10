@@ -14,6 +14,7 @@ import {
 
 // ** Module Imports
 import BoardService from '../service/board.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -49,7 +50,6 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
-import UserService from '../../user/service/user.service';
 
 @ApiTags('Board')
 @ApiResponse(createServerExceptionResponse())
