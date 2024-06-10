@@ -142,18 +142,18 @@ export default class WorkspaceUserController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'team-code', required: true })
-  @ApiOperation({ summary: '워크스페이스 리스트 조회 조회 By Team' })
+  @ApiOperation({ summary: '워크스페이스 리스트 조회 조회' })
   @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/team')
+  @Get('/workspace')
   public async findMyWorkspaceList(@GetUser() { userId }: User) {
-    // const [data, count] =
-    //   await this.workspaceUserService.findWorkspaceUserListByTeam(id, userId);
+    const [data, count] =
+      await this.workspaceUserService.findWorkspaceUserListByTeam(userId);
 
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Find Workspace List',
-      data: { data: [], count: 0 },
+      data: { data, count },
     });
   }
 

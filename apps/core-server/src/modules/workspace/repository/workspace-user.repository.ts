@@ -39,12 +39,12 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
       .select([
         'workspaceUser.workspaceUserId',
         'workspaceUser.role',
-        'workspace.id',
+        'workspace.workspaceId',
         'workspace.name',
         'workspace.comment',
         'workspace.profile',
         'workspace.uuid',
-        'workspaceFunction.id',
+        'workspaceFunction.workspaceFunctionId',
         'workspaceFunction.function',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
