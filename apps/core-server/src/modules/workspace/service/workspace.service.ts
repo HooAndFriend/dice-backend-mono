@@ -49,6 +49,7 @@ export default class WorkspaceService {
       uuid: uuidv4(),
       code: createCode(dto.name),
       createdId: user.email,
+      isPersonal: false,
       workspaceUser: [
         this.workspaceUserRepository.create({
           user,
