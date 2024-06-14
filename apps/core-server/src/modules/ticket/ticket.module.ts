@@ -15,9 +15,6 @@ import TicketFileRepository from './repository/ticket.file.repository';
 import WorkspaceModule from '../workspace/workspace.module';
 import TicketSettingRepository from './repository/ticket.setting.repository';
 import TicketCommentRepository from './repository/ticket.comment.repository';
-import StateRepository from './repository/state.repository';
-import StateService from './service/state.service';
-import StateController from './controller/state.controller';
 import TicketCommentController from './controller/ticket.comment.controller';
 import { TicketSendChangeHistoryListener } from './listener/ticket.listener';
 
@@ -27,7 +24,6 @@ import TicketFile from './domain/ticket.file.entity';
 import UserModule from '../user/user.module';
 import TicketComment from './domain/ticket.comment.entity';
 import TicketSetting from './domain/ticket.setting.entity';
-import State from './domain/state.entity';
 import TicketSettingController from './controller/ticket.setting.controller';
 import TicketFileService from './service/ticket.file.service';
 import TicketFileController from './controller/ticket.file.controller';
@@ -41,14 +37,12 @@ import TicketCommentService from './service/ticket.comment.service';
       TicketFile,
       TicketComment,
       TicketSetting,
-      State,
     ]),
     TypeOrmExModule.forCustomRepository([
       TicketRepository,
       TicketFileRepository,
       TicketCommentRepository,
       TicketSettingRepository,
-      StateRepository,
     ]),
     ClientsModule.registerAsync([
       {
@@ -74,21 +68,18 @@ import TicketCommentService from './service/ticket.comment.service';
     TypeOrmExModule,
     TypeOrmModule,
     TicketService,
-    StateService,
     TicketFileService,
     TicketSettingService,
     TicketCommentService,
   ],
   controllers: [
     TicketController,
-    StateController,
     TicketCommentController,
     TicketSettingController,
     TicketFileController,
   ],
   providers: [
     TicketService,
-    StateService,
     TicketSendChangeHistoryListener,
     TicketFileService,
     TicketSettingService,
