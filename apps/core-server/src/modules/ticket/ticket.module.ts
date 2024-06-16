@@ -29,6 +29,7 @@ import TicketFileService from './service/ticket.file.service';
 import TicketFileController from './controller/ticket.file.controller';
 import TicketSettingService from './service/ticket.setting.service';
 import TicketCommentService from './service/ticket.comment.service';
+import SprintModule from './sprint/sprint.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import TicketCommentService from './service/ticket.comment.service';
     ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
+    forwardRef(() => SprintModule),
   ],
   exports: [
     TypeOrmExModule,

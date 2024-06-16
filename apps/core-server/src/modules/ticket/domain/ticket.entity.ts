@@ -16,6 +16,7 @@ import TicketFile from './ticket.file.entity';
 import TicketComment from './ticket.comment.entity';
 import { TaskStatusEnum } from '@hi-dice/common';
 import TicketSetting from './ticket.setting.entity';
+import Sprint from '../sprint/domain/sprint.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -129,6 +130,9 @@ export default class Ticket extends BaseTimeEntity {
 
   @OneToMany(() => TicketComment, (comment) => comment.ticket)
   comment: Relation<TicketComment>[];
+
+  @OneToMany(() => Sprint, (sprint) => sprint.ticket)
+  sprint: Relation<Sprint>[];
 
   @ManyToOne(() => Ticket, (ticket) => ticket.subTickets, {
     onDelete: 'SET NULL',
