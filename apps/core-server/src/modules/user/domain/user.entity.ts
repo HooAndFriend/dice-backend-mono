@@ -11,10 +11,10 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import { UserType } from '@hi-dice/common';
-import Ticket from '../../ticket/domain/ticket.entity';
-import TicketComment from '../../ticket/domain/ticket.comment.entity';
 import UserStatusEnum from './user-status.enum';
 import WorkspaceUser from '../../workspace/domain/workspace-user.entity';
+import Ticket from '../../task/ticket/domain/ticket.entity';
+import TicketComment from '../../task/ticket-comment/domain/ticket.comment.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])

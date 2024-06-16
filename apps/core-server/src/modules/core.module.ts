@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import AuthModule from './auth/auth.module';
 import UserModule from './user/user.module';
 import WorkspaceModule from './workspace/workspace.module';
-import TicketModule from './ticket/ticket.module';
+import TicketModule from './task/task.module';
 import CsModule from './cs/cs.module';
 import AdminModule from './admin/admin.module';
 import VersionModule from './version/version.module';

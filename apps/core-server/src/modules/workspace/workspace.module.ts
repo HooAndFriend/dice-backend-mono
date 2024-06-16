@@ -12,7 +12,7 @@ import WorkspaceRepository from './repository/workspace.repository';
 import WorkspaceService from './service/workspace.service';
 import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
-import TicketModule from '../ticket/ticket.module';
+import TaskModule from '../task/task.module';
 import WorkspaceFunction from './domain/workspace-function.entity';
 import WorkspaceUser from './domain/workspace-user.entity';
 import WorkspaceFunctionRepository from './repository/workspace-function.repository';
@@ -21,6 +21,7 @@ import WorkspaceFunctionService from './service/workspace-function.service';
 import WorkspaceUserService from './service/workspace-user.service';
 import WorkspaceFunctionController from './controller/workspace-function.controller';
 import WorkspaceUserController from './controller/workspace-user.controller';
+import TicketModule from '../task/ticket/ticket.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import WorkspaceUserController from './controller/workspace-user.controller';
       WorkspaceFunctionRepository,
       WorkspaceUserRepository,
     ]),
+    forwardRef(() => TaskModule),
     forwardRef(() => TicketModule),
   ],
   exports: [

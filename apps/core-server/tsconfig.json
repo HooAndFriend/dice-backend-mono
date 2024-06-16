@@ -26,6 +26,6 @@
     "**/*.js",
     "**/*.ts",
     "**/.*.js",
-    "src/modules/ticket/dto/file/file.save.dto.ts"
+    "src/modules/task/ticket-file/dto/file.save.dto.ts"
   ]
 }

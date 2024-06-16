@@ -9,8 +9,9 @@ import { TypeOrmExModule } from '../../global/repository/typeorm-ex.module';
 import AuthController from './controller/user.controller';
 import UserRepository from './repository/user.repository';
 import UserService from './service/user.service';
-import TicketModule from '../ticket/ticket.module';
+import TaskModule from '../task/task.module';
 import WorkspaceModule from '../workspace/workspace.module';
+import TicketModule from '../task/ticket/ticket.module';
 
 // ** Entity Imports
 import User from './domain/user.entity';
@@ -19,6 +20,7 @@ import User from './domain/user.entity';
   imports: [
     TypeOrmModule.forFeature([User]),
     TypeOrmExModule.forCustomRepository([UserRepository]),
+    forwardRef(() => TaskModule),
     forwardRef(() => TicketModule),
     forwardRef(() => WorkspaceModule),
   ],

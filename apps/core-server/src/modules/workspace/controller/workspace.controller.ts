@@ -46,9 +46,9 @@ import User from '../../user/domain/user.entity';
 import { RoleEnum } from '@hi-dice/common';
 import { CommonResponse } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
-import TicketService from '../../ticket/service/ticket.service';
 import RequestWorkspaceTaskFindDto from '../dto/workspace-task.find.dto';
 import dayjs from 'dayjs';
+import TicketService from '../../task/ticket/service/ticket.service';
 
 @ApiTags('Workspace')
 @ApiResponse(createServerExceptionResponse())
