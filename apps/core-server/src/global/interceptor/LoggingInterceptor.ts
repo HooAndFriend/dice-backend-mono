@@ -2,6 +2,7 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
   Inject,
   Injectable,
   Logger,
@@ -56,7 +57,18 @@ export class LoggingInterceptor implements NestInterceptor {
             });
         },
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        error: (error: Error) => {},
+        error: (error: {
+          response: { message: string[]; statusCode: number };
+          status: number;
+          message: string;
+          name: String;
+        }) => {
+          this.logger.error(
+            `[${error.response.statusCode} -  ${
+              error.name
+            }] : ${error.response.message.join(', ')}`,
+          );
+        },
       }),
     );
   }
