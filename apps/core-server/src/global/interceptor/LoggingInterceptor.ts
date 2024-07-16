@@ -64,9 +64,9 @@ export class LoggingInterceptor implements NestInterceptor {
           name: String;
         }) => {
           this.logger.error(
-            `[${error.response.statusCode} -  ${
-              error.name
-            }] : ${error.response.message.join(', ')}`,
+            `[${error.response.statusCode} -  ${error.name}] : ${JSON.stringify(
+              error.response.message,
+            )}`,
           );
         },
       }),
