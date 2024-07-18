@@ -107,27 +107,4 @@ export default class WorkspaceRepository extends Repository<Workspace> {
 
     return { workspaceCount, workspaceUserCount };
   }
-
-  /**
-   * Get Workspace Ticket Count
-   * @param teamId
-   * @param userId
-   * @returns
-   */
-  public async findWorkspaceTicketCount(teamId: number, userId: number) {
-    const queryBuilder = this.createQueryBuilder('workspace')
-      .select([
-        'workspace.workspaceId',
-        'workspace.name',
-        'COUNT(CASE WHEN ticket.status = "COMPLETED" THEN ticket.ticketId ELSE NULL END) AS completedCount',
-        'COUNT(CASE WHEN ticket.status != "COMPLETED" THEN ticket.ticketId ELSE NULL END) AS otherStatusCount',
-      ])
-      .leftJoin('workspace.ticket', 'ticket', 'ticket.workerId = :userId', {
-        userId,
-      })
-      .where('workspace.teamId = :teamId', { teamId })
-      .groupBy('workspace.workspaceId');
-
-    return await queryBuilder.getRawMany();
-  }
 }

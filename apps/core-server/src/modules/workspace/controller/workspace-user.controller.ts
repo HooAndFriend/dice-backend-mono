@@ -181,28 +181,6 @@ export default class WorkspaceUserController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiOperation({ summary: '워크스페이스의 유저 통계 조회' })
-  @ApiResponse(WorkspaceUserResponse.findWorkspaceUserCount[200])
-  @WorkspaceRole(RoleEnum.VIEWER)
-  @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/count')
-  public async findWorkspaceUserCount(
-    @GetWorkspace() { workspaceId }: Workspace,
-  ) {
-    const data = await this.workspaceUserService.findWorkspaceUserCount(
-      workspaceId,
-    );
-
-    return CommonResponse.createResponse({
-      data,
-      statusCode: 200,
-      message: 'Find Workspace User Count',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: '워크스페이스 초대 가능한 멤버 조회' })
   @ApiResponse(WorkspaceUserResponse.findInviteUserList[200])
   @WorkspaceRole(RoleEnum.ADMIN)

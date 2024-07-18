@@ -47,36 +47,7 @@ export default class UserService {
    * @param user
    * @param team
    */
-  public async updateUser(dto: RequestUserUpdateDto, user: User) {
-    // const queryRunner = this.dataSource.createQueryRunner();
-    // await queryRunner.connect();
-    // await queryRunner.startTransaction();
-    // try {
-    //   await queryRunner.commitTransaction();
-    //   const workspace = team.workspace.filter(
-    //     (item) => item.name === user.nickname,
-    //   );
-    //   if (workspace.length > 0) {
-    //     const personalWorksapce = workspace[0];
-    //     personalWorksapce.name = dto.nickname;
-    //     personalWorksapce.profile = dto.profile;
-    //     await queryRunner.manager.save(personalWorksapce);
-    //   }
-    //   user.updateUserProfile(dto.profile, dto.nickname);
-    //   team.updateTeamProfile(dto.profile, dto.nickname);
-    //   await queryRunner.manager.save(user);
-    //   await queryRunner.manager.save(team);
-    // } catch (error) {
-    //   this.logger.error(error);
-    //   await queryRunner.rollbackTransaction();
-    //   if (error instanceof HttpException) {
-    //     throw new HttpException(error.message, error.getStatus());
-    //   }
-    //   throw new InternalServerErrorException('Internal Server Error');
-    // } finally {
-    //   await queryRunner.release();
-    // }
-  }
+  public async updateUser(dto: RequestUserUpdateDto, user: User) {}
 
   /**
    * 소셜 타입과 토큰으로 유저를 조회합니다.

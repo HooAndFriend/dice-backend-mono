@@ -178,13 +178,6 @@ export default class WorkspaceService {
     return data;
   }
 
-  public async findWorkspaceTicketCount(teamId: number, userId: number) {
-    return await this.workspaceRepository.findWorkspaceTicketCount(
-      teamId,
-      userId,
-    );
-  }
-
   /**
    * Find Workspace List at Team With User Count
    * @param teamId

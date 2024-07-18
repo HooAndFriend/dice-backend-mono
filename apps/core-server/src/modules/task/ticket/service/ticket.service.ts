@@ -48,15 +48,6 @@ export default class TicketService {
   private logger = new Logger(TicketService.name);
 
   /**
-   * Find My Ticket List
-   * @param workerId
-   * @returns
-   */
-  public async findTicketListByWorkerId(workerId: number) {
-    return await this.ticketRepository.findTicketListByWorkerId(workerId);
-  }
-
-  /**
    * Find Ticket by Id
    * @param ticketId
    */
@@ -142,113 +133,6 @@ export default class TicketService {
       throw new NotFoundException('Cannot Find Comment.');
     }
     return findComment;
-  }
-
-  /**
-   * 티켓 카운트 조회
-   * @param workspaceId
-   * @returns
-   */
-  public async findTicketCount(workspaceId: number) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const ticketCount = await this.ticketRepository.count({
-      where: { workspace: { workspaceId }, dueDate: LessThan(today) },
-    });
-
-    const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-
-    const yesterDayTicketCount = await this.ticketRepository.count({
-      where: { workspace: { workspaceId }, dueDate: LessThan(oneDayAgo) },
-    });
-
-    return { ticketCount, yesterDayTicketCount };
-  }
-
-  /**
-   * 티켓 카운트 조회
-   * @param workspaceId
-   * @returns
-   */
-  public async findTicketCountAll(workspaceId: number) {
-    const ticketCount = await this.ticketRepository.count({
-      where: { workspace: { workspaceId } },
-    });
-
-    const ticketCompleteCount = await this.ticketRepository.count({
-      where: {
-        workspace: { workspaceId },
-        status: TaskStatusEnum.COMPLETE,
-      },
-    });
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const yesterDayTicketCount = await this.ticketRepository.count({
-      where: { workspace: { workspaceId }, dueDate: LessThan(today) },
-    });
-
-    const yesterDayTicketCompleteCount = await this.ticketRepository.count({
-      where: {
-        workspace: { workspaceId },
-        status: TaskStatusEnum.COMPLETE,
-      },
-    });
-
-    return {
-      ticketCompleteCount,
-      yesterDayTicketCompleteCount,
-      ticketCount,
-      yesterDayTicketCount,
-    };
-  }
-
-  /**
-   * Find Ticket List By Date
-   * @param workspaceId
-   * @param userId
-   * @param dto
-   * @returns
-   */
-  public async findTicketListByDate(
-    workspaceId: number,
-    userId: number,
-    dto: RequestWorkspaceTaskFindDto,
-  ) {
-    return await this.ticketRepository.findTicketListByDate(
-      workspaceId,
-      userId,
-      dto,
-    );
-  }
-
-  /**
-   * 티켓 카운트 조회
-   * @param workspaceId
-   * @returns
-   */
-  public async findTicketDoneCount(workspaceId: number) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const ticketCount = await this.ticketRepository.count({
-      where: {
-        workspace: { workspaceId },
-        status: TaskStatusEnum.COMPLETE,
-      },
-    });
-
-    const yesterDayTicketCount = await this.ticketRepository.count({
-      where: {
-        workspace: { workspaceId },
-        completeDate: LessThan(today),
-        status: TaskStatusEnum.COMPLETE,
-      },
-    });
-
-    return { ticketCount, yesterDayTicketCount };
   }
 
   /**
@@ -491,27 +375,6 @@ export default class TicketService {
     await this.ticketRepository.update(dto.ticketId, {
       status: dto.status,
     });
-  }
-
-  /**
-   * Find Ticket Count
-   * @param userId
-   * @returns
-   */
-  public async findMyTicketCount(userId: number) {
-    return await this.ticketRepository.count({
-      where: { worker: { userId } },
-    });
-  }
-
-  /**
-   * Find My Ticket
-   * @param teamId
-   * @param month
-   * @returns
-   */
-  public async findMyTeamTicketList(teamId: number, month: string) {
-    return await this.ticketRepository.findMyTeamTicketList(teamId, month);
   }
 
   /**

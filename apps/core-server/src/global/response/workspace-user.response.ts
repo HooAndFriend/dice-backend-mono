@@ -61,16 +61,7 @@ export const WorkspaceUserResponse = {
       message: 'Find User Workspace List',
     }),
   },
-  findWorkspaceUserCount: {
-    200: createResponse({
-      data: {
-        worksapceUserCount: 1,
-        yesterDayworksapceUserCount: 0,
-      },
-      statusCode: 200,
-      message: 'Find Workspace User Count',
-    }),
-  },
+
   findWorkspaceUserList: {
     200: createResponse({
       data: {

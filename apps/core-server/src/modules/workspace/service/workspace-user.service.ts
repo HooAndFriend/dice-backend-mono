@@ -120,27 +120,6 @@ export default class WorkspaceUserService {
   }
 
   /**
-   * Workspace의 유저 개수를 조회합니다.
-   * @param workspaceId
-   * @returns
-   */
-  public async findWorkspaceUserCount(workspaceId: number) {
-    const worksapceUserCount = await this.workspaceUserRepository.count({
-      where: { workspace: { workspaceId } },
-    });
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const yesterDayworksapceUserCount =
-      await this.workspaceUserRepository.count({
-        where: { workspace: { workspaceId }, createdDate: LessThan(today) },
-      });
-
-    return { worksapceUserCount, yesterDayworksapceUserCount };
-  }
-
-  /**
    * Find Workspace User List
    * @param workspaceId
    * @returns

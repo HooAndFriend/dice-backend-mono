@@ -48,11 +48,7 @@ import RequestUserFcmUpdateDto from '../dto/user-fcm.update.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/user', version: '1' })
 export default class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly ticketService: TicketService,
-    private readonly workspaceService: WorkspaceService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '유저 정보 수정' })
@@ -64,8 +60,7 @@ export default class UserController {
     @Body() dto: RequestUserUpdateDto,
     @GetUser() user: User,
   ) {
-    // const team = await this.teamService.findPersonalTeamByEmail(user.email);
-    // await this.userService.updateUser(dto, user, team);
+    await this.userService.updateUser(dto, user);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -104,65 +99,6 @@ export default class UserController {
       statusCode: 200,
       message: '유저 정보를 조회합니다.',
       data: findUser,
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: '유저의 대시보드 조회' })
-  @ApiResponse(UserResponse.findDashboardInfo[200])
-  @UseGuards(JwtAccessGuard)
-  @Get('/dashboard')
-  public async dashboardInfo(@GetUser() { userId }: User) {
-    // const teamCount = await this.teamUserService.findTeamUserCount(id);
-    // const ticketCount = await this.ticketService.findMyTicketCount(id);
-
-    return CommonResponse.createResponse({
-      data: { teamCount: 0, ticketCount: 0 },
-      statusCode: 200,
-      message: '유저의 대시보드 정보를 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'team-code', required: true })
-  @ApiOperation({ summary: '유저의 티켓 대시보드 조회' })
-  @ApiResponse(UserResponse.findDashboardInfo[200])
-  // @TeamRole(RoleEnum.VIEWER)
-  // @UseGuards(TeamRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/dashboard/ticket')
-  public async dashboardTicketInfo(@Query('month') month: string) {
-    // const [data, count] = await this.ticketService.findMyTeamTicketList(
-    //   id,
-    //   month,
-    // );
-
-    return CommonResponse.createResponse({
-      data: { data: [], count: 0 },
-      statusCode: 200,
-      message: '유저의 대시보드 정보를 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'team-code', required: true })
-  @ApiOperation({ summary: '유저의 워크스페이스 대시보드 조회' })
-  @ApiResponse(UserResponse.findDashboardInfo[200])
-  // @TeamRole(RoleEnum.VIEWER)
-  // @UseGuards(TeamRoleGuard)
-  @UseGuards(JwtAccessGuard)
-  @Get('/dashboard/workspace')
-  public async dashboardWorkspaceInfo(@GetUser() { userId }: User) {
-    // const data = await this.workspaceService.findWorkspaceCountAndUserCount(id);
-    // const ticket = await this.workspaceService.findWorkspaceTicketCount(
-    //   id,
-    //   userId,
-    // );
-
-    return CommonResponse.createResponse({
-      data: null,
-      statusCode: 200,
-      message: '유저의 대시보드 정보를 조회합니다.',
     });
   }
 }

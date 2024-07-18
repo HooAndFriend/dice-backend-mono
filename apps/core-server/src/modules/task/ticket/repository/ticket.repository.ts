@@ -68,38 +68,6 @@ export default class TicketRepository extends Repository<Ticket> {
     return await querybuilder.getOne();
   }
 
-  public async findTicketListByDate(
-    workspaceId: number,
-    userId: number,
-    dto: RequestWorkspaceTaskFindDto,
-  ) {
-    const startDate = dayjs(dto.date)
-      .startOf('month')
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const endDate = dayjs(dto.date)
-      .endOf('month')
-      .format('YYYY-MM-DD HH:mm:ss');
-
-    const querybuilder = this.createQueryBuilder('ticket')
-      .select([
-        'ticket.ticketId',
-        'ticket.name',
-        'ticket.dueDate',
-        'ticket.createdDate',
-      ])
-      .leftJoin('ticket.workspace', 'workspace')
-      .leftJoin('ticket.worker', 'worker')
-      .where('workspace.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('worker.id = :userId', { userId })
-      .andWhere('ticket.dueDate BETWEEN :startDate AND :endDate', {
-        startDate,
-        endDate,
-      });
-
-    return await querybuilder.getMany();
-  }
-
   public async findAllTicketByWorkspaceId(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
@@ -176,46 +144,5 @@ export default class TicketRepository extends Repository<Ticket> {
       .andWhere('ticket.isDeleted = false');
 
     return await querybuilder.getOne();
-  }
-
-  public async findMyTeamTicketList(teamId: number, month: string) {
-    const [year, monthStr] = month.split('-');
-    const startDate = new Date(parseInt(year), parseInt(monthStr) - 1, 1);
-    const endDate = new Date(parseInt(year), parseInt(monthStr), 0);
-
-    const querybuilder = this.createQueryBuilder('ticket')
-      .select([
-        'ticket.ticketId',
-        'ticket.name',
-        'ticket.status',
-        'ticket.dueDate',
-        'ticket.code',
-      ])
-      .leftJoin('ticket.workspace', 'workspace')
-      .where('ticket.dueDate BETWEEN :startDate AND :endDate', {
-        startDate,
-        endDate,
-      })
-      .andWhere('ticket.isDeleted = false');
-    return await querybuilder.getManyAndCount();
-  }
-
-  public async findTicketListByWorkerId(workerId: number) {
-    const queryBuilder = this.createQueryBuilder('ticket')
-      .select([
-        'ticket.ticketId',
-        'ticket.code',
-        'ticket.status',
-        'ticket.name',
-        'ticket.createdDate',
-      ])
-      .leftJoin('ticket.worker', 'worker')
-      .where('worker.userId = :workerId', { workerId })
-      .andWhere('ticket.dueDate = :today', {
-        today: dayjs().format('YYYY-MM-DD'),
-      })
-      .andWhere('ticket.isDeleted = false');
-
-    return await queryBuilder.getMany();
   }
 }
