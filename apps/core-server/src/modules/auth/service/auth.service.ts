@@ -17,10 +17,8 @@ export default class AuthService {
 
   /**
    * 토큰을 재발급합니다.
-   * @param user
-   * @returns
    */
-  public async reissueToken(user: User) {
+  public reissueToken(user: User): string {
     const accessToken = this.jwtService.sign(
       { id: user.userId },
       {
@@ -34,8 +32,6 @@ export default class AuthService {
 
   /**
    * 토큰을 발급합니다.
-   * @param user
-   * @returns
    */
   public generateToken(user: User): {
     accessToken: string;
