@@ -36,10 +36,8 @@ export default class WorkspaceRepository extends Repository<Workspace> {
         'workspace.comment',
         'workspace.isPersonal',
         'workspace.uuid',
-        'workspaceFunction.workspaceFunctionId',
-        'workspaceFunction.function',
       ])
-      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
+
       .where('workspace.createdId = :email', { email })
       .andWhere('workspace.isPersonal = true');
 

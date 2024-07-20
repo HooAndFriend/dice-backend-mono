@@ -76,16 +76,6 @@ export const WorkspaceUserResponse = {
               profile:
                 'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
               uuid: '8c28b001-f824-4058-bb60-2b8b589031a6',
-              workspaceFunction: [
-                {
-                  workspaceFunctionId: 1,
-                  function: 'TICKET',
-                },
-                {
-                  workspaceFunctionId: 2,
-                  function: 'QA',
-                },
-              ],
             },
           },
         ],

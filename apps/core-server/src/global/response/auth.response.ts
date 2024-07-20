@@ -24,16 +24,6 @@ export const AuthResponse = {
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
           uuid: '1f71587c-2ecf-40c3-9c4a-bb759af8f397',
-          workspaceFunction: [
-            {
-              workspaceFunctionId: 11,
-              function: 'BOARD',
-            },
-            {
-              workspaceFunctionId: 12,
-              function: 'TICKET',
-            },
-          ],
         },
       },
       statusCode: 200,
@@ -70,16 +60,6 @@ export const AuthResponse = {
               'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
             uuid: 'be552447-a66a-48dc-aabe-eca8bf69feb6',
             isPersonal: true,
-            workspaceFunction: [
-              {
-                workspaceFunctionId: 3,
-                function: 'TICKET',
-              },
-              {
-                workspaceFunctionId: 4,
-                function: 'QA',
-              },
-            ],
           },
         ],
       },
@@ -118,16 +98,6 @@ export const AuthResponse = {
               'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
             uuid: '8c28b001-f824-4058-bb60-2b8b589031a6',
             isPersonal: true,
-            workspaceFunction: [
-              {
-                workspaceFunctionId: 2,
-                function: 'QA',
-              },
-              {
-                workspaceFunctionId: 1,
-                function: 'TICKET',
-              },
-            ],
           },
         ],
       },
@@ -168,16 +138,6 @@ export const AuthResponse = {
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
           uuid: 'e872b611-b57d-47ac-a9a7-4476753a9eba',
-          workspaceFunction: [
-            {
-              workspaceFunctionId: 7,
-              function: 'BOARD',
-            },
-            {
-              workspaceFunctionId: 8,
-              function: 'TICKET',
-            },
-          ],
         },
       },
       statusCode: 200,
