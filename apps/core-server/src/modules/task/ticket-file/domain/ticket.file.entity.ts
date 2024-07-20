@@ -8,11 +8,11 @@ import {
 } from 'typeorm';
 
 // ** enum, dto, entity Imports
-import { BaseTimeEntity } from '@hi-dice/common';
+import { BaseCreatedTimeEntity, BaseTimeEntity } from '@hi-dice/common';
 import Ticket from '../../ticket/domain/ticket.entity';
 
 @Entity({ name: 'TB_TICKET_FILE' })
-export default class TicketFile extends BaseTimeEntity {
+export default class TicketFile extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn()
   ticketFileId: number;
 

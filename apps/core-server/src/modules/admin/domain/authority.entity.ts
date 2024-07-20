@@ -53,14 +53,6 @@ export default class Authority extends BaseTimeEntity {
 
   @Column({
     type: 'boolean',
-    comment: '팀 권한',
-    name: 'team_yn',
-    nullable: false,
-  })
-  teamYn: boolean;
-
-  @Column({
-    type: 'boolean',
     comment: '워크스페이스 권한',
     name: 'workspace_yn',
     nullable: false,
