@@ -11,7 +11,6 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import WorkspaceUser from './workspace-user.entity';
-import WorkspaceFunction from './workspace-function.entity';
 import TicketSetting from '../../task/ticket-setting/domain/ticket.setting.entity';
 import Board from '../../board/domain/board.entity';
 import Ticket from '../../task/ticket/domain/ticket.entity';
@@ -40,7 +39,7 @@ export default class Workspace extends BaseTimeEntity {
     type: 'varchar',
     length: 255,
     comment: '워크스페이스 프로필 이미지',
-    nullable: true,
+    nullable: false,
   })
   profile: string;
 
@@ -78,12 +77,6 @@ export default class Workspace extends BaseTimeEntity {
     cascade: true,
   })
   workspaceUser: Relation<WorkspaceUser>[];
-
-  @OneToMany(
-    () => WorkspaceFunction,
-    (workspaceFunction) => workspaceFunction.workspace,
-  )
-  workspaceFunction: Relation<WorkspaceFunction>[];
 
   @OneToMany(() => Ticket, (ticket) => ticket.workspace)
   ticket: Relation<Ticket>[];

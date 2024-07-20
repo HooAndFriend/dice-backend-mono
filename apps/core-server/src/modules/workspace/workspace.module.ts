@@ -13,22 +13,17 @@ import WorkspaceService from './service/workspace.service';
 import WorkspaceController from './controller/workspace.controller';
 import Workspace from './domain/workspace.entity';
 import TaskModule from '../task/task.module';
-import WorkspaceFunction from './domain/workspace-function.entity';
 import WorkspaceUser from './domain/workspace-user.entity';
-import WorkspaceFunctionRepository from './repository/workspace-function.repository';
 import WorkspaceUserRepository from './repository/workspace-user.repository';
-import WorkspaceFunctionService from './service/workspace-function.service';
 import WorkspaceUserService from './service/workspace-user.service';
-import WorkspaceFunctionController from './controller/workspace-function.controller';
 import WorkspaceUserController from './controller/workspace-user.controller';
 import TicketModule from '../task/ticket/ticket.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Workspace, WorkspaceFunction, WorkspaceUser]),
+    TypeOrmModule.forFeature([Workspace, WorkspaceUser]),
     TypeOrmExModule.forCustomRepository([
       WorkspaceRepository,
-      WorkspaceFunctionRepository,
       WorkspaceUserRepository,
     ]),
     forwardRef(() => TaskModule),
@@ -38,14 +33,9 @@ import TicketModule from '../task/ticket/ticket.module';
     TypeOrmExModule,
     TypeOrmModule,
     WorkspaceService,
-    WorkspaceFunctionService,
     WorkspaceUserService,
   ],
-  controllers: [
-    WorkspaceController,
-    WorkspaceFunctionController,
-    WorkspaceUserController,
-  ],
-  providers: [WorkspaceService, WorkspaceFunctionService, WorkspaceUserService],
+  controllers: [WorkspaceController, WorkspaceUserController],
+  providers: [WorkspaceService, WorkspaceUserService],
 })
 export default class WorkspaceModule {}

@@ -1,9 +1,11 @@
 // ** Nest Imports
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
 import WorkspaceRepository from '../repository/workspace.repository';
+import WorkspaceUserService from './workspace-user.service';
 
 // ** Utils Imports
 import { v4 as uuidv4 } from 'uuid';
@@ -17,11 +19,6 @@ import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
-import { ConfigService } from '@nestjs/config';
-import WorkspaceFunctionRepository from '../repository/workspace-function.repository';
-import WorkspaceFunctionService from './workspace-function.service';
-import WorkspaceUserService from './workspace-user.service';
-import { JwtPayload } from '@/src/global/types';
 
 @Injectable()
 export default class WorkspaceService {
@@ -29,7 +26,6 @@ export default class WorkspaceService {
     private readonly workspaceRepository: WorkspaceRepository,
     private readonly workspaceUserRepository: WorkspaceUserRepository,
     private readonly workspaceUserService: WorkspaceUserService,
-    private readonly workspaceFunctionService: WorkspaceFunctionService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -134,11 +130,9 @@ export default class WorkspaceService {
       }),
     );
 
-    const functionList =
-      await this.workspaceFunctionService.saveWorkspaceInitFunction(workspace);
     await this.workspaceUserService.saveInitWorkspaceUser(workspace, user);
 
-    return { workspace, functionList };
+    return workspace;
   }
 
   /**

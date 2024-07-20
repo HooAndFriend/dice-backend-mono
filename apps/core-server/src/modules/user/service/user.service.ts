@@ -143,16 +143,11 @@ export default class UserService {
       await this.saveInviteWorkspace(user, dto.uuid);
     }
 
-    const { workspace, functionList } =
-      await this.workspaceService.saveInitSaveWorkspace(user);
+    const workspace = await this.workspaceService.saveInitSaveWorkspace(user);
 
     return {
       user,
       workspace,
-      workspaceFunction: functionList.map((item) => ({
-        workspaceFunctionId: item.workspaceFunctionId,
-        function: item.function,
-      })),
     };
   }
 
@@ -179,16 +174,11 @@ export default class UserService {
       await this.saveInviteWorkspace(user, dto.uuid);
     }
 
-    const { workspace, functionList } =
-      await this.workspaceService.saveInitSaveWorkspace(user);
+    const workspace = await this.workspaceService.saveInitSaveWorkspace(user);
 
     return {
       user,
       workspace,
-      workspaceFunction: functionList.map((item) => ({
-        workspaceFunctionId: item.workspaceFunctionId,
-        function: item.function,
-      })),
     };
   }
 

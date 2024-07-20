@@ -102,8 +102,7 @@ export default class AuthController {
   @Post('/user')
   public async saveDiceUser(@Body() dto: RequestDiceUserSaveDto) {
     await this.userService.existedUserByEmail(dto.email);
-    const { user, workspace, workspaceFunction } =
-      await this.userService.saveDiceUser(dto);
+    const { user, workspace } = await this.userService.saveDiceUser(dto);
 
     const token = this.authService.generateToken(user);
 
@@ -122,7 +121,6 @@ export default class AuthController {
           comment: workspace.comment,
           profile: workspace.profile,
           uuid: workspace.uuid,
-          workspaceFunction,
         },
       },
       statusCode: 200,
@@ -138,8 +136,7 @@ export default class AuthController {
   public async saveSocialUser(@Body() dto: RequestSocialUserSaveDto) {
     await this.userService.existedUserByTokenAndType(dto.token, dto.type);
     await this.userService.existedUserByEmail(dto.email);
-    const { user, workspace, workspaceFunction } =
-      await this.userService.saveSocialUser(dto);
+    const { user, workspace } = await this.userService.saveSocialUser(dto);
 
     const token = this.authService.generateToken(user);
 
@@ -158,7 +155,6 @@ export default class AuthController {
           comment: workspace.comment,
           profile: workspace.profile,
           uuid: workspace.uuid,
-          workspaceFunction,
         },
       },
       statusCode: 200,

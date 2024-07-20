@@ -67,9 +67,9 @@ export default class Ticket extends BaseTimeEntity {
 
   @Column({
     type: 'integer',
-    name: 'storypoint',
+    name: 'story_point',
     comment: 'storypoint',
-    nullable: true,
+    nullable: false,
   })
   storypoint: number;
 

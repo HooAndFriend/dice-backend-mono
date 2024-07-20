@@ -45,12 +45,9 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
         'workspace.comment',
         'workspace.profile',
         'workspace.uuid',
-        'workspaceFunction.workspaceFunctionId',
-        'workspaceFunction.function',
       ])
       .leftJoin('workspaceUser.workspace', 'workspace')
       .leftJoin('workspaceUser.user', 'user')
-      .leftJoin('workspace.workspaceFunction', 'workspaceFunction')
       .where('user.userId = :userId', { userId });
 
     return queryBuilder.getManyAndCount();
