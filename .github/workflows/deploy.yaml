@@ -22,18 +22,18 @@ jobs:
           chmod 400 $HOME/key.pem
       - name: Copy files to VM And Run Application
         run: |
-          ssh -i $HOME/key.pem dice@${{ secrets.VM_HOST }} "rm -rf apps/*"
-          rsync -av -e "ssh -i $HOME/key.pem" --exclude='node_modules' ./apps/core-server/ dice:~/apps/core-server/
+          ssh -i $HOME/key.pem dice@${{ secrets.VM_HOST }} "rm -rf ~/apps/*"
+          rsync -av -e "ssh -i $HOME/key.pem" --exclude='node_modules' ./apps/core-server/ dice@${{ secrets.VM_HOST }}:~/apps/core-server/
           ssh -i $HOME/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh core"
-          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/auth-server/ dice:~/apps/auth-server/
-          ssh -i $HOME/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh auth"
-          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/log-server/ dice:~/apps/log-server/
-          ssh -i $HOME/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh log"
-          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/push-server/ dice:~/apps/push-server/
+          rsync -av -e "ssh -i $HOME/key.pem" --exclude='node_modules' ./apps/auth-server/ dice@${{ secrets.VM_HOST }}:~/apps/auth-server/
+          ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh auth"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/log-server/ dice@${{ secrets.VM_HOST }}:~/apps/log-server/
+          ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh log"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/push-server/ dice@${{ secrets.VM_HOST }}:~/apps/push-server/
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh push"
-          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/admin-server/ dice:~/apps/admin-server/
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/admin-server/ dice@${{ secrets.VM_HOST }}:~/apps/admin-server/
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh admin"
-          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/file-server/ dice:~/apps/file-server/
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/file-server/ dice@${{ secrets.VM_HOST }}:~/apps/file-server/
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh file"
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh nginx"
           sleep 5
