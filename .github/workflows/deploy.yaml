@@ -1,0 +1,40 @@
+name: Deploy Dice Frontend
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+      - name: Set Permissions for Private Key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > $HOME/key.pem
+          chmod 400 $HOME/key.pem
+      - name: Copy files to VM And Run Application
+        run: |
+          ssh -i $HOME/key.pem dice "rm -rf apps/*"
+          rsync -av -e "ssh -i $HOME/key.pem" --exclude='node_modules' ./apps/core-server/ dice:~/apps/core-server/
+          ssh -i $HOME/key.pem dice "sh restart.sh core"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/auth-server/ dice:~/apps/auth-server/
+          ssh -i $HOME/key.pem dice "sh restart.sh auth"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/log-server/ dice:~/apps/log-server/
+          ssh -i $HOME/key.pem dice "sh restart.sh log"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/push-server/ dice:~/apps/push-server/
+          ssh -i $HOME.key.pem dice "sh restart.sh push"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/admin-server/ dice:~/apps/admin-server/
+          ssh -i $HOME.key.pem dice "sh restart.sh admin"
+          rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/file-server/ dice:~/apps/file-server/
+          ssh -i $HOME.key.pem dice "sh restart.sh file"
+          ssh -i $HOME.key.pem dice "sh restart.sh nginx"
+          sleep 5
+          curl --location "https://api.hi-dice.com/api/slack/v1/slack" --header "Content-Type:application/json" --data '{"name":"BACKEND:ALL","code":"MAS","message":"BACKEND:ALL 배포가 완료되었습니다."}'
