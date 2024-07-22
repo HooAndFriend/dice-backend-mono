@@ -35,6 +35,5 @@ jobs:
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh admin"
           rsync -av -e "ssh -i $HOME.key.pem" --exclude='node_modules' ./apps/file-server/ dice@${{ secrets.VM_HOST }}:~/apps/file-server/
           ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh file"
-          ssh -i $HOME.key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh nginx"
           sleep 5
           curl --location "https://api.hi-dice.com/api/slack/v1/slack" --header "Content-Type:application/json" --data '{"name":"BACKEND:ALL","code":"MAS","message":"BACKEND:ALL 배포가 완료되었습니다."}'
