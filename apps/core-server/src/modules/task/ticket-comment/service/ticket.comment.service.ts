@@ -6,7 +6,7 @@ import TicketService from '../../ticket/service/ticket.service';
 import TicketCommentRepository from '../repository/ticket.comment.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestTicketCommentSaveDto from '../dto/comment.save.dto';
 import User from '@/src/modules/user/domain/user.entity';
 import RequestTicketCommentUpdateDto from '../dto/comment.update.dto';

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';

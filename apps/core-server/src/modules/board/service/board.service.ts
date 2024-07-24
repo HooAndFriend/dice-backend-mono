@@ -7,7 +7,7 @@ import BoardRepository from '../repository/board.repository';
 
 // ** enum, dto, entity, types Imports
 import Workspace from '../../workspace/domain/workspace.entity';
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
 

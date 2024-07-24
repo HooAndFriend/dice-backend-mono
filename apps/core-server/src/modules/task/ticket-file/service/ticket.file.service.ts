@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import TicketFileRepository from '../repository/ticket.file.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import Ticket from '../../ticket/domain/ticket.entity';
 
 @Injectable()

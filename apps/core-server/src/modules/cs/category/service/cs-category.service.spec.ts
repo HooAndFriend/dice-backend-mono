@@ -6,7 +6,7 @@ import CsCategoryService from './cs-category.service';
 import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** Entity Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import CsCategory from '../domain/cs-category.entity';
 
 describe('CsCategory Service Test', () => {

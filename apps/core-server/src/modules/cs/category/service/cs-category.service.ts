@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import CsCategoryRepository from '../repository/cs-category.repository';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 
 @Injectable()
 export default class CsCategoryService {

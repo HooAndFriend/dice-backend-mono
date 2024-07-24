@@ -7,7 +7,7 @@ import VersionRepository from '../repository/version.repository';
 
 // ** Dto Imports
 import VersionTypeEnum from '../domain/version-type.enum';
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import Version from '../domain/version.entity';
 
 describe('Version Service', () => {

@@ -1,10 +1,11 @@
 // ** Nest Imports
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 // ** Module Imports
 import VersionRepository from '../repository/version.repository';
 import VersionTypeEnum from '../domain/version-type.enum';
+import { BadRequestException } from '@/src/global/exception/CustomException';
 
 // ** Utils Imports
 

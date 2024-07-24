@@ -1,6 +1,5 @@
 // ** Nest Imports
 import {
-  BadRequestException,
   HttpException,
   Inject,
   Injectable,
@@ -20,7 +19,10 @@ import UserRepository from '@/src/modules/user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
 import Ticket from '../domain/ticket.entity';
-import { NotFoundException } from '@hi-dice/common';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import { TaskStatusEnum } from '@hi-dice/common';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';

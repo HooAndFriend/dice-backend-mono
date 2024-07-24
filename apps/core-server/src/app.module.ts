@@ -22,7 +22,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
-import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 
 @Module({
   imports: [
@@ -110,10 +109,6 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: CustomExceptionFilter,
     },
     {
       provide: APP_PIPE,

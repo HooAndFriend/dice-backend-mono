@@ -1,12 +1,7 @@
 // ** Nest Imports
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  BadRequestException,
-  NotFoundException,
-  RoleEnum,
-  UserType,
-} from '@hi-dice/common';
+import { RoleEnum, UserType } from '@hi-dice/common';
 import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
@@ -20,6 +15,10 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 // ** enum, dto, entity, types Imports
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 import RequestUserUpdateDto from '../dto/user.update.dto';
 import User from '../domain/user.entity';
 import RequestSocialUserLoginDto from '../../auth/dto/user.social.login.dto';

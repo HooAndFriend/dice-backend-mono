@@ -9,7 +9,7 @@ import TicketSettingRepository from '../repository/ticket.setting.repository';
 import { Transactional } from 'typeorm-transactional';
 
 // ** enum, dto, entity, types Imports
-import { NotFoundException } from '@hi-dice/common';
+import { NotFoundException } from '@/src/global/exception/CustomException';
 import Workspace from '../../../workspace/domain/workspace.entity';
 import RequestSettingUpdateDto from '../dto/setting.update.dto';
 import RequestSettingSaveDto from '../dto/setting.save.dto';
