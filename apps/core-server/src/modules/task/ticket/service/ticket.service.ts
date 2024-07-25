@@ -210,6 +210,7 @@ export default class TicketService {
         workspace,
         name: dto.name,
         status: TaskStatusEnum.NOTHING,
+        storypoint: 0,
         ticketSetting,
         parentTicket,
       }),
