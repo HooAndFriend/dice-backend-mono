@@ -17,13 +17,13 @@ import FileModule from '@/src/modules/file.module';
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
-    RedisModule.forRoot({
-      readyLog: true,
-      config: {
-        host: process.env.REDIS_HOST,
-        port: +process.env.REDIS_PORT,
-      },
-    }),
+    // RedisModule.forRoot({
+    //   readyLog: true,
+    //   config: {
+    //     host: process.env.REDIS_HOST,
+    //     port: +process.env.REDIS_PORT,
+    //   },
+    // }),
     ClientsModule.registerAsync([
       {
         name: 'RMQ_LOG_QUE',
