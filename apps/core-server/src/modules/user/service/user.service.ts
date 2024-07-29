@@ -212,7 +212,7 @@ export default class UserService {
    */
   public async findUserByPayload(payload: JwtPayload) {
     const user = await this.userRepository.findOne({
-      where: { userId: payload.id },
+      where: { userId: payload.userId },
     });
 
     if (!user) {

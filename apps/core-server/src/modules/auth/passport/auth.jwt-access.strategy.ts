@@ -25,7 +25,7 @@ export default class JwtAccessStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(req, payload: JwtPayload): Promise<any> {
+  public async validate(payload: JwtPayload): Promise<any> {
     return await this.userService.findUserByPayload(payload);
   }
 }

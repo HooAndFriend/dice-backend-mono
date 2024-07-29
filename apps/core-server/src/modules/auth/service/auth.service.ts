@@ -19,13 +19,11 @@ export default class AuthService {
    * 토큰을 재발급합니다.
    */
   public reissueToken(user: User): string {
-    const accessToken = this.jwtService.sign(
-      { id: user.userId },
-      {
-        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-        expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
-      },
-    );
+    const payload = { userId: user.userId, email: user.email };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+    });
 
     return accessToken;
   }
@@ -37,7 +35,8 @@ export default class AuthService {
     accessToken: string;
     refreshToken: string;
   } {
-    const payload = { id: user.userId, email: user.email };
+    const payload = { userId: user.userId, email: user.email };
+
     return {
       accessToken: this.jwtService.sign(payload, {
         secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
