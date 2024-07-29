@@ -14,6 +14,7 @@ import Workspace from '../domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 import User from '../../user/domain/user.entity';
 import { RoleEnum } from '@hi-dice/common';
+import WorkspaceUser from '../domain/workspace-user.entity';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -135,8 +136,10 @@ export default class WorkspaceUserService {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(userId: number) {
-    return await this.workspaceUserRepository.findWorkspaceUserListByTeam(
+  public async findWorkspaceUserListByTeam(
+    userId: number,
+  ): Promise<[WorkspaceUser[], number]> {
+    return await this.workspaceUserRepository.findWorkspaceUserListByUserId(
       userId,
     );
   }
