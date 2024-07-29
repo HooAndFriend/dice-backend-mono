@@ -107,7 +107,6 @@ export default class WorkspaceController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '워크스페이스 리스트 조회(With Count)' })
-  @ApiHeader({ name: 'team-code', required: true })
   @ApiResponse(WorkspaceResponse.findWorkspaceListWithCount[200])
   @UseGuards(JwtAccessGuard)
   @Get('/list/popup')

@@ -141,7 +141,6 @@ export default class WorkspaceUserController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '워크스페이스 리스트 조회 조회' })
   @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
   @UseGuards(JwtAccessGuard)
