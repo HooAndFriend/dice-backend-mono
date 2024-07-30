@@ -46,7 +46,7 @@ export default class Sprint extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 10,
+    length: 100,
     name: 'description',
     comment: '설명',
     nullable: true,
