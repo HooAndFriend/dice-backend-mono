@@ -26,7 +26,6 @@ export default class BoardRepository extends Repository<Board> {
       .where('parent.boardId is null')
       .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
-
       .orderBy('board.orderId', 'ASC');
 
     return await queryBuilder.getManyAndCount();
