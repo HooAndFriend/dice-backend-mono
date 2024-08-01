@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 // ** AWS Imports
 import AWS from 'aws-sdk';
+import dayjs from 'dayjs';
 
 @Injectable()
 export default class FileService {
@@ -26,7 +27,7 @@ export default class FileService {
   public async uploadFile(file: Express.Multer.File) {
     const params = {
       Bucket: 'file',
-      Key: file.originalname,
+      Key: `${dayjs().format('YYYYMMDDHHmmss')}-${file.originalname}`,
       Body: file.buffer,
     };
 

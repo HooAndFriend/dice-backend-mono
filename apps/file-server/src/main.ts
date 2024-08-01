@@ -60,8 +60,8 @@ async function bootstrap() {
 }
 bootstrap()
   .then((res) => {
-    Logger.log(`AUTH SERVER START : ${process.env.SERVER_ENV}`);
+    Logger.log(`FILE SERVER START : ${process.env.SERVER_ENV}`);
   })
   .catch((error) => {
-    Logger.error(`AUTH SERVER START FAILED : ${JSON.stringify(error)}`);
+    Logger.error(`FILE SERVER START FAILED : ${JSON.stringify(error)}`);
   });
