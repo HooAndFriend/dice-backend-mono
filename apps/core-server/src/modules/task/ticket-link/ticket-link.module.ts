@@ -15,11 +15,12 @@ import TicketModule from '../ticket/ticket.module';
 
 // ** entity Imports
 import TicketLink from './domain/ticket.link.entity';
+import TicketLinkRepository from './repository/ticket.link.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TicketLink]),
-    TypeOrmExModule.forCustomRepository([]),
+    TypeOrmExModule.forCustomRepository([TicketLinkRepository]),
     ClientsModule.registerAsync([
       {
         name: 'RMQ_LOG_QUE',

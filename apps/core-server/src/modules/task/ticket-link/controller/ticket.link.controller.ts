@@ -1,5 +1,13 @@
 // ** Nest Imports
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
@@ -63,6 +71,26 @@ export default class TicketLinkController {
       message: 'Save Ticket Link',
     });
   }
+
+  //티켓 링크 삭제
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 링크 삭제' })
+  @ApiResponse(TicketResponse.deleteTicketLink[200])
+  @ApiResponse(TicketResponse.deleteTicketLink[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete(':linkId')
+  public async deleteTicketLink(@Param('linkId') id: number) {
+    this.ticketLinkService.deleteTicketLink(id);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Ticket Link',
+    });
+  }
+
   /**
    * Send Ticket Queue
    * @param event

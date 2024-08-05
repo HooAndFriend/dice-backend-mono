@@ -617,4 +617,15 @@ export const TicketResponse = {
       message: 'Not Found Ticket',
     }),
   },
+  deleteTicketLink: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Ticket Link',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket Link',
+    }),
+  },
 };

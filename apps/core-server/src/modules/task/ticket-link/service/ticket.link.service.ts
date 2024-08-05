@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
 import TicketLinkRepository from '../repository/ticket.link.repository';
+import { NotFoundException } from '@hi-dice/common';
 
 // ** enum, dto, entity, types Imports
 import RequestTicketLinkSaveDto from '../dto/link.save.dto';
@@ -35,5 +36,31 @@ export default class TicketLinkService {
     });
 
     return await this.ticketLinkRepository.save(ticketLink);
+  }
+
+  /**
+   * Delete Ticket Link
+   * @param id
+   */
+  public async deleteTicketLink(id: number) {
+    const findLink = await this.findTicketLinkById(id);
+
+    return await this.ticketLinkRepository.delete(id);
+  }
+
+  /**
+   * Find Ticket Link By Id
+   * @param id
+   */
+  public async findTicketLinkById(id: number) {
+    const findLink = await this.ticketLinkRepository.findOne({
+      where: { ticketLinkId: id },
+    });
+
+    if (!findLink) {
+      throw new NotFoundException('Not Found Ticket Link');
+    }
+
+    return findLink;
   }
 }
