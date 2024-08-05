@@ -31,8 +31,9 @@ export default class TicketLinkService {
     );
 
     const ticketLink = this.ticketLinkRepository.create({
-      parantTicketId: dto.parentTicketId,
+      parentTicketId: dto.parentTicketId,
       childTicketId: dto.childTicketId,
+      ticket: findParentTicket,
     });
 
     return await this.ticketLinkRepository.save(ticketLink);

@@ -21,7 +21,7 @@ export default class TicketLink extends BaseCreatedTimeEntity {
     comment: '상위 티켓 id',
     nullable: false,
   })
-  parantTicketId: number;
+  parentTicketId: number;
 
   @Column({
     type: 'int',
