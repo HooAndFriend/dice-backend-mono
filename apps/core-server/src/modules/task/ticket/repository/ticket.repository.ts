@@ -35,6 +35,9 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.profile',
         'ticketFile.ticketFileId',
         'ticketFile.url',
+        'ticketLink.ticketLinkId',
+        'ticketLink.parentTicketId',
+        'ticketLink.childTicketId',
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
@@ -55,6 +58,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'subTicketSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
+      .leftJoin('ticket.ticketLink', 'ticketLink')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')

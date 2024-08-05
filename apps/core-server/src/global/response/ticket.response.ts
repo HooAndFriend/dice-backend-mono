@@ -66,6 +66,18 @@ export const TicketResponse = {
         completeDate: null,
         reopenDate: null,
         ticketFile: [],
+        ticketLink: [
+          {
+            ticketLinkId: 1,
+            parentTicketId: 1,
+            childTicketId: 2,
+          },
+          {
+            ticketLinkId: 2,
+            parentTicketId: 3,
+            childTicketId: 1,
+          },
+        ],
         ticketSetting: {
           ticketSettingId: 1,
           type: 'BLACK',
