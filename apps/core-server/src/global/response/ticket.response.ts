@@ -606,4 +606,15 @@ export const TicketResponse = {
       message: '해당 setting 정보를 찾을 수 없습니다.',
     }),
   },
+  saveTicketLink: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Save Ticket Link',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket',
+    }),
+  },
 };
