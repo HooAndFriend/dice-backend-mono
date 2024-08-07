@@ -17,6 +17,7 @@ import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import Sprint from '../../sprint/domain/sprint.entity';
+import Epic from '../../epic/domain/epic.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -105,6 +106,18 @@ export default class Ticket extends BaseTimeEntity {
   })
   reopenDate: Date;
 
+  @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
+  ticketFile: Relation<TicketFile>[];
+
+  @OneToMany(() => TicketComment, (comment) => comment.ticket)
+  comment: Relation<TicketComment>[];
+
+  @OneToMany(() => Sprint, (sprint) => sprint.ticket)
+  sprint: Relation<Sprint>[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
+  subTickets: Relation<Ticket>[];
+
   @ManyToOne(() => Workspace, (workspace) => workspace.ticket, {
     onDelete: 'CASCADE',
   })
@@ -125,20 +138,13 @@ export default class Ticket extends BaseTimeEntity {
   })
   ticketSetting: Relation<TicketSetting>;
 
-  @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
-  ticketFile: Relation<TicketFile>[];
-
-  @OneToMany(() => TicketComment, (comment) => comment.ticket)
-  comment: Relation<TicketComment>[];
-
-  @OneToMany(() => Sprint, (sprint) => sprint.ticket)
-  sprint: Relation<Sprint>[];
-
   @ManyToOne(() => Ticket, (ticket) => ticket.subTickets, {
     onDelete: 'SET NULL',
   })
   parentTicket: Relation<Ticket>;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
-  subTickets: Relation<Ticket>[];
+  @ManyToOne(() => Epic, (epic) => epic.ticket, {
+    onDelete: 'CASCADE',
+  })
+  epic: Relation<Epic>;
 }
