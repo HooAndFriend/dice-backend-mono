@@ -37,22 +37,19 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async saveWorkspaceUser(
+    user: User,
     workspace: Workspace,
-    dto: RequestWorkspaceUserSaveDto,
+    role: RoleEnum,
     invitedId: string,
   ) {
-    for (const item of dto.teamUserId) {
-      // const teamUser = await this.teamUserRepository.findOne({
-      //   where: { id: item },
-      // });
-      // await this.workspaceUserRepository.save(
-      //   this.workspaceUserRepository.create({
-      //     workspace,
-      //     teamUser,
-      //     invitedId,
-      //   }),
-      // );
-    }
+    await this.workspaceUserRepository.save(
+      this.workspaceUserRepository.create({
+        user,
+        workspace,
+        role,
+        invitedId,
+      }),
+    );
   }
 
   /**

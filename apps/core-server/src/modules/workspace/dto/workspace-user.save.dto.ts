@@ -3,12 +3,12 @@ import { RoleEnum } from '@hi-dice/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsArray, IsEnum, IsNumber } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
 export default class RequestWorkspaceUserSaveDto {
-  @ApiProperty({ example: [1, 2, 3] })
-  @IsArray()
-  teamUserId: number[];
+  @ApiProperty({ example: 'admin@admin.com' })
+  @IsString()
+  email: string;
 
   @ApiProperty({ example: RoleEnum.VIEWER, enum: RoleEnum })
   @IsEnum(RoleEnum)

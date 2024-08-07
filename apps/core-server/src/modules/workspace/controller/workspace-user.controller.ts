@@ -49,13 +49,17 @@ import { CommonResponse } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
+import UserService from '../../user/service/user.service';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/workspace-user', version: '1' })
 export default class WorkspaceUserController {
-  constructor(private readonly workspaceUserService: WorkspaceUserService) {}
+  constructor(
+    private readonly workspaceUserService: WorkspaceUserService,
+    private readonly userService: UserService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -95,7 +99,13 @@ export default class WorkspaceUserController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() { email }: User,
   ) {
-    await this.workspaceUserService.saveWorkspaceUser(workspace, dto, email);
+    const user = await this.userService.findOneByEmail(dto.email);
+    await this.workspaceUserService.saveWorkspaceUser(
+      user,
+      workspace,
+      dto.role,
+      email,
+    );
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

@@ -67,6 +67,36 @@ export default class UserService {
   }
 
   /**
+   *
+   * @param userId
+   * @returns Promise<User>
+   */
+  public async findOne(userId: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { userId } });
+
+    if (!user) {
+      throw new NotFoundException('Not Found User');
+    }
+
+    return user;
+  }
+
+  /**
+   *
+   * @param userId
+   * @returns Promise<User>
+   */
+  public async findOneByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException('Not Found User');
+    }
+
+    return user;
+  }
+
+  /**
    * 이메일로 유저를 조회합니다.
    * @param dto
    * @returns 유저
