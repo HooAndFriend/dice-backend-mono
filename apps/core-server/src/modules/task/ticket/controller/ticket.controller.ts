@@ -358,7 +358,9 @@ export default class TicketController {
         dto.type === 'admin'
           ? TicketHistoryTypeEnum.ADMIN
           : TicketHistoryTypeEnum.WORKER,
-      log: `${ticket.worker.nickname} -> ${user.nickname}`,
+      log: `${ticket?.worker ? ticket.worker.nickname : '-'} -> ${
+        user.nickname
+      }`,
     });
 
     return CommonResponse.createResponseMessage({
