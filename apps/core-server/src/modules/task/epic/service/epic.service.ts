@@ -171,11 +171,25 @@ export default class EpicService {
    * Update Epic
    * @param dto
    */
-  public async updateEpic(dto: RequestEpicUpdateDto) {
-    await this.epicRepository.update(dto.epicId, {
-      name: dto.name,
-      content: dto.content,
-    });
+  public async updateEpic(
+    epic: Epic,
+    dto: RequestEpicUpdateDto,
+  ): Promise<void> {
+    epic.changeContent(dto.name, dto.content);
+    this.epicRepository.save(epic);
+  }
+
+  /**
+   * 에픽 조회
+   */
+  public async findOne(epicId: number): Promise<Epic> {
+    const epic = await this.epicRepository.findOne({ where: { epicId } });
+
+    if (!epic) {
+      throw new NotFoundException('Not Found Epic');
+    }
+
+    return epic;
   }
 
   /**

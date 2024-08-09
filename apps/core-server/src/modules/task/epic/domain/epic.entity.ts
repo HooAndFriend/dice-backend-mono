@@ -67,4 +67,9 @@ export default class Epic extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => ticket.epic)
   ticket: Relation<Ticket>[];
+
+  public changeContent(name: string, content: string): void {
+    this.name = name;
+    this.content = content;
+  }
 }

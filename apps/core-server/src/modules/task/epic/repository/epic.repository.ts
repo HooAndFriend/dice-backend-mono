@@ -11,7 +11,7 @@ import Epic from '../domain/epic.entity';
 export default class EpicRepository extends Repository<Epic> {
   public async findEpicList(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('epic')
-      .select(['epic.id', 'epic.name', 'epic.code', 'epic.orderId'])
+      .select(['epic.epicId', 'epic.name', 'epic.code', 'epic.orderId'])
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC');
@@ -65,14 +65,10 @@ export default class EpicRepository extends Repository<Epic> {
         'ticket.code',
         'ticket.name',
         'ticket.status',
-        'admin.userId',
-        'admin.profile',
-        'admin.nickname',
       ])
       .leftJoin('epic.ticket', 'ticket')
-      .leftJoin('epic.admin', 'admin')
       .where('ticket.isDeleted = false')
-      .where('epic.id = :epicId', { epicId })
+      .andWhere('epic.epicId = :epicId', { epicId })
       .andWhere('epic.isDeleted = false')
       .orderBy('ticket.orderId', 'ASC');
 
@@ -90,7 +86,7 @@ export default class EpicRepository extends Repository<Epic> {
       .leftJoin('epic.workspace', 'workspace')
       .leftJoin('epic.ticket', 'ticket')
       .where('epic.name = :name', { name })
-      .andWhere('workspace.id = :workspaceId', { workspaceId })
+      .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false');
 
     return await querybuilder.getOne();
