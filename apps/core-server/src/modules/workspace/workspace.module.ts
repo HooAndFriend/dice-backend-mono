@@ -18,6 +18,7 @@ import WorkspaceUserRepository from './repository/workspace-user.repository';
 import WorkspaceUserService from './service/workspace-user.service';
 import WorkspaceUserController from './controller/workspace-user.controller';
 import TicketModule from '../task/ticket/ticket.module';
+import UserModule from '../user/user.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import TicketModule from '../task/ticket/ticket.module';
     ]),
     forwardRef(() => TaskModule),
     forwardRef(() => TicketModule),
+    forwardRef(() => UserModule),
   ],
   exports: [
     TypeOrmExModule,

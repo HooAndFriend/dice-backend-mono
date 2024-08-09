@@ -6,11 +6,10 @@ import SprintModule from './sprint/sprint.module';
 import WorkspaceModule from '../workspace/workspace.module';
 import TicketModule from './ticket/ticket.module';
 import TicketCommentModule from './ticket-comment/ticket-comment.module';
-
-// ** entity Imports
 import UserModule from '../user/user.module';
 import TicketFileModule from './ticket-file/ticket-file.module';
 import TicketSettingModule from './ticket-setting/ticket-setting.module';
+import EpicModule from './epic/epic.module';
 
 @Module({
   imports: [
@@ -21,6 +20,7 @@ import TicketSettingModule from './ticket-setting/ticket-setting.module';
     forwardRef(() => TicketCommentModule),
     forwardRef(() => TicketFileModule),
     forwardRef(() => TicketSettingModule),
+    forwardRef(() => EpicModule),
   ],
   exports: [],
   controllers: [],

@@ -31,8 +31,6 @@ jobs:
           ssh -i $HOME/.ssh/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh log"
           rsync -av -e "ssh -i $HOME/.ssh/key.pem" --exclude='node_modules' ./apps/push-server/ dice@${{ secrets.VM_HOST }}:~/apps/push-server/
           ssh -i $HOME/.ssh/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh push"
-          rsync -av -e "ssh -i $HOME/.ssh/key.pem" --exclude='node_modules' ./apps/admin-server/ dice@${{ secrets.VM_HOST }}:~/apps/admin-server/
-          ssh -i $HOME/.ssh/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh admin"
           rsync -av -e "ssh -i $HOME/.ssh/key.pem" --exclude='node_modules' ./apps/file-server/ dice@${{ secrets.VM_HOST }}:~/apps/file-server/
           ssh -i $HOME/.ssh/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh file"
           ssh -i $HOME/.ssh/key.pem dice@${{ secrets.VM_HOST }} "sh restart.sh nginx"

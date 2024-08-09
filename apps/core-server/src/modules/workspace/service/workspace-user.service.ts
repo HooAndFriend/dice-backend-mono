@@ -14,6 +14,7 @@ import Workspace from '../domain/workspace.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 import User from '../../user/domain/user.entity';
 import { RoleEnum } from '@hi-dice/common';
+import WorkspaceUser from '../domain/workspace-user.entity';
 
 @Injectable()
 export default class WorkspaceUserService {
@@ -36,22 +37,19 @@ export default class WorkspaceUserService {
    * @returns
    */
   public async saveWorkspaceUser(
+    user: User,
     workspace: Workspace,
-    dto: RequestWorkspaceUserSaveDto,
+    role: RoleEnum,
     invitedId: string,
   ) {
-    for (const item of dto.teamUserId) {
-      // const teamUser = await this.teamUserRepository.findOne({
-      //   where: { id: item },
-      // });
-      // await this.workspaceUserRepository.save(
-      //   this.workspaceUserRepository.create({
-      //     workspace,
-      //     teamUser,
-      //     invitedId,
-      //   }),
-      // );
-    }
+    await this.workspaceUserRepository.save(
+      this.workspaceUserRepository.create({
+        user,
+        workspace,
+        role,
+        invitedId,
+      }),
+    );
   }
 
   /**
@@ -135,8 +133,10 @@ export default class WorkspaceUserService {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(userId: number) {
-    return await this.workspaceUserRepository.findWorkspaceUserListByTeam(
+  public async findWorkspaceUserListByTeam(
+    userId: number,
+  ): Promise<[WorkspaceUser[], number]> {
+    return await this.workspaceUserRepository.findWorkspaceUserListByUserId(
       userId,
     );
   }

@@ -35,7 +35,7 @@ export default class WorkspaceUserRepository extends Repository<WorkspaceUser> {
    * @param teamId
    * @returns
    */
-  public async findWorkspaceUserListByTeam(userId: number) {
+  public async findWorkspaceUserListByUserId(userId: number) {
     const queryBuilder = this.createQueryBuilder('workspaceUser')
       .select([
         'workspaceUser.workspaceUserId',
