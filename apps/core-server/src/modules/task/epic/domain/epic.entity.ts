@@ -17,7 +17,7 @@ import Ticket from '../../ticket/domain/ticket.entity';
 @Entity({ name: 'TB_EPIC' })
 export default class Epic extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  epicId: number;
 
   @Column({
     type: 'varchar',

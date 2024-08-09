@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,11 +10,13 @@ import Epic from './domain/epic.entity';
 import EpicService from './service/epic.service';
 import EpicController from './controller/epic.controller';
 import EpicRepository from './repository/epic.repository';
+import WorkspaceModule from '../../workspace/workspace.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Epic]),
     TypeOrmExModule.forCustomRepository([EpicRepository]),
+    forwardRef(() => WorkspaceModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, EpicService],
   controllers: [EpicController],
