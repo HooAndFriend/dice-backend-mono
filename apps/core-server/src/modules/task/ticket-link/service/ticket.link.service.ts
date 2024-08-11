@@ -3,7 +3,10 @@ import { Injectable, Logger } from '@nestjs/common';
 
 // ** Custom Module Imports
 import TicketLinkRepository from '../repository/ticket.link.repository';
-import { NotFoundException } from '@hi-dice/common';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 import RequestTicketLinkSaveDto from '../dto/link.save.dto';
@@ -29,6 +32,10 @@ export default class TicketLinkService {
     const findChildTicket = await this.ticketService.findTicketById(
       dto.childTicketId,
     );
+
+    if (await this.isExistTicketLink(findParentTicket.ticketId, findChildTicket.ticketId)) {
+      throw new BadRequestException('Already Exist Ticket Link');
+    }
 
     const ticketLink = this.ticketLinkRepository.create({
       parentTicket: findParentTicket,
@@ -62,5 +69,20 @@ export default class TicketLinkService {
     }
 
     return findLink;
+  }
+  /**
+   * Find Ticket Link By Parent And Child Id
+   * @param parentId
+   * @param childId
+   */
+  public async isExistTicketLink(parentTicketId: number, childTicketId: number) {
+    const findLink = await this.ticketLinkRepository.findOne({
+      where: { parentTicketId: parentTicketId, childTicketId: childTicketId },
+    });
+    if (!findLink) {
+      return false;
+    }
+
+    return true;
   }
 }

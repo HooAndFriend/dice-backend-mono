@@ -623,6 +623,11 @@ export const TicketResponse = {
       statusCode: 200,
       message: 'Save Ticket Link',
     }),
+    400: createErrorResponse({
+      statusCode: 400,
+      error: 'BAD REQUEST',
+      message: 'Already Exist Ticket Link',
+    }),
     404: createErrorResponse({
       statusCode: 404,
       error: 'NOT FOUND',

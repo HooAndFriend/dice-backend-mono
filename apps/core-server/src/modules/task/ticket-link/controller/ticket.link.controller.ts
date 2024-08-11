@@ -58,6 +58,7 @@ export default class TicketLinkController {
   @ApiOperation({ summary: 'TICKET 링크 추가' })
   @ApiBody({ type: RequestTicketLinkSaveDto })
   @ApiResponse(TicketResponse.saveTicketLink[200])
+  @ApiResponse(TicketResponse.saveTicketLink[400])
   @ApiResponse(TicketResponse.saveTicketLink[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
