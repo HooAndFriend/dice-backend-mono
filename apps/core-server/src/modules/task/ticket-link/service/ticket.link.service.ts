@@ -22,8 +22,9 @@ export default class TicketLinkService {
   private logger = new Logger(TicketLinkService.name);
 
   /**
-   * Save Ticket Link
+   * 티켓 링크를 저장합니다.
    * @param dto
+   * @returns
    */
   public async saveTicketLink(dto: RequestTicketLinkSaveDto) {
     const findParentTicket = await this.ticketService.findTicketById(
@@ -46,8 +47,9 @@ export default class TicketLinkService {
   }
 
   /**
-   * Delete Ticket Link
+   * 티켓 링크를 삭제합니다.
    * @param linkId
+   * @returns
    */
   public async deleteTicketLink(linkId: number) {
     const findLink = await this.findTicketLinkById(linkId);
@@ -56,8 +58,9 @@ export default class TicketLinkService {
   }
 
   /**
-   * Find Ticket Link By Id
+   * 티켓 링크를 조회합니다.
    * @param id
+   * @returns TicketLink
    */
   public async findTicketLinkById(id: number) {
     const findLink = await this.ticketLinkRepository.findOne({
@@ -71,9 +74,10 @@ export default class TicketLinkService {
     return findLink;
   }
   /**
-   * Find Ticket Link By Parent And Child Id
+   * 티켓 링크가 존재하는지 확인합니다.
    * @param parentId
    * @param childId
+   * @returns boolean
    */
   public async isExistTicketLink(parentTicketId: number, childTicketId: number) {
     const findLink = await this.ticketLinkRepository.findOne({
