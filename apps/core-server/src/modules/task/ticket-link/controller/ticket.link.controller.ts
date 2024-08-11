@@ -3,7 +3,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   Post,
   UseGuards,
@@ -11,6 +10,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // ** Module Imports
+import TicketLinkService from '../service/ticket.link.service';
 
 // ** Swagger Imports
 import {
@@ -41,7 +41,6 @@ import {
   RoleEnum,
 } from '@hi-dice/common';
 import RequestTicketLinkSaveDto from '../dto/link.save.dto';
-import TicketLinkService from '../service/ticket.link.service';
 
 @ApiTags('Ticket Link')
 @ApiResponse(createServerExceptionResponse())
