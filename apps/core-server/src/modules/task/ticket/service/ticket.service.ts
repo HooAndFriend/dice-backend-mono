@@ -12,10 +12,9 @@ import { Between, DataSource, In, LessThan } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
+import EpicService from '../../epic/service/epic.service';
 import TicketRepository from '../repository/ticket.repository';
-import TicketFileRepository from '../../ticket-file/repository/ticket.file.repository';
 import TicketCommentRepository from '../../ticket-comment/repository/ticket.comment.repository';
-import UserRepository from '@/src/modules/user/repository/user.repository';
 
 // ** enum, dto, entity, types Imports
 import Ticket from '../domain/ticket.entity';
@@ -32,7 +31,6 @@ import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto
 import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 import User from '@/src/modules/user/domain/user.entity';
 import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
-import RequestWorkspaceTaskFindDto from '@/src/modules/workspace/dto/workspace-task.find.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
@@ -41,9 +39,9 @@ import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 export default class TicketService {
   constructor(
     private readonly ticketRepository: TicketRepository,
-    private readonly ticketFileRepository: TicketFileRepository,
+    private readonly epicService: EpicService,
     private readonly ticketCommentRepository: TicketCommentRepository,
-    private readonly userRepository: UserRepository,
+
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
@@ -194,7 +192,6 @@ export default class TicketService {
     user: User,
     workspace: Workspace,
     ticketSetting: TicketSetting,
-    parentTicket?: Ticket,
   ) {
     const ticketCount =
       (await this.ticketRepository.count({
@@ -202,6 +199,23 @@ export default class TicketService {
       })) + 1;
 
     const ticketNumber = workspace.code + '-' + ticketCount;
+
+    if (dto.epicId) {
+      const epic = await this.epicService.findOne(dto.epicId);
+
+      return await this.ticketRepository.save(
+        this.ticketRepository.create({
+          admin: user,
+          code: ticketNumber,
+          workspace,
+          name: dto.name,
+          status: TaskStatusEnum.NOTHING,
+          storypoint: 0,
+          ticketSetting,
+          epic,
+        }),
+      );
+    }
 
     return await this.ticketRepository.save(
       this.ticketRepository.create({
@@ -212,7 +226,6 @@ export default class TicketService {
         status: TaskStatusEnum.NOTHING,
         storypoint: 0,
         ticketSetting,
-        parentTicket,
       }),
     );
   }

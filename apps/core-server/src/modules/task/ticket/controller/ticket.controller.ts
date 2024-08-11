@@ -63,6 +63,7 @@ import RequestMultiTicketSettingUpdateDto from '../dto/ticket/ticket-multi.setti
 import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
+import EpicService from '../../epic/service/epic.service';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -73,6 +74,7 @@ export default class TicketController {
     private readonly ticketService: TicketService,
     private readonly userService: UserService,
     private readonly ticketSettingService: TicketSettingService,
+    private readonly epicService: EpicService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -133,16 +135,11 @@ export default class TicketController {
       dto.settingId,
     );
 
-    const parentTicket = await this.ticketService.findParentTicketById(
-      dto.parentId,
-    );
-
     const ticket = await this.ticketService.saveTicket(
       dto,
       user,
       workspace,
       ticketSetting,
-      parentTicket,
     );
 
     this.sendTicketQueue({
