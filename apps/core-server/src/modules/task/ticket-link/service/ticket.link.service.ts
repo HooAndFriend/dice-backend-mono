@@ -34,7 +34,12 @@ export default class TicketLinkService {
       dto.childTicketId,
     );
 
-    if (await this.isExistTicketLink(findParentTicket.ticketId, findChildTicket.ticketId)) {
+    const isExistTicketLink = await this.isExistTicketLink(
+      findParentTicket.ticketId,
+      findChildTicket.ticketId,
+    );
+
+    if (isExistTicketLink) {
       throw new BadRequestException('Already Exist Ticket Link');
     }
 
@@ -54,17 +59,17 @@ export default class TicketLinkService {
   public async deleteTicketLink(linkId: number) {
     const findLink = await this.findTicketLinkById(linkId);
 
-    return await this.ticketLinkRepository.delete({ ticketLinkId: findLink.ticketLinkId });
+    await this.ticketLinkRepository.delete({ ticketLinkId: findLink.ticketLinkId });
   }
 
   /**
    * 티켓 링크를 조회합니다.
-   * @param id
+   * @param linkId
    * @returns TicketLink
    */
-  public async findTicketLinkById(id: number) {
+  public async findTicketLinkById(linkId: number) {
     const findLink = await this.ticketLinkRepository.findOne({
-      where: { ticketLinkId: id },
+      where: { ticketLinkId: linkId },
     });
 
     if (!findLink) {
@@ -83,10 +88,7 @@ export default class TicketLinkService {
     const findLink = await this.ticketLinkRepository.findOne({
       where: { parentTicketId: parentTicketId, childTicketId: childTicketId },
     });
-    if (!findLink) {
-      return false;
-    }
-
-    return true;
+    
+    return findLink ? true : false;
   }
 }
