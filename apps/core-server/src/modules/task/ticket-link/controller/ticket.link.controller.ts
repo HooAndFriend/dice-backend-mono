@@ -59,12 +59,12 @@ export default class TicketLinkController {
   @ApiBody({ type: RequestTicketLinkSaveDto })
   @ApiResponse(TicketResponse.saveTicketLink[200])
   @ApiResponse(TicketResponse.saveTicketLink[404])
-  @WorkspaceRole(RoleEnum.VIEWER)
+  @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Post()
   public async saveTicketLink(@Body() dto: RequestTicketLinkSaveDto) {
-    this.ticketLinkService.saveTicketLink(dto);
+    await this.ticketLinkService.saveTicketLink(dto);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -82,8 +82,8 @@ export default class TicketLinkController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Delete(':linkId')
-  public async deleteTicketLink(@Param('linkId') id: number) {
-    this.ticketLinkService.deleteTicketLink(id);
+  public async deleteTicketLink(@Param('linkId') linkId: number) {
+    await this.ticketLinkService.deleteTicketLink(linkId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

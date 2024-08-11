@@ -31,22 +31,21 @@ export default class TicketLinkService {
     );
 
     const ticketLink = this.ticketLinkRepository.create({
-      parentTicketId: dto.parentTicketId,
-      childTicketId: dto.childTicketId,
-      ticket: findParentTicket,
-    });
+      parentTicket: findParentTicket,
+      childTicket: findChildTicket,
+    }); 
 
     return await this.ticketLinkRepository.save(ticketLink);
   }
 
   /**
    * Delete Ticket Link
-   * @param id
+   * @param linkId
    */
-  public async deleteTicketLink(id: number) {
-    const findLink = await this.findTicketLinkById(id);
+  public async deleteTicketLink(linkId: number) {
+    const findLink = await this.findTicketLinkById(linkId);
 
-    return await this.ticketLinkRepository.delete(id);
+    return await this.ticketLinkRepository.delete({ ticketLinkId: findLink.ticketLinkId });
   }
 
   /**

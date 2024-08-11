@@ -129,9 +129,6 @@ export default class Ticket extends BaseTimeEntity {
   @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
   ticketFile: Relation<TicketFile>[];
 
-  @OneToMany(() => TicketLink, (ticketLink) => ticketLink.ticket)
-  ticketLink: Relation<TicketLink>[];
-
   @OneToMany(() => TicketComment, (comment) => comment.ticket)
   comment: Relation<TicketComment>[];
 
@@ -145,4 +142,10 @@ export default class Ticket extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
   subTickets: Relation<Ticket>[];
+
+  @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
+  parentLink: Relation<TicketLink>[];
+
+  @OneToMany(() => TicketLink, (ticketLink) => ticketLink.childTicket)
+  childLink: Relation<TicketLink>[];
 }

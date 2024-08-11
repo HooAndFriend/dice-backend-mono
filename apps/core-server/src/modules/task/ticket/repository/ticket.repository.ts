@@ -35,9 +35,6 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.profile',
         'ticketFile.ticketFileId',
         'ticketFile.url',
-        'ticketLink.ticketLinkId',
-        'ticketLink.parentTicketId',
-        'ticketLink.childTicketId',
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
@@ -56,19 +53,26 @@ export default class TicketRepository extends Repository<Ticket> {
         'subTicketSetting.ticketSettingId',
         'subTicketSetting.name',
         'subTicketSetting.type',
+        'parentLink.ticketLinkId',
+        'parentLink.parentTicketId',
+        'parentLink.childTicketId',
+        'childLink.ticketLinkId',
+        'childLink.parentTicketId',
+        'childLink.childTicketId',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
-      .leftJoin('ticket.ticketLink', 'ticketLink')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
       .leftJoin('ticket.subTickets', 'subTickets')
+      .leftJoin('ticket.parentLink', 'parentLink')
+      .leftJoin('ticket.childLink', 'childLink')
       .leftJoin('subTickets.ticketSetting', 'subTicketSetting')
       .leftJoin('subTickets.worker', 'subTicketWorker')
 
       .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
-
+      
     return await querybuilder.getOne();
   }
 
