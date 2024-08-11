@@ -19,7 +19,7 @@ export default class TicketLink extends BaseCreatedTimeEntity {
 
   @Column({
     type: 'int',
-    name: 'parentTicketId',
+    name: 'parent_ticket_id',
     comment: '부모 티켓 아이디',
     nullable: false,
   })
@@ -27,7 +27,7 @@ export default class TicketLink extends BaseCreatedTimeEntity {
 
   @Column({
     type: 'int',
-    name: 'childTicketId',
+    name: 'child_ticket_id',
     comment: '자식 티켓 아이디',
     nullable: false,
   })
@@ -38,7 +38,7 @@ export default class TicketLink extends BaseCreatedTimeEntity {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
   })
-  @JoinColumn({ name: 'parentTicketId' })
+  @JoinColumn({ name: 'parent_ticket_id' })
   parentTicket: Relation<Ticket>;
 
   @ManyToOne(() => Ticket, (ticket) => ticket.childLink, {
@@ -46,6 +46,6 @@ export default class TicketLink extends BaseCreatedTimeEntity {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
   })
-  @JoinColumn({ name: 'childTicketId' })
+  @JoinColumn({ name: 'child_ticket_id' })
   childTicket: Relation<Ticket>;
 }
