@@ -112,9 +112,11 @@ export default class Ticket extends BaseTimeEntity {
   @OneToMany(() => TicketComment, (comment) => comment.ticket)
   comment: Relation<TicketComment>[];
 
-  @OneToMany(() => Sprint, (sprint) => sprint.ticket)
-  sprint: Relation<Sprint>[];
-
+  @ManyToOne(() => Sprint, (sprint) => sprint.ticket, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  sprint: Relation<Sprint>;
   @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
   subTickets: Relation<Ticket>[];
 

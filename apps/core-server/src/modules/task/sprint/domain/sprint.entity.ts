@@ -75,6 +75,10 @@ export default class Sprint extends BaseTimeEntity {
   })
   workspace: Relation<Workspace>;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.sprint)
+  @OneToMany(() => Ticket, (ticket) => ticket.sprint, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   ticket: Relation<Ticket>[];
 }
