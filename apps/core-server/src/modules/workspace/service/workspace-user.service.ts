@@ -1,12 +1,8 @@
 // ** Nest Imports
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-// ** TypeORM Imports
-import { LessThan } from 'typeorm';
-
 // ** Custom Module Imports
 import WorkspaceUserRepository from '../repository/workspace-user.repository';
-import RequestWorkspaceUserSaveDto from '../dto/workspace-user.save.dto';
 
 // ** enum, dto, entity, types Imports
 import RequestWorkspaceUpdateUpdateDto from '../dto/workspace-user.update.dto';
@@ -23,25 +19,23 @@ export default class WorkspaceUserService {
   ) {}
 
   /**
-   * Update Workspace User
-   * @param dto
-   * @returns
+   * 워크스페이스 유저의 권한을 변경합니다.
    */
-  public async updateWorksapceUserRole(dto: RequestWorkspaceUpdateUpdateDto) {
+  public async updateWorksapceUserRole(
+    dto: RequestWorkspaceUpdateUpdateDto,
+  ): Promise<void> {
     await this.workspaceUserRepository.update(dto.id, { role: dto.role });
   }
 
   /**
-   * Save Workspace User
-   * @param dto
-   * @returns
+   * 워크스페이스 유저를 저장합니다.
    */
   public async saveWorkspaceUser(
     user: User,
     workspace: Workspace,
     role: RoleEnum,
     invitedId: string,
-  ) {
+  ): Promise<void> {
     await this.workspaceUserRepository.save(
       this.workspaceUserRepository.create({
         user,
@@ -53,24 +47,19 @@ export default class WorkspaceUserService {
   }
 
   /**
-   * Delete Workspace User
-   * @param workspaceUserId
-   * @returns
+   * 워크스페이스 유저를 삭제합니다.
    */
-  public async deleteWorksapceUser(workspaceUserId: number) {
+  public async deleteWorksapceUser(workspaceUserId: number): Promise<void> {
     await this.workspaceUserRepository.delete(workspaceUserId);
   }
 
   /**
-   * Search Workspace User List
-   * @param dto
-   * @param workspaceId
-   * @returns
+   * 워크스페이스 유저 리스트를 조회합니다.
    */
   public async searchWorkspaceUser(
     dto: RequestWorkspaceUserFindDto,
     workspaceId: number,
-  ) {
+  ): Promise<[WorkspaceUser[], number]> {
     return await this.workspaceUserRepository.searchWorkspaceUser(
       dto,
       workspaceId,
@@ -79,11 +68,11 @@ export default class WorkspaceUserService {
 
   /**
    * 워크스페이스 생성 시의 기본 저장
-   * @param workspace
-   * @param user
-   * @returns workspaceUser
    */
-  public async saveInitWorkspaceUser(workspace: Workspace, user: User) {
+  public async saveInitWorkspaceUser(
+    workspace: Workspace,
+    user: User,
+  ): Promise<WorkspaceUser> {
     return await this.workspaceUserRepository.save(
       this.workspaceUserRepository.create({
         workspace,
@@ -96,17 +85,13 @@ export default class WorkspaceUserService {
 
   /**
    * 초대된 유저를 워크스페이스에 저장
-   * @param workspace
-   * @param user
-   * @param role
-   * @param invitedId
    */
   public async saveInviteWorkspaceUser(
     workspace: Workspace,
     user: User,
     role: RoleEnum,
     invitedId: string,
-  ) {
+  ): Promise<void> {
     await this.workspaceUserRepository.save(
       this.workspaceUserRepository.create({
         workspace,
@@ -118,20 +103,18 @@ export default class WorkspaceUserService {
   }
 
   /**
-   * Find Workspace User List
-   * @param workspaceId
-   * @returns
+   * 워크스페이스 유저 리스트 조회
    */
-  public async findWorkspaceUserList(workspaceId: number) {
+  public async findWorkspaceUserList(
+    workspaceId: number,
+  ): Promise<[WorkspaceUser[], number]> {
     return await this.workspaceUserRepository.findWorkspaceUserList(
       workspaceId,
     );
   }
 
   /**
-   * Find Workspace List
-   * @param teamId
-   * @returns
+   * 팀의 워크스페이스 유저 리스트 조회
    */
   public async findWorkspaceUserListByTeam(
     userId: number,
@@ -142,18 +125,16 @@ export default class WorkspaceUserService {
   }
 
   /**
-   * Find User Workspace List
-   * @param userId
-   * @returns
+   * 유저의 워크스페이스 리스트 조회
    */
-  public async findUserWorkspaceList(userId: number) {
+  public async findUserWorkspaceList(
+    userId: number,
+  ): Promise<[WorkspaceUser[], number]> {
     return await this.workspaceUserRepository.findUserWorkspaceList(userId);
   }
 
   /**
    * 워크스페이스에 초대 가능한 팀 유저 리스트 조회
-   * @param workspaceId
-   * @returns
    */
   public async findInviteUserList(workspace: Workspace) {
     // const [teamUserList] = await this.teamUserRepository.findTeamUserList(
@@ -173,11 +154,11 @@ export default class WorkspaceUserService {
   }
 
   /**
-   * Find Workspace User By Id
-   * @param workspaceUserId
-   * @returns
+   * 워크스페이스 유저가 존재하는지 확인합니다.
    */
-  public async existedWorksapceUserById(workspaceUserId: number) {
+  public async existedWorksapceUserById(
+    workspaceUserId: number,
+  ): Promise<void> {
     const workspaceUser = await this.workspaceUserRepository.exist({
       where: { workspaceUserId },
     });

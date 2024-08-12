@@ -14,6 +14,7 @@ import {
 
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -49,7 +50,6 @@ import { CommonResponse } from '@hi-dice/common';
 import Workspace from '../domain/workspace.entity';
 import User from '../../user/domain/user.entity';
 import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
-import UserService from '../../user/service/user.service';
 
 @ApiTags('Workspace User')
 @ApiResponse(createServerExceptionResponse())
