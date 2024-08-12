@@ -1,22 +1,11 @@
 // ** Nest Imports
-import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 
 // ** Module Imports
 import FaqService from '../service/faq.service';
 
 // ** Swagger Imports
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // ** Utils Imports
 

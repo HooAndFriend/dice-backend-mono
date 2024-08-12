@@ -10,6 +10,7 @@ import { NotFoundException } from '@/src/global/exception/CustomException';
 import RequestTicketCommentSaveDto from '../dto/comment.save.dto';
 import User from '@/src/modules/user/domain/user.entity';
 import RequestTicketCommentUpdateDto from '../dto/comment.update.dto';
+import TicketComment from '../domain/ticket.comment.entity';
 
 @Injectable()
 export default class TicketCommentService {
@@ -21,10 +22,9 @@ export default class TicketCommentService {
   private logger = new Logger(TicketCommentService.name);
 
   /**
-   * Find Comment by Id
-   * @param ticketId
+   * 티켓 댓글 조회
    */
-  public async findCommentById(ticketId: number) {
+  public async findCommentById(ticketId: number): Promise<TicketComment> {
     const findComment = await this.ticketCommentRepository.findCommentById(
       ticketId,
     );
@@ -35,11 +35,12 @@ export default class TicketCommentService {
   }
 
   /**
-   * Save Comment
-   * @param dto
-   * @param user
+   * 댓글 저장
    */
-  public async saveComment(dto: RequestTicketCommentSaveDto, user: User) {
+  public async saveComment(
+    dto: RequestTicketCommentSaveDto,
+    user: User,
+  ): Promise<TicketComment> {
     const findTicket = await this.ticketService.findTicketById(dto.ticketId);
 
     const comment = this.ticketCommentRepository.create({
@@ -52,30 +53,30 @@ export default class TicketCommentService {
   }
 
   /**
-   * Update Comment
-   * @param dto
-   * @param user
+   * 댓글 수정
    */
-  public async updateComment(dto: RequestTicketCommentUpdateDto, user: User) {
+  public async updateComment(
+    dto: RequestTicketCommentUpdateDto,
+    user: User,
+  ): Promise<void> {
     await this.ticketCommentRepository.update(dto.commentId, {
       content: dto.content,
     });
   }
 
   /**
-   * Delete Comment
-   * @param id
+   * 댓글 삭제
    */
-  public async deleteComment(id: number) {
-    await this.ticketCommentRepository.delete(id);
+  public async deleteComment(ticketCommentId: number): Promise<void> {
+    await this.ticketCommentRepository.delete(ticketCommentId);
   }
 
   /**
-   * Find Comment Domain By Id
-   * @param commentId
-   * @returns
+   * 티켓 도메인 조회
    */
-  public async findCommentDomainById(commentId: number) {
+  public async findCommentDomainById(
+    commentId: number,
+  ): Promise<TicketComment> {
     const comment = await this.ticketCommentRepository.findOne({
       where: { ticketCommentId: commentId },
       relations: ['ticket'],
@@ -89,10 +90,9 @@ export default class TicketCommentService {
   }
 
   /**
-   * Find Comment
-   * @param id
+   * 티켓 댓글 조회
    */
-  public async findComment(id: number) {
+  public async findComment(id: number): Promise<[TicketComment[], number]> {
     return await this.ticketCommentRepository.findAllCommentByTicketId(id);
   }
 }

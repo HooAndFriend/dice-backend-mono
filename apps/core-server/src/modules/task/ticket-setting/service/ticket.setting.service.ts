@@ -13,6 +13,7 @@ import { NotFoundException } from '@/src/global/exception/CustomException';
 import Workspace from '../../../workspace/domain/workspace.entity';
 import RequestSettingUpdateDto from '../dto/setting.update.dto';
 import RequestSettingSaveDto from '../dto/setting.save.dto';
+import TicketSetting from '../domain/ticket.setting.entity';
 
 @Injectable()
 export default class TicketSettingService {
@@ -24,11 +25,11 @@ export default class TicketSettingService {
   private logger = new Logger(TicketSettingService.name);
 
   /**
-   * Find Epic By Id
-   * @param epicId
-   * @returns
+   * 티켓 셋팅 조회
    */
-  public async findTicketSettingById(ticketSettingId: number) {
+  public async findTicketSettingById(
+    ticketSettingId: number,
+  ): Promise<TicketSetting> {
     const ticketSetting = await this.ticketSettingRepository.findOne({
       where: { ticketSettingId },
     });
@@ -41,19 +42,18 @@ export default class TicketSettingService {
   }
 
   /**
-   * Delete Ticket Setting
-   * @param ticketSettingId
+   * 티켓 셋팅 삭제
    */
-  public async deleteTicketSetting(ticketSettingId: number) {
+  public async deleteTicketSetting(ticketSettingId: number): Promise<void> {
     await this.ticketSettingRepository.delete(ticketSettingId);
   }
 
   /**
-   * Existed Ticket Setting By Id
-   * @param ticketSettingId
-   * @returns
+   * 티켓 셋팅이 있는 지 조회
    */
-  public async existedTicketSettingById(ticketSettingId: number) {
+  public async existedTicketSettingById(
+    ticketSettingId: number,
+  ): Promise<boolean> {
     const ticketSetting = await this.ticketSettingRepository.exist({
       where: { ticketSettingId },
     });
@@ -66,24 +66,23 @@ export default class TicketSettingService {
   }
 
   /**
-   * Find all Setting
-   * @param workspaceId
+   * 모든 티켓 셋팅 조회
    */
-  public async findAllSetting(workspaceId: number) {
+  public async findAllSetting(
+    workspaceId: number,
+  ): Promise<[TicketSetting[], number]> {
     return await this.ticketSettingRepository.findSettingByWorkspaceId(
       workspaceId,
     );
   }
 
   /**
-   * Save Ticket Setting
-   * @param dto
-   * @param workspace
+   * 티켓 셋팅 저장
    */
   public async saveTicketSetting(
     dto: RequestSettingSaveDto,
     workspace: Workspace,
-  ) {
+  ): Promise<void> {
     await this.ticketSettingRepository.save(
       this.ticketSettingRepository.create({
         name: dto.name,
@@ -95,14 +94,13 @@ export default class TicketSettingService {
   }
 
   /**
-   * Update Ticket Setting
-   * @param dto
+   * 티켓 셋팅 수정
    */
   @Transactional()
   public async updateTicketSetting(
     dto: RequestSettingUpdateDto,
     workspace: Workspace,
-  ) {
+  ): Promise<void> {
     for await (const item of dto.data) {
       if (item.settingId) {
         const ticketSetting = await this.findTicketSettingById(item.settingId);

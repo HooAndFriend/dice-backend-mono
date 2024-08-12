@@ -1,16 +1,5 @@
 // ** Nest Imports
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import VersionService from '../service/version.service';

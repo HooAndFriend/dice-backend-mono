@@ -6,6 +6,7 @@ import FaqRepository from '../repository/faq.repository';
 
 // ** enum, dto, entity, types Imports
 import RequestFaqFindDto from '../dto/faq.find.dto';
+import Faq from '../domain/faq.entity';
 
 @Injectable()
 export default class FaqService {
@@ -14,11 +15,9 @@ export default class FaqService {
   private logger = new Logger(FaqService.name);
 
   /**
-   * Find Faq List
-   * @param dto
-   * @returns
+   * Faq 리스트를 조회합니다.
    */
-  public async findFaqList(dto: RequestFaqFindDto) {
+  public async findFaqList(dto: RequestFaqFindDto): Promise<[Faq[], number]> {
     return await this.faqRepository.findFaqList(dto);
   }
 }
