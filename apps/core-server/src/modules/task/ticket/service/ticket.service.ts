@@ -48,10 +48,9 @@ export default class TicketService {
   private logger = new Logger(TicketService.name);
 
   /**
-   * Find Ticket by Id
-   * @param ticketId
+   * 티켓 ID로 조회
    */
-  public async findTicketById(ticketId: number) {
+  public async findTicketById(ticketId: number): Promise<Ticket> {
     const findTicket = await this.ticketRepository.findOne({
       where: { ticketId },
     });
@@ -65,10 +64,8 @@ export default class TicketService {
 
   /**
    * 부모로 사용할 티켓 조회
-   * @param ticketId
-   * @returns Ticket
    */
-  public async findParentTicketById(ticketId?: number) {
+  public async findParentTicketById(ticketId?: number): Promise<Ticket | null> {
     if (!ticketId) {
       return null;
     }
@@ -79,11 +76,11 @@ export default class TicketService {
   }
 
   /**
-   * Find Ticket By Id With Worker And Admin
-   * @param ticketId
-   * @returns
+   * 티켓 ID로 조회 (Worker, Admin 포함)
    */
-  public async findTicketByIdWithWorkerAndAdmin(ticketId: number) {
+  public async findTicketByIdWithWorkerAndAdmin(
+    ticketId: number,
+  ): Promise<Ticket> {
     const ticket = await this.ticketRepository.findOne({
       where: { ticketId },
       relations: ['worker', 'admin'],
@@ -97,11 +94,12 @@ export default class TicketService {
   }
 
   /**
-   * Update Ticket User
-   * @param dto
-   * @param user
+   * 티켓 담당자 변경
    */
-  public async updateTicketUser(dto: RequestTicketUserUpdateDto, user: User) {
+  public async updateTicketUser(
+    dto: RequestTicketUserUpdateDto,
+    user: User,
+  ): Promise<void> {
     if (dto.type === 'admin') {
       await this.ticketRepository.update(dto.ticketId, { admin: user });
     } else {
@@ -110,22 +108,19 @@ export default class TicketService {
   }
 
   /**
-   * Update Ticket Setting
-   * @param ticketSetting
-   * @param ticketId
+   * 티켓 타입 변경
    */
   public async updateTicketSetting(
     ticketSetting: TicketSetting,
     ticketId: number,
-  ) {
+  ): Promise<void> {
     await this.ticketRepository.update(ticketId, { ticketSetting });
   }
 
   /**
-   * Find Comment by Id
-   * @param ticketId
+   * 티켓 댓글 조회
    */
-  public async findCommentById(ticketId: number) {
+  public async findCommentById(ticketId: number): Promise<TicketComment> {
     const findComment = await this.ticketCommentRepository.findCommentById(
       ticketId,
     );
@@ -136,11 +131,12 @@ export default class TicketService {
   }
 
   /**
-   * Verify ticket name
-   * @param name
-   * @param workspaceId
+   * 티켓 이름 검증
    */
-  public async ticketNameValidation(name: string, workspaceId: number) {
+  public async ticketNameValidation(
+    name: string,
+    workspaceId: number,
+  ): Promise<void> {
     if (name.length > 30) {
       throw new BadRequestException('Max length of ticket name is 30');
     }
@@ -157,19 +153,16 @@ export default class TicketService {
   }
 
   /**
-   * Find all tickets
-   * @param workspaceId
+   * 모든 티켓 리스트 조회
    */
-  public async findAllTicket(workspaceId: number) {
+  public async findAllTicket(workspaceId: number): Promise<[Ticket[], number]> {
     return await this.ticketRepository.findAllTicketByWorkspaceId(workspaceId);
   }
 
   /**
    * 티켓을 ID로 상세 조회
-   * @param id
-   * @returns Ticket
    */
-  public async findOneTicket(id: number) {
+  public async findOneTicket(id: number): Promise<Ticket> {
     const data = await this.ticketRepository.findTicketDetailById(id);
 
     if (!data) {
@@ -180,19 +173,14 @@ export default class TicketService {
   }
 
   /**
-   * Save ticket
-   * @param dto
-   * @param user
-   * @param workspace
-   * @param ticketSetting
-   * @param epic
+   * 티켓 저장
    */
   public async saveTicket(
     dto: RequestSimpleTicketSaveDto,
     user: User,
     workspace: Workspace,
     ticketSetting: TicketSetting,
-  ) {
+  ): Promise<Ticket> {
     const ticketCount =
       (await this.ticketRepository.count({
         where: { workspace: { workspaceId: workspace.workspaceId } },
@@ -231,14 +219,12 @@ export default class TicketService {
   }
 
   /**
-   * Update Simple Ticket
-   * @param ticket
-   * @param dto
+   * 티켓 수정
    */
   public async updateSimpleTicket(
     ticket: Ticket,
     dto: RequestTicketSimpleUpdateDto,
-  ) {
+  ): Promise<void> {
     if (dto.type === 'content') {
       ticket.content = dto.value;
     } else if (dto.type === 'name') {
@@ -251,20 +237,20 @@ export default class TicketService {
   }
 
   /**
-   * Update ticket due date
-   * @param dto
+   * 티켓 듀데이트 변경
    */
-  public async updateTicketDueDate(dto: RequestTicketDueDateUpdateDto) {
+  public async updateTicketDueDate(
+    dto: RequestTicketDueDateUpdateDto,
+  ): Promise<void> {
     await this.ticketRepository.update(dto.ticketId, {
       dueDate: dto.dueDate,
     });
   }
 
   /**
-   * Delete ticket
-   * @param id
+   * 티켓 삭제
    */
-  public async deleteTicket(id: number) {
+  public async deleteTicket(id: number): Promise<void> {
     const findTicket = await this.findTicketById(id);
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -291,12 +277,13 @@ export default class TicketService {
   }
 
   /**
-   * Update Multi Ticket Status
-   * @param ids
-   * @param status
+   * 티켓 상태 다중 변경
    */
   @Transactional()
-  public async multiTicketStatusUpdate(ids: number[], status: TaskStatusEnum) {
+  public async multiTicketStatusUpdate(
+    ids: number[],
+    status: TaskStatusEnum,
+  ): Promise<void> {
     const now = new Date();
 
     if (status === TaskStatusEnum.REOPEN) {
@@ -331,33 +318,31 @@ export default class TicketService {
   }
 
   /**
-   * Update Multi Ticket Due Date
-   * @param ids
-   * @param dueDate
+   * 티켓 듀데이트 다중 변경
    */
   @Transactional()
-  public async multiTicketDueDateUpdate(ids: number[], dueDate: string) {
+  public async multiTicketDueDateUpdate(
+    ids: number[],
+    dueDate: string,
+  ): Promise<void> {
     await this.ticketRepository.update({ ticketId: In(ids) }, { dueDate });
   }
 
   /**
-   * Delete Tickets
-   * @param dto
+   * 티켓 다중 삭제
    */
-  public async deleteTicketList(dto: RequestTicketDeleteDto) {
+  public async deleteTicketList(dto: RequestTicketDeleteDto): Promise<void> {
     await this.ticketRepository.delete({ ticketId: In(dto.ticketIds) });
   }
 
   /**
-   * Update Multi Ticket Due Date
-   * @param ids
-   * @param dueDate
+   * 티켓 듀데이트 다중 변경
    */
   @Transactional()
   public async multiTicketSettingUpdate(
     ids: number[],
     ticketSetting: TicketSetting,
-  ) {
+  ): Promise<void> {
     await this.ticketRepository.update(
       { ticketId: In(ids) },
       { ticketSetting },
@@ -365,10 +350,11 @@ export default class TicketService {
   }
 
   /**
-   * Update ticket
-   * @param dto
+   * 티켓 상태 변경
    */
-  public async updateTicketStatus(dto: RequestTicketStatusUpdateDto) {
+  public async updateTicketStatus(
+    dto: RequestTicketStatusUpdateDto,
+  ): Promise<void> {
     const now = new Date();
 
     if (dto.status === TaskStatusEnum.REOPEN) {
@@ -394,10 +380,9 @@ export default class TicketService {
   }
 
   /**
-   * Existed Ticket By Id
-   * @param ticketId
+   * 티켓 있는 지 확인
    */
-  public async isExistedTicketById(ticketId: number) {
+  public async isExistedTicketById(ticketId: number): Promise<void> {
     const ticket = await this.ticketRepository.exist({
       where: { ticketId },
     });
@@ -408,25 +393,20 @@ export default class TicketService {
   }
 
   /**
-   * Update Ticket Epic
-   * @param epic
-   * @param ticketId
+   * 티켓의 에픽 변경
    */
-  public async updateTicketEpic(ticketId: number) {
+  public async updateTicketEpic(ticketId: number): Promise<void> {
     // await this.ticketRepository.update(ticketId, { epic });
   }
 
   /**
-   * Update Ticket Order
-   * @param ticket
-   * @param targetOrderId
-   * @param workspaceId
+   * 티켓 정렬 순서 변경
    */
   public async updateTicketOrder(
     ticket: Ticket,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<void> {
     if (ticket.orderId > targetOrderId) {
       const list = await this.findMoreTicketList(
         ticket.orderId,
@@ -448,12 +428,15 @@ export default class TicketService {
     }
   }
 
+  /**
+   * 티켓의 정렬 순서 변경
+   */
   private async updateOrder(
     ticketList: Ticket[],
     isPluse: boolean,
     targetTicket: Ticket,
     targetOrderId: number,
-  ) {
+  ): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -481,16 +464,13 @@ export default class TicketService {
   }
 
   /**
-   * Find More Ticket List
-   * @param orderId
-   * @param workspaceId
-   * @returns
+   * 티켓 리스트 조회
    */
   public async findLessTicketList(
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
         orderId: Between(orderId, targetOrderId),
@@ -500,16 +480,13 @@ export default class TicketService {
   }
 
   /**
-   * Find Less Ticket List
-   * @param orderId
-   * @param workspaceId
-   * @returns
+   * 티켓 리스트 조회
    */
   public async findMoreTicketList(
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
         orderId: Between(targetOrderId, orderId),

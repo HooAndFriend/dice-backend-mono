@@ -7,6 +7,7 @@ import TicketFileRepository from '../repository/ticket.file.repository';
 // ** enum, dto, entity, types Imports
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Ticket from '../../ticket/domain/ticket.entity';
+import TicketFile from '../domain/ticket.file.entity';
 
 @Injectable()
 export default class TicketFileService {
@@ -15,11 +16,9 @@ export default class TicketFileService {
   private logger = new Logger(TicketFileService.name);
 
   /**
-   * Save Ticket File
-   * @param ticket
-   * @param file
+   * 티켓의 파일 저장
    */
-  public async saveTicketFile(ticket: Ticket, file: string) {
+  public async saveTicketFile(ticket: Ticket, file: string): Promise<void> {
     await this.ticketFileRepository.save(
       this.ticketFileRepository.create({
         url: file,
@@ -29,18 +28,16 @@ export default class TicketFileService {
   }
 
   /**
-   * Delete Ticket File
-   * @param ticketFileId
+   * 티켓의 파일 삭제
    */
-  public async deleteTicketFile(ticketFileId: number) {
+  public async deleteTicketFile(ticketFileId: number): Promise<void> {
     await this.ticketFileRepository.delete(ticketFileId);
   }
 
   /**
-   * Exist Ticket File
-   * @param ticketFileId
+   * 티켓의 파일 있는 지 검증
    */
-  public async isExistedTicketFile(ticketFileId: number) {
+  public async isExistedTicketFile(ticketFileId: number): Promise<void> {
     const ticketFile = await this.ticketFileRepository.exist({
       where: { ticketFileId },
     });
@@ -51,11 +48,9 @@ export default class TicketFileService {
   }
 
   /**
-   * Find Ticket File
-   * @param ticketFileId
-   * @returns
+   * 티켓 파일 조회
    */
-  public async findTicketFile(ticketFileId: number) {
+  public async findTicketFile(ticketFileId: number): Promise<TicketFile> {
     const ticketFile = await this.ticketFileRepository.findOne({
       where: { ticketFileId },
       relations: ['ticket'],

@@ -31,11 +31,9 @@ export default class EpicService {
   private logger = new Logger(EpicService.name);
 
   /**
-   * Find Epic By Id
-   * @param epicId
-   * @returns
+   * 에픽 조회
    */
-  public async findEpicById(epicId: number) {
+  public async findEpicById(epicId: number): Promise<Epic> {
     const epic = await this.epicRepository.findOne({ where: { epicId } });
 
     if (!epic) {
@@ -46,11 +44,9 @@ export default class EpicService {
   }
 
   /**
-   * Find Epic Detail By Id
-   * @param epicId
-   * @returns
+   * 에픽 상세 조회
    */
-  public async findEpicDetailById(epicId: number) {
+  public async findEpicDetailById(epicId: number): Promise<Epic> {
     const epic = await this.epicRepository.findOneEpicById(epicId);
 
     if (!epic) {
@@ -61,16 +57,13 @@ export default class EpicService {
   }
 
   /**
-   * Update Epic Order
-   * @param epic
-   * @param targetOrderId
-   * @param workspaceId
+   * 에픽의 정렬 순서 변경
    */
   public async updateEpicOrder(
     epic: Epic,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<void> {
     if (epic.orderId > targetOrderId) {
       const list = await this.findMoreEpicList(
         epic.orderId,
@@ -92,12 +85,15 @@ export default class EpicService {
     }
   }
 
+  /**
+   * 에픽의 정렬 순서 변경
+   */
   private async updateOrder(
     epicList: Epic[],
     isPluse: boolean,
     targetEpic: Epic,
     targetOrderId: number,
-  ) {
+  ): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -125,12 +121,12 @@ export default class EpicService {
   }
 
   /**
-   * Save Epic
-   * @param dto
-   * @param workspaceId
-   * @param user
+   * 에픽 저장
    */
-  public async saveEpic(dto: RequestEpicSaveDto, workspace: Workspace) {
+  public async saveEpic(
+    dto: RequestEpicSaveDto,
+    workspace: Workspace,
+  ): Promise<void> {
     const epicCount =
       (await this.epicRepository.count({
         where: { workspace: { workspaceId: workspace.workspaceId } },
@@ -149,16 +145,13 @@ export default class EpicService {
   }
 
   /**
-   * Find More Epic List
-   * @param orderId
-   * @param workspaceId
-   * @returns
+   * 에픽 리스트 조회
    */
   public async findLessEpicList(
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<Epic[]> {
     return await this.epicRepository.find({
       where: {
         orderId: Between(orderId, targetOrderId),
@@ -168,8 +161,7 @@ export default class EpicService {
   }
 
   /**
-   * Update Epic
-   * @param dto
+   * 에픽 수정
    */
   public async updateEpic(
     epic: Epic,
@@ -193,10 +185,9 @@ export default class EpicService {
   }
 
   /**
-   * Find Epic By Id
-   * @param epicId
+   * 에픽이 있는 지 확인합니다.
    */
-  public async isExistedEpicById(epicId: number) {
+  public async isExistedEpicById(epicId: number): Promise<void> {
     const epic = await this.epicRepository.exist({ where: { epicId } });
 
     if (!epic) {
@@ -205,27 +196,25 @@ export default class EpicService {
   }
 
   /**
-   * Delete Epic
-   * @param epicId
+   * 에픽 삭제
    */
-  public async deleteEpicById(epicId: number) {
+  public async deleteEpicById(epicId: number): Promise<void> {
     await this.epicRepository.update(epicId, { isDeleted: true });
   }
 
   /**
-   * Find Epic List
-   * @param workspaceId
-   * @returns
+   * 에픽 리스트 조회
    */
-  public async findEpicList(workspaceId: number) {
+  public async findEpicList(workspaceId: number): Promise<[Epic[], number]> {
     return await this.epicRepository.findEpicList(workspaceId);
   }
 
   /**
-   * Find All epic
-   * @param id
+   * 모든 에픽 리스트 조회
    */
-  public async findAllEpic(workspaceId: number) {
+  public async findAllEpic(
+    workspaceId: number,
+  ): Promise<{ data: any[]; count: number }> {
     const [data, count] = await this.epicRepository.findAllByWorkspaceId(
       workspaceId,
     );
@@ -242,16 +231,13 @@ export default class EpicService {
   }
 
   /**
-   * Find Less Epic List
-   * @param orderId
-   * @param workspaceId
-   * @returns
+   * 에픽 리스트 조회
    */
   public async findMoreEpicList(
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
-  ) {
+  ): Promise<Epic[]> {
     return await this.epicRepository.find({
       where: {
         orderId: Between(targetOrderId, orderId),
