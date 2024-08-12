@@ -41,19 +41,22 @@ export default class UserService {
   private logger = new Logger(UserService.name);
 
   /**
-   * Update User
-   * @param dto
-   * @param user
-   * @param team
+   * 유저 정보를 수정합니다.
    */
-  public async updateUser(dto: RequestUserUpdateDto, user: User) {}
+  public async updateUser(
+    dto: RequestUserUpdateDto,
+    user: User,
+  ): Promise<void> {
+    user.updateUserProfile(dto.profile, dto.nickname);
+    this.userRepository.save(user);
+  }
 
   /**
    * 소셜 타입과 토큰으로 유저를 조회합니다.
-   * @param dto
-   * @returns 유저
    */
-  public async findUserWithWorkspaceByToken(dto: RequestSocialUserLoginDto) {
+  public async findUserWithWorkspaceByToken(
+    dto: RequestSocialUserLoginDto,
+  ): Promise<User> {
     const user = await this.userRepository.findUserWithWorkspaceByToken(
       dto.token,
       dto.type,
