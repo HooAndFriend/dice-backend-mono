@@ -66,6 +66,18 @@ export const TicketResponse = {
         completeDate: null,
         reopenDate: null,
         ticketFile: [],
+        ticketLink: [
+          {
+            ticketLinkId: 1,
+            parentTicketId: 1,
+            childTicketId: 2,
+          },
+          {
+            ticketLinkId: 2,
+            parentTicketId: 3,
+            childTicketId: 1,
+          },
+        ],
         ticketSetting: {
           ticketSettingId: 1,
           type: 'BLACK',
@@ -604,6 +616,33 @@ export const TicketResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: '해당 setting 정보를 찾을 수 없습니다.',
+    }),
+  },
+  saveTicketLink: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Save Ticket Link',
+    }),
+    400: createErrorResponse({
+      statusCode: 400,
+      error: 'BAD REQUEST',
+      message: 'Already Exist Ticket Link',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket',
+    }),
+  },
+  deleteTicketLink: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Ticket Link',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Ticket Link',
     }),
   },
 };

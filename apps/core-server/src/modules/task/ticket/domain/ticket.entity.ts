@@ -17,6 +17,7 @@ import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import Sprint from '../../sprint/domain/sprint.entity';
+import TicketLink from '../../ticket-link/domain/ticket.link.entity';
 import Epic from '../../epic/domain/epic.entity';
 
 @Entity({ name: 'TB_TICKET' })
@@ -142,6 +143,15 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'SET NULL',
   })
   parentTicket: Relation<Ticket>;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
+  subTickets: Relation<Ticket>[];
+
+  @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
+  parentLink: Relation<TicketLink>[];
+
+  @OneToMany(() => TicketLink, (ticketLink) => ticketLink.childTicket)
+  childLink: Relation<TicketLink>[];
 
   @ManyToOne(() => Epic, (epic) => epic.ticket, {
     onDelete: 'CASCADE',
