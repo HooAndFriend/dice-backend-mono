@@ -79,6 +79,27 @@ export const BoardResponse = {
       message: 'Not Found Board',
     }),
   },
+  findBoardSimpleList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            modifiedDate: '2024-08-10T01:55:01.000Z',
+            boardId: 6,
+            title: '간트차트',
+          },
+          {
+            modifiedDate: '2024-08-10T01:48:54.455Z',
+            boardId: 5,
+            title: '기획서',
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: 'Board 리스트를 조회합니다.',
+    }),
+  },
   findBoardList: {
     200: createResponse({
       data: {

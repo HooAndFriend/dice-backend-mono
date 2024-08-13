@@ -30,4 +30,16 @@ export default class BoardRepository extends Repository<Board> {
 
     return await queryBuilder.getManyAndCount();
   }
+
+  public async findBoardSimpleList(workspaceId: number) {
+    const queryBuilder = this.createQueryBuilder('board')
+      .select(['board.boardId', 'board.title', 'board.modifiedDate'])
+      .leftJoin('board.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('board.isDeleted = false')
+      .orderBy('board.modifiedDate', 'DESC')
+      .limit(5);
+
+    return await queryBuilder.getManyAndCount();
+  }
 }

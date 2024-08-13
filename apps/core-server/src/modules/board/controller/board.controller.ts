@@ -167,12 +167,32 @@ export default class BoardController {
   @ApiOperation({ summary: 'Board 리스트 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
   @ApiResponse(BoardResponse.findBoardList[200])
-  @WorkspaceRole(RoleEnum.WRITER)
+  @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findBoardList(@GetWorkspace() { workspaceId }: Workspace) {
     const [data, count] = await this.boardService.findBoardListByWorkspaceId(
+      workspaceId,
+    );
+
+    return CommonResponse.createResponse({
+      data: { data, count },
+      statusCode: 200,
+      message: 'Board 리스트를 조회합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Board 리스트 조회' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(BoardResponse.findBoardList[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/simple')
+  public async findBoardSimpleList(@GetWorkspace() { workspaceId }: Workspace) {
+    const [data, count] = await this.boardService.findBoardSimpleList(
       workspaceId,
     );
 
