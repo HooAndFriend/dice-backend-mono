@@ -133,6 +133,15 @@ export default class BoardService {
     return await this.boardRepository.findBoardList(workspaceId);
   }
 
+  /**
+   * 최근 수정된 5개의 게시글 리스트를 조회합니다.
+   */
+  public async findBoardSimpleList(
+    workspaceId: number,
+  ): Promise<[Board[], number]> {
+    return await this.boardRepository.findBoardSimpleList(workspaceId);
+  }
+
   // ******* Private Method
   // *******
 
