@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,11 +12,18 @@ import SprintController from './controller/sprint.controller';
 
 // ** entity Imports
 import Sprint from './domain/sprint.entity';
+import WorkspaceModule from '../../workspace/workspace.module';
+import UserModule from '../../user/user.module';
+import TicketRepository from '../ticket/repository/ticket.repository';
+import TicketService from '../ticket/service/ticket.service';
+import TicketModule from '../ticket/ticket.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Sprint]),
-    TypeOrmExModule.forCustomRepository([SprintRepository]),
+    TypeOrmExModule.forCustomRepository([SprintRepository, TicketRepository]),
+    forwardRef(() => WorkspaceModule),
+    forwardRef(() => UserModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, SprintService],
   controllers: [SprintController],
