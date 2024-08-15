@@ -6,7 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import SprintRepository from '../repository/sprint.repository';
 import RequestSprintSaveDto from '../dto/sprint.save.dto';
 import { SprintStatusEnum } from '../enum/sprint.enum';
-import RequestSprintUpdateDto from '../dto/sprint.update.dto';
+import RequestSprintUpdateDto, {
+  RequestSprintStatusUpdateDto,
+} from '../dto/sprint.update.dto';
 import TicketRepository from '../../ticket/repository/ticket.repository';
 import { In } from 'typeorm';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
@@ -30,50 +32,18 @@ export default class SprintService {
    * @param workspace
    */
   public async saveSprint(dto: RequestSprintSaveDto, workspace: Workspace) {
-    const lastSprint = await this.sprintRepository.findOne({
-      order: { endDate: 'DESC' },
-      where: {
-        workspace: { workspaceId: workspace.workspaceId },
-        status: SprintStatusEnum.DOING,
-      },
-    });
-
     const orderId = await this.sprintRepository.count({
       where: {
         workspace: { workspaceId: workspace.workspaceId },
       },
     });
 
-    const now = new Date();
-    let startDate: Date;
-    let endDate: Date;
-    let status: SprintStatusEnum = SprintStatusEnum.DOING;
-
-    if (lastSprint) {
-      if (lastSprint.status === SprintStatusEnum.DOING) {
-        startDate = new Date(lastSprint.endDate);
-        startDate.setDate(startDate.getDate() + 1);
-        endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + 13);
-        status = SprintStatusEnum.TODO;
-      } else {
-        startDate = now;
-        endDate = new Date(now);
-        endDate.setDate(endDate.getDate() + 14);
-      }
-    } else {
-      startDate = now;
-      endDate = new Date(now);
-      endDate.setDate(endDate.getDate() + 14);
-      status = SprintStatusEnum.TODO;
-    }
-
     await this.sprintRepository.save({
       title: dto.title,
-      startDate: dto.startDate || startDate.toISOString().split('T')[0],
-      endDate: dto.endDate || endDate.toISOString().split('T')[0],
+      startDate: dto.startDate,
+      endDate: dto.endDate,
       description: dto.description,
-      status: status,
+      status: dto.status,
       orderId: orderId,
       workspace: workspace,
     });
@@ -171,5 +141,15 @@ export default class SprintService {
     sprint.ticket = [];
 
     await this.sprintRepository.save(sprint);
+  }
+
+  /**
+   * 스프린트 Status 업데이트
+   * @param RequestSprintStatusUpdateDto
+   */
+  public async updateSprintStatus(dto: RequestSprintStatusUpdateDto) {
+    await this.sprintRepository.update(dto.sprintId, {
+      status: dto.status,
+    });
   }
 }

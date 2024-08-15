@@ -7,6 +7,7 @@ import { SprintStatusEnum } from '../enum/sprint.enum';
 // ** Pipe Imports
 import {
   IsDateString,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -38,4 +39,14 @@ export default class RequestSprintUpdateDto {
   @IsString()
   @IsOptional()
   description: string;
+}
+
+export class RequestSprintStatusUpdateDto {
+  @ApiProperty({ example: 2 })
+  @IsNumber()
+  sprintId: number;
+
+  @ApiProperty({ example: 'COMPLETED' })
+  @IsEnum(SprintStatusEnum)
+  status: SprintStatusEnum;
 }

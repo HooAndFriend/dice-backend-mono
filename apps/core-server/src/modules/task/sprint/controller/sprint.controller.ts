@@ -34,7 +34,9 @@ import {
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 import JwtAccessGuard from '@/src/modules/auth/passport/auth.jwt-access.guard';
-import RequestSprintUpdateDto from '../dto/sprint.update.dto';
+import RequestSprintUpdateDto, {
+  RequestSprintStatusUpdateDto,
+} from '../dto/sprint.update.dto';
 import { SprintResponse } from '@/src/global/response/sprint.response';
 import RequestSprintSaveDto from '../dto/sprint.save.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
@@ -184,6 +186,25 @@ export default class SprintController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: '해당 Sprint의 하위 티켓들을 삭제합니다.',
+    });
+  }
+
+  //스프린트 status 수정
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint Status 수정' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.updateSprint[200])
+  @ApiResponse(SprintResponse.updateSprint[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/status')
+  public async updateSprintStatus(@Body() dto: RequestSprintStatusUpdateDto) {
+    await this.sprintService.updateSprintStatus(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint 상태를 수정합니다.',
     });
   }
 }
