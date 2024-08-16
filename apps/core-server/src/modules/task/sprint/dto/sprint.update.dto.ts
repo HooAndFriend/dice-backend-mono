@@ -50,3 +50,13 @@ export class RequestSprintStatusUpdateDto {
   @IsEnum(SprintStatusEnum)
   status: SprintStatusEnum;
 }
+
+export class RequestSprintOrderUpdateDto {
+  @ApiProperty({ example: 2 })
+  @IsNumber()
+  sprintId: number;
+
+  @ApiProperty({ example: 2 })
+  @IsNumber()
+  targetSprintId: number;
+}
