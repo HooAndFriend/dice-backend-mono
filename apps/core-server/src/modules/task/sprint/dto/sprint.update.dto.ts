@@ -46,7 +46,7 @@ export class RequestSprintStatusUpdateDto {
   @IsNumber()
   sprintId: number;
 
-  @ApiProperty({ example: 'COMPLETED' })
+  @ApiProperty({ example: 'COMPLETED', enum: SprintStatusEnum })
   @IsEnum(SprintStatusEnum)
   status: SprintStatusEnum;
 }

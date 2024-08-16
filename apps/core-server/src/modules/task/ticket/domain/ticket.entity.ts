@@ -118,8 +118,6 @@ export default class Ticket extends BaseTimeEntity {
     nullable: true,
   })
   sprint: Relation<Sprint>;
-  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
-  subTickets: Relation<Ticket>[];
 
   @ManyToOne(() => Workspace, (workspace) => workspace.ticket, {
     onDelete: 'CASCADE',
