@@ -8,20 +8,22 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+// ** Typeorm Imports
+import { Between, DataSource, In } from 'typeorm';
+
 // ** Custom Module Imports
 import SprintRepository from '../repository/sprint.repository';
+import TicketRepository from '../../ticket/repository/ticket.repository';
+import Workspace from '@/src/modules/workspace/domain/workspace.entity';
+import { InternalServerErrorException } from '@hi-dice/common';
+
+// ** enum, dto, entity, types Imports
+import Sprint from '../domain/sprint.entity';
 import RequestSprintSaveDto from '../dto/sprint.save.dto';
-import { SprintStatusEnum } from '../enum/sprint.enum';
 import RequestSprintUpdateDto, {
   RequestSprintStatusUpdateDto,
 } from '../dto/sprint.update.dto';
-import TicketRepository from '../../ticket/repository/ticket.repository';
-import { Between, DataSource, In } from 'typeorm';
-import Workspace from '@/src/modules/workspace/domain/workspace.entity';
-import TicketService from '../../ticket/service/ticket.service';
 import RequestSprintSaveTicketDto from '../dto/sprint.save.ticket.dto';
-import Sprint from '../domain/sprint.entity';
-import { InternalServerErrorException } from '@hi-dice/common';
 
 @Injectable()
 export default class SprintService {
