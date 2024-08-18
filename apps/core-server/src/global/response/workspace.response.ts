@@ -28,6 +28,17 @@ export const WorkspaceResponse = {
       error: 'NOT FOUND',
     }),
   },
+  deleteWorkspace: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Delete Workspace',
+    }),
+    400: createErrorResponse({
+      error: 'BAD REQUEST',
+      message: 'Cannot delete personal workspace',
+      statusCode: 400,
+    }),
+  },
   findWorkspace: {
     200: createResponse({
       data: {

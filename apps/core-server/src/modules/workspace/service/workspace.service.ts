@@ -12,7 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
@@ -31,6 +34,16 @@ export default class WorkspaceService {
   ) {}
 
   private logger = new Logger(WorkspaceService.name);
+
+  /**
+   * 워크스페이스 삭제 처리
+   */
+  public async deleteWorkspace(workspace: Workspace): Promise<void> {
+    this.validationDeleteWorkspace(workspace);
+
+    workspace.toDelete();
+    this.workspaceRepository.save(workspace);
+  }
 
   /**
    * 워크스페이스 생성
@@ -178,5 +191,14 @@ export default class WorkspaceService {
     return await this.workspaceRepository.findTeamWorkspaceListWithCount(
       teamId,
     );
+  }
+
+  /**
+   * 워크스페이스 삭제 전 유효성 검사
+   */
+  private validationDeleteWorkspace(workspace: Workspace): void {
+    if (workspace.isPersonal) {
+      throw new BadRequestException('Cannot delete personal workspace');
+    }
   }
 }

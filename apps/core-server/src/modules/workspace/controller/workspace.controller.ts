@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Put,
@@ -138,6 +139,24 @@ export default class WorkspaceController {
       statusCode: 200,
       message: 'Find Workspace',
       data: workspace,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '워크스페이스 제거' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(WorkspaceResponse.deleteWorkspace[200])
+  @ApiResponse(WorkspaceResponse.deleteWorkspace[400])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Delete('/')
+  public async deleteWorkspace(@GetWorkspace() workspace: Workspace) {
+    await this.workspaceService.deleteWorkspace(workspace);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Delete Workspace',
     });
   }
 
