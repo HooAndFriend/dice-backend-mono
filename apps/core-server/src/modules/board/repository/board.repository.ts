@@ -23,7 +23,7 @@ export default class BoardRepository extends Repository<Board> {
       .leftJoin('board.children', 'children')
       .leftJoin('board.workspace', 'workspace')
       .where('children.isDeleted = false')
-      .where('parent.boardId is null')
+      .andWhere('parent.boardId is null')
       .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
       .orderBy('board.orderId', 'ASC');
