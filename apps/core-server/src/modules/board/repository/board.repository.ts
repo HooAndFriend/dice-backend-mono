@@ -33,7 +33,12 @@ export default class BoardRepository extends Repository<Board> {
 
   public async findBoardSimpleList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('board')
-      .select(['board.boardId', 'board.title', 'board.modifiedDate'])
+      .select([
+        'board.boardId',
+        'board.title',
+        'board.content',
+        'board.modifiedDate',
+      ])
       .leftJoin('board.workspace', 'workspace')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
