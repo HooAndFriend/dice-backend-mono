@@ -1,24 +1,13 @@
 // ** Nest Imports
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import UserService from '../service/user.service';
-import WorkspaceService from '../../workspace/service/workspace.service';
-import TicketService from '../../task/ticket/service/ticket.service';
 
 // ** Swagger Imports
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiHeader,
   ApiOperation,
   ApiResponse,
   ApiTags,

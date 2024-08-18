@@ -10,9 +10,9 @@ import {
 
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
-import { SprintStatusEnum } from '@hi-dice/common';
 import Ticket from '../../ticket/domain/ticket.entity';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
+import { SprintStatusEnum } from '../enum/sprint.enum';
 
 @Entity({ name: 'TB_SPRINT' })
 export default class Sprint extends BaseTimeEntity {
@@ -75,6 +75,10 @@ export default class Sprint extends BaseTimeEntity {
   })
   workspace: Relation<Workspace>;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.sprint)
+  @OneToMany(() => Ticket, (ticket) => ticket.sprint, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   ticket: Relation<Ticket>[];
 }

@@ -3,15 +3,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 
 // ** Module Imports
 import QnaService from '../service/qna.service';
+import CsCategoryService from '../../category/service/cs-category.service';
 
 // ** Swagger Imports
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // ** Utils Imports
 
@@ -25,7 +20,6 @@ import { QnaResponse } from '@/src/global/response/qna.response';
 // ** Dto Imports
 import RequestQnaSaveDto from '../dto/qna.save.dto';
 import { CommonResponse } from '@hi-dice/common';
-import CsCategoryService from '../../category/service/cs-category.service';
 
 @ApiTags('Qna')
 @ApiResponse(createServerExceptionResponse())

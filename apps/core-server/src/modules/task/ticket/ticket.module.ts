@@ -20,6 +20,7 @@ import TicketSettingModule from '../ticket-setting/ticket-setting.module';
 
 // ** entity Imports
 import Ticket from './domain/ticket.entity';
+import EpicModule from '../epic/epic.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import Ticket from './domain/ticket.entity';
     forwardRef(() => UserModule),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => TicketSettingModule),
+    forwardRef(() => EpicModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketService],
   controllers: [TicketController],

@@ -14,6 +14,7 @@ import {
 
 // ** Module Imports
 import WorkspaceUserService from '../service/workspace-user.service';
+import UserService from '../../user/service/user.service';
 
 // ** Swagger Imports
 import {
@@ -55,7 +56,10 @@ import RequestWorkspaceUserFindDto from '../dto/workspace-user.find.dto';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/workspace-user', version: '1' })
 export default class WorkspaceUserController {
-  constructor(private readonly workspaceUserService: WorkspaceUserService) {}
+  constructor(
+    private readonly workspaceUserService: WorkspaceUserService,
+    private readonly userService: UserService,
+  ) {}
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
@@ -95,7 +99,13 @@ export default class WorkspaceUserController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() { email }: User,
   ) {
-    await this.workspaceUserService.saveWorkspaceUser(workspace, dto, email);
+    const user = await this.userService.findOneByEmail(dto.email);
+    await this.workspaceUserService.saveWorkspaceUser(
+      user,
+      workspace,
+      dto.role,
+      email,
+    );
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -141,7 +151,6 @@ export default class WorkspaceUserController {
   }
 
   @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'team-code', required: true })
   @ApiOperation({ summary: '워크스페이스 리스트 조회 조회' })
   @ApiResponse(WorkspaceUserResponse.findWorkspaceUserList[200])
   @UseGuards(JwtAccessGuard)

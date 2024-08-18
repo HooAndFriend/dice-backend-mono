@@ -19,6 +19,7 @@ import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
 import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
+import Workspace from '../domain/workspace.entity';
 
 @Injectable()
 export default class WorkspaceService {
@@ -33,11 +34,11 @@ export default class WorkspaceService {
 
   /**
    * 워크스페이스 생성
-   * @param dto
-   * @param user
-   * @returns
    */
-  public async saveWorkspace(dto: RequestWorksapceSaveDto, user: User) {
+  public async saveWorkspace(
+    dto: RequestWorksapceSaveDto,
+    user: User,
+  ): Promise<Workspace> {
     const workspace = this.workspaceRepository.create({
       name: dto.name,
       comment: dto.comment,
@@ -58,13 +59,13 @@ export default class WorkspaceService {
   }
 
   /**
-   * Update Workspace
-   * @param dto
-   * @param id
-   * @returns
+   * 워크스페이스 수정
    */
-  public async updateWorkspace(dto: RequestWorkspaceUpdateDto, id: number) {
-    return await this.workspaceRepository.update(id, {
+  public async updateWorkspace(
+    dto: RequestWorkspaceUpdateDto,
+    id: number,
+  ): Promise<void> {
+    await this.workspaceRepository.update(id, {
       name: dto.name,
       profile: dto.profile,
       comment: dto.comment,
@@ -72,11 +73,9 @@ export default class WorkspaceService {
   }
 
   /**
-   * Find Workspace
-   * @param workspaceId
-   * @returns
+   * 워크스페이스 조회
    */
-  public async findWorkspace(workspaceId: number) {
+  public async findWorkspace(workspaceId: number): Promise<Workspace> {
     const workspace = await this.workspaceRepository.findWorkspace(workspaceId);
 
     if (!workspace) {
@@ -87,11 +86,9 @@ export default class WorkspaceService {
   }
 
   /**
-   * Find Workspace Main
-   * @param workspaceId
-   * @returns
+   * 워크스페이스 정보 조회
    */
-  public async findMainWorkspace(workspaceId: number) {
+  public async findMainWorkspace(workspaceId: number): Promise<Workspace> {
     const workspace = await this.workspaceRepository.findMainWorkspace(
       workspaceId,
     );
@@ -104,20 +101,18 @@ export default class WorkspaceService {
   }
 
   /**
-   * Find Workspace List With User Count
-   * @param user
-   * @param teamId
-   * @returns
+   * 워크스페이스 리스트와 유저 카운트 조회
    */
-  public async findWorkspaceListWithCount(teamId: number) {
+  public async findWorkspaceListWithCount(
+    teamId: number,
+  ): Promise<Workspace[]> {
     return await this.findTeamWorkspaceListWithCount(teamId);
   }
 
   /**
    * 워크스페이스 초기 생성
-   * @param user
    */
-  public async saveInitSaveWorkspace(user: User) {
+  public async saveInitSaveWorkspace(user: User): Promise<Workspace> {
     const workspace = await this.workspaceRepository.save(
       this.workspaceRepository.create({
         name: user.nickname,
@@ -136,11 +131,11 @@ export default class WorkspaceService {
   }
 
   /**
-   *
-   * @param userId
-   * @returns
+   * 개인 워크스페이스 리스트 조회
    */
-  public async findPersonalWorkspaceList(userEmail: string) {
+  public async findPersonalWorkspaceList(
+    userEmail: string,
+  ): Promise<Workspace[]> {
     return await this.workspaceRepository.findPersonalWorkspaceList(userEmail);
   }
 
@@ -158,26 +153,28 @@ export default class WorkspaceService {
 
   /**
    * 워크스페이스를 UUID로 조회
-   * @param uuid
-   * @returns workspace
    */
-  public async findWorkspaceByUuid(uuid: string) {
+  public async findWorkspaceByUuid(uuid: string): Promise<Workspace> {
     return await this.workspaceRepository.findOne({ where: { uuid } });
   }
 
-  public async findWorkspaceCountAndUserCount(teamId: number) {
-    const data =
-      await this.workspaceRepository.findWorkspaceCountAndMemberCount(teamId);
-
-    return data;
+  /**
+   * 워크스페이스 개수 및 유저 수 조회
+   */
+  public async findWorkspaceCountAndUserCount(
+    teamId: number,
+  ): Promise<{ workspaceCount: number; workspaceUserCount: number }> {
+    return await this.workspaceRepository.findWorkspaceCountAndMemberCount(
+      teamId,
+    );
   }
 
   /**
-   * Find Workspace List at Team With User Count
-   * @param teamId
-   * @returns
+   * 팀의 워크스페이스 리스트 조회
    */
-  private async findTeamWorkspaceListWithCount(teamId: number) {
+  private async findTeamWorkspaceListWithCount(
+    teamId: number,
+  ): Promise<Workspace[]> {
     return await this.workspaceRepository.findTeamWorkspaceListWithCount(
       teamId,
     );

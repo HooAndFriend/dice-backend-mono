@@ -17,5 +17,5 @@ export default class RequestTicketSaveDto {
   @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsNumber()
-  parentId: number;
+  epicId: number;
 }

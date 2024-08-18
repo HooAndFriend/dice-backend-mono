@@ -1,96 +1,96 @@
 version: '3'
 services:
-  auth:
-    build:
-      context: ./apps/auth-server
-    ports:
-      - 8280:8280
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # auth:
+  #   build:
+  #     context: ./apps/auth-server
+  #   ports:
+  #     - 8280:8280
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  core:
-    build:
-      context: ./apps/core-server
-    ports:
-      - 8080:8080
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # core:
+  #   build:
+  #     context: ./apps/core-server
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  log:
-    build:
-      context: ./apps/log-server
-    ports:
-      - 8180:8180
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # log:
+  #   build:
+  #     context: ./apps/log-server
+  #   ports:
+  #     - 8180:8180
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  push:
-    build:
-      context: ./apps/push-server
-    ports:
-      - 8380:8380
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # push:
+  #   build:
+  #     context: ./apps/push-server
+  #   ports:
+  #     - 8380:8380
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  admin:
-    build:
-      context: ./apps/admin-server
-    ports:
-      - 8480:8480
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # admin:
+  #   build:
+  #     context: ./apps/admin-server
+  #   ports:
+  #     - 8480:8480
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  file:
-    build:
-      context: ./apps/file-server
-    ports:
-      - 8580:8580
-    networks:
-      - dice-networks
-    depends_on:
-      - redis
-      - db-master
-      - db-slave
-      - redis-cache
-      - rabbitmq
+  # file:
+  #   build:
+  #     context: ./apps/file-server
+  #   ports:
+  #     - 8580:8580
+  #   networks:
+  #     - dice-networks
+  #   depends_on:
+  #     - redis
+  #     - db-master
+  #     - db-slave
+  #     - redis-cache
+  #     - rabbitmq
 
-  slack:
-    build:
-      context: ./apps/slack
-    ports:
-      - 8680:8680
-    networks:
-      - dice-networks
+  # slack:
+  #   build:
+  #     context: ./apps/slack
+  #   ports:
+  #     - 8680:8680
+  #   networks:
+  #     - dice-networks
 
   redis:
     image: redis:latest
@@ -152,44 +152,44 @@ services:
       MYSQL_ROOT_PASSWORD: qwer1595@!
     command: --default-time-zone=Asia/Seoul
 
-  nginx:
-    image: nginx
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - dice-networks
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf
-      - ./html:/usr/share/nginx/html
-      - ./ssl_dice:/usr/share/nginx/secret
-      - /etc/letsencrypt/live/hi-dice.com:/etc/letsencrypt/live/hi-dice.com
-      - /etc/letsencrypt/archive/hi-dice.com:/etc/letsencrypt/archive/hi-dice.com
-    depends_on:
-      - core
-      - admin
-      - file
-      - push
-      - log
-      - minio
-      - slack
+  # nginx:
+  #   image: nginx
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   networks:
+  #     - dice-networks
+  #   volumes:
+  #     - ./config/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./html:/usr/share/nginx/html
+  #     - ./ssl_dice:/usr/share/nginx/secret
+  #     - /etc/letsencrypt/live/hi-dice.com:/etc/letsencrypt/live/hi-dice.com
+  #     - /etc/letsencrypt/archive/hi-dice.com:/etc/letsencrypt/archive/hi-dice.com
+  #   depends_on:
+  #     - core
+  #     - admin
+  #     - file
+  #     - push
+  #     - log
+  #     - minio
+  #     - slack
 
-  minio:
-    image: minio/minio
-    command: server /data --console-address ":9001"
-    container_name: minio
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: qwer1595@!
-    restart: always
-    shm_size: '1gb'
-    networks:
-      - dice-networks
-    volumes:
-      - ./data:/data
+  # minio:
+  #   image: minio/minio
+  #   command: server /data --console-address ":9001"
+  #   container_name: minio
+  #   ports:
+  #     - '9000:9000'
+  #     - '9001:9001'
+  #   environment:
+  #     MINIO_ROOT_USER: minio
+  #     MINIO_ROOT_PASSWORD: qwer1595@!
+  #   restart: always
+  #   shm_size: '1gb'
+  #   networks:
+  #     - dice-networks
+  #   volumes:
+  #     - ./data:/data
 
 volumes:
   my-db-master:
@@ -197,4 +197,3 @@ volumes:
 
 networks:
   dice-networks:
-    driver: bridges

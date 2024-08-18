@@ -19,15 +19,13 @@ export default class BoardService {
   ) {}
 
   /**
-   * Save Board
-   * @param title
-   * @param createdId
+   * 게시글을 저장합니다.
    */
   public async saveBoard(
     title: string,
     createdId: string,
     workspace: Workspace,
-  ) {
+  ): Promise<void> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
     await this.boardRepository.save(
@@ -42,12 +40,12 @@ export default class BoardService {
   }
 
   /**
-   * Update Board
-   * @param board
-   * @param dto
-   * @param modifiedId
+   * 게시글을 수정합니다.
    */
-  public async updateBoard(dto: RequestBoardUpdateDto, modifiedId: string) {
+  public async updateBoard(
+    dto: RequestBoardUpdateDto,
+    modifiedId: string,
+  ): Promise<void> {
     await this.boardRepository.update(dto.boardId, {
       title: dto.title,
       content: dto.content,
@@ -56,31 +54,25 @@ export default class BoardService {
   }
 
   /**
-   * Update Board Title
-   * @param boardId
-   * @param title
+   * 게시글 제목을 수정합니다.
    */
   public async updateBoardTitle(
     boardId: number,
     title: string,
     modifiedId: string,
-  ) {
+  ): Promise<void> {
     await this.boardRepository.update(boardId, { title, modifiedId });
   }
 
   /**
-   * Save Board With Parent
-   * @param title
-   * @param createdId
-   * @param workspace
-   * @param board
+   * 상위 객체가 있는 게시글을 생성합니다.
    */
   public async saveBoardWithParent(
     title: string,
     createdId: string,
     workspace: Workspace,
     board: Board,
-  ) {
+  ): Promise<void> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
     await this.boardRepository.save(
@@ -97,11 +89,9 @@ export default class BoardService {
   }
 
   /**
-   * Find Board By Id
-   * @param boardId
-   * @returns
+   * 게시글을 조회합니다.
    */
-  public async findBoardById(boardId: number) {
+  public async findBoardById(boardId: number): Promise<Board> {
     const board = await this.boardRepository.findOne({
       where: { boardId, isDeleted: false },
       relations: ['children', 'parent'],
@@ -115,10 +105,9 @@ export default class BoardService {
   }
 
   /**
-   * Existed Board By Id
-   * @param boardId
+   * 게시글이 존재하는지 확인합니다.
    */
-  public async existedBoardById(boardId: number) {
+  public async existedBoardById(boardId: number): Promise<void> {
     const board = await this.boardRepository.exist({
       where: { boardId, isDeleted: false },
     });
@@ -129,31 +118,37 @@ export default class BoardService {
   }
 
   /**
-   * Delete Board
-   * @param boardId
+   * 게시글을 삭제합니다.
    */
-  public async deleteBoard(boardId: number) {
+  public async deleteBoard(boardId: number): Promise<void> {
     await this.boardRepository.update(boardId, { isDeleted: true });
   }
 
   /**
-   * Find Board List By Workspace Id
-   * @param workspaceId
-   * @returns
+   * 워크스페이스에 속한 게시글 리스트를 조회합니다.
    */
-  public async findBoardListByWorkspaceId(workspaceId: number) {
+  public async findBoardListByWorkspaceId(
+    workspaceId: number,
+  ): Promise<[Board[], Number]> {
     return await this.boardRepository.findBoardList(workspaceId);
+  }
+
+  /**
+   * 최근 수정된 5개의 게시글 리스트를 조회합니다.
+   */
+  public async findBoardSimpleList(
+    workspaceId: number,
+  ): Promise<[Board[], number]> {
+    return await this.boardRepository.findBoardSimpleList(workspaceId);
   }
 
   // ******* Private Method
   // *******
 
   /**
-   * Get Order Id
-   * @param workspaceId
-   * @returns
+   * 게시글의 orderId를 조회합니다.
    */
-  private async getOrderId(workspaceId: number) {
+  private async getOrderId(workspaceId: number): Promise<number> {
     return await this.boardRepository.count({
       where: { workspace: { workspaceId } },
     });

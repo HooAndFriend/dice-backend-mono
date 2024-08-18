@@ -15,10 +15,12 @@ export default class QnaService {
   private logger = new Logger(QnaService.name);
 
   /**
-   * Save Qna
-   * @param dto
+   * Qna를 저장합니다,
    */
-  public async saveQna(dto: RequestQnaSaveDto, csCategory: CsCategory) {
+  public async saveQna(
+    dto: RequestQnaSaveDto,
+    csCategory: CsCategory,
+  ): Promise<void> {
     await this.qnaRepository.save(
       this.qnaRepository.create({
         ...dto,
