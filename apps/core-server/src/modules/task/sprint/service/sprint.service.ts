@@ -31,7 +31,6 @@ export default class SprintService {
     private readonly configService: ConfigService,
     private readonly sprintRepository: SprintRepository,
     private readonly ticketRepository: TicketRepository,
-
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
 
@@ -39,10 +38,11 @@ export default class SprintService {
 
   /**
    * 스프린트 생성
-   * @param RequestSprintSaveDto
-   * @param workspace
    */
-  public async saveSprint(dto: RequestSprintSaveDto, workspace: Workspace) {
+  public async saveSprint(
+    dto: RequestSprintSaveDto,
+    workspace: Workspace,
+  ): Promise<void> {
     const orderId = await this.sprintRepository.count({
       where: {
         workspace: { workspaceId: workspace.workspaceId },
@@ -62,9 +62,8 @@ export default class SprintService {
 
   /**
    * 스프린트 수정
-   * @param RequestSprintUpdateDto
    */
-  public async updateSprint(dto: RequestSprintUpdateDto) {
+  public async updateSprint(dto: RequestSprintUpdateDto): Promise<void> {
     await this.sprintRepository.update(dto.sprintId, {
       title: dto.title,
       startDate: dto.startDate,
@@ -75,15 +74,14 @@ export default class SprintService {
 
   /**
    * 스프린트 단일 조회
-   * @param sprintId
    */
-  public async findSprint(sprintId: number) {
+  public async findSprint(sprintId: number): Promise<Sprint> {
     const findSprint = await this.sprintRepository.findOne({
       where: { sprintId: sprintId },
     });
 
     if (!findSprint) {
-      throw new Error('Not Found Sprint');
+      throw new NotFoundException('Not Found Sprint');
     }
 
     return findSprint;
@@ -92,24 +90,25 @@ export default class SprintService {
   /**
    * 스프린트 전체 리스트 조회
    */
-  public async findSprintList() {
-    return this.sprintRepository.getSprintsWithTickets();
+  public async findSprintList(): Promise<[Sprint[], number]> {
+    return await this.sprintRepository.getSprintsWithTickets();
   }
 
-  public async deleteSprint(sprintId: number) {
+  /**
+   * 스프린트 삭제
+   */
+  public async deleteSprint(sprintId: number): Promise<void> {
     await this.sprintRepository.delete(sprintId);
   }
 
   /**
    * 스프린트에서 하위 티켓 생성
-   * @param RequestSprintSaveTicketDto
-   * @param sprintId
    */
   public async saveTicketToSprint(
     dto: RequestSprintSaveTicketDto,
     sprintId: number,
-  ) {
-    const sprint = await this.sprintRepository.findOne({ where: { sprintId } });
+  ): Promise<void> {
+    const sprint = await this.findSprint(sprintId);
 
     if (!sprint) {
       throw new NotFoundException('Sprint not found');
@@ -128,9 +127,8 @@ export default class SprintService {
 
   /**
    * 스프린트에서 하위 티켓 삭제
-   * @param sprintId
    */
-  public async deleteTicketInSprint(sprintId: number) {
+  public async deleteTicketInSprint(sprintId: number): Promise<void> {
     const sprint = await this.sprintRepository.findOne({
       where: { sprintId },
       relations: ['ticket'],
@@ -156,9 +154,10 @@ export default class SprintService {
 
   /**
    * 스프린트 Status 업데이트
-   * @param RequestSprintStatusUpdateDto
    */
-  public async updateSprintStatus(dto: RequestSprintStatusUpdateDto) {
+  public async updateSprintStatus(
+    dto: RequestSprintStatusUpdateDto,
+  ): Promise<void> {
     await this.sprintRepository.update(dto.sprintId, {
       status: dto.status,
     });
@@ -166,7 +165,6 @@ export default class SprintService {
 
   /**
    * 스프린트 순서 변경
-   * @param
    */
   public async updateSprintOrder(
     sprint: Sprint,
