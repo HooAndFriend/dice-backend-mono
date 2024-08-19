@@ -169,7 +169,7 @@ export default class AuthController {
   @ApiResponse(createUnauthorizedResponse())
   @Post('/reissue')
   public async reissueToken(@GetUser() user: User) {
-    const accessToken = await this.authService.reissueToken(user);
+    const accessToken = this.authService.reissueToken(user);
     return CommonResponse.createResponse({
       statusCode: 200,
       message: '토큰을 재발급합니다.',

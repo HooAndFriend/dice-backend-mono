@@ -41,10 +41,10 @@ export default class AuthorityController {
   @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async findAuthority(@Param('admin id') id: number) {
-    const adminAuthority = await this.authorityService.findAuthority(id);
+    const authority = await this.authorityService.findOne(id);
 
     return CommonResponse.createResponse({
-      data: adminAuthority,
+      data: authority,
       statusCode: 200,
       message: '관리자 권한을 조회했습니다.',
     });
@@ -58,7 +58,7 @@ export default class AuthorityController {
   @UseGuards(JwtAccessGuard)
   @Put('/')
   public async updateAdmin(@Body() dto: RequestAuthorityUpdateDto) {
-    await this.authorityService.findAuthority(dto.id);
+    await this.authorityService.findOne(dto.authorityId);
     await this.authorityService.updateAuthority(dto);
 
     return CommonResponse.createResponseMessage({

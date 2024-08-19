@@ -9,7 +9,7 @@ import AdminRoleEnum from './admin-role.enum';
 @Unique(['name', 'role'])
 export default class Authority extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  authorityId: number;
 
   @Column({
     type: 'varchar',

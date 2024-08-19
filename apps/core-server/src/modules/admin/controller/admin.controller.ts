@@ -113,7 +113,7 @@ export default class AdminController {
   @Delete('/:id')
   public async deleteAdmin(@Param('id') id: number) {
     const admin = await this.adminService.findAdmin(id);
-    await this.adminService.deleteAdmin(admin.id);
+    await this.adminService.deleteAdmin(admin.adminId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -145,10 +145,10 @@ export default class AdminController {
   @UseGuards(JwtAccessGuard)
   @Patch('/password')
   public async updatePassword(
-    @GetAdmin() { id }: Admin,
+    @GetAdmin() { adminId }: Admin,
     @Body() dto: RequestAdminPasswordUpdateDto,
   ) {
-    await this.adminService.updatePassword(id, dto);
+    await this.adminService.updatePassword(adminId, dto);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -163,10 +163,10 @@ export default class AdminController {
   @UseGuards(JwtAccessGuard)
   @Patch('/profile')
   public async updateProfile(
-    @GetAdmin() { id }: Admin,
+    @GetAdmin() { adminId }: Admin,
     @Body() dto: RequestAdminProfileUpdateDto,
   ) {
-    await this.adminService.updateProfile(id, dto);
+    await this.adminService.updateProfile(adminId, dto);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

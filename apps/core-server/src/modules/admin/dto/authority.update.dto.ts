@@ -7,7 +7,7 @@ import { IsBoolean, IsNumber } from 'class-validator';
 export default class RequestAuthorityUpdateDto {
   @ApiProperty({ example: 1 })
   @IsNumber()
-  id: number;
+  authorityId: number;
 
   @ApiProperty({ example: 'true' })
   @IsBoolean()

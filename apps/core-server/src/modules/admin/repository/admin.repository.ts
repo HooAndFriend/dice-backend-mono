@@ -17,7 +17,7 @@ export default class AdminRepository extends Repository<Admin> {
    */
   public async findAdminList(dto: RequestAdminFindDto) {
     const queryBuilder = this.createQueryBuilder('admin').select([
-      'admin.id',
+      'admin.adminId',
       'admin.email',
       'admin.phone',
       'admin.nickname',
