@@ -28,6 +28,8 @@ import UserStatusEnum from '../domain/user-status.enum';
 import RequestSocialUserSaveDto from '../../auth/dto/user.social.save.dto';
 import { JwtPayload } from '@/src/global/types';
 import Workspace from '../../workspace/domain/workspace.entity';
+import RequestDeleteUserFindDto from '../dto/user-delete.find.dto';
+import RequestUserFindDto from '../dto/user.find.dto';
 
 @Injectable()
 export default class UserService {
@@ -273,6 +275,51 @@ export default class UserService {
    */
   public async findUserById(userId: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId } });
+
+    if (!user) {
+      throw new NotFoundException('Not Found User');
+    }
+
+    return user;
+  }
+
+  /**
+   * 유저 리스트 조회
+   */
+  public async findUserList(dto: RequestUserFindDto): Promise<[any[], number]> {
+    const [data, count] = await this.userRepository.findUserList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.userId,
+        email: item.email,
+        nickname: item.nickname,
+        type: item.type,
+        createdDate: item.createdDate,
+        lastLoginDate: item.lastLoginDate,
+        // workspaceUserCount: item.workspaceUser.reduce(
+        //   (total, count) => total + count.workspaceUser.length,
+        //   0,
+        // ),
+      })),
+      count,
+    ];
+  }
+
+  /**
+   * 삭제된 유저 리스트 조회
+   */
+  public async findDeleteUserList(
+    dto: RequestDeleteUserFindDto,
+  ): Promise<[User[], number]> {
+    return await this.userRepository.findDeleteUserList(dto);
+  }
+
+  /**
+   * 유저 조회 By Admin
+   */
+  public async findUserByAdmin(userId: number): Promise<User> {
+    const user = await this.userRepository.findUserByAdmin(userId);
 
     if (!user) {
       throw new NotFoundException('Not Found User');
