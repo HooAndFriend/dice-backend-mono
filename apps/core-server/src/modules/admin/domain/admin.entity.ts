@@ -9,11 +9,11 @@ import AdminRoleEnum from './admin-role.enum';
 @Unique(['email', 'nickname'])
 export default class Admin extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
-  adminId: number;
+  id: number;
 
   @Column({
     type: 'varchar',
-    length: 120,
+    length: 50,
     comment: '이메일',
     nullable: false,
   })
