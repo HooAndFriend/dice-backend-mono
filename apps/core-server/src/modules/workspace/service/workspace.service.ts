@@ -23,6 +23,7 @@ import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
 import Workspace from '../domain/workspace.entity';
+import RequestWorkspaceFindDto from '../dto/workspace.find.dto';
 
 @Injectable()
 export default class WorkspaceService {
@@ -180,6 +181,42 @@ export default class WorkspaceService {
     return await this.workspaceRepository.findWorkspaceCountAndMemberCount(
       teamId,
     );
+  }
+
+  /**
+   * 워크스페이스 리스트 조회 - 관리자
+   */
+  public async findWorkspaceList(
+    dto: RequestWorkspaceFindDto,
+  ): Promise<[any[], number]> {
+    const [data, count] = await this.workspaceRepository.findWorkspaceList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.workspaceId,
+        name: item.name,
+        comment: item.comment,
+        createdId: item.createdId,
+        createdDate: item.createdDate,
+        workspaceUserCount: item.workspaceUser.length,
+      })),
+      count,
+    ];
+  }
+
+  /**
+   * 워크스페이스 조회 - 관리자
+   */
+  public async findWorksapceById(workspaceId: number): Promise<Workspace> {
+    const workspace = await this.workspaceRepository.findWorkspaceById(
+      workspaceId,
+    );
+
+    if (!workspace) {
+      throw new NotFoundException('Not Found Workspace');
+    }
+
+    return workspace;
   }
 
   /**
