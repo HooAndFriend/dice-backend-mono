@@ -63,6 +63,22 @@ export default class TicketService {
   }
 
   /**
+   * 티켓 ID로 조회 (Setting 포함)
+   */
+  public async findOne(ticketId: number): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOne({
+      where: { ticketId },
+      relations: ['ticketSetting'],
+    });
+
+    if (!ticket) {
+      throw new NotFoundException('Not Found Ticket');
+    }
+
+    return ticket;
+  }
+
+  /**
    * 부모로 사용할 티켓 조회
    */
   public async findParentTicketById(ticketId?: number): Promise<Ticket | null> {

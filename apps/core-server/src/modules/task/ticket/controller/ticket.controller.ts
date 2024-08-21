@@ -285,13 +285,23 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/ticket-setting')
-  public async updateTicketSetting(@Body() dto: RequestTicketSettingUpdateDto) {
-    await this.ticketService.isExistedTicketById(dto.ticketId);
+  public async updateTicketSetting(
+    @Body() dto: RequestTicketSettingUpdateDto,
+    @GetUser() user: User,
+  ) {
+    const ticket = await this.ticketService.findOne(dto.ticketId);
     const ticketSetting = await this.ticketSettingService.findTicketSettingById(
       dto.settingId,
     );
 
     await this.ticketService.updateTicketSetting(ticketSetting, dto.ticketId);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      email: user.email,
+      type: TicketHistoryTypeEnum.TYPE,
+      log: `티켓의 타입을 변경합니다. ${ticket.ticketSetting.name} -> ${ticketSetting.name}`,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -355,9 +365,14 @@ export default class TicketController {
         dto.type === 'admin'
           ? TicketHistoryTypeEnum.ADMIN
           : TicketHistoryTypeEnum.WORKER,
-      log: `${ticket?.worker ? ticket.worker.nickname : '-'} -> ${
-        user.nickname
-      }`,
+      log:
+        dto.type === 'admin'
+          ? `${ticket?.admin ? ticket.admin.nickname : '없음'} -> ${
+              user.nickname
+            }`
+          : `${ticket?.worker ? ticket.worker.nickname : '없음'} -> ${
+              user.nickname
+            }`,
     });
 
     return CommonResponse.createResponseMessage({
