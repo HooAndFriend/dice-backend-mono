@@ -3,6 +3,7 @@ export enum TicketHistoryTypeEnum {
   STATUS = 'STATUS',
   WORKER = 'WORKER',
   ADMIN = 'ADMIN',
+  TYPE = 'TYPE',
   CONTENT = 'CONTENT',
   UPLOAD_FILE = 'UPLOAD_FILE',
   DELETE_FILE = 'DELETE_FILE',
