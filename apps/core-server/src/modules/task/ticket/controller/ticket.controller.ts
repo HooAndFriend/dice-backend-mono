@@ -136,12 +136,7 @@ export default class TicketController {
       dto.settingId,
     );
 
-    const ticket = await this.ticketService.saveTicket(
-      dto,
-      user,
-      workspace,
-      ticketSetting,
-    );
+    await this.ticketService.saveTicket(dto, user, workspace, ticketSetting);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -356,11 +351,14 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/user')
-  public async updateTicketUser(@Body() dto: RequestTicketUserUpdateDto) {
+  public async updateTicketUser(
+    @GetUser() user: User,
+    @Body() dto: RequestTicketUserUpdateDto,
+  ) {
     const ticket = await this.ticketService.findTicketByIdWithWorkerAndAdmin(
       dto.ticketId,
     );
-    const user = await this.userService.findUserById(dto.userId);
+    const saveUser = await this.userService.findUserById(dto.userId);
     await this.ticketService.updateTicketUser(dto, user);
 
     this.sendTicketQueue({
@@ -384,9 +382,9 @@ export default class TicketController {
         dto.type === 'admin'
           ? ticket?.admin?.profile || null
           : ticket?.worker?.profile || null,
-      afterEmail: user.email,
-      afterNickname: user.nickname,
-      afterProfile: user.profile,
+      afterEmail: saveUser.email,
+      afterNickname: saveUser.nickname,
+      afterProfile: saveUser.profile,
     });
 
     return CommonResponse.createResponseMessage({
