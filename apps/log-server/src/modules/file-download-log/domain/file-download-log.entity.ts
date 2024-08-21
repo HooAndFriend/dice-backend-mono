@@ -8,7 +8,7 @@ import VersionTypeEnum from './version-type.enum';
 @Entity({ name: 'TB_FILE_DOWNLOAD_LOG' })
 export default class FileDownloadLog extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  fileDownloadLogId: number;
 
   @Column({
     type: 'enum',

@@ -10,7 +10,7 @@ export const TicketHistoryLogResponse = {
         data: [
           {
             createdDate: '2024-05-07T12:24:38.434Z',
-            id: '31',
+            ticketHistoryLogId: '31',
             ticketId: 317,
             email: 'yoonalim2003@gmail.com',
             type: 'STATUS',
@@ -24,7 +24,7 @@ export const TicketHistoryLogResponse = {
           },
           {
             createdDate: '2024-05-07T11:40:09.146Z',
-            id: '30',
+            ticketHistoryLogId: '30',
             ticketId: 317,
             email: 'yoonalim2003@gmail.com',
             type: 'DUE_DATE',
@@ -38,7 +38,7 @@ export const TicketHistoryLogResponse = {
           },
           {
             createdDate: '2024-05-07T11:40:05.417Z',
-            id: '29',
+            ticketHistoryLogId: '29',
             ticketId: 317,
             email: 'yoonalim2003@gmail.com',
             type: 'DUE_DATE',
@@ -52,7 +52,7 @@ export const TicketHistoryLogResponse = {
           },
           {
             createdDate: '2024-05-07T11:39:55.813Z',
-            id: '28',
+            ticketHistoryLogId: '28',
             ticketId: 317,
             email: 'yoonalim2003@gmail.com',
             type: 'STATUS',

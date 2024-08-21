@@ -7,7 +7,7 @@ import { BaseCreatedTimeEntity, TicketHistoryTypeEnum } from '@hi-dice/common';
 @Entity({ name: 'TB_TICKET_HISTORY_LOG' })
 export default class TicketHistoryLog extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  ticketHistoryLogId: number;
 
   @Column({
     comment: 'TICKET ID',
