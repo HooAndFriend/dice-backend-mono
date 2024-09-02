@@ -49,10 +49,10 @@ export default class TicketHistoryLogController {
   @ApiOperation({ summary: 'Ticket의 히스토리 리스트 조회' })
   @ApiResponse(TicketHistoryLogResponse.findTicketHistoryList[200])
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findTicketHistoryList(@Param('id') id: number) {
+  @Get('/:ticketId')
+  public async findTicketHistoryList(@Param('ticketId') ticketId: number) {
     const [data, count] =
-      await this.ticketHistoryLogService.findTicketHistoryList(id);
+      await this.ticketHistoryLogService.findTicketHistoryList(ticketId);
 
     return CommonResponse.createResponse({
       data: { data, count },

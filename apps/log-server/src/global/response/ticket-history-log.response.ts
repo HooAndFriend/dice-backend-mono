@@ -9,63 +9,25 @@ export const TicketHistoryLogResponse = {
       data: {
         data: [
           {
-            createdDate: '2024-05-07T12:24:38.434Z',
-            id: '31',
-            ticketId: 317,
-            email: 'yoonalim2003@gmail.com',
-            type: 'STATUS',
-            log: 'DOING -> COMPLETE',
-            user: {
-              email: 'yoonalim2003@gmail.com',
-              nickname: '유나낭',
-              profile:
-                'https://file.hi-dice.com/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
-            },
-          },
-          {
-            createdDate: '2024-05-07T11:40:09.146Z',
-            id: '30',
-            ticketId: 317,
-            email: 'yoonalim2003@gmail.com',
-            type: 'DUE_DATE',
-            log: '2024-05-06 -> 2024-05-07',
-            user: {
-              email: 'yoonalim2003@gmail.com',
-              nickname: '유나낭',
-              profile:
-                'https://file.hi-dice.com/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
-            },
-          },
-          {
-            createdDate: '2024-05-07T11:40:05.417Z',
-            id: '29',
-            ticketId: 317,
-            email: 'yoonalim2003@gmail.com',
-            type: 'DUE_DATE',
-            log: '2024-05-05 -> 2024-05-06',
-            user: {
-              email: 'yoonalim2003@gmail.com',
-              nickname: '유나낭',
-              profile:
-                'https://file.hi-dice.com/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
-            },
-          },
-          {
-            createdDate: '2024-05-07T11:39:55.813Z',
-            id: '28',
-            ticketId: 317,
-            email: 'yoonalim2003@gmail.com',
-            type: 'STATUS',
-            log: 'NOTHING -> DOING',
-            user: {
-              email: 'yoonalim2003@gmail.com',
-              nickname: '유나낭',
-              profile:
-                'https://file.hi-dice.com/dice-dev/d859a4892dfc1d7d4e12c1e748a8ad93.jpg',
-            },
+            createdDate: '2024-08-21T06:33:18.389Z',
+            ticketHistoryLogId: '1',
+            ticketId: 1,
+            creatorEmail: 'admin',
+            creatorNickname: 'admin',
+            creatorProfile:
+              'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            type: 'UPDATE_NAME',
+            beforeLog: 'name',
+            beforeEmail: null,
+            beforeNickname: null,
+            beforeProfile: null,
+            afterLog: 'NAME',
+            afterEmail: null,
+            afterNickname: null,
+            afterProfile: null,
           },
         ],
-        count: 4,
+        count: 1,
       },
       statusCode: 200,
       message: 'Find Ticket History List',

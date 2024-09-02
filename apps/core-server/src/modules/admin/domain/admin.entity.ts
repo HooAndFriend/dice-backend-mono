@@ -13,7 +13,7 @@ export default class Admin extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 120,
+    length: 50,
     comment: '이메일',
     nullable: false,
   })

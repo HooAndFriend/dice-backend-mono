@@ -96,9 +96,12 @@ export default class TicketCommentController {
 
     this.sendTicketQueue({
       ticketId: dto.ticketId,
-      email: user.email,
-      type: TicketHistoryTypeEnum.SAVE_COMMENT,
-      log: '댓글을 생성했습니다.',
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.ADD_COMMENT,
+      beforeLog: '-',
+      afterLog: dto.content,
     });
 
     return CommonResponse.createResponseMessage({
@@ -128,9 +131,12 @@ export default class TicketCommentController {
 
     this.sendTicketQueue({
       ticketId: comment.ticket.ticketId,
-      email: user.email,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
       type: TicketHistoryTypeEnum.UPDATE_COMMENT,
-      log: `${comment.content} -> ${dto.content}`,
+      beforeLog: comment.content,
+      afterLog: dto.content,
     });
 
     return CommonResponse.createResponseMessage({
@@ -158,9 +164,12 @@ export default class TicketCommentController {
 
     this.sendTicketQueue({
       ticketId: comment.ticket.ticketId,
-      email: user.email,
-      type: TicketHistoryTypeEnum.UPDATE_COMMENT,
-      log: comment.content,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.DELETE_COMMENT,
+      beforeLog: comment.content,
+      afterLog: '-',
     });
 
     return CommonResponse.createResponseMessage({

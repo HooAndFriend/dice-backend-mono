@@ -77,9 +77,12 @@ export default class TicketFileController {
 
     this.sendTicketQueue({
       ticketId: ticket.ticketId,
-      email: user.email,
-      type: TicketHistoryTypeEnum.UPLOAD_FILE,
-      log: dto.file,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.DELETE_COMMENT,
+      beforeLog: '-',
+      afterLog: dto.file,
     });
 
     return CommonResponse.createResponseMessage({
@@ -106,11 +109,13 @@ export default class TicketFileController {
 
     this.sendTicketQueue({
       ticketId: ticketFile.ticket.ticketId,
-      email: user.email,
-      type: TicketHistoryTypeEnum.UPLOAD_FILE,
-      log: ticketFile.url,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.DELETE_COMMENT,
+      beforeLog: ticketFile.url,
+      afterLog: '-',
     });
-
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Delete Ticket File',

@@ -7,7 +7,7 @@ import { BaseCreatedTimeEntity, TicketHistoryTypeEnum } from '@hi-dice/common';
 @Entity({ name: 'TB_TICKET_HISTORY_LOG' })
 export default class TicketHistoryLog extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  ticketHistoryLogId: number;
 
   @Column({
     comment: 'TICKET ID',
@@ -19,10 +19,29 @@ export default class TicketHistoryLog extends BaseCreatedTimeEntity {
   @Column({
     type: 'varchar',
     length: 120,
-    comment: '이메일',
+    comment: '로그 생성자 이메일',
     nullable: false,
+    name: 'creator_email',
   })
-  email: string;
+  creatorEmail: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: '로그 생성자 닉네임',
+    nullable: false,
+    name: 'creator_nickname',
+  })
+  creatorNickname: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: '로그 생성자 프로필',
+    nullable: false,
+    name: 'creator_profile',
+  })
+  creatorProfile: string;
 
   @Column({
     type: 'enum',
@@ -36,6 +55,69 @@ export default class TicketHistoryLog extends BaseCreatedTimeEntity {
     type: 'text',
     comment: '기록 내용',
     nullable: true,
+    name: 'before_log',
   })
-  log: string;
+  beforeLog: string;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '이전 유저 이메일',
+    nullable: true,
+    name: 'before_email',
+  })
+  beforeEmail: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: '이전 유저 닉네임',
+    nullable: true,
+    name: 'before_nickname',
+  })
+  beforeNickname: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: '이전 유저 프로필',
+    nullable: true,
+    name: 'before_profile',
+  })
+  beforeProfile: string;
+
+  @Column({
+    type: 'text',
+    comment: '기록 내용',
+    nullable: true,
+    name: 'after_log',
+  })
+  afterLog: string;
+
+  @Column({
+    type: 'varchar',
+    length: 120,
+    comment: '신규 유저 이메일',
+    nullable: true,
+    name: 'after_email',
+  })
+  afterEmail: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    comment: '신규 유저 닉네임',
+    nullable: true,
+    name: 'after_nickname',
+  })
+  afterNickname: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: '신규 유저 프로필',
+    nullable: true,
+    name: 'after_profile',
+  })
+  afterProfile: string;
 }

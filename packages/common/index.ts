@@ -1,6 +1,5 @@
 // ** Dto
 export * from './libs/dto/log/request-log.dto';
-export * from './libs/dto/log/qa-history-log.save.dto';
 export * from './libs/dto/log/ticket-history-log.save.dto';
 export * from './libs/dto/common/api.response';
 export * from './libs/dto/common/paging.dto';

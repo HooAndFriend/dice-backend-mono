@@ -19,6 +19,7 @@ import WorkspaceUserService from './service/workspace-user.service';
 import WorkspaceUserController from './controller/workspace-user.controller';
 import TicketModule from '../task/ticket/ticket.module';
 import UserModule from '../user/user.module';
+import AdminWorkspaceController from './controller/admin.workspace.controller';
 
 @Module({
   imports: [
@@ -37,7 +38,11 @@ import UserModule from '../user/user.module';
     WorkspaceService,
     WorkspaceUserService,
   ],
-  controllers: [WorkspaceController, WorkspaceUserController],
+  controllers: [
+    WorkspaceController,
+    WorkspaceUserController,
+    AdminWorkspaceController,
+  ],
   providers: [WorkspaceService, WorkspaceUserService],
 })
 export default class WorkspaceModule {}

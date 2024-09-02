@@ -3,10 +3,11 @@ import { Injectable } from '@nestjs/common';
 
 // ** Custom Module Imports
 import TicketHistoryLogRepository from '../repository/ticket-history-log.repository';
+import InternalCoreSenderService from '../../internal/internal-core/service/internal-core.sender.service';
 
 // ** Dto Imports
 import { RequestTicketHistoryLogSaveDto } from '@hi-dice/common';
-import InternalCoreSenderService from '../../internal/internal-core/service/internal-core.sender.service';
+import TicketHistoryLog from '../domain/ticket-history-log.entity';
 
 @Injectable()
 export default class TicketHistoryLogService {
@@ -28,31 +29,15 @@ export default class TicketHistoryLogService {
   }
 
   /**
-   * Find Ticket List
-   * @param ticketId
-   * @returns
+   * 티켓 히스토리 조회
    */
-  public async findTicketHistoryList(ticketId: number) {
-    const [data, count] = await this.ticketHistoryLogRepository.findAndCount({
+  public async findTicketHistoryList(
+    ticketId: number,
+  ): Promise<[TicketHistoryLog[], number]> {
+    return await this.ticketHistoryLogRepository.findAndCount({
       where: { ticketId },
       order: { createdDate: 'DESC' },
     });
-
-    if (count < 1) {
-      return [data, count];
-    }
-
-    const userList = await this.findUserProfileList(
-      data.map((item) => item.email),
-    );
-
-    return [
-      data.map((item) => ({
-        ...item,
-        user: userList.find((_) => _.email === item.email) || null,
-      })),
-      count,
-    ];
   }
 
   /**

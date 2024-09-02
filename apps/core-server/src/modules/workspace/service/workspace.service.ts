@@ -12,7 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { createCode } from '@/src/global/util/generator/code.generate';
 
 // ** Exception Imports
-import { NotFoundException } from '@/src/global/exception/CustomException';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@/src/global/exception/CustomException';
 
 // ** enum, dto, entity, types Imports
 import RequestWorksapceSaveDto from '../dto/workspace.save.dto';
@@ -20,6 +23,7 @@ import RequestWorkspaceUpdateDto from '../dto/workspace.update.dto';
 import { RoleEnum } from '@hi-dice/common';
 import User from '../../user/domain/user.entity';
 import Workspace from '../domain/workspace.entity';
+import RequestWorkspaceFindDto from '../dto/workspace.find.dto';
 
 @Injectable()
 export default class WorkspaceService {
@@ -31,6 +35,16 @@ export default class WorkspaceService {
   ) {}
 
   private logger = new Logger(WorkspaceService.name);
+
+  /**
+   * 워크스페이스 삭제 처리
+   */
+  public async deleteWorkspace(workspace: Workspace): Promise<void> {
+    this.validationDeleteWorkspace(workspace);
+
+    workspace.toDelete();
+    this.workspaceRepository.save(workspace);
+  }
 
   /**
    * 워크스페이스 생성
@@ -170,6 +184,42 @@ export default class WorkspaceService {
   }
 
   /**
+   * 워크스페이스 리스트 조회 - 관리자
+   */
+  public async findWorkspaceList(
+    dto: RequestWorkspaceFindDto,
+  ): Promise<[any[], number]> {
+    const [data, count] = await this.workspaceRepository.findWorkspaceList(dto);
+
+    return [
+      data.map((item) => ({
+        id: item.workspaceId,
+        name: item.name,
+        comment: item.comment,
+        createdId: item.createdId,
+        createdDate: item.createdDate,
+        workspaceUserCount: item.workspaceUser.length,
+      })),
+      count,
+    ];
+  }
+
+  /**
+   * 워크스페이스 조회 - 관리자
+   */
+  public async findWorksapceById(workspaceId: number): Promise<Workspace> {
+    const workspace = await this.workspaceRepository.findWorkspaceById(
+      workspaceId,
+    );
+
+    if (!workspace) {
+      throw new NotFoundException('Not Found Workspace');
+    }
+
+    return workspace;
+  }
+
+  /**
    * 팀의 워크스페이스 리스트 조회
    */
   private async findTeamWorkspaceListWithCount(
@@ -178,5 +228,14 @@ export default class WorkspaceService {
     return await this.workspaceRepository.findTeamWorkspaceListWithCount(
       teamId,
     );
+  }
+
+  /**
+   * 워크스페이스 삭제 전 유효성 검사
+   */
+  private validationDeleteWorkspace(workspace: Workspace): void {
+    if (workspace.isPersonal) {
+      throw new BadRequestException('Cannot delete personal workspace');
+    }
   }
 }

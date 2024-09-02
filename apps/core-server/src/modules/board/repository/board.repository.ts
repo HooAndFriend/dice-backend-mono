@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 
 // ** Custom Module Imports
 import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
@@ -22,18 +22,29 @@ export default class BoardRepository extends Repository<Board> {
       .leftJoin('board.parent', 'parent')
       .leftJoin('board.children', 'children')
       .leftJoin('board.workspace', 'workspace')
-      .where('children.isDeleted = false')
       .where('parent.boardId is null')
       .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
       .orderBy('board.orderId', 'ASC');
 
+    queryBuilder.andWhere(
+      new Brackets((qb) => {
+        qb.where('children.boardId IS NULL').orWhere(
+          'children.isDeleted = false',
+        );
+      }),
+    );
+
     return await queryBuilder.getManyAndCount();
   }
-
   public async findBoardSimpleList(workspaceId: number) {
     const queryBuilder = this.createQueryBuilder('board')
-      .select(['board.boardId', 'board.title', 'board.modifiedDate'])
+      .select([
+        'board.boardId',
+        'board.title',
+        'board.content',
+        'board.modifiedDate',
+      ])
       .leftJoin('board.workspace', 'workspace')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')

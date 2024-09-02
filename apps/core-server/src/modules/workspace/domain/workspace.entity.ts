@@ -75,6 +75,14 @@ export default class Workspace extends BaseTimeEntity {
   })
   isPersonal: boolean;
 
+  @Column({
+    type: 'boolean',
+    comment: '삭제 여부',
+    nullable: false,
+    default: false,
+  })
+  isDeleted: boolean;
+
   @OneToMany(() => WorkspaceUser, (workspaceUser) => workspaceUser.workspace, {
     cascade: true,
   })
@@ -91,6 +99,11 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => Sprint, (sprint) => sprint.workspace)
   sprint: Relation<Sprint>[];
+
   @OneToMany(() => Epic, (epic) => epic.workspace)
   epic: Relation<Epic>[];
+
+  public toDelete(): void {
+    this.isDeleted = true;
+  }
 }

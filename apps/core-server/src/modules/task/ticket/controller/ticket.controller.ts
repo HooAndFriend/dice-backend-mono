@@ -64,6 +64,7 @@ import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
 import EpicService from '../../epic/service/epic.service';
+import dayjs from 'dayjs';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -135,19 +136,7 @@ export default class TicketController {
       dto.settingId,
     );
 
-    const ticket = await this.ticketService.saveTicket(
-      dto,
-      user,
-      workspace,
-      ticketSetting,
-    );
-
-    this.sendTicketQueue({
-      ticketId: ticket.ticketId,
-      email: user.email,
-      type: TicketHistoryTypeEnum.CREATE,
-      log: '티켓을 생성했습니다.',
-    });
+    await this.ticketService.saveTicket(dto, user, workspace, ticketSetting);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -254,19 +243,22 @@ export default class TicketController {
   @Patch('/')
   public async updateSimpleTicket(
     @Body() dto: RequestTicketSimpleUpdateDto,
-    @GetUser() { email }: User,
+    @GetUser() user: User,
   ) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
     await this.ticketService.updateSimpleTicket(ticket, dto);
 
     this.sendTicketQueue({
       ticketId: dto.ticketId,
-      email: email,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
       type: this.getTicketHistoryLogEnum(dto.type),
-      log:
+      beforeLog:
         dto.type === 'storypoint'
-          ? `${ticket.storypoint} -> ${dto.storypoint}`
-          : `${ticket[dto.type]} -> ${dto.value}`,
+          ? String(ticket.storypoint)
+          : ticket[dto.type],
+      afterLog: dto.value,
     });
 
     return CommonResponse.createResponseMessage({
@@ -285,13 +277,26 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/ticket-setting')
-  public async updateTicketSetting(@Body() dto: RequestTicketSettingUpdateDto) {
-    await this.ticketService.isExistedTicketById(dto.ticketId);
+  public async updateTicketSetting(
+    @Body() dto: RequestTicketSettingUpdateDto,
+    @GetUser() user: User,
+  ) {
+    const ticket = await this.ticketService.findOne(dto.ticketId);
     const ticketSetting = await this.ticketSettingService.findTicketSettingById(
       dto.settingId,
     );
 
     await this.ticketService.updateTicketSetting(ticketSetting, dto.ticketId);
+
+    this.sendTicketQueue({
+      ticketId: dto.ticketId,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.UPDATE_TYPE,
+      beforeLog: ticket.ticketSetting.name,
+      afterLog: ticketSetting.name,
+    });
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -311,7 +316,7 @@ export default class TicketController {
   @Patch('/dueDate')
   public async updateTicketDueDate(
     @Body() dto: RequestTicketDueDateUpdateDto,
-    @GetUser() { email }: User,
+    @GetUser() user: User,
   ) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
 
@@ -319,9 +324,14 @@ export default class TicketController {
 
     this.sendTicketQueue({
       ticketId: dto.ticketId,
-      email: email,
-      type: TicketHistoryTypeEnum.DUE_DATE,
-      log: `${ticket.dueDate} -> ${dto.dueDate}`,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.UPDATE_DUE_DATE,
+      beforeLog: ticket.dueDate
+        ? dayjs(ticket.dueDate).format('YYYY-MM-DD')
+        : '없음',
+      afterLog: dto.dueDate ? dayjs(dto.dueDate).format('YYYY-MM-DD') : '없음',
     });
 
     return CommonResponse.createResponseMessage({
@@ -341,23 +351,40 @@ export default class TicketController {
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Put('/user')
-  public async updateTicketUser(@Body() dto: RequestTicketUserUpdateDto) {
+  public async updateTicketUser(
+    @GetUser() user: User,
+    @Body() dto: RequestTicketUserUpdateDto,
+  ) {
     const ticket = await this.ticketService.findTicketByIdWithWorkerAndAdmin(
       dto.ticketId,
     );
-    const user = await this.userService.findUserById(dto.userId);
+    const saveUser = await this.userService.findUserById(dto.userId);
     await this.ticketService.updateTicketUser(dto, user);
 
     this.sendTicketQueue({
       ticketId: ticket.ticketId,
-      email: user.email,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
       type:
         dto.type === 'admin'
-          ? TicketHistoryTypeEnum.ADMIN
-          : TicketHistoryTypeEnum.WORKER,
-      log: `${ticket?.worker ? ticket.worker.nickname : '-'} -> ${
-        user.nickname
-      }`,
+          ? TicketHistoryTypeEnum.UPDATE_ADMIN
+          : TicketHistoryTypeEnum.UPDATE_WORKER,
+      beforeNickname:
+        dto.type === 'admin'
+          ? ticket?.admin?.nickname || null
+          : ticket?.worker?.nickname || null,
+      beforeEmail:
+        dto.type === 'admin'
+          ? ticket?.admin?.email || null
+          : ticket?.worker?.email || null,
+      beforeProfile:
+        dto.type === 'admin'
+          ? ticket?.admin?.profile || null
+          : ticket?.worker?.profile || null,
+      afterEmail: saveUser.email,
+      afterNickname: saveUser.nickname,
+      afterProfile: saveUser.profile,
     });
 
     return CommonResponse.createResponseMessage({
@@ -425,7 +452,7 @@ export default class TicketController {
   @Put('/status')
   public async updateTicketState(
     @Body() dto: RequestTicketStatusUpdateDto,
-    @GetUser() { email }: User,
+    @GetUser() user: User,
   ) {
     const ticket = await this.ticketService.findTicketById(dto.ticketId);
 
@@ -433,9 +460,12 @@ export default class TicketController {
 
     this.sendTicketQueue({
       ticketId: dto.ticketId,
-      email: email,
-      type: TicketHistoryTypeEnum.STATUS,
-      log: `${ticket.status} -> ${dto.status}`,
+      creatorEmail: user.email,
+      creatorProfile: user.profile,
+      creatorNickname: user.nickname,
+      type: TicketHistoryTypeEnum.UPDATE_STATUS,
+      beforeLog: ticket.status,
+      afterLog: dto.status,
     });
 
     return CommonResponse.createResponseMessage({
@@ -459,17 +489,15 @@ export default class TicketController {
    */
   private getTicketHistoryLogEnum(type: 'content' | 'name' | 'storypoint') {
     if (type === 'content') {
-      return TicketHistoryTypeEnum.CONTENT;
+      return TicketHistoryTypeEnum.UPDATE_COMMENT;
     }
 
     if (type === 'name') {
-      return TicketHistoryTypeEnum.TITLE;
+      return TicketHistoryTypeEnum.UPDATE_NAME;
     }
 
     if (type === 'storypoint') {
-      return TicketHistoryTypeEnum.SP;
+      return TicketHistoryTypeEnum.UPDATE_SP;
     }
-
-    return TicketHistoryTypeEnum.CREATE;
   }
 }

@@ -7,7 +7,7 @@ import { BaseCreatedTimeEntity } from '@hi-dice/common';
 @Entity({ name: 'TB_REQUEST_LOG' })
 export default class RequestLog extends BaseCreatedTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  requestLogId: number;
 
   @Column({
     type: 'varchar',
