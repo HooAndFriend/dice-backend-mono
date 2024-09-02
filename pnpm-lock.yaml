@@ -368,8 +368,8 @@ importers:
   apps/core-server:
     dependencies:
       '@hi-dice/common':
-        specifier: 1.1.5
-        version: link:../../packages/common
+        specifier: 1.1.2
+        version: 1.1.2(@nestjs/platform-express@10.4.1)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(mysql2@3.11.0)(redis@4.7.0)(ts-node@10.9.2)
       '@liaoliaots/nestjs-redis':
         specifier: ^9.0.5
         version: 9.0.5(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(ioredis@5.4.1)
@@ -3037,12 +3037,59 @@ packages:
     resolution: {integrity: sha512-59SgoZ3EXbkfSX7b63tsou/SDGzwUEK6MuB5sKqgVK1/XE0fxmpsOb9DQI8LXW3KfGnAjImCGhhEb7uPPAUVNA==}
     dev: true
 
+  /@hi-dice/common@1.1.2(@nestjs/platform-express@10.4.1)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(mysql2@3.11.0)(redis@4.7.0)(ts-node@10.9.2):
+    resolution: {integrity: sha512-zmrULArdQtGsxLCiAHorFrKLmCHVCoXAnp6A0Umyy5Byd+1rH7IjT6SX4Pzg/jwC0zVr//MmrSQe5dVpeatxLA==}
+    dependencies:
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.4.1)(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/swagger': 7.4.0(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)
+      '@nestjs/typeorm': 10.0.2(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.20)
+      '@types/amqplib': 0.10.5
+      class-transformer: 0.5.1
+      class-validator: 0.14.1
+      crypto-js: 4.2.0
+      reflect-metadata: 0.1.14
+      rxjs: 7.8.1
+      typeorm: 0.3.20(ioredis@5.4.1)(mysql2@3.11.0)(redis@4.7.0)(ts-node@10.9.2)
+    transitivePeerDependencies:
+      - '@fastify/static'
+      - '@google-cloud/spanner'
+      - '@grpc/grpc-js'
+      - '@nestjs/platform-express'
+      - '@nestjs/websockets'
+      - '@sap/hana-client'
+      - amqp-connection-manager
+      - amqplib
+      - better-sqlite3
+      - cache-manager
+      - encoding
+      - hdb-pool
+      - ioredis
+      - kafkajs
+      - mongodb
+      - mqtt
+      - mssql
+      - mysql2
+      - nats
+      - oracledb
+      - pg
+      - pg-native
+      - pg-query-stream
+      - redis
+      - sql.js
+      - sqlite3
+      - supports-color
+      - ts-node
+      - typeorm-aurora-data-api-driver
+    dev: false
+
   /@hi-dice/common@1.1.2(@nestjs/platform-express@10.4.1)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(ioredis@5.4.1)(mysql2@3.11.0)(redis@4.7.0)(ts-node@10.9.2):
     resolution: {integrity: sha512-zmrULArdQtGsxLCiAHorFrKLmCHVCoXAnp6A0Umyy5Byd+1rH7IjT6SX4Pzg/jwC0zVr//MmrSQe5dVpeatxLA==}
     dependencies:
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.4.1)(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/microservices': 10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/swagger': 7.4.0(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)
       '@nestjs/typeorm': 10.0.2(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.14)(rxjs@7.8.1)(typeorm@0.3.20)
       '@types/amqplib': 0.10.5
@@ -3546,7 +3593,7 @@ packages:
       tslib: 2.6.3
       uid: 2.0.2
 
-  /@nestjs/common@9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1):
+  /@nestjs/common@9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1):
     resolution: {integrity: sha512-Gd6D4IaYj01o14Bwv81ukidn4w3bPHCblMUq+SmUmWLyosK+XQmInCS09SbDDZyL8jy86PngtBLTdhJ2bXSUig==}
     peerDependencies:
       cache-manager: <=5
@@ -3562,6 +3609,7 @@ packages:
       class-validator:
         optional: true
     dependencies:
+      cache-manager: 5.7.6
       class-transformer: 0.5.1
       class-validator: 0.14.1
       iterare: 1.2.1
@@ -3666,8 +3714,8 @@ packages:
       '@nestjs/websockets':
         optional: true
     dependencies:
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/microservices': 10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/microservices': 10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/platform-express': 10.4.1(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
@@ -3748,7 +3796,7 @@ packages:
       class-validator:
         optional: true
     dependencies:
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       class-transformer: 0.5.1
       class-validator: 0.14.1
       reflect-metadata: 0.1.14
@@ -3845,7 +3893,7 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@nestjs/microservices@10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1):
+  /@nestjs/microservices@10.4.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(amqp-connection-manager@4.1.14)(amqplib@0.10.4)(cache-manager@5.7.6)(ioredis@5.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1):
     resolution: {integrity: sha512-DYQSqP21/Zzoj6KAiwM5wIqmvESHS454bVOzw/LSRabYngOTLDmuhCLq0dK3y9KHa2WFbbJiBd9uhLwcfTnuLg==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -3881,10 +3929,11 @@ packages:
       nats:
         optional: true
     dependencies:
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.4.1)(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       amqp-connection-manager: 4.1.14(amqplib@0.10.4)
       amqplib: 0.10.4
+      cache-manager: 5.7.6
       ioredis: 5.4.1
       iterare: 1.2.1
       reflect-metadata: 0.1.14
@@ -3996,7 +4045,7 @@ packages:
         optional: true
     dependencies:
       '@microsoft/tsdoc': 0.15.0
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.4.1)(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/mapped-types': 2.0.5(@nestjs/common@9.4.3)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)
       class-transformer: 0.5.1
@@ -4054,7 +4103,7 @@ packages:
       rxjs: ^7.2.0
       typeorm: ^0.3.0
     dependencies:
-      '@nestjs/common': 9.4.3(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/common': 9.4.3(cache-manager@5.7.6)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 9.4.3(@nestjs/common@9.4.3)(@nestjs/microservices@10.4.1)(@nestjs/platform-express@10.4.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       reflect-metadata: 0.1.14
       rxjs: 7.8.1
