@@ -113,14 +113,17 @@ export default class TicketService {
    * 티켓 담당자 변경
    */
   public async updateTicketUser(
-    dto: RequestTicketUserUpdateDto,
+    ticket: Ticket,
+    type: 'admin' | 'user',
     user: User,
   ): Promise<void> {
-    if (dto.type === 'admin') {
-      await this.ticketRepository.update(dto.ticketId, { admin: user });
+    if (type === 'admin') {
+      ticket.changeAdmin(user);
     } else {
-      await this.ticketRepository.update(dto.ticketId, { worker: user });
+      ticket.changeWorker(user);
     }
+
+    await this.ticketRepository.save(ticket);
   }
 
   /**

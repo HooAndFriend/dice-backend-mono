@@ -359,7 +359,7 @@ export default class TicketController {
       dto.ticketId,
     );
     const saveUser = await this.userService.findUserById(dto.userId);
-    await this.ticketService.updateTicketUser(dto, user);
+    await this.ticketService.updateTicketUser(ticket, dto.type, saveUser);
 
     this.sendTicketQueue({
       ticketId: ticket.ticketId,

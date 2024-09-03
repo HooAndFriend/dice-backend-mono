@@ -157,4 +157,12 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   epic: Relation<Epic>;
+
+  public changeWorker(worker: User) {
+    this.worker = worker;
+  }
+
+  public changeAdmin(admin: User) {
+    this.admin = admin;
+  }
 }
