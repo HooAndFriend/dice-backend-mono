@@ -6,6 +6,75 @@ import {
 } from './common';
 
 export const TicketResponse = {
+  findMyTicketList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            ticketId: 97,
+            name: '게시글이 최초 선택한 게시글 하위로 생성됨.',
+            orderId: 1,
+            status: 'COMPLETE',
+            code: 'HAF-73',
+            dueDate: '2024-09-05',
+            completeDate: '2024-09-04',
+            reopenDate: null,
+            ticketSetting: {
+              ticketSettingId: 4,
+              type: 'YELLOW',
+              name: 'FUNC',
+            },
+            worker: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+            admin: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+          },
+          {
+            ticketId: 96,
+            name: 'due date 삭제 기능 구현',
+            orderId: 1,
+            status: 'COMPLETE',
+            code: 'HAF-72',
+            dueDate: '2024-09-03',
+            completeDate: '2024-09-03',
+            reopenDate: null,
+            ticketSetting: {
+              ticketSettingId: 4,
+              type: 'YELLOW',
+              name: 'FUNC',
+            },
+            worker: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+            admin: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: '나의 Ticket을 전체 조회합니다.',
+    }),
+  },
   findAllTicket: {
     200: createResponse({
       data: {

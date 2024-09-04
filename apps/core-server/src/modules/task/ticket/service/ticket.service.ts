@@ -179,6 +179,16 @@ export default class TicketService {
   }
 
   /**
+   * 나의 티켓 리스트 조회
+   */
+  public async findMyTicketList(
+    workspaceId: number,
+    userId: number,
+  ): Promise<[Ticket[], number]> {
+    return await this.ticketRepository.findMyTicketList(workspaceId, userId);
+  }
+
+  /**
    * 티켓을 ID로 상세 조회
    */
   public async findOneTicket(id: number): Promise<Ticket> {

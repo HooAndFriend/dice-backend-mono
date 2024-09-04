@@ -1,5 +1,5 @@
 // ** Typeorm Imports
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 
 // ** Utils Imports
 import dayjs from 'dayjs';
@@ -72,8 +72,49 @@ export default class TicketRepository extends Repository<Ticket> {
 
       .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
-      
+
     return await querybuilder.getOne();
+  }
+
+  public async findMyTicketList(workspaceId: number, userId: number) {
+    const querybuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.ticketId',
+        'ticket.name',
+        'ticket.status',
+        'ticket.code',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'ticket.orderId',
+        'worker.userId',
+        'worker.email',
+        'worker.nickname',
+        'worker.profile',
+        'admin.userId',
+        'admin.email',
+        'admin.nickname',
+        'admin.profile',
+        'ticketSetting.ticketSettingId',
+        'ticketSetting.name',
+        'ticketSetting.type',
+      ])
+      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.ticketSetting', 'ticketSetting')
+      .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.admin', 'admin')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('ticket.isDeleted = false')
+      .andWhere(
+        new Brackets((qb) => {
+          qb.andWhere('worker.userId = :userId', {
+            userId,
+          }).orWhere('admin.userId = :userId', { userId });
+        }),
+      )
+      .orderBy('ticket.orderId', 'ASC');
+
+    return await querybuilder.getManyAndCount();
   }
 
   public async findAllTicketByWorkspaceId(workspaceId: number) {
