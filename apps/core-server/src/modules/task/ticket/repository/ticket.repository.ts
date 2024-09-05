@@ -105,6 +105,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.admin', 'admin')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
+      .andWhere('ticket.dueDate = CURRENT_DATE()')
       .andWhere(
         new Brackets((qb) => {
           qb.andWhere('worker.userId = :userId', {
