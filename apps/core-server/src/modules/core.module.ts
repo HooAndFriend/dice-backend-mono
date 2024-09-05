@@ -11,6 +11,7 @@ import AdminModule from './admin/admin.module';
 import VersionModule from './version/version.module';
 import BoardModule from './board/board.module';
 import InternalModule from './internal/internal.module';
+import StateModule from './task/state/state.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import InternalModule from './internal/internal.module';
     VersionModule,
     BoardModule,
     InternalModule,
+    StateModule,
   ],
   providers: [],
   exports: [],
