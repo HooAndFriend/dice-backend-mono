@@ -34,9 +34,7 @@ export default class VersionService {
   }
 
   /**
-   * Save Version
-   * @param dto
-   * @param adminEmail
+   * 버전을 저장합니다.
    */
   public async saveVersion(dto: RequestVersionSaveDto, adminEmail: string) {
     await this.versionRepository.save(
@@ -49,9 +47,7 @@ export default class VersionService {
   }
 
   /**
-   * Update Version
-   * @param dto
-   * @param adminEmail
+   * 버전을 수정합니다.
    */
   public async updateVersion(dto: RequestVersionUpdateDto, adminEmail: string) {
     await this.versionRepository.update(dto.versionId, {
@@ -64,17 +60,14 @@ export default class VersionService {
   }
 
   /**
-   * Find Version List
-   * @param dto
-   * @returns
+   * 버전 리스트를 조회합니다.
    */
   public async findVersionList(dto: RequestPagingDto) {
     return await this.versionRepository.findVersionList(dto);
   }
 
   /**
-   * Existed Version
-   * @param version
+   * 버전이 존재하는지 확인합니다.
    */
   public async existedVersion(version: string) {
     const existedVersion = await this.versionRepository.exist({
@@ -87,9 +80,7 @@ export default class VersionService {
   }
 
   /**
-   * Find Version
-   * @param id
-   * @returns
+   * 버전을 조회합니다.
    */
   public async findVersion(id: number) {
     const version = await this.versionRepository.findOne({
@@ -103,16 +94,14 @@ export default class VersionService {
   }
 
   /**
-   * Delete Version
-   * @param id
+   * 버전을 삭제합니다.
    */
   public async deleteVersion(id: number) {
     await this.versionRepository.delete(id);
   }
 
   /**
-   * Existed Version By Id
-   * @param id
+   * 버전이 존재하는지 id로 확인합니다.
    */
   public async existedVersionById(id: number) {
     const existedVersion = await this.versionRepository.exist({
