@@ -35,6 +35,7 @@ import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 
 @Injectable()
 export default class TicketService {
@@ -597,5 +598,16 @@ export default class TicketService {
         workspace: { workspaceId },
       },
     });
+  }
+
+  /**
+   * 쿼리로 티켓 조회
+   */
+  public async findTicketByQuery(findquery: RequestTicketFindDto) {
+    const [ticket, count] = await this.ticketRepository.findTicketByQuery(
+      findquery,
+    );
+
+    return { ticket, count };
   }
 }

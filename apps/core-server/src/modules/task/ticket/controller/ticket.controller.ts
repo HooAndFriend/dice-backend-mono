@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -65,6 +66,7 @@ import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
 import EpicService from '../../epic/service/epic.service';
 import dayjs from 'dayjs';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -544,5 +546,20 @@ export default class TicketController {
     if (type === 'storypoint') {
       return TicketHistoryTypeEnum.UPDATE_SP;
     }
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'TICKET 리스트 관리자 조회' })
+  @ApiResponse(TicketResponse.findAllTicket[200])
+  @UseGuards(JwtAccessGuard)
+  @Get('/admin')
+  public async findDetailTicket(@Query() findquery: RequestTicketFindDto) {
+    const ticket = await this.ticketService.findTicketByQuery(findquery);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: 'Ticket을 전체 조회합니다.',
+      data: ticket,
+    });
   }
 }
