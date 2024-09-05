@@ -21,8 +21,7 @@ export default class StateService {
   ) {}
 
   /**
-   * Save State
-   * @param dto
+   * State를 저장합니다.
    */
   public async saveState(dto: RequestStateSaveDto) {
     await this.stateRepository.save(
@@ -33,18 +32,14 @@ export default class StateService {
   }
 
   /**
-   * Find State List
-   * @param dto
-   * @returns
+   * State 리스트를 조회합니다.
    */
   public async findStateList(dto: RequestPagingDto) {
     return await this.stateRepository.findStateList(dto);
   }
 
   /**
-   *
-   * @param id Find State
-   * @returns
+   * State를 조회합니다.
    */
   public async findState(id: number) {
     const state = await this.stateRepository.findOne({ where: { id } });
@@ -57,16 +52,14 @@ export default class StateService {
   }
 
   /**
-   * Delete State
-   * @param id
+   * State를 삭제합니다.
    */
   public async deleteState(id: number) {
     await this.stateRepository.delete(id);
   }
 
   /**
-   * Update State
-   * @param dto
+   * State를 수정합니다.
    */
   public async updateState(dto: RequestStateUpdateDto) {
     const isDuplicateName = await this.stateRepository.findOne({
@@ -85,8 +78,7 @@ export default class StateService {
   }
 
   /**
-   * Existed State
-   * @param name
+   * State가 존재하는지 확인합니다.
    */
   public async existedState(name: string) {
     const existedState = await this.stateRepository.exist({
@@ -99,8 +91,7 @@ export default class StateService {
   }
 
   /**
-   * Existed State By Id
-   * @param id
+   * State가 존재하는지 id로 확인합니다.
    */
   public async existedStateById(id: number) {
     const existedState = await this.stateRepository.exist({
