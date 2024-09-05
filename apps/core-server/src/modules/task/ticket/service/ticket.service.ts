@@ -7,14 +7,16 @@ import {
   Logger,
 } from '@nestjs/common';
 
-// ** Typeorm Imports
-import { Between, DataSource, In, LessThan } from 'typeorm';
+// ** Utils Imports
+import dayjs from 'dayjs';
+import { Between, DataSource, In } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 // ** Custom Module Imports
 import EpicService from '../../epic/service/epic.service';
 import TicketRepository from '../repository/ticket.repository';
 import TicketCommentRepository from '../../ticket-comment/repository/ticket.comment.repository';
+import WorkspaceUserService from '@/src/modules/workspace/service/workspace-user.service';
 
 // ** enum, dto, entity, types Imports
 import Ticket from '../domain/ticket.entity';
@@ -24,7 +26,6 @@ import {
 } from '@/src/global/exception/CustomException';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import { TaskStatusEnum } from '@hi-dice/common';
-import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
 import RequestTicketStatusUpdateDto from '../dto/ticket/ticket.state.update.dto';
 import RequestSimpleTicketSaveDto from '../dto/ticket/ticket.save.dto';
 import RequestTicketSimpleUpdateDto from '../dto/ticket/ticket-simple.update.dto';
@@ -41,6 +42,7 @@ export default class TicketService {
     private readonly ticketRepository: TicketRepository,
     private readonly epicService: EpicService,
     private readonly ticketCommentRepository: TicketCommentRepository,
+    private readonly worksapceUserService: WorkspaceUserService,
 
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -199,6 +201,79 @@ export default class TicketService {
     }
 
     return data;
+  }
+
+  /**
+   * 통계 데이터 조회
+   */
+  public async findStats(workspaceId: number, userId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const ticketList = await this.ticketRepository.find({
+      select: ['ticketId', 'status', 'dueDate', 'worker'],
+      where: {
+        workspace: { workspaceId },
+        isDeleted: false,
+      },
+      relations: ['worker'],
+    });
+
+    const workspaceUserList =
+      await this.worksapceUserService.findWorkspaceUserListByWorkspaceId(
+        workspaceId,
+      );
+
+    console.log('workspaceUserList', workspaceUserList);
+
+    const totalCount = ticketList.length;
+    const totalDoneCount = ticketList.filter((ticket) =>
+      [TaskStatusEnum.COMPLETE, TaskStatusEnum.DONE].includes(ticket.status),
+    ).length;
+    const myTicjetList = ticketList.filter(
+      (ticket) => ticket.worker && ticket.worker.userId === userId,
+    );
+    const myCount = myTicjetList.length;
+    const myDoneCount = myTicjetList.filter((ticket) =>
+      [TaskStatusEnum.COMPLETE, TaskStatusEnum.DONE].includes(ticket.status),
+    ).length;
+    const myTodayCount = myTicjetList.filter(
+      (item) => item.dueDate && dayjs(item.dueDate).isSame(today, 'day'),
+    ).length;
+    const myTodayDoneCount = myTicjetList
+      .filter(
+        (item) => item.dueDate && dayjs(item.dueDate).isSame(today, 'day'),
+      )
+      .filter((ticket) =>
+        [TaskStatusEnum.COMPLETE, TaskStatusEnum.DONE].includes(ticket.status),
+      ).length;
+
+    const userList = workspaceUserList.map((workspaceUser) => ({
+      userId: workspaceUser.user.userId,
+      email: workspaceUser.user.email,
+      nickname: workspaceUser.user.nickname,
+      profile: workspaceUser.user.profile,
+      ticketCount: ticketList.filter(
+        (ticket) =>
+          ticket.worker && ticket.worker.userId === workspaceUser.user.userId,
+      ).length,
+      ticketDoneCount: ticketList
+        .filter(
+          (ticket) =>
+            ticket.worker && ticket.worker.userId === workspaceUser.user.userId,
+        )
+        .filter((ticket) =>
+          [TaskStatusEnum.COMPLETE, TaskStatusEnum.DONE].includes(
+            ticket.status,
+          ),
+        ).length,
+    }));
+
+    return {
+      totalCount,
+      totalDoneCount,
+      userList,
+      user: { myCount, myDoneCount, myTodayCount, myTodayDoneCount },
+    };
   }
 
   /**

@@ -142,6 +142,27 @@ export default class TicketController {
 
   @ApiBearerAuth('access-token')
   @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 통계 조회' })
+  @ApiResponse(TicketResponse.findStats[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/stats')
+  public async findStats(
+    @GetWorkspace() { workspaceId }: Workspace,
+    @GetUser() { userId }: User,
+  ) {
+    const data = await this.ticketService.findStats(workspaceId, userId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '워크스페이스의 티켓 통계를 조회합니다.',
+      data,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 생성' })
   @ApiBody({ type: RequestTicketSaveDto })
   @ApiResponse(TicketResponse.saveTicket[200])
