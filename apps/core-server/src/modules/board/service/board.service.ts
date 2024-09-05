@@ -25,10 +25,10 @@ export default class BoardService {
     title: string,
     createdId: string,
     workspace: Workspace,
-  ): Promise<void> {
+  ): Promise<Board> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
-    await this.boardRepository.save(
+    return await this.boardRepository.save(
       this.boardRepository.create({
         title,
         createdId,
@@ -72,10 +72,10 @@ export default class BoardService {
     createdId: string,
     workspace: Workspace,
     board: Board,
-  ): Promise<void> {
+  ): Promise<Board> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
-    await this.boardRepository.save(
+    return await this.boardRepository.save(
       this.boardRepository.create({
         title,
         createdId,
