@@ -32,8 +32,7 @@ export default class CsCategoryService {
   }
 
   /**
-   * Existed CsCategory By Name
-   * @param name
+   * CsCategory 이름으로 존재하는지 확인합니다.
    */
   public async existedCsCategoryByName(name: string) {
     const csCategory = await this.csCategoryRepository.findOne({
@@ -46,8 +45,7 @@ export default class CsCategoryService {
   }
 
   /**
-   * Existed CsCategory By Id
-   * @param csCategoryId
+   * CsCategory ID로 존재하는지 확인합니다.
    */
   public async existedCsCategoryById(csCategoryId: number) {
     const csCategory = await this.csCategoryRepository.findOne({
@@ -60,25 +58,21 @@ export default class CsCategoryService {
   }
 
   /**
-   * Find CsCategory List
-   * @returns
+   * CsCategory 리스트를 조회합니다.
    */
   public async findCsCategoryList() {
     return await this.csCategoryRepository.findAndCount();
   }
 
   /**
-   * Delete CsCategory
-   * @param csCategoryId
+   * CsCategory 삭제합니다.
    */
   public async deleteCsCategory(csCategoryId: number) {
     await this.csCategoryRepository.delete(csCategoryId);
   }
 
   /**
-   * Save CsCategory
-   * @param name
-   * @param adminEmail
+   * CsCategory 저장합니다.
    */
   public async saveCsCategory(name: string, adminEmail: string) {
     await this.csCategoryRepository.save(
@@ -91,9 +85,7 @@ export default class CsCategoryService {
   }
 
   /**
-   * Update CsCategory
-   * @param dto
-   * @param adminEmail
+   * CsCategory 수정합니다.
    */
   public async updateCsCategory(
     dto: RequestCsCategoryUpdateDto,
