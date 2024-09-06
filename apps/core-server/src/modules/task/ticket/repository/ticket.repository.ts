@@ -154,28 +154,10 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
-        'subTickets.ticketId',
-        'subTickets.name',
-        'subTickets.status',
-        'subTickets.code',
-        'subTickets.dueDate',
-        'subTickets.completeDate',
-        'subTickets.reopenDate',
-        'subTickets.orderId',
-        'subTicketWorker.userId',
-        'subTicketWorker.email',
-        'subTicketWorker.nickname',
-        'subTicketWorker.profile',
-        'subTicketSetting.ticketSettingId',
-        'subTicketSetting.name',
-        'subTicketSetting.type',
       ])
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.subTickets', 'subTickets')
-      .leftJoin('subTickets.ticketSetting', 'subTicketSetting') // Joining subTicketSetting
-      .leftJoin('subTickets.worker', 'subTicketWorker') // Joining subTicketWorker
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
       .andWhere('ticket.parentTicket IS NULL')
