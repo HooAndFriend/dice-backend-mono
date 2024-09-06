@@ -160,7 +160,6 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.worker', 'worker')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
-      .andWhere('ticket.parentTicket IS NULL')
       .orderBy('ticket.orderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
