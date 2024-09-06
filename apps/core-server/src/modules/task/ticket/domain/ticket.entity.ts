@@ -139,14 +139,6 @@ export default class Ticket extends BaseTimeEntity {
   })
   ticketSetting: Relation<TicketSetting>;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.subTickets, {
-    onDelete: 'SET NULL',
-  })
-  parentTicket: Relation<Ticket>;
-
-  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
-  subTickets: Relation<Ticket>[];
-
   @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
   parentLink: Relation<TicketLink>[];
 
