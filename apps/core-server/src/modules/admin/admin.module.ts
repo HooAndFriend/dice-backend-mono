@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,6 +12,8 @@ import AdminRepository from './repository/admin.repository';
 import AuthorityRepository from './repository/authority.repository';
 import AuthorityService from './service/authority.service';
 import AuthorityController from './controller/authority.controller';
+import AdminTicketController from './controller/ticket.controller';
+import TicketModule from '../task/ticket/ticket.module';
 
 // ** Entity Imports
 import Admin from './domain/admin.entity';
@@ -21,9 +23,10 @@ import Authority from './domain/authority.entity';
   imports: [
     TypeOrmModule.forFeature([Admin, Authority]),
     TypeOrmExModule.forCustomRepository([AdminRepository, AuthorityRepository]),
+    forwardRef(() => TicketModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, AdminService, AuthorityService],
-  controllers: [AdminController, AuthorityController],
+  controllers: [AdminController, AuthorityController, AdminTicketController],
   providers: [AdminService, AuthorityService],
 })
 export default class AdminModule {}

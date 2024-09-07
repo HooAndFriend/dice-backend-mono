@@ -547,19 +547,4 @@ export default class TicketController {
       return TicketHistoryTypeEnum.UPDATE_SP;
     }
   }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'TICKET 리스트 관리자 조회' })
-  @ApiResponse(TicketResponse.findAllTicket[200])
-  @UseGuards(JwtAccessGuard)
-  @Get('/admin')
-  public async findDetailTicket(@Query() findquery: RequestTicketFindDto) {
-    const ticket = await this.ticketService.findTicketByQuery(findquery);
-
-    return CommonResponse.createResponse({
-      statusCode: 200,
-      message: 'Ticket을 전체 조회합니다.',
-      data: ticket,
-    });
-  }
 }
