@@ -7,7 +7,7 @@ import { Injectable } from '@nestjs/common';
 
 // ** enum, dto, entity, types Imports
 import { BadRequestException } from '@hi-dice/common';
-import * as serviceAccount from '../../../firebase-config.json';
+// import * as serviceAccount from '../../../firebase-config.json';
 import { SendPushDto } from '@hi-dice/common';
 import SendMultiPushDto from '../dto/push-multi.send';
 

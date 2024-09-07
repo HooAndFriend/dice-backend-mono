@@ -10,7 +10,13 @@ import NotificationModule from './notification/notification.module';
 import AuthModule from './auth/auth.module';
 
 @Module({
-  imports: [PassportModule, MailModule, NotificationModule, AuthModule],
+  imports: [
+    PassportModule,
+    // MailModule,
+    NotificationModule,
+    AuthModule,
+    WebPushModule,
+  ],
   providers: [],
   exports: [],
   controllers: [],
