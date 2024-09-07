@@ -309,6 +309,16 @@ export default class TicketController {
       afterLog: dto.value,
     });
 
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket 수정',
+      body: `Ticket의 값을 ${dto.value}(으)로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -346,6 +356,16 @@ export default class TicketController {
       afterLog: ticketSetting.name,
     });
 
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket Setting 수정',
+      body: `Ticket Setting을 ${ticketSetting.name}(으)로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -380,6 +400,16 @@ export default class TicketController {
         ? dayjs(ticket.dueDate).format('YYYY-MM-DD')
         : '없음',
       afterLog: dto.dueDate ? dayjs(dto.dueDate).format('YYYY-MM-DD') : '없음',
+    });
+
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket Due Date 수정',
+      body: `Ticket Due Date를 ${dto.dueDate}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
     });
 
     return CommonResponse.createResponseMessage({
@@ -433,6 +463,16 @@ export default class TicketController {
       afterEmail: saveUser.email,
       afterNickname: saveUser.nickname,
       afterProfile: saveUser.profile,
+    });
+
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket 유저 수정',
+      body: `${ticket.name} Ticket의 담당자를 ${saveUser.nickname}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
     });
 
     return CommonResponse.createResponseMessage({
