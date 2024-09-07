@@ -117,10 +117,12 @@ export default class AdminCsCategoryController {
   @ApiResponse(CsCategoryResponse.deleteCsCategory[200])
   @ApiResponse(CsCategoryResponse.deleteCsCategory[404])
   @UseGuards(JwtAccessGuard)
-  @Delete('/:id')
-  public async deleteCsCategory(@Param('id', ParseIntPipe) id: number) {
-    await this.csCategoryService.existedCsCategoryById(id);
-    await this.csCategoryService.deleteCsCategory(id);
+  @Delete('/:csCategoryId')
+  public async deleteCsCategory(
+    @Param('csCategoryId', ParseIntPipe) csCategoryId: number,
+  ) {
+    await this.csCategoryService.existedCsCategoryById(csCategoryId);
+    await this.csCategoryService.deleteCsCategory(csCategoryId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

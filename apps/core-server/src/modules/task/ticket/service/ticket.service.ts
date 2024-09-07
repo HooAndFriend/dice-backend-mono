@@ -603,9 +603,9 @@ export default class TicketService {
   /**
    * 쿼리로 티켓 조회
    */
-  public async findTicketByQuery(findquery: RequestTicketFindDto) {
+  public async findTicketByQuery(query: RequestTicketFindDto) {
     const [ticket, count] = await this.ticketRepository.findTicketByQuery(
-      findquery,
+      query,
     );
 
     return { ticket, count };

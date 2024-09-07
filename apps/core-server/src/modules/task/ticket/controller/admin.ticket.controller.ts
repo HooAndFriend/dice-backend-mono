@@ -38,8 +38,8 @@ export default class AdminTicketController {
   @ApiResponse(TicketResponse.findAllTicket[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
-  public async findDetailTicket(@Query() findquery: RequestTicketFindDto) {
-    const ticket = await this.ticketService.findTicketByQuery(findquery);
+  public async findDetailTicket(@Query() query: RequestTicketFindDto) {
+    const ticket = await this.ticketService.findTicketByQuery(query);
 
     return CommonResponse.createResponse({
       statusCode: 200,
