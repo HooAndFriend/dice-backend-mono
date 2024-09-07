@@ -12,8 +12,6 @@ import AdminRepository from './repository/admin.repository';
 import AuthorityRepository from './repository/authority.repository';
 import AuthorityService from './service/authority.service';
 import AuthorityController from './controller/authority.controller';
-import AdminVersionController from './controller/version.controller';
-import VersionModule from '../version/version.module';
 
 // ** Entity Imports
 import Admin from './domain/admin.entity';
@@ -23,10 +21,9 @@ import Authority from './domain/authority.entity';
   imports: [
     TypeOrmModule.forFeature([Admin, Authority]),
     TypeOrmExModule.forCustomRepository([AdminRepository, AuthorityRepository]),
-    forwardRef(() => VersionModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, AdminService, AuthorityService],
-  controllers: [AdminController, AuthorityController, AdminVersionController],
+  controllers: [AdminController, AuthorityController],
   providers: [AdminService, AuthorityService],
 })
 export default class AdminModule {}

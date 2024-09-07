@@ -39,7 +39,7 @@ import { CommonResponse, RequestPagingDto } from '@hi-dice/common';
 // ** Dto Imports
 import RequestVersionSaveDto from '../../version/dto/version.save.dto';
 import RequestVersionUpdateDto from '../../version/dto/version.update.dto';
-import Admin from '../domain/admin.entity';
+import Admin from '../../admin/domain/admin.entity';
 
 @ApiTags('Admin Version')
 @ApiResponse(createServerExceptionResponse())
