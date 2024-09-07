@@ -2,7 +2,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
-import TicketService from '../../task/ticket/service/ticket.service';
+import TicketService from '../service/ticket.service';
 
 // ** Swagger Imports
 import {
@@ -13,7 +13,7 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '@/src/modules/auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import {
@@ -24,7 +24,7 @@ import { TicketResponse } from '@/src/global/response/ticket.response';
 import { CommonResponse } from '@hi-dice/common';
 
 // ** Dto Imports
-import RequestTicketFindDto from '../../task/ticket/dto/ticket/ticket.find.dto';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 
 @ApiTags('Admin Ticket')
 @ApiResponse(createServerExceptionResponse())
