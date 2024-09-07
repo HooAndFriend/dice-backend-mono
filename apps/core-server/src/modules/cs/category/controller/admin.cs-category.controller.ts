@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 
 // ** Module Imports
-import CsCategoryService from '../../cs/category/service/cs-category.service';
+import CsCategoryService from '../service/cs-category.service';
 
 // ** Swagger Imports
 import {
@@ -25,7 +25,7 @@ import {
 
 // ** Utils Imports
 import { GetAdmin } from '@/src/global/decorators/admin/admin.decorators';
-import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import JwtAccessGuard from '@/src/modules/auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import {
@@ -36,9 +36,9 @@ import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
 import { BadRequestException, CommonResponse } from '@hi-dice/common';
 
 // ** Dto Imports
-import RequestCsCategoryUpdateDto from '../../cs/category/dto/cs-category.update';
-import RequestCsCategorySaveDto from '../../cs/category/dto/cs-category.save';
-import Admin from '../domain/admin.entity';
+import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
+import RequestCsCategorySaveDto from '../dto/cs-category.save';
+import Admin from '@/src/modules/admin/domain/admin.entity';
 
 @ApiTags('Admin Cs Category')
 @ApiResponse(createServerExceptionResponse())

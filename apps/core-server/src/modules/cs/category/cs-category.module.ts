@@ -11,6 +11,7 @@ import { TypeOrmExModule } from '../../../global/repository/typeorm-ex.module';
 import CsCategory from './domain/cs-category.entity';
 import CsCategoryRepository from './repository/cs-category.repository';
 import CsCategoryService from './service/cs-category.service';
+import AdminCsCategoryController from './controller/admin.cs-category.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import CsCategoryService from './service/cs-category.service';
     TypeOrmExModule.forCustomRepository([CsCategoryRepository]),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, CsCategoryService],
-  controllers: [],
+  controllers: [AdminCsCategoryController],
   providers: [CsCategoryService],
 })
 export default class CsCategoryModule {}
