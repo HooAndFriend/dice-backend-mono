@@ -49,6 +49,9 @@ import {
   CommonResponse,
   RequestTicketHistoryLogSaveDto,
   TicketHistoryTypeEnum,
+  SendPushDto,
+  NotificationTypeEnum,
+  NotificationStatusEnum,
 } from '@hi-dice/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
@@ -513,6 +516,16 @@ export default class TicketController {
       afterLog: dto.status,
     });
 
+    this.sendPush({
+      fcmToken: ticket.worker.fcmToken,
+      email: ticket.worker.email,
+      title: 'Ticket 상태 변경',
+      body: `Ticket 상태가 ${dto.status}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
@@ -525,6 +538,13 @@ export default class TicketController {
    */
   private sendTicketQueue(event: RequestTicketHistoryLogSaveDto) {
     this.eventEmitter.emit('ticket.send-change-history', event);
+  }
+
+  /**
+   * 푸시 발송
+   */
+  private sendPush(event: SendPushDto) {
+    this.eventEmitter.emit('push.send-web-push', event);
   }
 
   /**

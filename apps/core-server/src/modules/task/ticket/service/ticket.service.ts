@@ -55,6 +55,7 @@ export default class TicketService {
   public async findTicketById(ticketId: number): Promise<Ticket> {
     const findTicket = await this.ticketRepository.findOne({
       where: { ticketId },
+      relations: ['worker', 'admin'],
     });
 
     if (!findTicket) {
