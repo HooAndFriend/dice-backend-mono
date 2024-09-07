@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -68,6 +69,7 @@ import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
 import EpicService from '../../epic/service/epic.service';
 import dayjs from 'dayjs';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())

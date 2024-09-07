@@ -817,4 +817,41 @@ export const TicketResponse = {
       message: 'Not Found Ticket Link',
     }),
   },
+  findAllTicketAdmin: {
+    200: createResponse({
+      statusCode: 200,
+      message: 'Find All Ticket Admin',
+      data: {
+        ticket: [
+          {
+            ticketId: 24,
+            name: '게시판 수정, 생성, 조회 모드의 UI 통합',
+            status: 'COMPLETE',
+            content: '<p>라벨 클릭 시에 다른 유저 선택됨.</p><p><br></p>',
+            storypoint: 0,
+            dueDate: '2024-08-13',
+            completeDate: '2024-08-18',
+            reopenDate: '2024-08-24',
+            workspace: {
+              workspaceId: 12,
+            },
+            epic: {
+              epicId: 4,
+            },
+            admin: {
+              userId: 4,
+              nickname: '임꺽정',
+              profile: 'https://file.hi-dice.com/file//hidice.png',
+            },
+            worker: {
+              userId: 7,
+              nickname: '홍길동',
+              profile: 'https://file.hi-dice.com/file//hidice.png',
+            },
+          },
+        ],
+        count: 1,
+      },
+    }),
+  },
 };

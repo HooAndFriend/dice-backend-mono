@@ -17,6 +17,7 @@ import TicketCommentModule from '../ticket-comment/ticket-comment.module';
 import UserModule from '../../user/user.module';
 import WorkspaceModule from '../../workspace/workspace.module';
 import TicketSettingModule from '../ticket-setting/ticket-setting.module';
+import AdminTicketController from './controller/admin.ticket.controller';
 
 // ** entity Imports
 import Ticket from './domain/ticket.entity';
@@ -51,7 +52,7 @@ import EpicModule from '../epic/epic.module';
     forwardRef(() => EpicModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketService],
-  controllers: [TicketController],
+  controllers: [TicketController, AdminTicketController],
   providers: [TicketService, TicketSendChangeHistoryListener],
 })
 export default class TicketModule {}
