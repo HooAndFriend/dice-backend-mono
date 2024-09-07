@@ -16,7 +16,7 @@ import VersionRepository from './repository/version.repository';
     TypeOrmModule.forFeature([Version]),
     TypeOrmExModule.forCustomRepository([VersionRepository]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
+  exports: [TypeOrmExModule, TypeOrmModule, VersionService],
   controllers: [VersionController],
   providers: [VersionService],
 })

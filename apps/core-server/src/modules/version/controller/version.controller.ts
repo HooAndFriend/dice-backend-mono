@@ -1,16 +1,5 @@
 // ** Nest Imports
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import VersionService from '../service/version.service';
@@ -18,7 +7,6 @@ import VersionService from '../service/version.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -27,21 +15,17 @@ import {
 
 // ** Utils Imports
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
-import { GetAdmin } from '@/src/global/decorators/admin/admin.decorators';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '../../../global/response/common';
-import { CommonResponse, RequestPagingDto } from '@hi-dice/common';
+import { CommonResponse } from '@hi-dice/common';
 import VersionTypeEnum from '../domain/version-type.enum';
 import { VersionResponse } from '@/src/global/response/version.response';
 
 // ** Dto Imports
-import RequestVersionSaveDto from '../dto/version.save.dto';
-import Admin from '../../admin/domain/admin.entity';
-import RequestVersionUpdateDto from '../dto/version.update.dto';
 
 @ApiTags('Version')
 @ApiResponse(createServerExceptionResponse())
@@ -64,95 +48,6 @@ export default class VersionController {
       data: LatestVersion,
       statusCode: 200,
       message: '가장 최신 Version을 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Version 저장' })
-  @ApiBody({ type: RequestVersionSaveDto })
-  @ApiResponse(VersionResponse.saveVersion[200])
-  @ApiResponse(VersionResponse.saveVersion[400])
-  @UseGuards(JwtAccessGuard)
-  @Post('/')
-  public async saveVersion(
-    @Body() dto: RequestVersionSaveDto,
-    @GetAdmin() { email }: Admin,
-  ) {
-    await this.versionService.existedVersion(dto.version);
-    await this.versionService.saveVersion(dto, email);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Version을 생성했습니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Version List 조회' })
-  @ApiResponse(VersionResponse.findVersionList[200])
-  @UseGuards(JwtAccessGuard)
-  @Get('/')
-  public async findVersionList(@Query(ValidationPipe) query: RequestPagingDto) {
-    const [data, count] = await this.versionService.findVersionList(query);
-
-    return CommonResponse.createResponse({
-      data: { data, count },
-      statusCode: 200,
-      message: 'Version 리스트를 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Version 조회' })
-  @ApiResponse(VersionResponse.findVersion[200])
-  @ApiResponse(VersionResponse.findVersion[404])
-  @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findVersion(@Param('id') id: number) {
-    const version = await this.versionService.findVersion(id);
-
-    return CommonResponse.createResponse({
-      data: version,
-      statusCode: 200,
-      message: 'Version을 조회합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Version 삭제' })
-  @ApiResponse(VersionResponse.deleteVersion[200])
-  @ApiResponse(VersionResponse.deleteVersion[404])
-  @UseGuards(JwtAccessGuard)
-  @Delete('/:id')
-  public async deleteVersion(@Param('id') id: number) {
-    await this.versionService.existedVersionById(id);
-    await this.versionService.deleteVersion(id);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Version을 삭제합니다.',
-    });
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'Version 수정' })
-  @ApiBody({ type: RequestVersionUpdateDto })
-  @ApiResponse(VersionResponse.updateVersion[200])
-  @ApiResponse(VersionResponse.updateVersion[400])
-  @ApiResponse(VersionResponse.updateVersion[404])
-  @UseGuards(JwtAccessGuard)
-  @Put('/')
-  public async updateVersion(
-    @Body() dto: RequestVersionUpdateDto,
-    @GetAdmin() { email }: Admin,
-  ) {
-    await this.versionService.existedVersion(dto.version);
-    await this.versionService.existedVersionById(dto.versionId);
-    await this.versionService.updateVersion(dto, email);
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Version을 수정했습니다.',
     });
   }
 }
