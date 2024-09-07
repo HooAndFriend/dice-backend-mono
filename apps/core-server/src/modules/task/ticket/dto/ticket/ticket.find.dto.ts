@@ -2,19 +2,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsDate, IsOptional, IsString } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsDateString, IsOptional, IsString, Matches } from 'class-validator';
 
 export default class RequestTicketFindDto {
   @ApiProperty({ example: '2024-02-02', required: false })
-  @IsDate()
-  @Type(() => Date)
+  @IsDateString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
   @IsOptional()
-  dueDate: Date;
+  dueDate: string;
 
   @ApiProperty({ example: '2024-02-24', required: false })
-  @IsDate()
-  @Type(() => Date)
+  @IsDateString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
   @IsOptional()
   completeDate: Date;
 
