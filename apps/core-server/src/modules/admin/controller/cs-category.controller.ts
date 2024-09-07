@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 
 // ** Module Imports
-import CsCategoryService from '../service/cs-category.service';
+import CsCategoryService from '../../cs/category/service/cs-category.service';
 
 // ** Swagger Imports
 import {
@@ -24,28 +24,27 @@ import {
 } from '@nestjs/swagger';
 
 // ** Utils Imports
-import JwtAccessGuard from '../../../auth/passport/auth.jwt-access.guard';
 import { GetAdmin } from '@/src/global/decorators/admin/admin.decorators';
+import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 
 // ** Response Imports
 import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
-} from '../../../../global/response/common';
-import { CommonResponse } from '@hi-dice/common';
+} from '@/src/global/response/common';
 import { CsCategoryResponse } from '@/src/global/response/cs-category.response';
+import { BadRequestException, CommonResponse } from '@hi-dice/common';
 
 // ** Dto Imports
-import Admin from '../../../admin/domain/admin.entity';
-import RequestCsCategoryUpdateDto from '../dto/cs-category.update';
-import { BadRequestException } from '@hi-dice/common';
-import RequestCsCategorySaveDto from '../dto/cs-category.save';
+import RequestCsCategoryUpdateDto from '../../cs/category/dto/cs-category.update';
+import RequestCsCategorySaveDto from '../../cs/category/dto/cs-category.save';
+import Admin from '../domain/admin.entity';
 
-@ApiTags('Cs Category')
+@ApiTags('Admin Cs Category')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
-@Controller({ path: '/cs-category', version: '1' })
-export default class CsCategoryController {
+@Controller({ path: '/admin/cs-category', version: '1' })
+export default class AdminCsCategoryController {
   constructor(private readonly csCategoryService: CsCategoryService) {}
 
   @ApiBearerAuth('access-token')

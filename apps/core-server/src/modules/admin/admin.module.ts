@@ -16,6 +16,8 @@ import AdminTicketController from './controller/ticket.controller';
 import TicketModule from '../task/ticket/ticket.module';
 import AdminVersionController from './controller/version.controller';
 import VersionModule from '../version/version.module';
+import AdminCsCategoryController from './controller/cs-category.controller';
+import CsCategoryModule from '../cs/category/cs-category.module';
 
 // ** Entity Imports
 import Admin from './domain/admin.entity';
@@ -27,6 +29,7 @@ import Authority from './domain/authority.entity';
     TypeOrmExModule.forCustomRepository([AdminRepository, AuthorityRepository]),
     forwardRef(() => TicketModule),
     forwardRef(() => VersionModule),
+    forwardRef(() => CsCategoryModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, AdminService, AuthorityService],
   controllers: [
@@ -34,6 +37,7 @@ import Authority from './domain/authority.entity';
     AuthorityController,
     AdminTicketController,
     AdminVersionController,
+    AdminCsCategoryController,
   ],
   providers: [AdminService, AuthorityService],
 })
