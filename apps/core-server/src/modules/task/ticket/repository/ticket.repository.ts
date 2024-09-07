@@ -200,7 +200,7 @@ export default class TicketRepository extends Repository<Ticket> {
   public async findTicketByQuery(findQuery: RequestTicketFindDto) {
     const queryBuilder = this.createQueryBuilder('ticket')
       .select([
-        'ticket.id',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
         'ticket.content',
@@ -208,12 +208,12 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
-        'workspace.id',
-        'epic.id',
-        'admin.id',
+        'workspace.workspaceId',
+        'epic.epicId',
+        'admin.userId',
         'admin.nickname',
         'admin.profile',
-        'worker.id',
+        'worker.userId',
         'worker.nickname',
         'worker.profile',
       ])

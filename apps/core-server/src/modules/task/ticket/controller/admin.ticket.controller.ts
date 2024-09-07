@@ -35,7 +35,7 @@ export default class AdminTicketController {
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'TICKET 리스트 관리자 조회' })
-  @ApiResponse(TicketResponse.findAllTicket[200])
+  @ApiResponse(TicketResponse.findAllTicketAdmin[200])
   @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findDetailTicket(@Query() query: RequestTicketFindDto) {
