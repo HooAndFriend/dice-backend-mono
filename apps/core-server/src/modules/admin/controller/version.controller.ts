@@ -88,9 +88,9 @@ export default class AdminVersionController {
   @ApiResponse(VersionResponse.findVersion[200])
   @ApiResponse(VersionResponse.findVersion[404])
   @UseGuards(JwtAccessGuard)
-  @Get('/:id')
-  public async findVersion(@Param('id') id: number) {
-    const version = await this.versionService.findVersion(id);
+  @Get('/:versionId')
+  public async findVersion(@Param('versionId') versionId: number) {
+    const version = await this.versionService.findVersion(versionId);
 
     return CommonResponse.createResponse({
       data: version,
@@ -104,10 +104,10 @@ export default class AdminVersionController {
   @ApiResponse(VersionResponse.deleteVersion[200])
   @ApiResponse(VersionResponse.deleteVersion[404])
   @UseGuards(JwtAccessGuard)
-  @Delete('/:id')
-  public async deleteVersion(@Param('id') id: number) {
-    await this.versionService.existedVersionById(id);
-    await this.versionService.deleteVersion(id);
+  @Delete('/:versionId')
+  public async deleteVersion(@Param('versionId') versionId: number) {
+    await this.versionService.existedVersionById(versionId);
+    await this.versionService.deleteVersion(versionId);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

@@ -82,9 +82,9 @@ export default class VersionService {
   /**
    * 버전을 조회합니다.
    */
-  public async findVersion(id: number) {
+  public async findVersion(versionId: number) {
     const version = await this.versionRepository.findOne({
-      where: { versionId: id },
+      where: { versionId: versionId },
     });
     if (!version) {
       throw new BadRequestException('존재하지 않는 버전입니다.');
@@ -96,16 +96,16 @@ export default class VersionService {
   /**
    * 버전을 삭제합니다.
    */
-  public async deleteVersion(id: number) {
-    await this.versionRepository.delete(id);
+  public async deleteVersion(versionId: number) {
+    await this.versionRepository.delete(versionId);
   }
 
   /**
    * 버전이 존재하는지 id로 확인합니다.
    */
-  public async existedVersionById(id: number) {
+  public async existedVersionById(versionId: number) {
     const existedVersion = await this.versionRepository.exist({
-      where: { versionId: id },
+      where: { versionId: versionId },
     });
 
     if (!existedVersion) {
