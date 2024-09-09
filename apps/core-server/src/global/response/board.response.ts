@@ -7,7 +7,8 @@ import {
 
 export const BoardResponse = {
   saveBoard: {
-    200: createMessageResponse({
+    200: createResponse({
+      data: 1,
       statusCode: 200,
       message: 'Board를 생성합니다.',
     }),

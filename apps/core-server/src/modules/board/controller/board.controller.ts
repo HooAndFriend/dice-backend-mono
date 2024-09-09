@@ -76,19 +76,27 @@ export default class BoardController {
     @GetWorkspace() workspace: Workspace,
     @GetUser() user: User,
   ) {
+    let response = 0;
     if (dto.parentId) {
       const parentBoard = await this.boardService.findBoardById(dto.parentId);
-      await this.boardService.saveBoardWithParent(
+      const { boardId } = await this.boardService.saveBoardWithParent(
         dto.title,
         user.email,
         workspace,
         parentBoard,
       );
+      response = boardId;
     } else {
-      await this.boardService.saveBoard(dto.title, user.email, workspace);
+      const { boardId } = await this.boardService.saveBoard(
+        dto.title,
+        user.email,
+        workspace,
+      );
+      response = boardId;
     }
 
-    return CommonResponse.createResponseMessage({
+    return CommonResponse.createResponse({
+      data: response,
       statusCode: 200,
       message: 'Board를 생성합니다.',
     });

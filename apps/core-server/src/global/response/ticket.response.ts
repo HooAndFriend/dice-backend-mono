@@ -6,6 +6,156 @@ import {
 } from './common';
 
 export const TicketResponse = {
+  findMyTicketList: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            ticketId: 97,
+            name: '게시글이 최초 선택한 게시글 하위로 생성됨.',
+            orderId: 1,
+            status: 'COMPLETE',
+            code: 'HAF-73',
+            dueDate: '2024-09-05',
+            completeDate: '2024-09-04',
+            reopenDate: null,
+            ticketSetting: {
+              ticketSettingId: 4,
+              type: 'YELLOW',
+              name: 'FUNC',
+            },
+            worker: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+            admin: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+          },
+          {
+            ticketId: 96,
+            name: 'due date 삭제 기능 구현',
+            orderId: 1,
+            status: 'COMPLETE',
+            code: 'HAF-72',
+            dueDate: '2024-09-03',
+            completeDate: '2024-09-03',
+            reopenDate: null,
+            ticketSetting: {
+              ticketSettingId: 4,
+              type: 'YELLOW',
+              name: 'FUNC',
+            },
+            worker: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+            admin: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+          },
+        ],
+        count: 2,
+      },
+      statusCode: 200,
+      message: '나의 Ticket을 전체 조회합니다.',
+    }),
+  },
+  findStats: {
+    200: createResponse({
+      data: {
+        totalCount: 89,
+        totalDoneCount: 47,
+        userList: [
+          {
+            userId: 2,
+            email: 'admin',
+            nickname: '관리자',
+            profile:
+              'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            ticketCount: 1,
+            ticketDoneCount: 1,
+          },
+          {
+            userId: 5,
+            email: 'mkni0216@gmail.com',
+            nickname: '민규',
+            profile:
+              'https://file.hi-dice.com/file//20240813121509-ì¤í¬ë¦°ì· 2024-07-30 163537.png',
+            ticketCount: 0,
+            ticketDoneCount: 0,
+          },
+          {
+            userId: 6,
+            email: 'yoonalim2003@gmail.com',
+            nickname: '임유나',
+            profile:
+              'https://file.hi-dice.com/file//20240816191807-IMG_3015.jfif',
+            ticketCount: 1,
+            ticketDoneCount: 0,
+          },
+          {
+            userId: 7,
+            email: 'chhari0708@naver.com',
+            nickname: 'hyerim',
+            profile:
+              'https://file.hi-dice.com/file//20240816000417-áá³áá³ááµá«áá£áº 2024-08-16 áá©áá¥á« 12.03.51.png',
+            ticketCount: 11,
+            ticketDoneCount: 2,
+          },
+          {
+            userId: 10,
+            email: 'naayeah1@gmail.com',
+            nickname: '백예나',
+            profile:
+              'https://file.hi-dice.com/file//20240818192412-áá¡á¼áá³áº áá®áá© áá¡á¯.jpeg',
+            ticketCount: 2,
+            ticketDoneCount: 1,
+          },
+          {
+            userId: 8,
+            email: 'dio8620@naver.com',
+            nickname: '임동현',
+            profile:
+              'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            ticketCount: 3,
+            ticketDoneCount: 0,
+          },
+          {
+            userId: 4,
+            email: 'inhoo987654321@gmail.com',
+            nickname: '김인후',
+            profile:
+              'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            ticketCount: 62,
+            ticketDoneCount: 43,
+          },
+        ],
+        user: {
+          myCount: 62,
+          myDoneCount: 43,
+          myTodayCount: 12,
+          myTodayDoneCount: 8,
+        },
+      },
+      statusCode: 200,
+      message: '워크스페이스의 티켓 통계를 조회합니다.',
+    }),
+  },
   findAllTicket: {
     200: createResponse({
       data: {
@@ -54,70 +204,92 @@ export const TicketResponse = {
   findOneTicket: {
     200: createResponse({
       data: {
-        createdDate: '2024-06-04T16:15:02.902Z',
-        modifiedDate: '2024-06-08T08:18:15.575Z',
-        ticketId: 1,
-        name: '게시판',
-        status: 'NOTHING',
+        createdDate: '2024-09-06T07:32:58.401Z',
+        modifiedDate: '2024-09-06T07:36:07.000Z',
+        ticketId: 154,
+        name: '하위 티켓 클릭 시 그 티켓으로 이동',
+        status: 'COMPLETE',
         content: null,
-        code: 'PIN-1',
-        storypoint: null,
-        dueDate: null,
-        completeDate: null,
+        code: 'HAF-130',
+        storypoint: 0,
+        dueDate: '2024-09-06',
+        completeDate: '2024-09-06',
         reopenDate: null,
         ticketFile: [],
-        ticketLink: [
-          {
-            ticketLinkId: 1,
-            parentTicketId: 1,
-            childTicketId: 2,
-          },
-          {
-            ticketLinkId: 2,
-            parentTicketId: 3,
-            childTicketId: 1,
-          },
-        ],
         ticketSetting: {
-          ticketSettingId: 1,
-          type: 'BLACK',
-          name: 'SCN',
+          ticketSettingId: 4,
+          type: 'YELLOW',
+          name: 'FUNC',
         },
         admin: {
-          userId: 2,
-          email: 'admin',
-          nickname: 'Pinomaker',
+          userId: 4,
+          email: 'inhoo987654321@gmail.com',
+          nickname: '김인후',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
         },
         worker: {
-          userId: 2,
-          email: 'admin',
-          nickname: 'Pinomaker',
+          userId: 4,
+          email: 'inhoo987654321@gmail.com',
+          nickname: '김인후',
           profile:
-            'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+            'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
         },
-        subTickets: [
+        parentLink: [
           {
-            ticketId: 2,
-            name: '게시판',
-            orderId: 1,
-            status: 'NOTHING',
-            code: 'PIN-1',
-            dueDate: null,
-            completeDate: null,
-            reopenDate: null,
-            ticketSetting: {
-              ticketSettingId: 1,
-              type: 'BLACK',
-              name: 'SCN',
+            ticketLinkId: 14,
+            parentTicketId: 154,
+            childTicketId: 155,
+            parentTicket: {
+              ticketId: 154,
+              name: '하위 티켓 클릭 시 그 티켓으로 이동',
+              orderId: 1,
+              status: 'COMPLETE',
+              code: 'HAF-130',
+              dueDate: '2024-09-06',
+              completeDate: '2024-09-06',
+              reopenDate: null,
+              ticketSetting: {
+                ticketSettingId: 4,
+                type: 'YELLOW',
+                name: 'FUNC',
+              },
+              worker: {
+                userId: 4,
+                email: 'inhoo987654321@gmail.com',
+                nickname: '김인후',
+                profile:
+                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+              },
             },
-            worker: {
-              userId: 2,
-              email: 'admin',
-              nickname: 'Pinomaker',
-              profile:
-                'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
+          },
+        ],
+        childLink: [
+          {
+            ticketLinkId: 15,
+            parentTicketId: 152,
+            childTicketId: 154,
+            childTicket: {
+              ticketId: 154,
+              name: '하위 티켓 클릭 시 그 티켓으로 이동',
+              orderId: 1,
+              status: 'COMPLETE',
+              code: 'HAF-130',
+              dueDate: '2024-09-06',
+              completeDate: '2024-09-06',
+              reopenDate: null,
+              ticketSetting: {
+                ticketSettingId: 4,
+                type: 'YELLOW',
+                name: 'FUNC',
+              },
+              worker: {
+                userId: 4,
+                email: 'inhoo987654321@gmail.com',
+                nickname: '김인후',
+                profile:
+                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+              },
             },
           },
         ],

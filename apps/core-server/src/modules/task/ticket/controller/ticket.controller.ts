@@ -49,6 +49,9 @@ import {
   CommonResponse,
   RequestTicketHistoryLogSaveDto,
   TicketHistoryTypeEnum,
+  SendPushDto,
+  NotificationTypeEnum,
+  NotificationStatusEnum,
 } from '@hi-dice/common';
 import RequestTicketDueDateUpdateDto from '../dto/ticket/ticket.duedate.update.dto';
 import RequestTicketUserUpdateDto from '../dto/ticket/ticket.user.update.dto';
@@ -112,6 +115,51 @@ export default class TicketController {
     return CommonResponse.createResponse({
       statusCode: 200,
       message: 'Ticket을 상세 조회 합니다.',
+      data,
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 전체 조회' })
+  @ApiResponse(TicketResponse.findAllTicket[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/my')
+  public async findMyTicketList(
+    @GetWorkspace() { workspaceId }: Workspace,
+    @GetUser() { userId }: User,
+  ) {
+    const [data, count] = await this.ticketService.findMyTicketList(
+      workspaceId,
+      userId,
+    );
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '나의 Ticket을 전체 조회합니다.',
+      data: { data, count },
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 통계 조회' })
+  @ApiResponse(TicketResponse.findStats[200])
+  @WorkspaceRole(RoleEnum.VIEWER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/stats')
+  public async findStats(
+    @GetWorkspace() { workspaceId }: Workspace,
+    @GetUser() { userId }: User,
+  ) {
+    const data = await this.ticketService.findStats(workspaceId, userId);
+
+    return CommonResponse.createResponse({
+      statusCode: 200,
+      message: '워크스페이스의 티켓 통계를 조회합니다.',
       data,
     });
   }
@@ -261,6 +309,16 @@ export default class TicketController {
       afterLog: dto.value,
     });
 
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket 수정',
+      body: `Ticket의 값을 ${dto.value}(으)로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -296,6 +354,16 @@ export default class TicketController {
       type: TicketHistoryTypeEnum.UPDATE_TYPE,
       beforeLog: ticket.ticketSetting.name,
       afterLog: ticketSetting.name,
+    });
+
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket Setting 수정',
+      body: `Ticket Setting을 ${ticketSetting.name}(으)로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
     });
 
     return CommonResponse.createResponseMessage({
@@ -334,6 +402,16 @@ export default class TicketController {
       afterLog: dto.dueDate ? dayjs(dto.dueDate).format('YYYY-MM-DD') : '없음',
     });
 
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket Due Date 수정',
+      body: `Ticket Due Date를 ${dto.dueDate}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket due date를 수정합니다.',
@@ -359,7 +437,7 @@ export default class TicketController {
       dto.ticketId,
     );
     const saveUser = await this.userService.findUserById(dto.userId);
-    await this.ticketService.updateTicketUser(dto, user);
+    await this.ticketService.updateTicketUser(ticket, dto.type, saveUser);
 
     this.sendTicketQueue({
       ticketId: ticket.ticketId,
@@ -385,6 +463,16 @@ export default class TicketController {
       afterEmail: saveUser.email,
       afterNickname: saveUser.nickname,
       afterProfile: saveUser.profile,
+    });
+
+    this.sendPush({
+      fcmToken: user.fcmToken,
+      email: user.email,
+      title: 'Ticket 유저 수정',
+      body: `${ticket.name} Ticket의 담당자를 ${saveUser.nickname}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
     });
 
     return CommonResponse.createResponseMessage({
@@ -468,6 +556,16 @@ export default class TicketController {
       afterLog: dto.status,
     });
 
+    this.sendPush({
+      fcmToken: ticket.worker.fcmToken,
+      email: ticket.worker.email,
+      title: 'Ticket 상태 변경',
+      body: `Ticket 상태가 ${dto.status}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
@@ -480,6 +578,13 @@ export default class TicketController {
    */
   private sendTicketQueue(event: RequestTicketHistoryLogSaveDto) {
     this.eventEmitter.emit('ticket.send-change-history', event);
+  }
+
+  /**
+   * 푸시 발송
+   */
+  private sendPush(event: SendPushDto) {
+    this.eventEmitter.emit('push.send-web-push', event);
   }
 
   /**

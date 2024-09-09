@@ -64,7 +64,8 @@ export default class Board extends BaseTimeEntity {
   isDeleted: boolean;
 
   @ManyToOne((type) => Board, (board) => board.children, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
+    nullable: true,
   })
   parent: Board;
 

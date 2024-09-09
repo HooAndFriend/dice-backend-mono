@@ -37,7 +37,7 @@ export default class WebPushController {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @MessagePattern('send-single-push')
+  @MessagePattern('send-push')
   async handleMessage(
     @Payload() data: SendPushDto,
     @Ctx() context: RmqContext,

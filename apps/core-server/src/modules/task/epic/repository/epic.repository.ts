@@ -62,11 +62,33 @@ export default class EpicRepository extends Repository<Epic> {
         'epic.content',
         'epic.code',
         'ticket.ticketId',
-        'ticket.code',
+        'ticket.ticketId',
         'ticket.name',
         'ticket.status',
+        'ticket.content',
+        'ticket.code',
+        'ticket.storypoint',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'ticket.createdDate',
+        'ticket.modifiedDate',
+        'admin.userId',
+        'admin.email',
+        'admin.nickname',
+        'admin.profile',
+        'worker.userId',
+        'worker.email',
+        'worker.nickname',
+        'worker.profile',
+        'ticketSetting.ticketSettingId',
+        'ticketSetting.name',
+        'ticketSetting.type',
       ])
       .leftJoin('epic.ticket', 'ticket')
+      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .where('ticket.isDeleted = false')
       .andWhere('epic.epicId = :epicId', { epicId })
       .andWhere('epic.isDeleted = false')

@@ -28,6 +28,18 @@ export default class WorkspaceUserService {
   }
 
   /**
+   * 워크스페이스 유저를 조회합니다.
+   */
+  public async findWorkspaceUserListByWorkspaceId(
+    workspaceId: number,
+  ): Promise<WorkspaceUser[]> {
+    return await this.workspaceUserRepository.find({
+      where: { workspace: { workspaceId } },
+      relations: ['user'],
+    });
+  }
+
+  /**
    * 워크스페이스 유저를 저장합니다.
    */
   public async saveWorkspaceUser(
