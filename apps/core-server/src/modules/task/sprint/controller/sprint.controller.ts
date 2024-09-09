@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -35,6 +36,7 @@ import {
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
 import JwtAccessGuard from '@/src/modules/auth/passport/auth.jwt-access.guard';
 import RequestSprintUpdateDto, {
+  RequestSprintOrderUpdateDto,
   RequestSprintStatusUpdateDto,
 } from '../dto/sprint.update.dto';
 import { SprintResponse } from '@/src/global/response/sprint.response';
@@ -137,7 +139,7 @@ export default class SprintController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'SprintList 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(SprintResponse.findSprint[200])
+  @ApiResponse(SprintResponse.findSprintList[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -193,18 +195,48 @@ export default class SprintController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Sprint Status 수정' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(SprintResponse.updateSprint[200])
-  @ApiResponse(SprintResponse.updateSprint[404])
+  @ApiResponse(SprintResponse.updateSprintState[200])
+  @ApiResponse(SprintResponse.updateSprintState[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
-  @Put('/status')
+  @Patch('/status')
   public async updateSprintStatus(@Body() dto: RequestSprintStatusUpdateDto) {
     await this.sprintService.updateSprintStatus(dto);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Sprint 상태를 수정합니다.',
+    });
+  }
+
+  //스프린트 순서변경
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Sprint Order 변경' })
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiResponse(SprintResponse.updateSprint[200])
+  @ApiResponse(SprintResponse.updateSprint[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/order')
+  public async updateSprintOrder(
+    @Body() dto: RequestSprintOrderUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    const sprint = await this.sprintService.findSprint(dto.sprintId);
+    const targetSprint = await this.sprintService.findSprint(
+      dto.targetSprintId,
+    );
+
+    await this.sprintService.updateSprintOrder(
+      sprint,
+      targetSprint.orderId,
+      workspaceId,
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Sprint 순서를 변경합니다.',
     });
   }
 }

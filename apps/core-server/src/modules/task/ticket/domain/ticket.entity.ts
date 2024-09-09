@@ -119,6 +119,9 @@ export default class Ticket extends BaseTimeEntity {
   })
   sprint: Relation<Sprint>;
 
+  @OneToMany(() => Ticket, (ticket) => ticket.parentTicket)
+  subTickets: Relation<Ticket>[];
+
   @ManyToOne(() => Workspace, (workspace) => workspace.ticket, {
     onDelete: 'CASCADE',
   })
@@ -138,7 +141,7 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   ticketSetting: Relation<TicketSetting>;
-
+  
   @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
   parentLink: Relation<TicketLink>[];
 

@@ -58,36 +58,105 @@ export const SprintResponse = {
   },
 
   findSprintList: {
-    statusCode: 200,
-    message: '티켓 검색이 완료되었습니다.',
-    data: [
-      [
-        {
-          title: '우헤헿',
-          startDate: '2024-08-11',
-          endDate: '2024-08-25',
-          ticket: [
-            {
-              ticketId: 6,
-              name: '122',
-              status: 'NOTHING',
-              dueDate: null,
-            },
-            {
-              ticketId: 5,
-              name: '122',
-              status: 'NOTHING',
-              dueDate: null,
-            },
-            {
-              ticketId: 4,
-              name: '게시판',
-              status: 'NOTHING',
-              dueDate: null,
-            },
-          ],
-        },
+    200: createResponse({
+      statusCode: 200,
+      message: '스프린트 리스트를 조회합니다.',
+      data: [
+        [
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [
+              {
+                ticketId: 1,
+                name: '티켓',
+                status: 'NOTHING',
+                dueDate: null,
+              },
+              {
+                ticketId: 2,
+                name: '123123',
+                status: 'DOING',
+                dueDate: null,
+              },
+              {
+                ticketId: 3,
+                name: '122',
+                status: 'WAITING',
+                dueDate: null,
+              },
+            ],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+          {
+            title: '',
+            startDate: null,
+            endDate: null,
+            ticket: [],
+          },
+        ],
+        8,
       ],
-    ],
+    }),
+  },
+
+  deleteTicketInSprint: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: '하위 티켓을 삭제합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Sprint 정보를 찾을 수 없습니다.',
+    }),
+  },
+
+  updateSprintState: {
+    200: createMessageResponse({
+      statusCode: 200,
+      message: 'Sprint를 상태를 변경합니다.',
+    }),
+    404: createErrorResponse({
+      statusCode: 404,
+      error: 'NOT FOUND',
+      message: 'Not Found Sprint',
+    }),
   },
 };
