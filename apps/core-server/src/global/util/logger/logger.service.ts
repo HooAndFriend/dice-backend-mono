@@ -1,21 +1,26 @@
 // ** Nest Imports
 import { Injectable, ConsoleLogger } from '@nestjs/common';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export default class LoggerService extends ConsoleLogger {
+  constructor(private readonly cls: ClsService) {
+    super();
+  }
+
   debug(message: any, ...optionalParams: any[]) {
-    super.debug(message, ...optionalParams);
+    super.debug(`[${this.cls.getId()}] ${message}`, ...optionalParams);
   }
 
   warn(message: any, ...optionalParams: any[]) {
-    super.warn(message, ...optionalParams);
+    super.warn(`[${this.cls.getId()}] ${message}`, ...optionalParams);
   }
 
   log(message: any, ...optionalParams: any[]) {
-    super.log(message, ...optionalParams);
+    super.log(`[${this.cls.getId()}] ${message}`, ...optionalParams);
   }
 
   error(message: any, ...optionalParams: any[]) {
-    super.error(message, ...optionalParams);
+    super.error(`[${this.cls.getId()}] ${message}`, ...optionalParams);
   }
 }
