@@ -16,12 +16,24 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import LogModule from '@/src/modules/log.module';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
+import { ClsModule } from 'nestjs-cls';
+
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
+    }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        generateId: true,
+        idGenerator: (req: Request) => req.headers['X-Request-Id'] ?? uuidv4(),
+      },
     }),
     TypeOrmModule.forRootAsync({
       useFactory() {
