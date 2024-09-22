@@ -501,8 +501,15 @@ export default class TicketService {
   /**
    * 티켓의 에픽 변경
    */
-  public async updateTicketEpic(ticketId: number): Promise<void> {
-    // await this.ticketRepository.update(ticketId, { epic });
+  public async updateTicketEpic(
+    ticketId: number,
+    epicId: number,
+    workspaceId: number,
+  ): Promise<void> {
+    await this.ticketRepository.update(
+      { ticketId, workspace: { workspaceId } },
+      { epic: { epicId } },
+    );
   }
 
   /**
