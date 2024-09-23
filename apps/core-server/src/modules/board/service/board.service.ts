@@ -13,6 +13,7 @@ import RequestBoardUpdateDto from '../dto/board.update.dto';
 import BoardContentRepository from '../repository/content.repository';
 import BoardBlockRepository from '../repository/block.repository';
 import BoardContent from '../domain/board-content.entity';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export default class BoardService {
@@ -47,6 +48,7 @@ export default class BoardService {
   /**
    * 게시글을 수정합니다.
    */
+  @Transactional()
   public async updateBoard(
     dto: RequestBoardUpdateDto,
     modifiedId: string,
@@ -68,6 +70,7 @@ export default class BoardService {
   ): Promise<void> {
     const contentJson = JSON.parse(content);
 
+    // 게시글 내용 삭제
     await this.boardContentRepository.delete({ board: { boardId } });
 
     const savedContent = await this.boardContentRepository.save(
