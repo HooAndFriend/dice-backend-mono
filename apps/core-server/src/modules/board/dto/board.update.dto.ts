@@ -9,7 +9,10 @@ export default class RequestBoardUpdateDto {
   @IsString()
   title: string;
 
-  @ApiProperty({ example: '게시글 이름' })
+  @ApiProperty({
+    example:
+      '{"time":1723549214016,"blocks":[{"id":"CWJVRWGV4N","type":"paragraph","data":{"text":"ㅇㄴㄹㄴㅇㄹㅇㄴㅇㄹ"}}],"version":"2.29.1"}',
+  })
   @IsString()
   content: string;
 
