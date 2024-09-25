@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
+import BoardContent from './board-content.entity';
 
 @Entity({ name: 'TB_BOARD' })
 export default class Board extends BaseTimeEntity {
@@ -24,13 +26,6 @@ export default class Board extends BaseTimeEntity {
     nullable: false,
   })
   title: string;
-
-  @Column({
-    type: 'text',
-    comment: '콘텐츠',
-    nullable: true,
-  })
-  content: string;
 
   @Column({
     type: 'varchar',
@@ -71,6 +66,9 @@ export default class Board extends BaseTimeEntity {
 
   @OneToMany((type) => Board, (board) => board.parent, { cascade: true })
   children: Board[];
+
+  @OneToOne(() => BoardContent, (content) => content.board)
+  content: BoardContent;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.board, {
     onDelete: 'CASCADE',

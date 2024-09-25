@@ -70,6 +70,7 @@ import User from '@/src/modules/user/domain/user.entity';
 import EpicService from '../../epic/service/epic.service';
 import dayjs from 'dayjs';
 import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
+import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiResponse(createServerExceptionResponse())
@@ -531,6 +532,32 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET Epic 변경' })
+  @ApiBody({ type: RequestTicketEpicUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Patch('/epic')
+  public async updateTicketEpic(
+    @Body() dto: RequestTicketEpicUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    await this.ticketService.updateTicketEpic(
+      dto.ticketId,
+      dto.epicId,
+      workspaceId,
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket Epic을 변경합니다.',
     });
   }
 

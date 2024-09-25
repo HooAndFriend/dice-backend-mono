@@ -10,11 +10,17 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
+import BoardContentRepository from '../repository/content.repository';
+import BoardBlockRepository from '../repository/block.repository';
+import BoardContent from '../domain/board-content.entity';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export default class BoardService {
   constructor(
     private readonly boardRepository: BoardRepository,
+    private readonly boardContentRepository: BoardContentRepository,
+    private readonly boardBlockRepository: BoardBlockRepository,
     private readonly configService: ConfigService,
   ) {}
 
@@ -42,14 +48,55 @@ export default class BoardService {
   /**
    * 게시글을 수정합니다.
    */
+  @Transactional()
   public async updateBoard(
     dto: RequestBoardUpdateDto,
     modifiedId: string,
   ): Promise<void> {
+    await this.saveBoardContent(dto.boardId, dto.content);
+
     await this.boardRepository.update(dto.boardId, {
       title: dto.title,
-      content: dto.content,
       modifiedId,
+    });
+  }
+
+  /**
+   * 게시글 내용을 저장합니다.
+   */
+  private async saveBoardContent(
+    boardId: number,
+    content: string,
+  ): Promise<void> {
+    const contentJson = JSON.parse(content);
+
+    // 게시글 내용 삭제
+    await this.boardContentRepository.delete({ board: { boardId } });
+
+    const savedContent = await this.boardContentRepository.save(
+      this.boardContentRepository.create({
+        board: { boardId },
+        time: contentJson.time,
+        version: contentJson.version,
+      }),
+    );
+
+    await this.saveBlock(savedContent, contentJson.blocks);
+  }
+
+  /**
+   * 게시글 블록을 저장합니다.
+   */
+  public async saveBlock(content: BoardContent, blocks: any[]): Promise<void> {
+    blocks.map((block) => {
+      this.boardBlockRepository.save(
+        this.boardBlockRepository.create({
+          blockId: block.id,
+          type: block.type,
+          data: JSON.stringify(block.data),
+          content: content,
+        }),
+      );
     });
   }
 
@@ -94,7 +141,7 @@ export default class BoardService {
   public async findBoardById(boardId: number): Promise<Board> {
     const board = await this.boardRepository.findOne({
       where: { boardId, isDeleted: false },
-      relations: ['children', 'parent'],
+      relations: ['children', 'parent', 'content', 'content.blocks'],
     });
 
     if (!board) {
