@@ -541,7 +541,7 @@ export default class TicketController {
   @ApiBody({ type: RequestTicketEpicUpdateDto })
   @ApiResponse(TicketResponse.updateTicketState[200])
   @ApiResponse(TicketResponse.updateTicketState[404])
-  @WorkspaceRole(RoleEnum.VIEWER)
+  @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
   @Patch('/epic')
