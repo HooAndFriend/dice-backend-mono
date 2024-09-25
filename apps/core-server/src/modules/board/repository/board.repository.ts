@@ -42,10 +42,17 @@ export default class BoardRepository extends Repository<Board> {
       .select([
         'board.boardId',
         'board.title',
-        'board.content',
+        'content.contentId',
+        'content.time',
+        'content.version',
+        'blocks.blockId',
+        'blocks.type',
+        'blocks.data',
         'board.modifiedDate',
       ])
       .leftJoin('board.workspace', 'workspace')
+      .leftJoin('board.content', 'content')
+      .leftJoin('content.blocks', 'blocks')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
       .orderBy('board.modifiedDate', 'DESC')
