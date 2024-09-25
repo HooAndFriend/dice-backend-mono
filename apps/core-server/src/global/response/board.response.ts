@@ -100,14 +100,27 @@ export const BoardResponse = {
       data: {
         data: [
           {
-            modifiedDate: '2024-08-10T01:55:01.000Z',
-            boardId: 6,
-            title: '간트차트',
+            modifiedDate: '2024-09-23T15:49:53.000Z',
+            boardId: 62,
+            title: '게시글 제목',
+            content: {
+              contentId: 18,
+              time: '1723549214015',
+              version: '2.29.1',
+              blocks: [
+                {
+                  blockId: 'CWJVRWGV4N',
+                  type: 'paragraph',
+                  data: '{"text":"테스트입니다"}',
+                },
+              ],
+            },
           },
           {
-            modifiedDate: '2024-08-10T01:48:54.455Z',
-            boardId: 5,
-            title: '기획서',
+            modifiedDate: '2024-08-17T15:22:32.000Z',
+            boardId: 2,
+            title: '게시글 제목',
+            content: null,
           },
         ],
         count: 2,

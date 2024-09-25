@@ -194,7 +194,7 @@ export default class BoardController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Board 리스트 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(BoardResponse.findBoardList[200])
+  @ApiResponse(BoardResponse.findBoardSimpleList[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
