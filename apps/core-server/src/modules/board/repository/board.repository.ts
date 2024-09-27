@@ -37,7 +37,21 @@ export default class BoardRepository extends Repository<Board> {
 
     return await queryBuilder.getManyAndCount();
   }
+
   public async findBoardSimpleList(workspaceId: number) {
+    const subQuery = this.createQueryBuilder('board')
+      .select([
+        'board.boardId AS boardId',
+        'board.title AS title',
+        'board.modifiedDate AS modifiedDate',
+      ])
+      .leftJoin('board.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('board.isDeleted = false')
+      .orderBy('board.modifiedDate', 'DESC')
+      .limit(5)
+      .getQuery();
+
     const queryBuilder = this.createQueryBuilder('board')
       .select([
         'board.boardId',
@@ -50,13 +64,15 @@ export default class BoardRepository extends Repository<Board> {
         'blocks.data',
         'board.modifiedDate',
       ])
-      .leftJoin('board.workspace', 'workspace')
+      .innerJoin(
+        `(${subQuery})`,
+        'limited_boards',
+        'limited_boards.boardId = board.boardId',
+      )
       .leftJoin('board.content', 'content')
       .leftJoin('content.blocks', 'blocks')
-      .where('workspace.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('board.isDeleted = false')
       .orderBy('board.modifiedDate', 'DESC')
-      .limit(5);
+      .setParameters({ workspaceId });
 
     return await queryBuilder.getManyAndCount();
   }
