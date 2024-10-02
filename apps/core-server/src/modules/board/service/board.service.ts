@@ -14,6 +14,7 @@ import BoardContentRepository from '../repository/content.repository';
 import BoardBlockRepository from '../repository/block.repository';
 import BoardContent from '../domain/board-content.entity';
 import { Transactional } from 'typeorm-transactional';
+import { BadRequestException } from '@hi-dice/common';
 
 @Injectable()
 export default class BoardService {
@@ -68,20 +69,27 @@ export default class BoardService {
     boardId: number,
     content: string,
   ): Promise<void> {
-    const contentJson = JSON.parse(content);
-
-    // 게시글 내용 삭제
+    // 기존 게시글 내용 삭제
     await this.boardContentRepository.delete({ board: { boardId } });
 
-    const savedContent = await this.boardContentRepository.save(
-      this.boardContentRepository.create({
-        board: { boardId },
-        time: contentJson.time,
-        version: contentJson.version,
-      }),
-    );
+    if (content) {
+      let contentJson: { time: any; version: any; blocks: any[] };
+      try {
+        contentJson = JSON.parse(content);
+      } catch (e) {
+        throw new BadRequestException('Invalid JSON format in content');
+      }
 
-    await this.saveBlock(savedContent, contentJson.blocks);
+      const savedContent = await this.boardContentRepository.save(
+        this.boardContentRepository.create({
+          board: { boardId },
+          time: contentJson.time,
+          version: contentJson.version,
+        }),
+      );
+
+      await this.saveBlock(savedContent, contentJson.blocks);
+    }
   }
 
   /**
