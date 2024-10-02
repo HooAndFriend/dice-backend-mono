@@ -2,7 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export default class RequestBoardUpdateDto {
   @ApiProperty({ example: '게시글 이름' })
@@ -14,6 +14,7 @@ export default class RequestBoardUpdateDto {
       '{"time":1723549214016,"blocks":[{"id":"CWJVRWGV4N","type":"paragraph","data":{"text":"ㅇㄴㄹㄴㅇㄹㅇㄴㅇㄹ"}}],"version":"2.29.1"}',
   })
   @IsString()
+  @IsOptional()
   content: string;
 
   @ApiProperty({ example: 1 })
