@@ -204,20 +204,25 @@ export const TicketResponse = {
   findOneTicket: {
     200: createResponse({
       data: {
-        createdDate: '2024-09-06T07:32:58.401Z',
-        modifiedDate: '2024-09-06T07:36:07.000Z',
-        ticketId: 154,
-        name: '하위 티켓 클릭 시 그 티켓으로 이동',
-        status: 'COMPLETE',
+        createdDate: '2024-12-10T08:56:44.061Z',
+        modifiedDate: '2024-12-13T10:10:06.000Z',
+        ticketId: 181,
+        name: '[USER] 로그인',
+        status: 'NOTHING',
         content: null,
-        code: 'HAF-130',
+        code: 'MYLAND-1',
         storypoint: 0,
-        dueDate: '2024-09-06',
-        completeDate: '2024-09-06',
+        dueDate: null,
+        completeDate: null,
         reopenDate: null,
-        ticketFile: [],
+        ticketFile: [
+          {
+            ticketFileId: 12,
+            url: 'https://file.hi-dice.com/file//20241213185926-áá³áá³ááµá«áá£áº 2024-12-13 áá©áá® 6.59.20.png',
+          },
+        ],
         ticketSetting: {
-          ticketSettingId: 4,
+          ticketSettingId: 14,
           type: 'YELLOW',
           name: 'FUNC',
         },
@@ -229,59 +234,28 @@ export const TicketResponse = {
             'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
         },
         worker: {
-          userId: 4,
-          email: 'inhoo987654321@gmail.com',
-          nickname: '김인후',
+          userId: 28,
+          email: '85h851@gmail.com',
+          nickname: '현신일',
           profile:
-            'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            'https://file.hi-dice.com/file//20241213194055-áá³áá³ááµá«áá£áº 2024-12-13 áá©áá® 7.40.37.png',
         },
-        parentLink: [
-          {
-            ticketLinkId: 14,
-            parentTicketId: 154,
-            childTicketId: 155,
-            parentTicket: {
-              ticketId: 154,
-              name: '하위 티켓 클릭 시 그 티켓으로 이동',
-              orderId: 1,
-              status: 'COMPLETE',
-              code: 'HAF-130',
-              dueDate: '2024-09-06',
-              completeDate: '2024-09-06',
-              reopenDate: null,
-              ticketSetting: {
-                ticketSettingId: 4,
-                type: 'YELLOW',
-                name: 'FUNC',
-              },
-              worker: {
-                userId: 4,
-                email: 'inhoo987654321@gmail.com',
-                nickname: '김인후',
-                profile:
-                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
-              },
-            },
-          },
-        ],
         childLink: [
           {
-            ticketLinkId: 15,
-            parentTicketId: 152,
-            childTicketId: 154,
+            ticketLinkId: 20,
             childTicket: {
-              ticketId: 154,
-              name: '하위 티켓 클릭 시 그 티켓으로 이동',
+              ticketId: 182,
+              name: '[USER] 로그인 API',
               orderId: 1,
-              status: 'COMPLETE',
-              code: 'HAF-130',
-              dueDate: '2024-09-06',
-              completeDate: '2024-09-06',
+              status: 'NOTHING',
+              code: 'MYLAND-2',
+              dueDate: null,
+              completeDate: null,
               reopenDate: null,
               ticketSetting: {
-                ticketSettingId: 4,
-                type: 'YELLOW',
-                name: 'FUNC',
+                ticketSettingId: 15,
+                type: 'RED',
+                name: 'API',
               },
               worker: {
                 userId: 4,
@@ -293,6 +267,7 @@ export const TicketResponse = {
             },
           },
         ],
+        parentLink: [],
       },
       statusCode: 200,
       message: 'Ticket을 상세 조회 합니다.',

@@ -36,6 +36,7 @@ import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
+import TicketLinkRepository from '../../ticket-link/repository/ticket.link.repository';
 
 @Injectable()
 export default class TicketService {
@@ -44,6 +45,7 @@ export default class TicketService {
     private readonly epicService: EpicService,
     private readonly ticketCommentRepository: TicketCommentRepository,
     private readonly worksapceUserService: WorkspaceUserService,
+    private readonly ticketLinkRepository: TicketLinkRepository,
 
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -195,14 +197,22 @@ export default class TicketService {
   /**
    * 티켓을 ID로 상세 조회
    */
-  public async findOneTicket(id: number): Promise<Ticket> {
+  public async findOneTicket(id: number): Promise<any> {
     const data = await this.ticketRepository.findTicketDetailById(id);
 
     if (!data) {
       throw new NotFoundException('Not Found Ticket');
     }
 
-    return data;
+    const childLink = await this.ticketLinkRepository.findChildTicketList(
+      data.ticketId,
+    );
+
+    const parentLink = await this.ticketLinkRepository.findParentTicketList(
+      data.ticketId,
+    );
+
+    return { ...data, childLink, parentLink };
   }
 
   /**
