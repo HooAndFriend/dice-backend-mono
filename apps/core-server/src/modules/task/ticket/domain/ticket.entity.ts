@@ -27,7 +27,7 @@ export default class Ticket extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 255,
     name: 'name',
     comment: '티켓 명',
     nullable: false,
