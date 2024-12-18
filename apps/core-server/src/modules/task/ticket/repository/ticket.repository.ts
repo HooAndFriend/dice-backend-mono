@@ -79,7 +79,6 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.admin', 'admin')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
-      .andWhere('ticket.dueDate = CURRENT_DATE()')
       .andWhere(
         new Brackets((qb) => {
           qb.andWhere('worker.userId = :userId', {
@@ -87,7 +86,7 @@ export default class TicketRepository extends Repository<Ticket> {
           }).orWhere('admin.userId = :userId', { userId });
         }),
       )
-      .orderBy('ticket.orderId', 'ASC');
+      .orderBy('ticket.dueDate', 'DESC');
 
     return await querybuilder.getManyAndCount();
   }
