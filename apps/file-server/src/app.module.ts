@@ -13,6 +13,7 @@ import FileModule from '@/src/modules/file.module';
 
 // ** Utils Imports
 import { v4 as uuidv4 } from 'uuid';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
