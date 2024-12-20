@@ -17,6 +17,8 @@ import EpicService from '../../epic/service/epic.service';
 import TicketRepository from '../repository/ticket.repository';
 import TicketCommentRepository from '../../ticket-comment/repository/ticket.comment.repository';
 import WorkspaceUserService from '@/src/modules/workspace/service/workspace-user.service';
+import TicketLinkRepository from '../../ticket-link/repository/ticket.link.repository';
+import BoardService from '@/src/modules/board/service/board.service';
 
 // ** enum, dto, entity, types Imports
 import Ticket from '../domain/ticket.entity';
@@ -36,7 +38,7 @@ import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
-import TicketLinkRepository from '../../ticket-link/repository/ticket.link.repository';
+import BoardTypeEnum from '@/src/modules/board/enum/board.type.enum';
 
 @Injectable()
 export default class TicketService {
@@ -46,6 +48,7 @@ export default class TicketService {
     private readonly ticketCommentRepository: TicketCommentRepository,
     private readonly worksapceUserService: WorkspaceUserService,
     private readonly ticketLinkRepository: TicketLinkRepository,
+    private readonly boardService: BoardService,
 
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -212,7 +215,12 @@ export default class TicketService {
       data.ticketId,
     );
 
-    return { ...data, childLink, parentLink };
+    const board = await this.boardService.findOneBySubIdAndType(
+      data.ticketId,
+      BoardTypeEnum.TICKET_BOARD,
+    );
+
+    return { ...data, childLink, parentLink, board };
   }
 
   /**
@@ -321,7 +329,7 @@ export default class TicketService {
       );
     }
 
-    return await this.ticketRepository.save(
+    const ticket = await this.ticketRepository.save(
       this.ticketRepository.create({
         admin: user,
         code: ticketNumber,
@@ -332,6 +340,16 @@ export default class TicketService {
         ticketSetting,
       }),
     );
+
+    await this.boardService.saveBoard(
+      '',
+      user.email,
+      workspace,
+      BoardTypeEnum.TICKET_BOARD,
+      ticket.ticketId,
+    );
+
+    return ticket;
   }
 
   /**

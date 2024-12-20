@@ -23,6 +23,7 @@ import AdminTicketController from './controller/admin.ticket.controller';
 import Ticket from './domain/ticket.entity';
 import EpicModule from '../epic/epic.module';
 import TicketLinkModule from '../ticket-link/ticket-link.module';
+import BoardModule from '../../board/board.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import TicketLinkModule from '../ticket-link/ticket-link.module';
     forwardRef(() => TicketSettingModule),
     forwardRef(() => EpicModule),
     forwardRef(() => TicketLinkModule),
+    forwardRef(() => BoardModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketService],
   controllers: [TicketController, AdminTicketController],

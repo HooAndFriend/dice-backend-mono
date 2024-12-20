@@ -204,25 +204,20 @@ export const TicketResponse = {
   findOneTicket: {
     200: createResponse({
       data: {
-        createdDate: '2024-12-10T08:56:44.061Z',
-        modifiedDate: '2024-12-13T10:10:06.000Z',
-        ticketId: 181,
-        name: '[USER] 로그인',
+        createdDate: '2024-12-18T05:36:07.151Z',
+        modifiedDate: '2024-12-19T01:01:15.000Z',
+        ticketId: 303,
+        name: 'EPIC DND 구현',
         status: 'NOTHING',
         content: null,
-        code: 'MYLAND-1',
+        code: 'HAF-9',
         storypoint: 0,
-        dueDate: null,
+        dueDate: '2024-12-27',
         completeDate: null,
         reopenDate: null,
-        ticketFile: [
-          {
-            ticketFileId: 12,
-            url: 'https://file.hi-dice.com/file//20241213185926-áá³áá³ááµá«áá£áº 2024-12-13 áá©áá® 6.59.20.png',
-          },
-        ],
+        ticketFile: [],
         ticketSetting: {
-          ticketSettingId: 14,
+          ticketSettingId: 4,
           type: 'YELLOW',
           name: 'FUNC',
         },
@@ -234,40 +229,29 @@ export const TicketResponse = {
             'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
         },
         worker: {
-          userId: 28,
-          email: '85h851@gmail.com',
-          nickname: '현신일',
+          userId: 7,
+          email: 'chhari0708@naver.com',
+          nickname: '최혜림',
           profile:
-            'https://file.hi-dice.com/file//20241213194055-áá³áá³ááµá«áá£áº 2024-12-13 áá©áá® 7.40.37.png',
+            'https://file.hi-dice.com/file//20240816000417-áá³áá³ááµá«áá£áº 2024-08-16 áá©áá¥á« 12.03.51.png',
         },
-        childLink: [
-          {
-            ticketLinkId: 20,
-            childTicket: {
-              ticketId: 182,
-              name: '[USER] 로그인 API',
-              orderId: 1,
-              status: 'NOTHING',
-              code: 'MYLAND-2',
-              dueDate: null,
-              completeDate: null,
-              reopenDate: null,
-              ticketSetting: {
-                ticketSettingId: 15,
-                type: 'RED',
-                name: 'API',
-              },
-              worker: {
-                userId: 4,
-                email: 'inhoo987654321@gmail.com',
-                nickname: '김인후',
-                profile:
-                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
-              },
-            },
-          },
-        ],
+        childLink: [],
         parentLink: [],
+        board: {
+          createdDate: '2024-12-20T13:32:14.753Z',
+          modifiedDate: '2024-12-20T13:32:14.753Z',
+          boardId: 154,
+          title: '',
+          createdId: '',
+          modifiedId: '',
+          orderId: 0,
+          subId: 303,
+          type: 'TICKET_BOARD',
+          isDeleted: false,
+          children: [],
+          parent: null,
+          content: null,
+        },
       },
       statusCode: 200,
       message: 'Ticket을 상세 조회 합니다.',

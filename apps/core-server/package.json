@@ -58,6 +58,7 @@
     "loadsh": "^0.0.4",
     "mysql2": "^3.6.1",
     "nestjs-cls": "^4.4.1",
+    "node-optional": "^1.0.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "redis": "^4.6.11",

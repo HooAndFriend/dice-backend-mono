@@ -16,6 +16,7 @@ import WorkspaceModule from '../../workspace/workspace.module';
 
 // ** entity Imports
 import TicketComment from './domain/ticket.comment.entity';
+import BoardModule from '../../board/board.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import TicketComment from './domain/ticket.comment.entity';
     ]),
     forwardRef(() => TicketModule),
     forwardRef(() => WorkspaceModule),
+    forwardRef(() => BoardModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, TicketCommentService],
   controllers: [TicketCommentController],

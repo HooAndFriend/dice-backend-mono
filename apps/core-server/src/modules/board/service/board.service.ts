@@ -15,6 +15,8 @@ import BoardBlockRepository from '../repository/block.repository';
 import BoardContent from '../domain/board-content.entity';
 import { Transactional } from 'typeorm-transactional';
 import { BadRequestException } from '@hi-dice/common';
+import BoardTypeEnum from '../enum/board.type.enum';
+import Optional from 'node-optional';
 
 @Injectable()
 export default class BoardService {
@@ -32,6 +34,8 @@ export default class BoardService {
     title: string,
     createdId: string,
     workspace: Workspace,
+    type: BoardTypeEnum,
+    subId?: number,
   ): Promise<Board> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
@@ -41,9 +45,26 @@ export default class BoardService {
         createdId,
         modifiedId: createdId,
         workspace,
-        orderId,
+        orderId: type === BoardTypeEnum.NORMAL ? orderId : 0,
+        type,
+        subId,
       }),
     );
+  }
+
+  /**
+   * 게시글을 조회합니다. - subId와 type으로 조회
+   */
+  public async findOneBySubIdAndType(
+    subId: number,
+    type: BoardTypeEnum,
+  ): Promise<Board> {
+    const board = await this.boardRepository.findOne({
+      where: { subId, type, isDeleted: false },
+      relations: ['children', 'parent', 'content', 'content.blocks'],
+    });
+
+    return Optional.of(board).orElseThrow(NotFoundException, 'Not Found Board');
   }
 
   /**

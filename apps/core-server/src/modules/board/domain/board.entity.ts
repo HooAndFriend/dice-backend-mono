@@ -13,6 +13,7 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../workspace/domain/workspace.entity';
 import BoardContent from './board-content.entity';
+import BoardTypeEnum from '../enum/board.type.enum';
 
 @Entity({ name: 'TB_BOARD' })
 export default class Board extends BaseTimeEntity {
@@ -49,6 +50,23 @@ export default class Board extends BaseTimeEntity {
     nullable: false,
   })
   orderId: number;
+
+  @Column({
+    type: 'int',
+    name: 'sub_id',
+    comment: '서브 ID',
+    nullable: true,
+  })
+  subId: number;
+
+  @Column({
+    type: 'enum',
+    enum: BoardTypeEnum,
+    comment: '게시글 타입',
+    nullable: false,
+    default: BoardTypeEnum.NORMAL,
+  })
+  type: BoardTypeEnum;
 
   @Column({
     type: 'boolean',

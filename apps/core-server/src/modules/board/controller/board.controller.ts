@@ -50,6 +50,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
+import BoardTypeEnum from '../enum/board.type.enum';
 
 @ApiTags('Board')
 @ApiResponse(createServerExceptionResponse())
@@ -91,6 +92,7 @@ export default class BoardController {
         dto.title,
         user.email,
         workspace,
+        BoardTypeEnum.NORMAL,
       );
       response = boardId;
     }

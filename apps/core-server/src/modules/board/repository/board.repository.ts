@@ -6,6 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import Board from '../domain/board.entity';
+import BoardTypeEnum from '../enum/board.type.enum';
 
 @CustomRepository(Board)
 export default class BoardRepository extends Repository<Board> {
@@ -23,6 +24,7 @@ export default class BoardRepository extends Repository<Board> {
       .leftJoin('board.children', 'children')
       .leftJoin('board.workspace', 'workspace')
       .where('parent.boardId is null')
+      .andWhere('board.type = :type', { type: BoardTypeEnum.NORMAL })
       .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
       .orderBy('board.orderId', 'ASC');
@@ -47,6 +49,7 @@ export default class BoardRepository extends Repository<Board> {
       ])
       .leftJoin('board.workspace', 'workspace')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('board.type = :type', { type: BoardTypeEnum.NORMAL })
       .andWhere('board.isDeleted = false')
       .orderBy('board.modifiedDate', 'DESC')
       .limit(5)
