@@ -299,6 +299,7 @@ export default class TicketService {
   /**
    * 티켓 저장
    */
+  @Transactional()
   public async saveTicket(
     dto: RequestSimpleTicketSaveDto,
     user: User,
@@ -315,7 +316,7 @@ export default class TicketService {
     if (dto.epicId) {
       const epic = await this.epicService.findOne(dto.epicId);
 
-      return await this.ticketRepository.save(
+      const ticket = await this.ticketRepository.save(
         this.ticketRepository.create({
           admin: user,
           code: ticketNumber,
@@ -327,6 +328,16 @@ export default class TicketService {
           epic,
         }),
       );
+
+      await this.boardService.saveBoard(
+        '',
+        user.email,
+        workspace,
+        BoardTypeEnum.TICKET_BOARD,
+        ticket.ticketId,
+      );
+
+      return ticket;
     }
 
     const ticket = await this.ticketRepository.save(
