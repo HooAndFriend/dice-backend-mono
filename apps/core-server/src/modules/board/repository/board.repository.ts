@@ -75,7 +75,7 @@ export default class BoardRepository extends Repository<Board> {
       .leftJoin('board.content', 'content')
       .leftJoin('content.blocks', 'blocks')
       .orderBy('board.modifiedDate', 'DESC')
-      .setParameters({ workspaceId });
+      .setParameters({ workspaceId, type: BoardTypeEnum.NORMAL });
 
     return await queryBuilder.getManyAndCount();
   }
