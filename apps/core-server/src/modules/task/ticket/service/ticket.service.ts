@@ -72,6 +72,16 @@ export default class TicketService {
   }
 
   /**
+   * 티켓 ID로 조회
+   */
+  public async findAllById(ticketIdList: number[]): Promise<Ticket[]> {
+    return await this.ticketRepository.find({
+      where: { ticketId: In(ticketIdList) },
+      relations: ['worker', 'admin'],
+    });
+  }
+
+  /**
    * 티켓 ID로 조회 (Setting 포함)
    */
   public async findOne(ticketId: number): Promise<Ticket> {
