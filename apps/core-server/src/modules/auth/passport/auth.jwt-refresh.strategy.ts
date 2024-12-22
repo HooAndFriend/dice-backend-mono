@@ -32,7 +32,7 @@ export default class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
-  public async validate(payload: JwtPayload): Promise<any> {
+  public async validate(req: Request, payload: JwtPayload): Promise<any> {
     return await this.userService.findUserByPayload(payload);
   }
 }
