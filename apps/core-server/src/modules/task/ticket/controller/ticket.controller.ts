@@ -520,8 +520,8 @@ export default class TicketController {
     });
 
     this.sendPush({
-      fcmToken: ticket.worker.fcmToken,
-      email: ticket.worker.email,
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
       title: 'Ticket 상태 변경',
       body: `Ticket 상태가 ${dto.status}로 변경`,
       status: NotificationStatusEnum.UNREAD,

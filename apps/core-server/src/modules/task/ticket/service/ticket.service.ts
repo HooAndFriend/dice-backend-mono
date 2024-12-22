@@ -243,8 +243,6 @@ export default class TicketService {
         workspaceId,
       );
 
-    console.log('workspaceUserList', workspaceUserList);
-
     const totalCount = ticketList.length;
     const totalDoneCount = ticketList.filter((ticket) =>
       [TaskStatusEnum.COMPLETE, TaskStatusEnum.DONE].includes(ticket.status),
