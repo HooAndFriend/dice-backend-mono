@@ -11,6 +11,7 @@ export const AuthResponse = {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJpbmhvMTIzbzIyM0BuYXZlci5jb20iLCJpYXQiOjE3MTc4MzMzNTUsImV4cCI6MTcxODQzODE1NX0.C732RrPfuUIX89P1BMLTbqefGneOLyafT8PTi4slxG4',
         },
         user: {
+          userId: 1,
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
@@ -45,6 +46,7 @@ export const AuthResponse = {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJpbmhvbzIzQG5hdmVyLmNvbSIsImlhdCI6MTcxNzgzMzM4MiwiZXhwIjoxNzE4NDM4MTgyfQ.IKbpM9J4g3VdOjeYcuO2vwWeFUg3zfGLLIpJPpGSr40',
         },
         user: {
+          userId: 1,
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
@@ -82,6 +84,7 @@ export const AuthResponse = {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbiIsImlhdCI6MTcxNzgzMzA2NywiZXhwIjoxNzE4NDM3ODY3fQ.BKnJ1ObkUrZWI2Tt7F9a6b_Xzva249L5HlviUWH9jOQ',
         },
         user: {
+          userId: 1,
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
@@ -125,6 +128,7 @@ export const AuthResponse = {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJhZG1pbjMzNCIsImlhdCI6MTcxNzgzMzIyMCwiZXhwIjoxNzE4NDM4MDIwfQ.uwC6eci5R5rhm4dKl7JKiJxz1o_Yq2lsZiAjipYXv04',
         },
         user: {
+          userId: 1,
           nickname: 'Pinomaker',
           profile:
             'https://firebasestorage.googleapis.com/v0/b/dice-dev-a5b63.appspot.com/o/images%2FIMG_6159.jpg?alt=media&token=450c0181-8826-4856-b611-509712872450',
