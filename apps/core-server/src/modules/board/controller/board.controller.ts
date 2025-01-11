@@ -224,7 +224,6 @@ export default class BoardController {
   @Get('/:boardId')
   public async findBoard(@Param('boardId', ParseIntPipe) boardId: number) {
     const board = await this.boardService.findBoardById(boardId);
-
     const user = await this.userService.findUserByEmail(board.createdId);
 
     return CommonResponse.createResponse({

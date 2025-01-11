@@ -9,7 +9,9 @@ import BoardRepository from '../repository/board.repository';
 import Workspace from '../../workspace/domain/workspace.entity';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
-import RequestBoardUpdateDto from '../dto/board.update.dto';
+import RequestBoardUpdateDto, {
+  BoardContentInterface,
+} from '../dto/board.update.dto';
 import BoardContentRepository from '../repository/content.repository';
 import BoardBlockRepository from '../repository/block.repository';
 import BoardContent from '../domain/board-content.entity';
@@ -88,29 +90,20 @@ export default class BoardService {
    */
   private async saveBoardContent(
     boardId: number,
-    content: string,
+    content: BoardContentInterface,
   ): Promise<void> {
     // 기존 게시글 내용 삭제
     await this.boardContentRepository.delete({ board: { boardId } });
 
-    if (content) {
-      let contentJson: { time: any; version: any; blocks: any[] };
-      try {
-        contentJson = JSON.parse(content);
-      } catch (e) {
-        throw new BadRequestException('Invalid JSON format in content');
-      }
+    const savedContent = await this.boardContentRepository.save(
+      this.boardContentRepository.create({
+        board: { boardId },
+        time: content.time,
+        version: content.version,
+      }),
+    );
 
-      const savedContent = await this.boardContentRepository.save(
-        this.boardContentRepository.create({
-          board: { boardId },
-          time: contentJson.time,
-          version: contentJson.version,
-        }),
-      );
-
-      await this.saveBlock(savedContent, contentJson.blocks);
-    }
+    await this.saveBlock(savedContent, content.blocks);
   }
 
   /**
