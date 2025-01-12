@@ -106,20 +106,19 @@ export default class BoardService {
     await this.saveBlock(savedContent, content.blocks);
   }
 
-  /**
-   * 게시글 블록을 저장합니다.
-   */
   public async saveBlock(content: BoardContent, blocks: any[]): Promise<void> {
-    blocks.map((block) => {
+    const savePromises = blocks.map((block) =>
       this.boardBlockRepository.save(
         this.boardBlockRepository.create({
-          blockId: block.id,
+          blockId: block.blockId,
           type: block.type,
           data: JSON.stringify(block.data),
-          content: content,
+          content,
         }),
-      );
-    });
+      ),
+    );
+
+    await Promise.all(savePromises);
   }
 
   /**

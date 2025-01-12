@@ -17,11 +17,15 @@ import BoardContent from './board-content.entity';
 
 @Entity({ name: 'TB_BOARD_BLOCK' })
 export default class BoardBlock extends BaseTimeEntity {
-  @PrimaryColumn({
+  @PrimaryGeneratedColumn()
+  boardBlockId: number;
+
+  @Column({
     type: 'varchar',
     length: 255,
     comment: '블럭 ID',
     nullable: false,
+    default: '',
   })
   blockId: string;
 
