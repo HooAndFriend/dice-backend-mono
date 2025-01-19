@@ -13,6 +13,7 @@ import UserModule from '../user/user.module';
 import TicketFileModule from './ticket-file/ticket-file.module';
 import TicketSettingModule from './ticket-setting/ticket-setting.module';
 import EpicModule from './epic/epic.module';
+import TicketLabelModule from './ticket-label/ticket-label.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import EpicModule from './epic/epic.module';
     forwardRef(() => TicketSettingModule),
     forwardRef(() => TicketLinkModule),
     forwardRef(() => EpicModule),
+    forwardRef(() => TicketLabelModule),
   ],
   exports: [],
   controllers: [],

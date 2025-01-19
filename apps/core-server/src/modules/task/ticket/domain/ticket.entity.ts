@@ -20,6 +20,7 @@ import Sprint from '../../sprint/domain/sprint.entity';
 import TicketLink from '../../ticket-link/domain/ticket.link.entity';
 import Epic from '../../epic/domain/epic.entity';
 import PriorityEnum from '../enum/priority.enum';
+import TicketLabel from '../../ticket-label/domain/ticket.label.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -149,6 +150,11 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   ticketSetting: Relation<TicketSetting>;
+
+  @ManyToOne(() => TicketLabel, (ticketLabel) => ticketLabel.ticket, {
+    onDelete: 'CASCADE',
+  })
+  ticketLabel: Relation<TicketLabel>;
 
   @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
   parentLink: Relation<TicketLink>[];
