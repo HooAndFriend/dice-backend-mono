@@ -1,8 +1,10 @@
-import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 
-config();
+import * as path from 'path';
+
+const env = process.env.NODE_ENV || 'development';
+config({ path: path.resolve(process.cwd(), `.env.${env}`) });
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -11,12 +13,12 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/module/**/*.entity.js'],
-  synchronize: true,
+  entities: ['dist/modules/**/*.entity.js'],
+  synchronize: false,
   logging: true,
-  logger: 'file',
+  logger: process.env.NODE_ENV === 'development' ? 'file' : 'file',
+  timezone: 'Z',
   charset: 'utf8mb4_unicode_ci',
-  timezone: '+09:00',
-  migrations: ['src/database/migrations/*.ts'],
+  migrations: ['dist/database/migrations/*.js'],
   migrationsTableName: 'migrations',
 });
