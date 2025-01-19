@@ -12,6 +12,7 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '../../../workspace/domain/workspace.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
+import { LabelUpdate } from '../dto/label.update.dto';
 
 @Entity({ name: 'TB_TICKET_LABEL' })
 export default class TicketLabel extends BaseTimeEntity {
@@ -60,4 +61,11 @@ export default class TicketLabel extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => ticket.ticketLabel)
   ticket: Relation<Ticket>[];
+
+  public update(data: LabelUpdate) {
+    this.name = data.name;
+    this.description = data.description;
+    this.bgColor = data.bgColor;
+    this.color = data.color;
+  }
 }

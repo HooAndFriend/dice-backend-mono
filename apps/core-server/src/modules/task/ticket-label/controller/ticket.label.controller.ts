@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import TicketLabelService from '../service/ticket.label.service';
@@ -33,6 +33,7 @@ import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/works
 import { TicketResponse } from '@/src/global/response/ticket.response';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import { CommonResponse, RoleEnum } from '@hi-dice/common';
+import RequestLabelUpdateDto from '../dto/label.update.dto';
 
 @ApiTags('Ticket Label')
 @ApiBearerAuth('access-token')
@@ -60,6 +61,25 @@ export default class TicketLabelController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Save Label',
+    });
+  }
+
+  @ApiOperation({ summary: 'Label 수정' })
+  @ApiBody({ type: RequestLabelUpdateDto })
+  @ApiResponse(TicketResponse.saveSetting[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Put('/')
+  public async updateLabel(
+    @Body() dto: RequestLabelUpdateDto,
+    @GetWorkspace() worksapce: Workspace,
+  ) {
+    await this.ticketLabelService.updateTicketLabel(dto, worksapce);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Update Label',
     });
   }
 }

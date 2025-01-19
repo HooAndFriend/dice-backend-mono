@@ -3,26 +3,27 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // ** Pipe Imports
 import { IsArray } from 'class-validator';
-import TicketSettingEnum from '../domain/ticket.setting.enum';
 
-export default class RequestSettingUpdateDto {
+export default class RequestLabelUpdateDto {
   @ApiProperty({
     example: [
       {
-        settingId: 1,
+        labelId: 1,
         name: '123',
-        type: TicketSettingEnum.BLACK,
+        bgColor: '#fff',
+        color: 'black',
         description: '123',
       },
     ],
   })
   @IsArray()
-  data: SettingUpdate[];
+  data: LabelUpdate[];
 }
 
-export interface SettingUpdate {
-  settingId: number;
+export interface LabelUpdate {
+  labelId: number;
   name: string;
-  type: TicketSettingEnum;
   description: string;
+  bgColor: string;
+  color: string;
 }
