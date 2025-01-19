@@ -39,6 +39,7 @@ import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 import BoardTypeEnum from '@/src/modules/board/enum/board.type.enum';
+import PriorityEnum from '../enum/priority.enum';
 
 @Injectable()
 export default class TicketService {
@@ -398,6 +399,17 @@ export default class TicketService {
     await this.ticketRepository.update(dto.ticketId, {
       dueDate: dto.dueDate,
     });
+  }
+
+  /**
+   * 티켓 우선 순위 변경
+   */
+  public async updateTicketPriority(
+    ticket: Ticket,
+    priority: PriorityEnum,
+  ): Promise<void> {
+    ticket.changePriority(priority);
+    await this.ticketRepository.save(ticket);
   }
 
   /**

@@ -168,4 +168,8 @@ export default class Ticket extends BaseTimeEntity {
   public changeAdmin(admin: User) {
     this.admin = admin;
   }
+
+  public changePriority(priority: PriorityEnum) {
+    this.priority = priority;
+  }
 }
