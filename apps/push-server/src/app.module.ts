@@ -48,9 +48,9 @@ import { v4 as uuidv4 } from 'uuid';
         return {
           type: 'mysql',
           entities: ['dist/modules/**/*.entity.js'],
-          synchronize: true,
+          synchronize: false,
           logging: true,
-          logger: 'file',
+          logger: process.env.NODE_ENV === 'development' ? 'file' : 'file',
           charset: 'utf8mb4_unicode_ci',
           timezone: '+09:00',
           replication: {
@@ -71,6 +71,8 @@ import { v4 as uuidv4 } from 'uuid';
               },
             ],
           },
+          migrations: ['dist/database/migrations/*.js'],
+          migrationsTableName: 'migrations',
         };
       },
       async dataSourceFactory(option) {
