@@ -48,6 +48,18 @@ export default class TicketLabelService {
   }
 
   /**
+   * Label 전체 조회
+   */
+  public async findAll(workspace: Workspace): Promise<TicketLabel[]> {
+    return await this.ticketLabelRepository.find({
+      where: {
+        workspace: { workspaceId: workspace.workspaceId },
+      },
+      order: { createdDate: 'DESC' },
+    });
+  }
+
+  /**
    * 티켓 셋팅 수정
    */
   @Transactional()

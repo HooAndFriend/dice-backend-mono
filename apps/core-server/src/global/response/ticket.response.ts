@@ -729,6 +729,26 @@ export const TicketResponse = {
       message: 'Save Setting',
     }),
   },
+  findAll: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2025-01-19T15:01:42.172Z',
+            modifiedDate: '2025-01-19T15:01:42.172Z',
+            ticketLabelId: 1,
+            name: 'SCN',
+            description: '해당 타입은 이거 입니다.',
+            bgColor: '#fff',
+            color: 'black',
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Find Label List',
+    }),
+  },
   updateSetting: {
     200: createMessageResponse({
       statusCode: 200,

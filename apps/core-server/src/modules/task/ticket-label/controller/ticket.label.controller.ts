@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 
 // ** Module Imports
 import TicketLabelService from '../service/ticket.label.service';
@@ -80,6 +80,22 @@ export default class TicketLabelController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Update Label',
+    });
+  }
+
+  @ApiOperation({ summary: 'Label 리스트 조회' })
+  @ApiResponse(TicketResponse.findAll[200])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async findAll(@GetWorkspace() worksapce: Workspace) {
+    const data = await this.ticketLabelService.findAll(worksapce);
+
+    return CommonResponse.createResponse({
+      data: { data, count: data.length },
+      statusCode: 200,
+      message: 'Find Label List',
     });
   }
 }
