@@ -16,6 +16,7 @@ export default class TicketRepository extends Repository<Ticket> {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
         'ticket.ticketId',
+        'ticket.priority',
         'ticket.name',
         'ticket.status',
         'ticket.content',
@@ -56,6 +57,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.ticketId',
         'ticket.name',
         'ticket.status',
+        'ticket.priority',
         'ticket.code',
         'ticket.dueDate',
         'ticket.completeDate',
@@ -96,6 +98,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .select([
         'ticket.ticketId',
         'ticket.name',
+        'ticket.priority',
         'ticket.status',
         'ticket.code',
         'ticket.dueDate',

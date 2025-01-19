@@ -47,7 +47,6 @@ import RequestEpicSaveDto from '../dto/epic.save.dto';
 import RequestEpicUpdateDto from '../dto/epic.update.dto';
 import RequestEpicOrderUpdateDto from '../dto/epic-order.update.dto';
 import { EpicResponse } from '@/src/global/response/epic.response';
-import User from '@/src/modules/user/domain/user.entity';
 import RequestEpicSettingUpdateDto from '../dto/epic-setting.update.dto';
 
 @ApiTags('Workspace Epic')

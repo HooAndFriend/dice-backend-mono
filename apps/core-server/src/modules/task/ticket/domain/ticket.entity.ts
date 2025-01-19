@@ -19,6 +19,7 @@ import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
 import Sprint from '../../sprint/domain/sprint.entity';
 import TicketLink from '../../ticket-link/domain/ticket.link.entity';
 import Epic from '../../epic/domain/epic.entity';
+import PriorityEnum from '../enum/priority.enum';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -41,6 +42,16 @@ export default class Ticket extends BaseTimeEntity {
     default: 1,
   })
   orderId: number;
+
+  @Column({
+    type: 'enum',
+    enum: PriorityEnum,
+    default: PriorityEnum.MEDIUM,
+    name: 'priority',
+    comment: '우선 순위',
+    nullable: false,
+  })
+  priority: PriorityEnum;
 
   @Column({
     type: 'enum',

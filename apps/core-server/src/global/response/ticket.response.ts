@@ -163,6 +163,7 @@ export const TicketResponse = {
           {
             ticketId: 1,
             name: '게시판',
+            priority: 'MEDIUM',
             orderId: 1,
             status: 'NOTHING',
             code: 'PIN-1',
@@ -212,6 +213,7 @@ export const TicketResponse = {
         content: null,
         code: 'HAF-9',
         storypoint: 0,
+        priority: 'MEDIUM',
         dueDate: '2024-12-27',
         completeDate: null,
         reopenDate: null,

@@ -31,6 +31,7 @@ export default class EpicRepository extends Repository<Epic> {
         'epicSetting.type',
         'ticket.ticketId',
         'ticket.name',
+        'ticket.priority',
         'ticket.status',
         'ticket.code',
         'ticket.orderId',
