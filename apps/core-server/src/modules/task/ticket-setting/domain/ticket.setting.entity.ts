@@ -14,6 +14,7 @@ import Workspace from '../../../workspace/domain/workspace.entity';
 import { SettingUpdate } from '../dto/setting.update.dto';
 import TicketSettingEnum from './ticket.setting.enum';
 import Ticket from '../../ticket/domain/ticket.entity';
+import Epic from '../../epic/domain/epic.entity';
 
 @Entity({ name: 'TB_TICKET_SETTING' })
 export default class TicketSetting extends BaseTimeEntity {
@@ -54,6 +55,9 @@ export default class TicketSetting extends BaseTimeEntity {
 
   @OneToMany(() => Ticket, (ticket) => ticket.ticketSetting)
   ticket: Relation<Ticket>[];
+
+  @OneToMany(() => Epic, (epic) => epic.ticketSetting)
+  epic: Relation<Epic>[];
 
   public changeTicketSetting(data: SettingUpdate) {
     this.name = data.name;

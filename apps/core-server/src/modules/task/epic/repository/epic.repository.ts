@@ -26,6 +26,9 @@ export default class EpicRepository extends Repository<Epic> {
         'epic.name',
         'epic.code',
         'epic.orderId',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
         'ticket.ticketId',
         'ticket.name',
         'ticket.status',
@@ -44,6 +47,7 @@ export default class EpicRepository extends Repository<Epic> {
         'ticketSetting.type',
       ])
       .leftJoin('epic.ticket', 'ticket', 'ticket.isDeleted = false')
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
       .where('epic.workspace = :workspaceId', { workspaceId })

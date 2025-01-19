@@ -34,6 +34,11 @@ export const EpicResponse = {
                 worker: null,
               },
             ],
+            ticketSetting: {
+              ticketSettingId: 2,
+              type: 'GREEN',
+              name: 'SCN',
+            },
             doneTicketCount: 0,
           },
         ],
