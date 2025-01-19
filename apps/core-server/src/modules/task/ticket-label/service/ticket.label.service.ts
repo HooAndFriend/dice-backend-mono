@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Custom Module Imports
 import TicketLabelRepository from '../repository/ticket.label.repository';
+import RequestLabelSaveDto from '../dto/label.save.dto';
+import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 
 // ** enum, dto, entity, types Imports
 
@@ -15,4 +17,14 @@ export default class TicketLabelService {
   ) {}
 
   private logger = new Logger(TicketLabelService.name);
+
+  /**
+   * Label 저장
+   */
+  public async save(
+    dto: RequestLabelSaveDto,
+    workspace: Workspace,
+  ): Promise<void> {
+    await this.ticketLabelRepository.save(dto.toTicketLabel(workspace));
+  }
 }
