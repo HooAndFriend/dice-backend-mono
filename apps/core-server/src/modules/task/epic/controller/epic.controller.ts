@@ -13,6 +13,7 @@ import {
 
 // ** Module Imports
 import EpicService from '../service/epic.service';
+import TicketSettingService from '../../ticket-setting/service/ticket.setting.service';
 
 // ** Swagger Imports
 import {
@@ -31,6 +32,7 @@ import {
 } from '@/src/global/response/common';
 
 // ** Utils Imports
+import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import {
   GetWorkspace,
   WorkspaceRole,
@@ -45,21 +47,26 @@ import RequestEpicSaveDto from '../dto/epic.save.dto';
 import RequestEpicUpdateDto from '../dto/epic.update.dto';
 import RequestEpicOrderUpdateDto from '../dto/epic-order.update.dto';
 import { EpicResponse } from '@/src/global/response/epic.response';
+import User from '@/src/modules/user/domain/user.entity';
+import RequestEpicSettingUpdateDto from '../dto/epic-setting.update.dto';
 
 @ApiTags('Workspace Epic')
+@ApiBearerAuth('access-token')
+@ApiHeader({ name: 'workspace-code', required: true })
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
+@UseGuards(JwtAccessGuard)
 @Controller({ path: '/epic', version: '1' })
 export default class EpicController {
-  constructor(private readonly epicService: EpicService) {}
+  constructor(
+    private readonly epicService: EpicService,
+    private readonly ticketSettingService: TicketSettingService,
+  ) {}
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 리스트 조회' })
   @ApiResponse(EpicResponse.findAllEpic[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllEpic(@GetWorkspace() { workspaceId }: Workspace) {
     const { data, count } = await this.epicService.findAllEpic(workspaceId);
@@ -71,13 +78,10 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 리스트 조회' })
   @ApiResponse(EpicResponse.findEpicList[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/list')
   public async findEpicList(@GetWorkspace() { workspaceId }: Workspace) {
     const [data, count] = await this.epicService.findEpicList(workspaceId);
@@ -89,14 +93,32 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'EPIC의 SETTING 수정' })
+  @ApiBody({ type: RequestEpicSettingUpdateDto })
+  @ApiResponse(EpicResponse.updateEpic[200])
+  @ApiResponse(EpicResponse.updateEpic[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/ticket-setting')
+  public async updateTicketSetting(@Body() dto: RequestEpicSettingUpdateDto) {
+    const epic = await this.epicService.findOne(dto.epicId);
+    const ticketSetting = await this.ticketSettingService.findTicketSettingById(
+      dto.settingId,
+    );
+
+    await this.epicService.updateTicketSetting(epic, ticketSetting);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'EPIC을 수정합니다.',
+    });
+  }
+
   @ApiOperation({ summary: 'EPIC 생성' })
   @ApiBody({ type: RequestEpicSaveDto })
   @ApiResponse(EpicResponse.saveEpic[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveEpic(
     @Body() dto: RequestEpicSaveDto,
@@ -109,15 +131,12 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 수정' })
   @ApiBody({ type: RequestEpicUpdateDto })
   @ApiResponse(EpicResponse.updateEpic[200])
   @ApiResponse(EpicResponse.updateEpic[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/')
   public async updateEpic(@Body() dto: RequestEpicUpdateDto) {
     const epic = await this.epicService.findOne(dto.epicId);
@@ -129,15 +148,12 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC Order 수정' })
   @ApiBody({ type: RequestEpicOrderUpdateDto })
   @ApiResponse(EpicResponse.updateEpic[200])
   @ApiResponse(EpicResponse.updateEpic[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/order')
   public async updateEpicOrder(
     @Body() dto: RequestEpicOrderUpdateDto,
@@ -158,14 +174,11 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 삭제' })
   @ApiResponse(EpicResponse.deleteEpic[200])
   @ApiResponse(EpicResponse.deleteEpic[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Delete('/:epicId')
   public async deleteEpic(@Param('epicId') id: number) {
     await this.epicService.isExistedEpicById(id);
@@ -177,14 +190,11 @@ export default class EpicController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'EPIC 조회' })
   @ApiResponse(EpicResponse.findEpic[200])
   @ApiResponse(EpicResponse.findEpic[404])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/:epicId')
   public async findEpic(@Param('epicId', ParseIntPipe) id: number) {
     const epic = await this.epicService.findEpicDetailById(id);

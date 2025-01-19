@@ -67,9 +67,7 @@ import RequestMultiTicketSettingUpdateDto from '../dto/ticket/ticket-multi.setti
 import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
-import EpicService from '../../epic/service/epic.service';
 import dayjs from 'dayjs';
-import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 
 @ApiTags('Workspace Ticket')
@@ -81,7 +79,6 @@ export default class TicketController {
     private readonly ticketService: TicketService,
     private readonly userService: UserService,
     private readonly ticketSettingService: TicketSettingService,
-    private readonly epicService: EpicService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 

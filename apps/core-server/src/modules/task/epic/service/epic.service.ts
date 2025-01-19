@@ -20,6 +20,7 @@ import Epic from '../domain/epic.entity';
 import RequestEpicSaveDto from '../dto/epic.save.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import RequestEpicUpdateDto from '../dto/epic.update.dto';
+import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 
 @Injectable()
 export default class EpicService {
@@ -182,6 +183,17 @@ export default class EpicService {
     }
 
     return epic;
+  }
+
+  /**
+   * 티켓 타입 변경
+   */
+  public async updateTicketSetting(
+    epic: Epic,
+    ticketSetting: TicketSetting,
+  ): Promise<void> {
+    epic.changeTicketSetting(ticketSetting);
+    await this.epicRepository.save(epic);
   }
 
   /**

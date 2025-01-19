@@ -78,4 +78,8 @@ export default class Epic extends BaseTimeEntity {
     this.name = name;
     this.content = content;
   }
+
+  public changeTicketSetting(ticketSetting: TicketSetting): void {
+    this.ticketSetting = ticketSetting;
+  }
 }
