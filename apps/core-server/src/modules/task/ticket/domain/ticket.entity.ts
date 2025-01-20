@@ -45,6 +45,22 @@ export default class Ticket extends BaseTimeEntity {
   orderId: number;
 
   @Column({
+    type: 'int',
+    comment: 'epic 내부 티켓 정렬 순서',
+    nullable: false,
+    default: 1,
+  })
+  epicOrderId: number;
+
+  @Column({
+    type: 'int',
+    comment: 'sprint 내부 티켓 정렬 순서',
+    nullable: false,
+    default: 1,
+  })
+  sprintOrderId: number;
+
+  @Column({
     type: 'enum',
     enum: PriorityEnum,
     default: PriorityEnum.MEDIUM,
