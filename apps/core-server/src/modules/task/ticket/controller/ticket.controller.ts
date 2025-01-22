@@ -488,9 +488,9 @@ export default class TicketController {
     );
 
     await this.ticketService.updateTicketOrder(
-      'epic_order_id',
+      'epicOrderId',
       ticket,
-      targetTicket.epic_order_id,
+      targetTicket.epicOrderId,
       workspaceId,
     );
     return CommonResponse.createResponseMessage({
@@ -516,9 +516,9 @@ export default class TicketController {
     );
 
     await this.ticketService.updateTicketOrder(
-      'sprint_order_id',
+      'sprintOrderId',
       ticket,
-      targetTicket.sprint_order_id,
+      targetTicket.sprintOrderId,
       workspaceId,
     );
     return CommonResponse.createResponseMessage({
