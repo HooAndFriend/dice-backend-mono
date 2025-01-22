@@ -646,6 +646,49 @@ export default class TicketService {
   }
 
   /**
+   * 티켓 정렬 순서 변경 - epicOrderId
+   */
+  public async updateTicketSprintOrder(
+    ticket: Ticket,
+    targetOrderId: number,
+    workspaceId: number,
+  ): Promise<void> {
+    if (ticket.sprint_order_id > targetOrderId) {
+      const list = await this.findMoreTicketList(
+        'sprint_order_id',
+        ticket.sprint_order_id,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(
+        list,
+        true,
+        ticket,
+        targetOrderId,
+        'sprint_order_id',
+      );
+    }
+
+    if (ticket.sprint_order_id < targetOrderId) {
+      const list = await this.findLessTicketList(
+        'sprint_order_id',
+        ticket.sprint_order_id,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(
+        list,
+        false,
+        ticket,
+        targetOrderId,
+        'sprint_order_id',
+      );
+    }
+  }
+
+  /**
    * 티켓의 정렬 순서 변경
    */
   private async updateOrder(
