@@ -460,6 +460,7 @@ export default class TicketController {
     );
 
     await this.ticketService.updateTicketOrder(
+      'orderId',
       ticket,
       targetTicket.orderId,
       workspaceId,
@@ -486,7 +487,8 @@ export default class TicketController {
       dto.targetTicketId,
     );
 
-    await this.ticketService.updateTicketEpicOrder(
+    await this.ticketService.updateTicketOrder(
+      'epic_order_id',
       ticket,
       targetTicket.epic_order_id,
       workspaceId,
@@ -513,7 +515,8 @@ export default class TicketController {
       dto.targetTicketId,
     );
 
-    await this.ticketService.updateTicketSprintOrder(
+    await this.ticketService.updateTicketOrder(
+      'sprint_order_id',
       ticket,
       targetTicket.sprint_order_id,
       workspaceId,

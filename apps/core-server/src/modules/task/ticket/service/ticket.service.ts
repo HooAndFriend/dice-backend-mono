@@ -575,116 +575,31 @@ export default class TicketService {
    * 티켓 정렬 순서 변경 - orderId (기본)
    */
   public async updateTicketOrder(
+    orderField: NumericFields<Ticket>,
     ticket: Ticket,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<void> {
-    if (ticket.orderId > targetOrderId) {
+    if (ticket[orderField] > targetOrderId) {
       const list = await this.findMoreTicketList(
-        'orderId',
-        ticket.orderId,
+        orderField,
+        ticket[orderField],
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, true, ticket, targetOrderId, 'orderId');
+      await this.updateOrder(list, true, ticket, targetOrderId, orderField);
     }
 
-    if (ticket.orderId < targetOrderId) {
+    if (ticket[orderField] < targetOrderId) {
       const list = await this.findLessTicketList(
-        'orderId',
-        ticket.orderId,
+        orderField,
+        ticket[orderField],
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, false, ticket, targetOrderId, 'orderId');
-    }
-  }
-
-  /**
-   * 티켓 정렬 순서 변경 - epicOrderId
-   */
-  public async updateTicketEpicOrder(
-    ticket: Ticket,
-    targetOrderId: number,
-    workspaceId: number,
-  ): Promise<void> {
-    if (ticket.epic_order_id > targetOrderId) {
-      const list = await this.findMoreTicketList(
-        'epic_order_id',
-        ticket.epic_order_id,
-        targetOrderId,
-        workspaceId,
-      );
-
-      await this.updateOrder(
-        list,
-        true,
-        ticket,
-        targetOrderId,
-        'epic_order_id',
-      );
-    }
-
-    if (ticket.epic_order_id < targetOrderId) {
-      const list = await this.findLessTicketList(
-        'epic_order_id',
-        ticket.epic_order_id,
-        targetOrderId,
-        workspaceId,
-      );
-
-      await this.updateOrder(
-        list,
-        false,
-        ticket,
-        targetOrderId,
-        'epic_order_id',
-      );
-    }
-  }
-
-  /**
-   * 티켓 정렬 순서 변경 - epicOrderId
-   */
-  public async updateTicketSprintOrder(
-    ticket: Ticket,
-    targetOrderId: number,
-    workspaceId: number,
-  ): Promise<void> {
-    if (ticket.sprint_order_id > targetOrderId) {
-      const list = await this.findMoreTicketList(
-        'sprint_order_id',
-        ticket.sprint_order_id,
-        targetOrderId,
-        workspaceId,
-      );
-
-      await this.updateOrder(
-        list,
-        true,
-        ticket,
-        targetOrderId,
-        'sprint_order_id',
-      );
-    }
-
-    if (ticket.sprint_order_id < targetOrderId) {
-      const list = await this.findLessTicketList(
-        'sprint_order_id',
-        ticket.sprint_order_id,
-        targetOrderId,
-        workspaceId,
-      );
-
-      await this.updateOrder(
-        list,
-        false,
-        ticket,
-        targetOrderId,
-        'sprint_order_id',
-      );
+      await this.updateOrder(list, false, ticket, targetOrderId, orderField);
     }
   }
 
