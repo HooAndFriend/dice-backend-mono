@@ -40,3 +40,4 @@ ormlogs.log
 db
 
 firebase-config.json
+.env*
