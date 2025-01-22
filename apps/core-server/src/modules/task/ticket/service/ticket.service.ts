@@ -572,7 +572,7 @@ export default class TicketService {
   }
 
   /**
-   * 티켓 정렬 순서 변경
+   * 티켓 정렬 순서 변경 - orderId (기본)
    */
   public async updateTicketOrder(
     ticket: Ticket,
@@ -581,22 +581,67 @@ export default class TicketService {
   ): Promise<void> {
     if (ticket.orderId > targetOrderId) {
       const list = await this.findMoreTicketList(
+        'orderId',
         ticket.orderId,
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, true, ticket, targetOrderId);
+      await this.updateOrder(list, true, ticket, targetOrderId, 'orderId');
     }
 
     if (ticket.orderId < targetOrderId) {
       const list = await this.findLessTicketList(
+        'orderId',
         ticket.orderId,
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, false, ticket, targetOrderId);
+      await this.updateOrder(list, false, ticket, targetOrderId, 'orderId');
+    }
+  }
+
+  /**
+   * 티켓 정렬 순서 변경 - epicOrderId
+   */
+  public async updateTicketEpicOrder(
+    ticket: Ticket,
+    targetOrderId: number,
+    workspaceId: number,
+  ): Promise<void> {
+    if (ticket.epic_order_id > targetOrderId) {
+      const list = await this.findMoreTicketList(
+        'epic_order_id',
+        ticket.epic_order_id,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(
+        list,
+        true,
+        ticket,
+        targetOrderId,
+        'epic_order_id',
+      );
+    }
+
+    if (ticket.epic_order_id < targetOrderId) {
+      const list = await this.findLessTicketList(
+        'epic_order_id',
+        ticket.epic_order_id,
+        targetOrderId,
+        workspaceId,
+      );
+
+      await this.updateOrder(
+        list,
+        false,
+        ticket,
+        targetOrderId,
+        'epic_order_id',
+      );
     }
   }
 
@@ -608,20 +653,21 @@ export default class TicketService {
     isPluse: boolean,
     targetTicket: Ticket,
     targetOrderId: number,
+    orderField: NumericFields<Ticket>,
   ): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      const increment = isPluse ? 1 : -1;
+
       for await (const item of ticketList) {
-        isPluse
-          ? (item.orderId = item.orderId + 1)
-          : (item.orderId = item.orderId - 1);
+        item[orderField] = (item[orderField] as number) + increment;
 
         await queryRunner.manager.save(item);
       }
-      targetTicket.orderId = targetOrderId;
+      targetTicket[orderField] = targetOrderId;
       queryRunner.manager.save(targetTicket);
 
       queryRunner.commitTransaction();
@@ -639,13 +685,14 @@ export default class TicketService {
    * 티켓 리스트 조회
    */
   public async findLessTicketList(
+    orderField: NumericFields<Ticket>,
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
-        orderId: Between(orderId, targetOrderId),
+        [orderField]: Between(orderId, targetOrderId),
         workspace: { workspaceId },
       },
     });
@@ -655,13 +702,14 @@ export default class TicketService {
    * 티켓 리스트 조회
    */
   public async findMoreTicketList(
+    orderField: NumericFields<Ticket>,
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
-        orderId: Between(targetOrderId, orderId),
+        [orderField]: Between(targetOrderId, orderId),
         workspace: { workspaceId },
       },
     });
@@ -678,3 +726,7 @@ export default class TicketService {
     return { ticket, count };
   }
 }
+
+type NumericFields<T> = {
+  [K in keyof T]: T[K] extends number ? K : never;
+}[keyof T];

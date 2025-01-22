@@ -69,6 +69,7 @@ import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
 import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
 import RequestTicketPriorityUpdateDto from '../dto/ticket/ticket-priority.update.dto';
+import RequestTicketEpicOrderUpdateDto from '../dto/ticket-epic-order.update.dto';
 
 @ApiTags('Workspace Ticket')
 @ApiBearerAuth('access-token')
@@ -465,6 +466,33 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 정렬을 변경합니다.',
+    });
+  }
+
+  @ApiOperation({ summary: 'TICKET Epic Order 변경' })
+  @ApiBody({ type: RequestTicketEpicOrderUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/epicOrder')
+  public async updateTicketEpicOrder(
+    @Body() dto: RequestTicketEpicOrderUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+    const targetTicket = await this.ticketService.findTicketById(
+      dto.targetTicketId,
+    );
+
+    await this.ticketService.updateTicketEpicOrder(
+      ticket,
+      targetTicket.epic_order_id,
+      workspaceId,
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket Epic 정렬을 변경합니다.',
     });
   }
 

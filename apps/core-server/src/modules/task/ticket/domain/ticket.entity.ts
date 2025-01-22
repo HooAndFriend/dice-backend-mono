@@ -50,7 +50,7 @@ export default class Ticket extends BaseTimeEntity {
     nullable: false,
     default: 1,
   })
-  epicOrderId: number;
+  epic_order_id: number;
 
   @Column({
     type: 'int',
@@ -58,7 +58,7 @@ export default class Ticket extends BaseTimeEntity {
     nullable: false,
     default: 1,
   })
-  sprintOrderId: number;
+  sprint_order_id: number;
 
   @Column({
     type: 'enum',
