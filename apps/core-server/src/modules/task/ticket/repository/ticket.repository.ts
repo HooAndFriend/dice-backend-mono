@@ -40,11 +40,19 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
+        'epic.epicId',
+        'epic.name',
+        'epic.code',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.epic', 'epic')
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
 

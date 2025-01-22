@@ -223,6 +223,16 @@ export const TicketResponse = {
           type: 'YELLOW',
           name: 'FUNC',
         },
+        epic: {
+          epicId: 28,
+          name: 'DICE 로그인',
+          code: '김인후-2',
+          ticketSetting: {
+            ticketSettingId: 1,
+            type: 'BLUE',
+            name: '티켓',
+          },
+        },
         admin: {
           userId: 4,
           email: 'inhoo987654321@gmail.com',
