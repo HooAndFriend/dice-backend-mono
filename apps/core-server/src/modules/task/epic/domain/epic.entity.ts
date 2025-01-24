@@ -13,6 +13,7 @@ import {
 import { BaseTimeEntity } from '@hi-dice/common';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import Ticket from '../../ticket/domain/ticket.entity';
+import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 
 @Entity({ name: 'TB_EPIC' })
 export default class Epic extends BaseTimeEntity {
@@ -60,16 +61,25 @@ export default class Epic extends BaseTimeEntity {
   })
   isDeleted: boolean;
 
+  @OneToMany(() => Ticket, (ticket) => ticket.epic)
+  ticket: Relation<Ticket>[];
+
   @ManyToOne(() => Workspace, (workspace) => workspace.epic, {
     onDelete: 'CASCADE',
   })
   workspace: Relation<Workspace>;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.epic)
-  ticket: Relation<Ticket>[];
+  @ManyToOne(() => TicketSetting, (ticketSetting) => ticketSetting.epic, {
+    onDelete: 'CASCADE',
+  })
+  ticketSetting: Relation<TicketSetting>;
 
   public changeContent(name: string, content: string): void {
     this.name = name;
     this.content = content;
+  }
+
+  public changeTicketSetting(ticketSetting: TicketSetting): void {
+    this.ticketSetting = ticketSetting;
   }
 }

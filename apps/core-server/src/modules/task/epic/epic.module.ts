@@ -11,12 +11,14 @@ import EpicService from './service/epic.service';
 import EpicController from './controller/epic.controller';
 import EpicRepository from './repository/epic.repository';
 import WorkspaceModule from '../../workspace/workspace.module';
+import TicketSettingModule from '../ticket-setting/ticket-setting.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Epic]),
     TypeOrmExModule.forCustomRepository([EpicRepository]),
     forwardRef(() => WorkspaceModule),
+    forwardRef(() => TicketSettingModule),
   ],
   exports: [TypeOrmExModule, TypeOrmModule, EpicService],
   controllers: [EpicController],

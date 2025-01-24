@@ -141,7 +141,7 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   ticketSetting: Relation<TicketSetting>;
-  
+
   @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
   parentLink: Relation<TicketLink>[];
 

@@ -16,6 +16,10 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import LogModule from '@/src/modules/log.module';
 import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
+import { ClsModule } from 'nestjs-cls';
+
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
 
 @Module({
   imports: [
@@ -23,14 +27,22 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        generateId: true,
+        idGenerator: (req: Request) => req.headers['X-Request-Id'] ?? uuidv4(),
+      },
+    }),
     TypeOrmModule.forRootAsync({
       useFactory() {
         return {
           type: 'mysql',
           entities: ['dist/modules/**/*.entity.js'],
-          synchronize: true,
+          synchronize: false,
           logging: true,
-          logger: 'file',
+          logger: process.env.NODE_ENV === 'development' ? 'file' : 'file',
           charset: 'utf8mb4_unicode_ci',
           timezone: '+09:00',
           replication: {
@@ -51,6 +63,8 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
               },
             ],
           },
+          migrations: ['dist/database/migrations/*.js'],
+          migrationsTableName: 'migrations',
         };
       },
       async dataSourceFactory(option) {

@@ -15,6 +15,7 @@ export const EpicResponse = {
             name: 'DICE 로그인 수정',
             orderId: 1,
             code: 'HAF-1',
+            priority: 'MEDIUM',
             ticket: [
               {
                 createdDate: '2024-08-09T08:34:05.070Z',
@@ -34,6 +35,11 @@ export const EpicResponse = {
                 worker: null,
               },
             ],
+            ticketSetting: {
+              ticketSettingId: 2,
+              type: 'GREEN',
+              name: 'SCN',
+            },
             doneTicketCount: 0,
           },
         ],

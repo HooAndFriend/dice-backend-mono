@@ -41,6 +41,7 @@ import {
   RoleEnum,
 } from '@hi-dice/common';
 import RequestTicketLinkSaveDto from '../dto/link.save.dto';
+import RequestTicketLinkMultipleSaveDto from '../dto/link-multiple.save.dto';
 
 @ApiTags('Ticket Link')
 @ApiResponse(createServerExceptionResponse())
@@ -65,6 +66,28 @@ export default class TicketLinkController {
   @Post()
   public async saveTicketLink(@Body() dto: RequestTicketLinkSaveDto) {
     await this.ticketLinkService.saveTicketLink(dto);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Save Ticket Link',
+    });
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET 링크 다중 추가' })
+  @ApiBody({ type: RequestTicketLinkMultipleSaveDto })
+  @ApiResponse(TicketResponse.saveTicketLink[200])
+  @ApiResponse(TicketResponse.saveTicketLink[400])
+  @ApiResponse(TicketResponse.saveTicketLink[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @UseGuards(JwtAccessGuard)
+  @Post('/multiple')
+  public async saveTicketLinkMultiple(
+    @Body() dto: RequestTicketLinkMultipleSaveDto,
+  ) {
+    await this.ticketLinkService.saveTicketLinkMultiple(dto);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,

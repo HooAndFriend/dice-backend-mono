@@ -55,6 +55,7 @@ export default class AuthController {
       data: {
         token: token,
         user: {
+          userId: user.userId,
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,
@@ -83,6 +84,7 @@ export default class AuthController {
       data: {
         token: token,
         user: {
+          userId: user.userId,
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,
@@ -110,6 +112,7 @@ export default class AuthController {
       data: {
         token: token,
         user: {
+          userId: user.userId,
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,
@@ -144,6 +147,7 @@ export default class AuthController {
       data: {
         token: token,
         user: {
+          userId: user.userId,
           nickname: user.nickname,
           profile: user.profile,
           email: user.email,

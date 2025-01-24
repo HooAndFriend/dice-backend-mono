@@ -1,5 +1,10 @@
 // ** Nest Imports
-import { Logger, VersioningType } from '@nestjs/common';
+import {
+  Logger,
+  ShutdownSignal,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
@@ -15,16 +20,20 @@ import LoggerService from './global/util/logger/logger.service';
 // ** Express Imports
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-// ** Security Imports
-import csurf from 'csurf';
-import helmet from 'helmet';
-
 async function bootstrap() {
   // ** Server Container 생성
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
     snapshot: true,
   });
+
+  // ** Server Timeout 설정
+  const server = app.getHttpServer();
+  server.keepAliveTimeout = 61_000;
+  server.headersTimeout = 65_000;
+
+  // ** Shutdown Signal
+  app.enableShutdownHooks([ShutdownSignal.SIGTERM]);
 
   const configService = app.get(ConfigService);
 
@@ -37,15 +46,19 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      // whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   // ** Logger
   app.useLogger(app.get(LoggerService));
 
   // ** Cors Setting
   app.enableCors();
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.use(csurf());
-  //   app.use(helmet());
-  // }
 
   // ** Swagger Setting
   if (
@@ -56,7 +69,9 @@ async function bootstrap() {
   }
 
   // ** Server ON Handler
-  await app.listen(configService.get('SERVER_PORT'));
+  await app.listen(configService.get<number>('SERVER_PORT'), () => {
+    process.send?.('ready');
+  });
 }
 bootstrap()
   .then((res) => {

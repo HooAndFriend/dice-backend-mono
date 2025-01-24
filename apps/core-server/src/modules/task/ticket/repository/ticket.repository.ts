@@ -8,6 +8,7 @@ import CustomRepository from '@/src/global/repository/typeorm-ex.decorator';
 // ** Dto Imports
 import Ticket from '../domain/ticket.entity';
 import RequestWorkspaceTaskFindDto from '@/src/modules/workspace/dto/workspace-task.find.dto';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
 
 @CustomRepository(Ticket)
 export default class TicketRepository extends Repository<Ticket> {
@@ -15,6 +16,7 @@ export default class TicketRepository extends Repository<Ticket> {
     const querybuilder = this.createQueryBuilder('ticket')
       .select([
         'ticket.ticketId',
+        'ticket.priority',
         'ticket.name',
         'ticket.status',
         'ticket.content',
@@ -38,56 +40,19 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
-        'parentLink.ticketLinkId',
-        'parentLink.parentTicketId',
-        'parentLink.childTicketId',
-        'parentTicket.ticketId',
-        'parentTicket.name',
-        'parentTicket.status',
-        'parentTicket.code',
-        'parentTicket.dueDate',
-        'parentTicket.completeDate',
-        'parentTicket.reopenDate',
-        'parentTicket.orderId',
-        'parentTicketWorker.userId',
-        'parentTicketWorker.email',
-        'parentTicketWorker.nickname',
-        'parentTicketWorker.profile',
-        'parentTicketSetting.ticketSettingId',
-        'parentTicketSetting.name',
-        'parentTicketSetting.type',
-        'childLink.ticketLinkId',
-        'childLink.parentTicketId',
-        'childLink.childTicketId',
-        'childTicket.ticketId',
-        'childTicket.name',
-        'childTicket.status',
-        'childTicket.code',
-        'childTicket.dueDate',
-        'childTicket.completeDate',
-        'childTicket.reopenDate',
-        'childTicket.orderId',
-        'childTicketWorker.userId',
-        'childTicketWorker.email',
-        'childTicketWorker.nickname',
-        'childTicketWorker.profile',
-        'childTicketSetting.ticketSettingId',
-        'childTicketSetting.name',
-        'childTicketSetting.type',
+        'epic.epicId',
+        'epic.name',
+        'epic.code',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
       ])
       .leftJoin('ticket.ticketFile', 'ticketFile')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
-      .leftJoin('ticket.parentLink', 'parentLink')
-      .leftJoin('parentLink.parentTicket', 'parentTicket')
-      .leftJoin('parentTicket.ticketSetting', 'parentTicketSetting')
-      .leftJoin('parentTicket.worker', 'parentTicketWorker')
-      .leftJoin('ticket.childLink', 'childLink')
-      .leftJoin('childLink.childTicket', 'childTicket')
-      .leftJoin('childTicket.ticketSetting', 'childTicketSetting')
-      .leftJoin('childTicket.worker', 'childTicketWorker')
-
+      .leftJoin('ticket.epic', 'epic')
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .where('ticket.ticketId = :ticketId', { ticketId })
       .andWhere('ticket.isDeleted = false');
 
@@ -100,6 +65,7 @@ export default class TicketRepository extends Repository<Ticket> {
         'ticket.ticketId',
         'ticket.name',
         'ticket.status',
+        'ticket.priority',
         'ticket.code',
         'ticket.dueDate',
         'ticket.completeDate',
@@ -123,7 +89,6 @@ export default class TicketRepository extends Repository<Ticket> {
       .leftJoin('ticket.admin', 'admin')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
-      .andWhere('ticket.dueDate = CURRENT_DATE()')
       .andWhere(
         new Brackets((qb) => {
           qb.andWhere('worker.userId = :userId', {
@@ -131,7 +96,7 @@ export default class TicketRepository extends Repository<Ticket> {
           }).orWhere('admin.userId = :userId', { userId });
         }),
       )
-      .orderBy('ticket.orderId', 'ASC');
+      .orderBy('ticket.dueDate', 'DESC');
 
     return await querybuilder.getManyAndCount();
   }
@@ -141,6 +106,7 @@ export default class TicketRepository extends Repository<Ticket> {
       .select([
         'ticket.ticketId',
         'ticket.name',
+        'ticket.priority',
         'ticket.status',
         'ticket.code',
         'ticket.dueDate',
@@ -193,5 +159,48 @@ export default class TicketRepository extends Repository<Ticket> {
       .andWhere('ticket.isDeleted = false');
 
     return await querybuilder.getOne();
+  }
+
+  public async findTicketByQuery(findQuery: RequestTicketFindDto) {
+    const queryBuilder = this.createQueryBuilder('ticket')
+      .select([
+        'ticket.ticketId',
+        'ticket.name',
+        'ticket.status',
+        'ticket.content',
+        'ticket.storypoint',
+        'ticket.dueDate',
+        'ticket.completeDate',
+        'ticket.reopenDate',
+        'workspace.workspaceId',
+        'epic.epicId',
+        'admin.userId',
+        'admin.nickname',
+        'admin.profile',
+        'worker.userId',
+        'worker.nickname',
+        'worker.profile',
+      ])
+      .leftJoin('ticket.workspace', 'workspace')
+      .leftJoin('ticket.epic', 'epic')
+      .leftJoin('ticket.admin', 'admin')
+      .leftJoin('ticket.worker', 'worker');
+    if (findQuery.content) {
+      queryBuilder.andWhere('ticket.content LIKE :content', {
+        content: `%${findQuery.content}%`,
+      });
+    }
+    if (findQuery.dueDate) {
+      queryBuilder.andWhere('ticket.dueDate >= :dueDate', {
+        dueDate: `${findQuery.dueDate}`,
+      });
+    }
+    if (findQuery.completeDate) {
+      queryBuilder.andWhere('ticket.completeDate <= :completeDate', {
+        completeDate: `${findQuery.completeDate}`,
+      });
+    }
+
+    return await queryBuilder.getManyAndCount();
   }
 }

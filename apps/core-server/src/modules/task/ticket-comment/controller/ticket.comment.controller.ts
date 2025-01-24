@@ -36,7 +36,10 @@ import { TicketResponse } from '@/src/global/response/ticket.response';
 import JwtAccessGuard from '../../../auth/passport/auth.jwt-access.guard';
 import { GetUser } from '../../../../global/decorators/user/user.decorators';
 import { WorkspaceRoleGuard } from '@/src/global/decorators/workspace-role/workspace-role.guard';
-import { WorkspaceRole } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import {
+  GetWorkspace,
+  WorkspaceRole,
+} from '@/src/global/decorators/workspace-role/workspace-role.decorator';
 
 // ** Dto Imports
 import User from '../../../user/domain/user.entity';
@@ -48,6 +51,7 @@ import {
 import { RoleEnum } from '@hi-dice/common';
 import RequestTicketCommentSaveDto from '../dto/comment.save.dto';
 import RequestTicketCommentUpdateDto from '../dto/comment.update.dto';
+import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 
 @ApiTags('Ticket Comment')
 @ApiResponse(createServerExceptionResponse())
@@ -91,8 +95,9 @@ export default class TicketCommentController {
   public async saveComment(
     @Body() dto: RequestTicketCommentSaveDto,
     @GetUser() user: User,
+    @GetWorkspace() workspace: Workspace,
   ) {
-    await this.ticketCommentService.saveComment(dto, user);
+    await this.ticketCommentService.saveComment(dto, user, workspace);
 
     this.sendTicketQueue({
       ticketId: dto.ticketId,

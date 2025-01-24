@@ -1,5 +1,10 @@
 // ** Nest Imports
-import { Logger, VersioningType } from '@nestjs/common';
+import {
+  Logger,
+  ShutdownSignal,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
@@ -19,10 +24,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // ** TypeORM Transactional Context
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
-// ** Security Imports
-import csurf from 'csurf';
-import helmet from 'helmet';
-
 async function bootstrap() {
   // ** TypeORM Transactional Context
   initializeTransactionalContext();
@@ -32,6 +33,14 @@ async function bootstrap() {
     bufferLogs: true,
     snapshot: true,
   });
+
+  // ** Server Timeout 설정
+  const server = app.getHttpServer();
+  server.keepAliveTimeout = 61_000;
+  server.headersTimeout = 65_000;
+
+  // ** Shutdown Signal
+  app.enableShutdownHooks([ShutdownSignal.SIGTERM]);
 
   const configService = app.get(ConfigService);
 
@@ -49,6 +58,14 @@ async function bootstrap() {
   // ** Base URL
   app.setGlobalPrefix('api/push');
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      // whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   // ** Nest Version
   app.enableVersioning({
     type: VersioningType.URI,
@@ -60,10 +77,6 @@ async function bootstrap() {
 
   // ** Cors Setting
   app.enableCors();
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.use(csurf());
-  //   app.use(helmet());
-  // }
 
   // ** Swagger Setting
   if (
@@ -75,7 +88,10 @@ async function bootstrap() {
 
   // ** Server ON Handler
   await app.startAllMicroservices();
-  await app.listen(configService.get('SERVER_PORT'));
+  // ** Server ON Handler
+  await app.listen(configService.get<number>('SERVER_PORT'), () => {
+    process.send?.('ready');
+  });
 }
 bootstrap()
   .then((res) => {

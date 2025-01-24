@@ -5,6 +5,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import QnaModule from './qna/qna.module';
 import CsCategoryModule from './category/cs-category.module';
 import FaqModule from './faq/faq.module';
+import AdminCsCategoryController from './category/controller/admin.cs-category.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import FaqModule from './faq/faq.module';
     forwardRef(() => FaqModule),
   ],
   exports: [],
-  controllers: [],
+  controllers: [AdminCsCategoryController],
   providers: [],
 })
 export default class CsModule {}

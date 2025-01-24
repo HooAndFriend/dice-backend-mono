@@ -6,6 +6,7 @@ import CustomRepository from '../../../global/repository/typeorm-ex.decorator';
 
 // ** Dto Imports
 import Board from '../domain/board.entity';
+import BoardTypeEnum from '../enum/board.type.enum';
 
 @CustomRepository(Board)
 export default class BoardRepository extends Repository<Board> {
@@ -23,6 +24,7 @@ export default class BoardRepository extends Repository<Board> {
       .leftJoin('board.children', 'children')
       .leftJoin('board.workspace', 'workspace')
       .where('parent.boardId is null')
+      .andWhere('board.type = :type', { type: BoardTypeEnum.NORMAL })
       .andWhere('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('board.isDeleted = false')
       .orderBy('board.orderId', 'ASC');
@@ -37,19 +39,43 @@ export default class BoardRepository extends Repository<Board> {
 
     return await queryBuilder.getManyAndCount();
   }
+
   public async findBoardSimpleList(workspaceId: number) {
+    const subQuery = this.createQueryBuilder('board')
+      .select([
+        'board.boardId AS boardId',
+        'board.title AS title',
+        'board.modifiedDate AS modifiedDate',
+      ])
+      .leftJoin('board.workspace', 'workspace')
+      .where('workspace.workspaceId = :workspaceId', { workspaceId })
+      .andWhere('board.type = :type', { type: BoardTypeEnum.NORMAL })
+      .andWhere('board.isDeleted = false')
+      .orderBy('board.modifiedDate', 'DESC')
+      .limit(5)
+      .getQuery();
+
     const queryBuilder = this.createQueryBuilder('board')
       .select([
         'board.boardId',
         'board.title',
-        'board.content',
+        'content.contentId',
+        'content.time',
+        'content.version',
+        'blocks.blockId',
+        'blocks.type',
+        'blocks.data',
         'board.modifiedDate',
       ])
-      .leftJoin('board.workspace', 'workspace')
-      .where('workspace.workspaceId = :workspaceId', { workspaceId })
-      .andWhere('board.isDeleted = false')
+      .innerJoin(
+        `(${subQuery})`,
+        'limited_boards',
+        'limited_boards.boardId = board.boardId',
+      )
+      .leftJoin('board.content', 'content')
+      .leftJoin('content.blocks', 'blocks')
       .orderBy('board.modifiedDate', 'DESC')
-      .limit(5);
+      .setParameters({ workspaceId, type: BoardTypeEnum.NORMAL });
 
     return await queryBuilder.getManyAndCount();
   }

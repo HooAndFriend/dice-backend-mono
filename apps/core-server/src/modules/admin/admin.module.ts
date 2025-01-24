@@ -1,5 +1,5 @@
 // ** Nest Imports
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';

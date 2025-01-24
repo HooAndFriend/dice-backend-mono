@@ -22,12 +22,23 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import CoreModule from '@/src/modules/core.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
+import { ClsModule } from 'nestjs-cls';
 
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.env.${process.env.NODE_ENV}`],
+    }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        generateId: true,
+        idGenerator: (req: Request) => req.headers['X-Request-Id'] ?? uuidv4(),
+      },
     }),
     EventEmitterModule.forRoot(),
     TypeOrmModule.forRootAsync({
@@ -35,9 +46,9 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
         return {
           type: 'mysql',
           entities: ['dist/modules/**/*.entity.js'],
-          synchronize: true,
+          synchronize: false,
           logging: true,
-          logger: 'file',
+          logger: process.env.NODE_ENV === 'development' ? 'file' : 'file',
           charset: 'utf8mb4_unicode_ci',
           timezone: '+09:00',
           replication: {
@@ -58,6 +69,8 @@ import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
               },
             ],
           },
+          migrations: ['dist/database/migrations/*.js'],
+          migrationsTableName: 'migrations',
         };
       },
       async dataSourceFactory(option) {

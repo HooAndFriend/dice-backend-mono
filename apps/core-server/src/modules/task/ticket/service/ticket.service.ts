@@ -17,6 +17,8 @@ import EpicService from '../../epic/service/epic.service';
 import TicketRepository from '../repository/ticket.repository';
 import TicketCommentRepository from '../../ticket-comment/repository/ticket.comment.repository';
 import WorkspaceUserService from '@/src/modules/workspace/service/workspace-user.service';
+import TicketLinkRepository from '../../ticket-link/repository/ticket.link.repository';
+import BoardService from '@/src/modules/board/service/board.service';
 
 // ** enum, dto, entity, types Imports
 import Ticket from '../domain/ticket.entity';
@@ -35,6 +37,9 @@ import TicketSetting from '../../ticket-setting/domain/ticket.setting.entity';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import TicketFile from '../../ticket-file/domain/ticket.file.entity';
 import TicketComment from '../../ticket-comment/domain/ticket.comment.entity';
+import RequestTicketFindDto from '../dto/ticket/ticket.find.dto';
+import BoardTypeEnum from '@/src/modules/board/enum/board.type.enum';
+import PriorityEnum from '../enum/priority.enum';
 
 @Injectable()
 export default class TicketService {
@@ -43,6 +48,8 @@ export default class TicketService {
     private readonly epicService: EpicService,
     private readonly ticketCommentRepository: TicketCommentRepository,
     private readonly worksapceUserService: WorkspaceUserService,
+    private readonly ticketLinkRepository: TicketLinkRepository,
+    private readonly boardService: BoardService,
 
     @Inject(DataSource) private readonly dataSource: DataSource,
   ) {}
@@ -63,6 +70,16 @@ export default class TicketService {
     }
 
     return findTicket;
+  }
+
+  /**
+   * 티켓 ID로 조회
+   */
+  public async findAllById(ticketIdList: number[]): Promise<Ticket[]> {
+    return await this.ticketRepository.find({
+      where: { ticketId: In(ticketIdList) },
+      relations: ['worker', 'admin'],
+    });
   }
 
   /**
@@ -194,14 +211,27 @@ export default class TicketService {
   /**
    * 티켓을 ID로 상세 조회
    */
-  public async findOneTicket(id: number): Promise<Ticket> {
+  public async findOneTicket(id: number): Promise<any> {
     const data = await this.ticketRepository.findTicketDetailById(id);
 
     if (!data) {
       throw new NotFoundException('Not Found Ticket');
     }
 
-    return data;
+    const childLink = await this.ticketLinkRepository.findChildTicketList(
+      data.ticketId,
+    );
+
+    const parentLink = await this.ticketLinkRepository.findParentTicketList(
+      data.ticketId,
+    );
+
+    const board = await this.boardService.findOneBySubIdAndType(
+      data.ticketId,
+      BoardTypeEnum.TICKET_BOARD,
+    );
+
+    return { ...data, childLink, parentLink, board };
   }
 
   /**
@@ -223,8 +253,6 @@ export default class TicketService {
       await this.worksapceUserService.findWorkspaceUserListByWorkspaceId(
         workspaceId,
       );
-
-    console.log('workspaceUserList', workspaceUserList);
 
     const totalCount = ticketList.length;
     const totalDoneCount = ticketList.filter((ticket) =>
@@ -280,6 +308,7 @@ export default class TicketService {
   /**
    * 티켓 저장
    */
+  @Transactional()
   public async saveTicket(
     dto: RequestSimpleTicketSaveDto,
     user: User,
@@ -296,7 +325,7 @@ export default class TicketService {
     if (dto.epicId) {
       const epic = await this.epicService.findOne(dto.epicId);
 
-      return await this.ticketRepository.save(
+      const ticket = await this.ticketRepository.save(
         this.ticketRepository.create({
           admin: user,
           code: ticketNumber,
@@ -308,9 +337,19 @@ export default class TicketService {
           epic,
         }),
       );
+
+      await this.boardService.saveBoard(
+        '',
+        user.email,
+        workspace,
+        BoardTypeEnum.TICKET_BOARD,
+        ticket.ticketId,
+      );
+
+      return ticket;
     }
 
-    return await this.ticketRepository.save(
+    const ticket = await this.ticketRepository.save(
       this.ticketRepository.create({
         admin: user,
         code: ticketNumber,
@@ -321,6 +360,16 @@ export default class TicketService {
         ticketSetting,
       }),
     );
+
+    await this.boardService.saveBoard(
+      '',
+      user.email,
+      workspace,
+      BoardTypeEnum.TICKET_BOARD,
+      ticket.ticketId,
+    );
+
+    return ticket;
   }
 
   /**
@@ -350,6 +399,17 @@ export default class TicketService {
     await this.ticketRepository.update(dto.ticketId, {
       dueDate: dto.dueDate,
     });
+  }
+
+  /**
+   * 티켓 우선 순위 변경
+   */
+  public async updateTicketPriority(
+    ticket: Ticket,
+    priority: PriorityEnum,
+  ): Promise<void> {
+    ticket.changePriority(priority);
+    await this.ticketRepository.save(ticket);
   }
 
   /**
@@ -500,36 +560,46 @@ export default class TicketService {
   /**
    * 티켓의 에픽 변경
    */
-  public async updateTicketEpic(ticketId: number): Promise<void> {
-    // await this.ticketRepository.update(ticketId, { epic });
+  public async updateTicketEpic(
+    ticketId: number,
+    epicId: number,
+    workspaceId: number,
+  ): Promise<void> {
+    await this.ticketRepository.update(
+      { ticketId, workspace: { workspaceId } },
+      { epic: { epicId } },
+    );
   }
 
   /**
-   * 티켓 정렬 순서 변경
+   * 티켓 정렬 순서 변경 - orderId (기본)
    */
   public async updateTicketOrder(
+    orderField: NumericFields<Ticket>,
     ticket: Ticket,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<void> {
-    if (ticket.orderId > targetOrderId) {
+    if (ticket[orderField] > targetOrderId) {
       const list = await this.findMoreTicketList(
-        ticket.orderId,
+        orderField,
+        ticket[orderField],
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, true, ticket, targetOrderId);
+      await this.updateOrder(list, true, ticket, targetOrderId, orderField);
     }
 
-    if (ticket.orderId < targetOrderId) {
+    if (ticket[orderField] < targetOrderId) {
       const list = await this.findLessTicketList(
-        ticket.orderId,
+        orderField,
+        ticket[orderField],
         targetOrderId,
         workspaceId,
       );
 
-      await this.updateOrder(list, false, ticket, targetOrderId);
+      await this.updateOrder(list, false, ticket, targetOrderId, orderField);
     }
   }
 
@@ -541,20 +611,21 @@ export default class TicketService {
     isPluse: boolean,
     targetTicket: Ticket,
     targetOrderId: number,
+    orderField: NumericFields<Ticket>,
   ): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      const increment = isPluse ? 1 : -1;
+
       for await (const item of ticketList) {
-        isPluse
-          ? (item.orderId = item.orderId + 1)
-          : (item.orderId = item.orderId - 1);
+        item[orderField] = (item[orderField] as number) + increment;
 
         await queryRunner.manager.save(item);
       }
-      targetTicket.orderId = targetOrderId;
+      targetTicket[orderField] = targetOrderId;
       queryRunner.manager.save(targetTicket);
 
       queryRunner.commitTransaction();
@@ -572,13 +643,14 @@ export default class TicketService {
    * 티켓 리스트 조회
    */
   public async findLessTicketList(
+    orderField: NumericFields<Ticket>,
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
-        orderId: Between(orderId, targetOrderId),
+        [orderField]: Between(orderId, targetOrderId),
         workspace: { workspaceId },
       },
     });
@@ -588,15 +660,31 @@ export default class TicketService {
    * 티켓 리스트 조회
    */
   public async findMoreTicketList(
+    orderField: NumericFields<Ticket>,
     orderId: number,
     targetOrderId: number,
     workspaceId: number,
   ): Promise<Ticket[]> {
     return await this.ticketRepository.find({
       where: {
-        orderId: Between(targetOrderId, orderId),
+        [orderField]: Between(targetOrderId, orderId),
         workspace: { workspaceId },
       },
     });
   }
+
+  /**
+   * 쿼리로 티켓 조회
+   */
+  public async findTicketByQuery(query: RequestTicketFindDto) {
+    const [ticket, count] = await this.ticketRepository.findTicketByQuery(
+      query,
+    );
+
+    return { ticket, count };
+  }
 }
+
+type NumericFields<T> = {
+  [K in keyof T]: T[K] extends number ? K : never;
+}[keyof T];

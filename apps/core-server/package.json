@@ -11,10 +11,6 @@
     "dev": "cross-env NODE_ENV=local nest start -b swc -w",
     "start:debug": "cross-env NODE_ENV=staging nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration",
-    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/database/migrations/Migration -d ./src/database/data-source.ts",
-    "migration:run": "npm run typeorm  migration:run",
-    "migration:revert": "npm run typeorm migration:revert",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -23,7 +19,12 @@
     "docker": "docker build --no-cache --rm -f Dockerfile -t pinomaker/dice-backend:latest . --platform linux/amd64",
     "docker-push": "docker push pinomaker/dice-backend:latest",
     "docker-buildx": "docker buildx build --platform linux/arm64,linux/amd64 -t pinomaker/dice-backend:latest-arm64 -t pinomaker/dice-backend:latest-amd64 --file Dockerfile . --push",
-    "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s"
+    "compodoc": "npx @compodoc/compodoc -p tsconfig.json -s",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource ./src/database/data-source.ts",
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration",
+    "migration:generate": "npm run typeorm migration:generate ./src/database/migrations/Migration",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert"
   },
   "dependencies": {
     "@hi-dice/common": "1.1.2",
@@ -57,6 +58,8 @@
     "ioredis": "^5.3.2",
     "loadsh": "^0.0.4",
     "mysql2": "^3.6.1",
+    "nestjs-cls": "^4.4.1",
+    "node-optional": "^1.0.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "redis": "^4.6.11",

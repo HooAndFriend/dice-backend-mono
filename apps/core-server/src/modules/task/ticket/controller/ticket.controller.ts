@@ -42,6 +42,7 @@ import {
   GetWorkspace,
   WorkspaceRole,
 } from '@/src/global/decorators/workspace-role/workspace-role.decorator';
+import dayjs from 'dayjs';
 
 // ** Dto Imports
 import {
@@ -66,29 +67,30 @@ import RequestMultiTicketSettingUpdateDto from '../dto/ticket/ticket-multi.setti
 import RequestTicketDeleteDto from '../dto/ticket/ticket.delete.dto';
 import Workspace from '@/src/modules/workspace/domain/workspace.entity';
 import User from '@/src/modules/user/domain/user.entity';
-import EpicService from '../../epic/service/epic.service';
-import dayjs from 'dayjs';
+import RequestTicketEpicUpdateDto from '../dto/ticket/ticket-epic.update.dto';
+import RequestTicketPriorityUpdateDto from '../dto/ticket/ticket-priority.update.dto';
+import RequestTicketEpicOrderUpdateDto from '../dto/ticket-epic-order.update.dto';
+import RequestTicketSprintOrderUpdateDto from '../dto/ticket/ticket-sprint-order.update.dto';
 
 @ApiTags('Workspace Ticket')
+@ApiBearerAuth('access-token')
+@ApiHeader({ name: 'workspace-code', required: true })
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
+@UseGuards(JwtAccessGuard)
 @Controller({ path: '/ticket', version: '1' })
 export default class TicketController {
   constructor(
     private readonly ticketService: TicketService,
     private readonly userService: UserService,
     private readonly ticketSettingService: TicketSettingService,
-    private readonly epicService: EpicService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 전체 조회' })
   @ApiResponse(TicketResponse.findAllTicket[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/')
   public async findAllTicket(@GetWorkspace() { workspaceId }: Workspace) {
     const [data, count] = await this.ticketService.findAllTicket(workspaceId);
@@ -100,14 +102,11 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 상세 조회' })
   @ApiResponse(TicketResponse.findOneTicket[200])
   @ApiResponse(TicketResponse.findOneTicket[404])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/detail/:ticketId')
   public async findOneTicket(@Param('ticketId') id: number) {
     const data = await this.ticketService.findOneTicket(id);
@@ -119,13 +118,10 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 전체 조회' })
   @ApiResponse(TicketResponse.findAllTicket[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/my')
   public async findMyTicketList(
     @GetWorkspace() { workspaceId }: Workspace,
@@ -143,13 +139,10 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 통계 조회' })
   @ApiResponse(TicketResponse.findStats[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Get('/stats')
   public async findStats(
     @GetWorkspace() { workspaceId }: Workspace,
@@ -164,8 +157,6 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 생성' })
   @ApiBody({ type: RequestTicketSaveDto })
   @ApiResponse(TicketResponse.saveTicket[200])
@@ -173,7 +164,6 @@ export default class TicketController {
   @ApiResponse(TicketResponse.saveTicket[404.2])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Post('/')
   public async saveTicket(
     @Body() dto: RequestTicketSaveDto,
@@ -192,13 +182,10 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 다중 삭제' })
   @ApiResponse(TicketResponse.multiTicketDelete[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/multi/delete')
   public async multiTicketDelete(@Body() dto: RequestTicketDeleteDto) {
     await this.ticketService.deleteTicketList(dto);
@@ -209,14 +196,11 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'MULTI TICKET STATUS 수정' })
   @ApiBody({ type: RequestMultiTicketStatusUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/multi/status')
   public async multiTicketStatusUpdate(
     @Body() dto: RequestMultiTicketStatusUpdateDto,
@@ -228,14 +212,11 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'MULTI TICKET Due Date수정' })
   @ApiBody({ type: RequestMultiTicketDueDateUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/multi/due-date')
   public async multiTicketDueDateUpdate(
     @Body() dto: RequestMultiTicketDueDateUpdateDto,
@@ -251,15 +232,12 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'MULTI TICKET Setting 수정' })
   @ApiBody({ type: RequestMultiTicketSettingUpdateDto })
   @ApiResponse(TicketResponse.multiTicketSettingUpdate[200])
   @ApiResponse(TicketResponse.multiTicketSettingUpdate[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/multi/ticket-setting')
   public async multiTicketSettingUpdate(
     @Body() dto: RequestMultiTicketSettingUpdateDto,
@@ -279,15 +257,12 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 간단 수정' })
   @ApiBody({ type: RequestTicketSimpleUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
   @ApiResponse(TicketResponse.updateTicket[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/')
   public async updateSimpleTicket(
     @Body() dto: RequestTicketSimpleUpdateDto,
@@ -310,10 +285,20 @@ export default class TicketController {
     });
 
     this.sendPush({
-      fcmToken: user.fcmToken,
-      email: user.email,
-      title: 'Ticket 수정',
-      body: `Ticket의 값을 ${dto.value}(으)로 변경`,
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket 내용 변경',
+      body: `티켓 내용이 변경 되었습니다. ${dto.value}`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket 내용 변경',
+      body: `티켓 내용이 변경 되었습니다. ${dto.value}`,
       status: NotificationStatusEnum.UNREAD,
       type: NotificationTypeEnum.TICKET,
       subId: dto.ticketId,
@@ -325,15 +310,12 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET의 SETTING 수정' })
   @ApiBody({ type: RequestTicketSettingUpdateDto })
   @ApiResponse(TicketResponse.updateTicket[200])
   @ApiResponse(TicketResponse.updateTicket[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/ticket-setting')
   public async updateTicketSetting(
     @Body() dto: RequestTicketSettingUpdateDto,
@@ -357,10 +339,20 @@ export default class TicketController {
     });
 
     this.sendPush({
-      fcmToken: user.fcmToken,
-      email: user.email,
-      title: 'Ticket Setting 수정',
-      body: `Ticket Setting을 ${ticketSetting.name}(으)로 변경`,
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket 유형 변경',
+      body: `${ticketSetting.name}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket 유형 변경',
+      body: `${ticketSetting.name}로 변경 되었습니다.`,
       status: NotificationStatusEnum.UNREAD,
       type: NotificationTypeEnum.TICKET,
       subId: dto.ticketId,
@@ -372,15 +364,12 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET Due Date 수정' })
   @ApiBody({ type: RequestTicketDueDateUpdateDto })
   @ApiResponse(TicketResponse.updateTicketDueDate[200])
   @ApiResponse(TicketResponse.updateTicketDueDate[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/dueDate')
   public async updateTicketDueDate(
     @Body() dto: RequestTicketDueDateUpdateDto,
@@ -403,10 +392,20 @@ export default class TicketController {
     });
 
     this.sendPush({
-      fcmToken: user.fcmToken,
-      email: user.email,
-      title: 'Ticket Due Date 수정',
-      body: `Ticket Due Date를 ${dto.dueDate}로 변경`,
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket Due Date 변경',
+      body: `${dto.dueDate}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket Due Date 변경',
+      body: `${dto.dueDate}로 변경 되었습니다.`,
       status: NotificationStatusEnum.UNREAD,
       type: NotificationTypeEnum.TICKET,
       subId: dto.ticketId,
@@ -415,6 +414,26 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket due date를 수정합니다.',
+    });
+  }
+
+  @ApiOperation({ summary: 'TICKET 우선 순위 수정' })
+  @ApiBody({ type: RequestTicketPriorityUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketDueDate[200])
+  @ApiResponse(TicketResponse.updateTicketDueDate[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/dueDate')
+  public async updateTicketPriority(
+    @Body() dto: RequestTicketPriorityUpdateDto,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+
+    await this.ticketService.updateTicketPriority(ticket, dto.priority);
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket를 수정합니다.',
     });
   }
 
@@ -427,7 +446,6 @@ export default class TicketController {
   @ApiResponse(TicketResponse.updateTicketUser[404.2])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Put('/user')
   public async updateTicketUser(
     @GetUser() user: User,
@@ -465,15 +483,45 @@ export default class TicketController {
       afterProfile: saveUser.profile,
     });
 
-    this.sendPush({
-      fcmToken: user.fcmToken,
-      email: user.email,
-      title: 'Ticket 유저 수정',
-      body: `${ticket.name} Ticket의 담당자를 ${saveUser.nickname}로 변경`,
-      status: NotificationStatusEnum.UNREAD,
-      type: NotificationTypeEnum.TICKET,
-      subId: dto.ticketId,
-    });
+    if (dto.type === 'user') {
+      this.sendPush({
+        fcmToken: ticket?.worker?.fcmToken,
+        email: ticket?.worker?.email,
+        title: 'Ticket 담당자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+      this.sendPush({
+        fcmToken: ticket?.admin?.fcmToken,
+        email: ticket?.admin?.email,
+        title: 'Ticket 담당자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+    } else {
+      this.sendPush({
+        fcmToken: ticket?.worker?.fcmToken,
+        email: ticket?.worker?.email,
+        title: 'Ticket 관리자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+      this.sendPush({
+        fcmToken: ticket?.admin?.fcmToken,
+        email: ticket?.admin?.email,
+        title: 'Ticket 관리자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+    }
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -481,14 +529,11 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET 삭제' })
   @ApiResponse(TicketResponse.deleteTicket[200])
   @ApiResponse(TicketResponse.deleteTicket[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Delete('/:ticketId')
   public async deleteTicket(@Param('ticketId') id: number) {
     await this.ticketService.deleteTicket(id);
@@ -498,15 +543,12 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
   @ApiOperation({ summary: 'TICKET Order 변경' })
   @ApiBody({ type: RequestTicketOrderUpdateDto })
   @ApiResponse(TicketResponse.updateTicketState[200])
   @ApiResponse(TicketResponse.updateTicketState[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Patch('/order')
   public async updateTicketOrder(
     @Body() dto: RequestTicketOrderUpdateDto,
@@ -518,6 +560,7 @@ export default class TicketController {
     );
 
     await this.ticketService.updateTicketOrder(
+      'orderId',
       ticket,
       targetTicket.orderId,
       workspaceId,
@@ -528,15 +571,68 @@ export default class TicketController {
     });
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiHeader({ name: 'workspace-code', required: true })
+  @ApiOperation({ summary: 'TICKET Epic Order 변경' })
+  @ApiBody({ type: RequestTicketEpicOrderUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/epicOrder')
+  public async updateTicketEpicOrder(
+    @Body() dto: RequestTicketEpicOrderUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+    const targetTicket = await this.ticketService.findTicketById(
+      dto.targetTicketId,
+    );
+
+    await this.ticketService.updateTicketOrder(
+      'epicOrderId',
+      ticket,
+      targetTicket.epicOrderId,
+      workspaceId,
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket Epic 정렬을 변경합니다.',
+    });
+  }
+
+  @ApiOperation({ summary: 'TICKET Sprint Order 변경' })
+  @ApiBody({ type: RequestTicketSprintOrderUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/sprintOrder')
+  public async updateTicketSprintOrder(
+    @Body() dto: RequestTicketSprintOrderUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    const ticket = await this.ticketService.findTicketById(dto.ticketId);
+    const targetTicket = await this.ticketService.findTicketById(
+      dto.targetTicketId,
+    );
+
+    await this.ticketService.updateTicketOrder(
+      'sprintOrderId',
+      ticket,
+      targetTicket.sprintOrderId,
+      workspaceId,
+    );
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket Epic 정렬을 변경합니다.',
+    });
+  }
+
   @ApiOperation({ summary: 'TICKET 상태변경' })
   @ApiBody({ type: RequestTicketStatusUpdateDto })
   @ApiResponse(TicketResponse.updateTicketState[200])
   @ApiResponse(TicketResponse.updateTicketState[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @UseGuards(JwtAccessGuard)
   @Put('/status')
   public async updateTicketState(
     @Body() dto: RequestTicketStatusUpdateDto,
@@ -557,8 +653,18 @@ export default class TicketController {
     });
 
     this.sendPush({
-      fcmToken: ticket.worker.fcmToken,
-      email: ticket.worker.email,
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket 상태 변경',
+      body: `Ticket 상태가 ${dto.status}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
       title: 'Ticket 상태 변경',
       body: `Ticket 상태가 ${dto.status}로 변경`,
       status: NotificationStatusEnum.UNREAD,
@@ -569,6 +675,29 @@ export default class TicketController {
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket 상태를 변경합니다.',
+    });
+  }
+
+  @ApiOperation({ summary: 'TICKET Epic 변경' })
+  @ApiBody({ type: RequestTicketEpicUpdateDto })
+  @ApiResponse(TicketResponse.updateTicketState[200])
+  @ApiResponse(TicketResponse.updateTicketState[404])
+  @WorkspaceRole(RoleEnum.WRITER)
+  @UseGuards(WorkspaceRoleGuard)
+  @Patch('/epic')
+  public async updateTicketEpic(
+    @Body() dto: RequestTicketEpicUpdateDto,
+    @GetWorkspace() { workspaceId }: Workspace,
+  ) {
+    await this.ticketService.updateTicketEpic(
+      dto.ticketId,
+      dto.epicId,
+      workspaceId,
+    );
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Ticket Epic을 변경합니다.',
     });
   }
 

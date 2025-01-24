@@ -16,6 +16,7 @@ import Board from '../../board/domain/board.entity';
 import Ticket from '../../task/ticket/domain/ticket.entity';
 import Sprint from '../../task/sprint/domain/sprint.entity';
 import Epic from '../../task/epic/domain/epic.entity';
+import TicketLabel from '../../task/ticket-label/domain/ticket.label.entity';
 
 @Entity({ name: 'TB_WORKSPACE' })
 export default class Workspace extends BaseTimeEntity {
@@ -93,6 +94,9 @@ export default class Workspace extends BaseTimeEntity {
 
   @OneToMany(() => TicketSetting, (ticketSetting) => ticketSetting.workspace)
   ticketSetting: Relation<TicketSetting>[];
+
+  @OneToMany(() => TicketLabel, (ticketLabel) => ticketLabel.workspace)
+  ticketLabel: Relation<TicketLabel>[];
 
   @OneToMany(() => Board, (board) => board.workspace)
   board: Relation<Board>[];

@@ -32,7 +32,7 @@ export class LoggingInterceptor implements NestInterceptor {
     this.logger.log(
       `${request.method} : ${pathname} ${JSON.stringify(
         request.query,
-      )} ${JSON.stringify(request.body)}`,
+      )} ${JSON.stringify(request.body)} ${this.getInfo(request)}`,
     );
 
     return next.handle().pipe(
@@ -59,5 +59,20 @@ export class LoggingInterceptor implements NestInterceptor {
         error: (error: Error) => {},
       }),
     );
+  }
+
+  private getInfo(request) {
+    const log = {};
+    if (request?.user) {
+      log['email'] = request?.user?.email;
+      log['userId'] = request?.user?.userId;
+    }
+
+    if (request?.headers['workspace-code']) {
+      const workspaceCode = request.headers['workspace-code'];
+      log['workspaceCode'] = workspaceCode;
+    }
+
+    return JSON.stringify(log);
   }
 }

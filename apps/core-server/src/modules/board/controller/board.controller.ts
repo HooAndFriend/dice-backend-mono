@@ -50,6 +50,7 @@ import Workspace from '../../workspace/domain/workspace.entity';
 import RequestBoardSaveDto from '../dto/board.save.dto';
 import RequestBoardTitleUpdateDto from '../dto/board-name.update.dto';
 import RequestBoardUpdateDto from '../dto/board.update.dto';
+import BoardTypeEnum from '../enum/board.type.enum';
 
 @ApiTags('Board')
 @ApiResponse(createServerExceptionResponse())
@@ -91,6 +92,7 @@ export default class BoardController {
         dto.title,
         user.email,
         workspace,
+        BoardTypeEnum.NORMAL,
       );
       response = boardId;
     }
@@ -194,7 +196,7 @@ export default class BoardController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Board 리스트 조회' })
   @ApiHeader({ name: 'workspace-code', required: true })
-  @ApiResponse(BoardResponse.findBoardList[200])
+  @ApiResponse(BoardResponse.findBoardSimpleList[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)
   @UseGuards(JwtAccessGuard)
@@ -222,7 +224,6 @@ export default class BoardController {
   @Get('/:boardId')
   public async findBoard(@Param('boardId', ParseIntPipe) boardId: number) {
     const board = await this.boardService.findBoardById(boardId);
-
     const user = await this.userService.findUserByEmail(board.createdId);
 
     return CommonResponse.createResponse({

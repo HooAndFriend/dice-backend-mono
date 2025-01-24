@@ -163,6 +163,7 @@ export const TicketResponse = {
           {
             ticketId: 1,
             name: '게시판',
+            priority: 'MEDIUM',
             orderId: 1,
             status: 'NOTHING',
             code: 'PIN-1',
@@ -204,22 +205,33 @@ export const TicketResponse = {
   findOneTicket: {
     200: createResponse({
       data: {
-        createdDate: '2024-09-06T07:32:58.401Z',
-        modifiedDate: '2024-09-06T07:36:07.000Z',
-        ticketId: 154,
-        name: '하위 티켓 클릭 시 그 티켓으로 이동',
-        status: 'COMPLETE',
+        createdDate: '2024-12-18T05:36:07.151Z',
+        modifiedDate: '2024-12-19T01:01:15.000Z',
+        ticketId: 303,
+        name: 'EPIC DND 구현',
+        status: 'NOTHING',
         content: null,
-        code: 'HAF-130',
+        code: 'HAF-9',
         storypoint: 0,
-        dueDate: '2024-09-06',
-        completeDate: '2024-09-06',
+        priority: 'MEDIUM',
+        dueDate: '2024-12-27',
+        completeDate: null,
         reopenDate: null,
         ticketFile: [],
         ticketSetting: {
           ticketSettingId: 4,
           type: 'YELLOW',
           name: 'FUNC',
+        },
+        epic: {
+          epicId: 28,
+          name: 'DICE 로그인',
+          code: '김인후-2',
+          ticketSetting: {
+            ticketSettingId: 1,
+            type: 'BLUE',
+            name: '티켓',
+          },
         },
         admin: {
           userId: 4,
@@ -229,70 +241,29 @@ export const TicketResponse = {
             'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
         },
         worker: {
-          userId: 4,
-          email: 'inhoo987654321@gmail.com',
-          nickname: '김인후',
+          userId: 7,
+          email: 'chhari0708@naver.com',
+          nickname: '최혜림',
           profile:
-            'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            'https://file.hi-dice.com/file//20240816000417-áá³áá³ááµá«áá£áº 2024-08-16 áá©áá¥á« 12.03.51.png',
         },
-        parentLink: [
-          {
-            ticketLinkId: 14,
-            parentTicketId: 154,
-            childTicketId: 155,
-            parentTicket: {
-              ticketId: 154,
-              name: '하위 티켓 클릭 시 그 티켓으로 이동',
-              orderId: 1,
-              status: 'COMPLETE',
-              code: 'HAF-130',
-              dueDate: '2024-09-06',
-              completeDate: '2024-09-06',
-              reopenDate: null,
-              ticketSetting: {
-                ticketSettingId: 4,
-                type: 'YELLOW',
-                name: 'FUNC',
-              },
-              worker: {
-                userId: 4,
-                email: 'inhoo987654321@gmail.com',
-                nickname: '김인후',
-                profile:
-                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
-              },
-            },
-          },
-        ],
-        childLink: [
-          {
-            ticketLinkId: 15,
-            parentTicketId: 152,
-            childTicketId: 154,
-            childTicket: {
-              ticketId: 154,
-              name: '하위 티켓 클릭 시 그 티켓으로 이동',
-              orderId: 1,
-              status: 'COMPLETE',
-              code: 'HAF-130',
-              dueDate: '2024-09-06',
-              completeDate: '2024-09-06',
-              reopenDate: null,
-              ticketSetting: {
-                ticketSettingId: 4,
-                type: 'YELLOW',
-                name: 'FUNC',
-              },
-              worker: {
-                userId: 4,
-                email: 'inhoo987654321@gmail.com',
-                nickname: '김인후',
-                profile:
-                  'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
-              },
-            },
-          },
-        ],
+        childLink: [],
+        parentLink: [],
+        board: {
+          createdDate: '2024-12-20T13:32:14.753Z',
+          modifiedDate: '2024-12-20T13:32:14.753Z',
+          boardId: 154,
+          title: '',
+          createdId: '',
+          modifiedId: '',
+          orderId: 0,
+          subId: 303,
+          type: 'TICKET_BOARD',
+          isDeleted: false,
+          children: [],
+          parent: null,
+          content: null,
+        },
       },
       statusCode: 200,
       message: 'Ticket을 상세 조회 합니다.',
@@ -768,6 +739,26 @@ export const TicketResponse = {
       message: 'Save Setting',
     }),
   },
+  findAll: {
+    200: createResponse({
+      data: {
+        data: [
+          {
+            createdDate: '2025-01-19T15:01:42.172Z',
+            modifiedDate: '2025-01-19T15:01:42.172Z',
+            ticketLabelId: 1,
+            name: 'SCN',
+            description: '해당 타입은 이거 입니다.',
+            bgColor: '#fff',
+            color: 'black',
+          },
+        ],
+        count: 1,
+      },
+      statusCode: 200,
+      message: 'Find Label List',
+    }),
+  },
   updateSetting: {
     200: createMessageResponse({
       statusCode: 200,
@@ -815,6 +806,43 @@ export const TicketResponse = {
       statusCode: 404,
       error: 'NOT FOUND',
       message: 'Not Found Ticket Link',
+    }),
+  },
+  findAllTicketAdmin: {
+    200: createResponse({
+      statusCode: 200,
+      message: 'Find All Ticket Admin',
+      data: {
+        ticket: [
+          {
+            ticketId: 24,
+            name: '게시판 수정, 생성, 조회 모드의 UI 통합',
+            status: 'COMPLETE',
+            content: '<p>라벨 클릭 시에 다른 유저 선택됨.</p><p><br></p>',
+            storypoint: 0,
+            dueDate: '2024-08-13',
+            completeDate: '2024-08-18',
+            reopenDate: '2024-08-24',
+            workspace: {
+              workspaceId: 12,
+            },
+            epic: {
+              epicId: 4,
+            },
+            admin: {
+              userId: 4,
+              nickname: '임꺽정',
+              profile: 'https://file.hi-dice.com/file//hidice.png',
+            },
+            worker: {
+              userId: 7,
+              nickname: '홍길동',
+              profile: 'https://file.hi-dice.com/file//hidice.png',
+            },
+          },
+        ],
+        count: 1,
+      },
     }),
   },
 };

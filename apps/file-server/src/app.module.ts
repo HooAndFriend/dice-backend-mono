@@ -11,6 +11,10 @@ import { CustomExceptionFilter } from './global/filter/CustomExceptionFilter';
 import { LoggingInterceptor } from './global/interceptor/LoggingInterceptor';
 import FileModule from '@/src/modules/file.module';
 
+// ** Utils Imports
+import { v4 as uuidv4 } from 'uuid';
+import { ClsModule } from 'nestjs-cls';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,6 +28,14 @@ import FileModule from '@/src/modules/file.module';
     //     port: +process.env.REDIS_PORT,
     //   },
     // }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        generateId: true,
+        idGenerator: (req: Request) => req.headers['X-Request-Id'] ?? uuidv4(),
+      },
+    }),
     ClientsModule.registerAsync([
       {
         name: 'RMQ_LOG_QUE',

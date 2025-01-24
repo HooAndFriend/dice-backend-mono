@@ -10,14 +10,15 @@ import VersionService from './service/version.service';
 import VersionController from './controller/version.controller';
 import Version from './domain/version.entity';
 import VersionRepository from './repository/version.repository';
+import AdminVersionController from './controller/admin.version.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Version]),
     TypeOrmExModule.forCustomRepository([VersionRepository]),
   ],
-  exports: [TypeOrmExModule, TypeOrmModule],
-  controllers: [VersionController],
+  exports: [TypeOrmExModule, TypeOrmModule, VersionService],
+  controllers: [VersionController, AdminVersionController],
   providers: [VersionService],
 })
 export default class VersionModule {}

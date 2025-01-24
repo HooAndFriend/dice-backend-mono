@@ -7,7 +7,6 @@ import VersionService from '../service/version.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiOperation,
   ApiQuery,
   ApiResponse,

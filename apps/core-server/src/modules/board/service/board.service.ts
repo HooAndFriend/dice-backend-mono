@@ -9,12 +9,23 @@ import BoardRepository from '../repository/board.repository';
 import Workspace from '../../workspace/domain/workspace.entity';
 import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
-import RequestBoardUpdateDto from '../dto/board.update.dto';
+import RequestBoardUpdateDto, {
+  BoardContentInterface,
+} from '../dto/board.update.dto';
+import BoardContentRepository from '../repository/content.repository';
+import BoardBlockRepository from '../repository/block.repository';
+import BoardContent from '../domain/board-content.entity';
+import { Transactional } from 'typeorm-transactional';
+import { BadRequestException } from '@hi-dice/common';
+import BoardTypeEnum from '../enum/board.type.enum';
+import Optional from 'node-optional';
 
 @Injectable()
 export default class BoardService {
   constructor(
     private readonly boardRepository: BoardRepository,
+    private readonly boardContentRepository: BoardContentRepository,
+    private readonly boardBlockRepository: BoardBlockRepository,
     private readonly configService: ConfigService,
   ) {}
 
@@ -25,6 +36,8 @@ export default class BoardService {
     title: string,
     createdId: string,
     workspace: Workspace,
+    type: BoardTypeEnum,
+    subId?: number,
   ): Promise<Board> {
     const orderId = await this.getOrderId(workspace.workspaceId);
 
@@ -34,23 +47,78 @@ export default class BoardService {
         createdId,
         modifiedId: createdId,
         workspace,
-        orderId,
+        orderId: type === BoardTypeEnum.NORMAL ? orderId : 0,
+        type,
+        subId,
       }),
     );
   }
 
   /**
+   * 게시글을 조회합니다. - subId와 type으로 조회
+   */
+  public async findOneBySubIdAndType(
+    subId: number,
+    type: BoardTypeEnum,
+  ): Promise<Board> {
+    const board = await this.boardRepository.findOne({
+      where: { subId, type, isDeleted: false },
+      relations: ['children', 'parent', 'content', 'content.blocks'],
+    });
+
+    return Optional.of(board).orElseThrow(NotFoundException, 'Not Found Board');
+  }
+
+  /**
    * 게시글을 수정합니다.
    */
+  @Transactional()
   public async updateBoard(
     dto: RequestBoardUpdateDto,
     modifiedId: string,
   ): Promise<void> {
+    await this.saveBoardContent(dto.boardId, dto.content);
+
     await this.boardRepository.update(dto.boardId, {
       title: dto.title,
-      content: dto.content,
       modifiedId,
     });
+  }
+
+  /**
+   * 게시글 내용을 저장합니다.
+   */
+  private async saveBoardContent(
+    boardId: number,
+    content: BoardContentInterface,
+  ): Promise<void> {
+    // 기존 게시글 내용 삭제
+    await this.boardContentRepository.delete({ board: { boardId } });
+
+    const savedContent = await this.boardContentRepository.save(
+      this.boardContentRepository.create({
+        board: { boardId },
+        time: content.time,
+        version: content.version,
+      }),
+    );
+
+    await this.saveBlock(savedContent, content.blocks);
+  }
+
+  public async saveBlock(content: BoardContent, blocks: any[]): Promise<void> {
+    const savePromises = blocks.map((block) =>
+      this.boardBlockRepository.save(
+        this.boardBlockRepository.create({
+          blockId: block.blockId,
+          type: block.type,
+          data: JSON.stringify(block.data),
+          content,
+        }),
+      ),
+    );
+
+    await Promise.all(savePromises);
   }
 
   /**
@@ -94,7 +162,7 @@ export default class BoardService {
   public async findBoardById(boardId: number): Promise<Board> {
     const board = await this.boardRepository.findOne({
       where: { boardId, isDeleted: false },
-      relations: ['children', 'parent'],
+      relations: ['children', 'parent', 'content', 'content.blocks'],
     });
 
     if (!board) {

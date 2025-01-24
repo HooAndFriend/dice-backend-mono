@@ -11,6 +11,8 @@ import {
 // ** enum, dto, entity, types Imports
 import RequestTicketLinkSaveDto from '../dto/link.save.dto';
 import TicketService from '../../ticket/service/ticket.service';
+import RequestTicketLinkMultipleSaveDto from '../dto/link-multiple.save.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export default class TicketLinkService {
@@ -46,9 +48,43 @@ export default class TicketLinkService {
     const ticketLink = this.ticketLinkRepository.create({
       parentTicket: findParentTicket,
       childTicket: findChildTicket,
-    }); 
+    });
 
     return await this.ticketLinkRepository.save(ticketLink);
+  }
+
+  /**
+   * 티켓 링크를 다중 저장합니다.
+   */
+  @Transactional()
+  public async saveTicketLinkMultiple(dto: RequestTicketLinkMultipleSaveDto) {
+    const findParentTicket = await this.ticketService.findTicketById(
+      dto.parentTicketId,
+    );
+
+    const findChildTicketList = await this.ticketService.findAllById(
+      dto.childTicketId,
+    );
+
+    // Promise.all로 병렬 처리
+    await Promise.all(
+      findChildTicketList.map(async (childTicket) => {
+        const isExistTicketLink = await this.isExistTicketLink(
+          findParentTicket.ticketId,
+          childTicket.ticketId,
+        );
+
+        if (isExistTicketLink) {
+          throw new BadRequestException('Already Exist Ticket Link');
+        }
+
+        const ticketLink = this.ticketLinkRepository.create({
+          parentTicket: findParentTicket,
+          childTicket,
+        });
+        await this.ticketLinkRepository.save(ticketLink);
+      }),
+    );
   }
 
   /**
@@ -59,7 +95,9 @@ export default class TicketLinkService {
   public async deleteTicketLink(linkId: number) {
     const findLink = await this.findTicketLinkById(linkId);
 
-    await this.ticketLinkRepository.delete({ ticketLinkId: findLink.ticketLinkId });
+    await this.ticketLinkRepository.delete({
+      ticketLinkId: findLink.ticketLinkId,
+    });
   }
 
   /**
@@ -84,11 +122,14 @@ export default class TicketLinkService {
    * @param childId
    * @returns boolean
    */
-  public async isExistTicketLink(parentTicketId: number, childTicketId: number) {
+  public async isExistTicketLink(
+    parentTicketId: number,
+    childTicketId: number,
+  ) {
     const findLink = await this.ticketLinkRepository.findOne({
       where: { parentTicketId: parentTicketId, childTicketId: childTicketId },
     });
-    
+
     return findLink ? true : false;
   }
 }
