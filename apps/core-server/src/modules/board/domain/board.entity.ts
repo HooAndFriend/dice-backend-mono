@@ -86,7 +86,7 @@ export default class Board extends BaseTimeEntity {
   children: Board[];
 
   @OneToOne(() => BoardContent, (content) => content.board)
-  content: BoardContent;
+  content: Relation<BoardContent>;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.board, {
     onDelete: 'CASCADE',
