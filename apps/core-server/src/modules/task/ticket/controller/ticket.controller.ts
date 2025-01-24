@@ -284,6 +284,26 @@ export default class TicketController {
       afterLog: dto.value,
     });
 
+    this.sendPush({
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket 내용 변경',
+      body: `티켓 내용이 변경 되었습니다. ${dto.value}`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket 내용 변경',
+      body: `티켓 내용이 변경 되었습니다. ${dto.value}`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -318,6 +338,26 @@ export default class TicketController {
       afterLog: ticketSetting.name,
     });
 
+    this.sendPush({
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket 유형 변경',
+      body: `${ticketSetting.name}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket 유형 변경',
+      body: `${ticketSetting.name}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
     return CommonResponse.createResponseMessage({
       statusCode: 200,
       message: 'Ticket을 수정합니다.',
@@ -349,6 +389,26 @@ export default class TicketController {
         ? dayjs(ticket.dueDate).format('YYYY-MM-DD')
         : '없음',
       afterLog: dto.dueDate ? dayjs(dto.dueDate).format('YYYY-MM-DD') : '없음',
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.worker?.fcmToken,
+      email: ticket?.worker?.email,
+      title: 'Ticket Due Date 변경',
+      body: `${dto.dueDate}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
+      title: 'Ticket Due Date 변경',
+      body: `${dto.dueDate}로 변경 되었습니다.`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
     });
 
     return CommonResponse.createResponseMessage({
@@ -422,6 +482,46 @@ export default class TicketController {
       afterNickname: saveUser.nickname,
       afterProfile: saveUser.profile,
     });
+
+    if (dto.type === 'user') {
+      this.sendPush({
+        fcmToken: ticket?.worker?.fcmToken,
+        email: ticket?.worker?.email,
+        title: 'Ticket 담당자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+      this.sendPush({
+        fcmToken: ticket?.admin?.fcmToken,
+        email: ticket?.admin?.email,
+        title: 'Ticket 담당자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+    } else {
+      this.sendPush({
+        fcmToken: ticket?.worker?.fcmToken,
+        email: ticket?.worker?.email,
+        title: 'Ticket 관리자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+      this.sendPush({
+        fcmToken: ticket?.admin?.fcmToken,
+        email: ticket?.admin?.email,
+        title: 'Ticket 관리자 변경',
+        body: `${saveUser.nickname}으로 변경 되었습니다.`,
+        status: NotificationStatusEnum.UNREAD,
+        type: NotificationTypeEnum.TICKET,
+        subId: dto.ticketId,
+      });
+    }
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
@@ -555,6 +655,16 @@ export default class TicketController {
     this.sendPush({
       fcmToken: ticket?.worker?.fcmToken,
       email: ticket?.worker?.email,
+      title: 'Ticket 상태 변경',
+      body: `Ticket 상태가 ${dto.status}로 변경`,
+      status: NotificationStatusEnum.UNREAD,
+      type: NotificationTypeEnum.TICKET,
+      subId: dto.ticketId,
+    });
+
+    this.sendPush({
+      fcmToken: ticket?.admin?.fcmToken,
+      email: ticket?.admin?.email,
       title: 'Ticket 상태 변경',
       body: `Ticket 상태가 ${dto.status}로 변경`,
       status: NotificationStatusEnum.UNREAD,
