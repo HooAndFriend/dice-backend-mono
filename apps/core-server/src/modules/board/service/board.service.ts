@@ -4,6 +4,10 @@ import { ConfigService } from '@nestjs/config';
 
 // ** Module Imports
 import BoardRepository from '../repository/board.repository';
+import BoardMentionRepository from '../repository/mention.repository';
+import BoardContentRepository from '../repository/content.repository';
+import BoardBlockRepository from '../repository/block.repository';
+import WorkspaceUserService from '../../workspace/service/workspace-user.service';
 
 // ** enum, dto, entity, types Imports
 import Workspace from '../../workspace/domain/workspace.entity';
@@ -11,12 +15,12 @@ import { NotFoundException } from '@/src/global/exception/CustomException';
 import Board from '../domain/board.entity';
 import RequestBoardUpdateDto, {
   BoardContentInterface,
+  MentionInterface,
 } from '../dto/board.update.dto';
-import BoardContentRepository from '../repository/content.repository';
-import BoardBlockRepository from '../repository/block.repository';
 import BoardContent from '../domain/board-content.entity';
+import User from '../../user/domain/user.entity';
+import BoardBlock from '../domain/board-block.entity';
 import { Transactional } from 'typeorm-transactional';
-import { BadRequestException } from '@hi-dice/common';
 import BoardTypeEnum from '../enum/board.type.enum';
 import Optional from 'node-optional';
 
@@ -26,7 +30,7 @@ export default class BoardService {
     private readonly boardRepository: BoardRepository,
     private readonly boardContentRepository: BoardContentRepository,
     private readonly boardBlockRepository: BoardBlockRepository,
-    private readonly configService: ConfigService,
+    private readonly boardMentionRepository: BoardMentionRepository,
   ) {}
 
   /**
@@ -75,13 +79,13 @@ export default class BoardService {
   @Transactional()
   public async updateBoard(
     dto: RequestBoardUpdateDto,
-    modifiedId: string,
+    modifiedUser: User,
   ): Promise<void> {
-    await this.saveBoardContent(dto.boardId, dto.content);
+    await this.saveBoardContent(dto.boardId, dto.content, dto.mentions, modifiedUser);
 
     await this.boardRepository.update(dto.boardId, {
       title: dto.title,
-      modifiedId,
+      modifiedId: modifiedUser.email,
     });
   }
 
@@ -91,6 +95,8 @@ export default class BoardService {
   private async saveBoardContent(
     boardId: number,
     content: BoardContentInterface,
+    mentions: MentionInterface[],
+    modifiedUser: User,
   ): Promise<void> {
     // 기존 게시글 내용 삭제
     await this.boardContentRepository.delete({ board: { boardId } });
@@ -103,21 +109,45 @@ export default class BoardService {
       }),
     );
 
-    await this.saveBlock(savedContent, content.blocks);
+    await this.saveBlock(savedContent, content.blocks, mentions, modifiedUser);
   }
 
-  public async saveBlock(content: BoardContent, blocks: any[]): Promise<void> {
-    const savePromises = blocks.map((block) =>
-      this.boardBlockRepository.save(
+  public async saveBlock(content: BoardContent, blocks: any[], mentions: MentionInterface[], mentioner: User): Promise<void> {
+    const savePromises = blocks.map(async (block) => {
+      const blockData = JSON.stringify(block.data);
+      const savedBlock = await this.boardBlockRepository.save(
         this.boardBlockRepository.create({
-          blockId: block.blockId,
           type: block.type,
-          data: JSON.stringify(block.data),
+          data: blockData,
           content,
         }),
-      ),
-    );
+      );
 
+      const relatedMentions = mentions.filter(m => m.blockId === block.id);
+      await this.saveMentions(relatedMentions, savedBlock, mentioner);
+    });
+
+    await Promise.all(savePromises);
+  }
+
+  /**
+   * 멘션 정보를 저장합니다
+   */
+  public async saveMentions(
+    mentions : MentionInterface[],
+    block: BoardBlock,
+    mentioner: User,
+  ): Promise<void> {
+    const savePromises = mentions.map(async (mention) => {
+      await this.boardMentionRepository.save(
+        this.boardMentionRepository.create({
+          block : block,
+          mentioner: mentioner,
+          mentionedUser: { userId: mention.userId } as User,
+        }),
+      );
+    });
+    
     await Promise.all(savePromises);
   }
 

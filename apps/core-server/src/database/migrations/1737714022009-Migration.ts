@@ -9,8 +9,8 @@ export class Migration1737714022009 implements MigrationInterface {
                 blockId INT,
                 mentionerId INT,
                 mentionedUserId INT,
-                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 CONSTRAINT FK_block FOREIGN KEY (blockId) REFERENCES TB_BOARD_BLOCK(boardBlockId) ON DELETE CASCADE,
                 CONSTRAINT FK_mentioner FOREIGN KEY (mentionerId) REFERENCES TB_USER(userId),
                 CONSTRAINT FK_mentionedUser FOREIGN KEY (mentionedUserId) REFERENCES TB_USER(userId)
@@ -19,6 +19,7 @@ export class Migration1737714022009 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`DROP TABLE TB_BOARD_MENTION`);
     }
 
 }

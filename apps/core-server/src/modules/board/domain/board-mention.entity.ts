@@ -1,6 +1,7 @@
 // ** Typeorm Imports
 import {
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Relation,
@@ -19,11 +20,14 @@ export default class BoardMention extends BaseTimeEntity {
   @ManyToOne(() => BoardBlock, (block) => block.mentions, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'blockId' })
   block: Relation<BoardBlock>;
 
   @ManyToOne(() => User , (user) => user.mentions)
+  @JoinColumn({ name: 'mentionerId' })
   mentioner: Relation<User>;
 
   @ManyToOne(() => User , (user) => user.mentions)
+  @JoinColumn({ name: 'mentionedUserId' })
   mentionedUser: Relation<User>;
 }
