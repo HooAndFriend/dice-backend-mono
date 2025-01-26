@@ -201,10 +201,7 @@ export default class BoardService {
    * 게시글을 조회합니다.
    */
   public async findBoardById(boardId: number): Promise<Board> {
-    const board = await this.boardRepository.findOne({
-      where: { boardId, isDeleted: false },
-      relations: ['children', 'parent', 'content', 'content.blocks'],
-    });
+    const board = await this.boardRepository.findBoardById(boardId);
 
     if (!board) {
       throw new NotFoundException('Not Found Board');
