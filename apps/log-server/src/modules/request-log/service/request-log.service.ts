@@ -32,7 +32,7 @@ export default class RequestLogService {
     requestLog.requestParams = JSON.stringify(dto.requestParams);
     requestLog.requestUrl = dto.requestUrl;
     requestLog.requestBody = JSON.stringify(dto.requestBody);
-    requestLog.responseBody = JSON.stringify(dto.responseBody);
+    // requestLog.responseBody = JSON.stringify(dto.responseBody);
     requestLog.ip = dto.ip ? dto.ip : '';
     requestLog.userId = dto.userId;
 
