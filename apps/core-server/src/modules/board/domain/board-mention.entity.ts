@@ -1,5 +1,6 @@
 // ** Typeorm Imports
 import {
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -17,17 +18,26 @@ export default class BoardMention extends BaseTimeEntity {
   @PrimaryGeneratedColumn()
   mentionId: number;
 
+  //멘션 키 저장
+  @Column({
+    type: 'varchar',
+    length: 255,
+    comment: '멘션 키',
+    nullable: false,
+  })
+  mentionKey: string;
+
   @ManyToOne(() => BoardBlock, (block) => block.mentions, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'blockId' })
   block: Relation<BoardBlock>;
 
-  @ManyToOne(() => User , (user) => user.mentions)
+  @ManyToOne(() => User, (user) => user.mentions)
   @JoinColumn({ name: 'mentionerId' })
   mentioner: Relation<User>;
 
-  @ManyToOne(() => User , (user) => user.mentions)
+  @ManyToOne(() => User, (user) => user.mentions)
   @JoinColumn({ name: 'mentionedUserId' })
   mentionedUser: Relation<User>;
 }

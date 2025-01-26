@@ -18,7 +18,7 @@ export interface MentionInterface {
 }
 
 export interface BoardBlockInterface {
-  id : string;
+  id: string;
   type: string;
   data: any;
 }
@@ -36,8 +36,8 @@ export default class RequestBoardUpdateDto {
         {
           id: '1',
           type: 'text',
-          data: { 
-            text: "{mention-1}{mention-2}멘션 테스트입니다." 
+          data: {
+            text: '{mention-1}{mention-2}멘션 테스트입니다.',
           },
         },
       ],
@@ -45,20 +45,20 @@ export default class RequestBoardUpdateDto {
   })
   content: BoardContentInterface;
 
-  @ApiProperty({ 
+  @ApiProperty({
     example: [
       {
         blockId: '1',
-        mentionKey : 'mention-1',
+        mentionKey: 'mention-1',
         userId: 1,
         userNickname: '홍길동',
       },
       {
         blockId: '1',
-        mentionKey : 'mention-2',
+        mentionKey: 'mention-2',
         userId: 2,
         userNickname: '김석봉',
-      }
+      },
     ],
   })
   mentions: MentionInterface[];

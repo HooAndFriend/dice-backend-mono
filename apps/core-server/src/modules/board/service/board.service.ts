@@ -81,7 +81,12 @@ export default class BoardService {
     dto: RequestBoardUpdateDto,
     modifiedUser: User,
   ): Promise<void> {
-    await this.saveBoardContent(dto.boardId, dto.content, dto.mentions, modifiedUser);
+    await this.saveBoardContent(
+      dto.boardId,
+      dto.content,
+      dto.mentions,
+      modifiedUser,
+    );
 
     await this.boardRepository.update(dto.boardId, {
       title: dto.title,
@@ -112,7 +117,12 @@ export default class BoardService {
     await this.saveBlock(savedContent, content.blocks, mentions, modifiedUser);
   }
 
-  public async saveBlock(content: BoardContent, blocks: any[], mentions: MentionInterface[], mentioner: User): Promise<void> {
+  public async saveBlock(
+    content: BoardContent,
+    blocks: any[],
+    mentions: MentionInterface[],
+    mentioner: User,
+  ): Promise<void> {
     const savePromises = blocks.map(async (block) => {
       const blockData = JSON.stringify(block.data);
       const savedBlock = await this.boardBlockRepository.save(
@@ -123,7 +133,7 @@ export default class BoardService {
         }),
       );
 
-      const relatedMentions = mentions.filter(m => m.blockId === block.id);
+      const relatedMentions = mentions.filter((m) => m.blockId === block.id);
       await this.saveMentions(relatedMentions, savedBlock, mentioner);
     });
 
@@ -134,20 +144,21 @@ export default class BoardService {
    * 멘션 정보를 저장합니다
    */
   public async saveMentions(
-    mentions : MentionInterface[],
+    mentions: MentionInterface[],
     block: BoardBlock,
     mentioner: User,
   ): Promise<void> {
     const savePromises = mentions.map(async (mention) => {
       await this.boardMentionRepository.save(
         this.boardMentionRepository.create({
-          block : block,
+          block: block,
+          mentionKey: mention.mentionKey,
           mentioner: mentioner,
           mentionedUser: { userId: mention.userId } as User,
         }),
       );
     });
-    
+
     await Promise.all(savePromises);
   }
 
