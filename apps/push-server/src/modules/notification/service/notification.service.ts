@@ -38,7 +38,10 @@ export default class NotificationService {
    * @returns
    */
   public async findNotificationByEmail(email: string) {
-    return await this.notificationRepository.findAndCount({ where: { email } });
+    return await this.notificationRepository.findAndCount({
+      where: { email },
+      order: { createdDate: 'DESC' },
+    });
   }
 
   /**
