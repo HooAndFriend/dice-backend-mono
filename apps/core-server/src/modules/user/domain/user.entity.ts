@@ -15,6 +15,7 @@ import UserStatusEnum from './user-status.enum';
 import WorkspaceUser from '../../workspace/domain/workspace-user.entity';
 import Ticket from '../../task/ticket/domain/ticket.entity';
 import TicketComment from '../../task/ticket-comment/domain/ticket.comment.entity';
+import BoardMention from '../../board/domain/board-mention.entity';
 
 @Entity({ name: 'TB_USER' })
 @Unique(['email', 'token'])
@@ -120,6 +121,9 @@ export default class User extends BaseTimeEntity {
 
   @OneToMany(() => TicketComment, (ticketComment) => ticketComment.user)
   ticketComment: Relation<TicketComment>[];
+
+  @OneToMany(() => BoardMention, (mention) => [mention.mentioner, mention.mentionedUser])
+  mentions: Relation<BoardMention>[];
 
   public updateUserProfile(profile: string, nickname: string) {
     this.profile = profile;

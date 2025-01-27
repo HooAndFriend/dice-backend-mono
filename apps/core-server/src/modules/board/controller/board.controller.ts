@@ -119,7 +119,7 @@ export default class BoardController {
     @GetUser() user: User,
   ) {
     await this.boardService.existedBoardById(dto.boardId);
-    await this.boardService.updateBoard(dto, user.email);
+    await this.boardService.updateBoard(dto, user);
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
