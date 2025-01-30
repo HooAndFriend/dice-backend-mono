@@ -11,7 +11,16 @@ import Epic from '../domain/epic.entity';
 export default class EpicRepository extends Repository<Epic> {
   public async findEpicList(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('epic')
-      .select(['epic.epicId', 'epic.name', 'epic.code', 'epic.orderId'])
+      .select([
+        'epic.epicId',
+        'epic.name',
+        'epic.code',
+        'epic.orderId',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
+      ])
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC');
