@@ -14,6 +14,7 @@ import WorkspaceModule from '../workspace/workspace.module';
 import UserModule from '../user/user.module';
 import BoardContentRepository from './repository/content.repository';
 import BoardBlockRepository from './repository/block.repository';
+import BoardMentionRepository from './repository/mention.repository';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import BoardBlockRepository from './repository/block.repository';
       BoardRepository,
       BoardContentRepository,
       BoardBlockRepository,
+      BoardMentionRepository
     ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
