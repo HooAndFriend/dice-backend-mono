@@ -72,11 +72,25 @@ export const BoardResponse = {
           version: '2.29.1',
           blocks: [
             {
-              createdDate: '2024-09-23T15:28:49.332Z',
-              modifiedDate: '2024-09-23T15:49:53.000Z',
-              blockId: 'CWJVRWGV4N',
+              boardBlockId: 64,
               type: 'paragraph',
-              data: '{"text":"블럭 예시"}',
+              data: '{"text":"{mention-1}{mention-2}멘션 테스트입니다."}',
+              mentions: [
+                {
+                  mentionId: 2,
+                  mentionKey: 'mention-2',
+                  mentioner: {
+                    userId: 2,
+                    email: 'dio8620@naver.com',
+                    nickname: '홍길동',
+                  },
+                  mentionedUser: {
+                    userId: 1,
+                    email: 'ddd12@gmail.com',
+                    nickname: '임동현',
+                  },
+                },
+              ],
             },
           ],
         },

@@ -5,8 +5,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
@@ -14,6 +12,7 @@ import {
 // ** enum, dto, entity Imports
 import { BaseTimeEntity } from '@hi-dice/common';
 import BoardContent from './board-content.entity';
+import BoardMention from './board-mention.entity';
 
 @Entity({ name: 'TB_BOARD_BLOCK' })
 export default class BoardBlock extends BaseTimeEntity {
@@ -48,4 +47,8 @@ export default class BoardBlock extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   content: Relation<BoardContent>;
+
+  @OneToMany(() => BoardMention, (mention) => mention.block, { cascade: true })
+  @JoinColumn()
+  mentions: Relation<BoardMention>[];
 }
