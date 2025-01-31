@@ -30,19 +30,37 @@ export default class RunnerService {
     });
 
     for await (const workspace of workspaceList) {
-      const ticketList = workspace.ticket;
+      this.logger.log(
+        `workspaceId: ${workspace.workspaceId} workspaceName: ${workspace.name}, ticketCount: ${workspace.ticket.length}`,
+      );
+      const ticketList = workspace.ticket.sort(
+        (a, b) => a.createdDate.getTime() - b.createdDate.getTime(),
+      );
       for (let i = 0; i < ticketList.length; i++) {
-        const ticket = ticketList[i];
-        ticket.orderId = i;
-        await this.ticketRepository.save(ticket);
+        await this.ticketRepository.update(
+          { ticketId: ticketList[i].ticketId },
+          {
+            orderId: i + 1,
+          },
+        );
       }
 
+      this.logger.log(`Epic Count: ${workspace.epic.length}`);
+
       for await (const epic of workspace.epic) {
-        const ticketList = epic.ticket;
-        for (let i = 0; i < ticketList.length; i++) {
-          const ticket = ticketList[i];
-          ticket.epicOrderId = i;
-          await this.ticketRepository.save(ticket);
+        this.logger.log(
+          `epicId: ${epic.epicId} epicName: ${epic.name}, ticketCount: ${epic.ticket.length}`,
+        );
+        const epicTicketList = epic.ticket.sort(
+          (a, b) => a.createdDate.getTime() - b.createdDate.getTime(),
+        );
+        for (let i = 0; i < epicTicketList.length; i++) {
+          await this.ticketRepository.update(
+            { ticketId: epicTicketList[i].ticketId },
+            {
+              epicOrderId: i + 1,
+            },
+          );
         }
       }
     }

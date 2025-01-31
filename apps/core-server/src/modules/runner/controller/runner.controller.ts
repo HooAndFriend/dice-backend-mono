@@ -19,7 +19,7 @@ export default class RunnerController {
 
   @Post('/')
   public async runner() {
-    // await this.runnerService.runnerTaskOrder();
+    await this.runnerService.runnerTaskOrder();
 
     return CommonResponse.createResponseMessage({
       statusCode: 200,
