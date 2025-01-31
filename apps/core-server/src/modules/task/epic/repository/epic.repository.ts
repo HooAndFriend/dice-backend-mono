@@ -44,6 +44,7 @@ export default class EpicRepository extends Repository<Epic> {
         'ticket.status',
         'ticket.code',
         'ticket.orderId',
+        'ticket.epicOrderId',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
@@ -63,7 +64,7 @@ export default class EpicRepository extends Repository<Epic> {
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC')
-      .addOrderBy('ticket.orderId', 'ASC');
+      .addOrderBy('ticket.epicOrderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
   }
