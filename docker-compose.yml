@@ -1,18 +1,5 @@
 version: '3'
 services:
-  db-dev:
-    image: mysql:8.0
-    restart: always
-    networks:
-      - dice-networks
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_DATABASE: core
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: qwer1595@!
-      MYSQL_ROOT_PASSWORD: qwer1595@!
-    command: --default-time-zone=Asia/Seoul
   redis:
     image: redis:latest
     ports:
