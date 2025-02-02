@@ -61,11 +61,11 @@ import { v4 as uuidv4 } from 'uuid';
             },
             slaves: [
               {
-                host: process.env.DB_MASTER_HOST,
-                port: +process.env.DB_MASTER_PORT,
-                username: process.env.DB_MASTER_USERNAME,
-                password: process.env.DB_MASTER_PASSWORD,
-                database: process.env.DB_MASTER_DATABASE,
+                host: process.env.DB_SLAVE_HOST,
+                port: +process.env.DB_SLAVE_PORT,
+                username: process.env.DB_SLAVE_USERNAME,
+                password: process.env.DB_SLAVE_PASSWORD,
+                database: process.env.DB_SLAVE_DATABASE,
               },
             ],
           },
