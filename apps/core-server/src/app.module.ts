@@ -51,31 +51,11 @@ import { v4 as uuidv4 } from 'uuid';
           logger: process.env.NODE_ENV === 'development' ? 'file' : 'file',
           charset: 'utf8mb4_unicode_ci',
           timezone: '+09:00',
-          replication: {
-            master: {
-              host: process.env.DB_MASTER_HOST,
-              port: +process.env.DB_MASTER_PORT,
-              username: process.env.DB_MASTER_USERNAME,
-              password: process.env.DB_MASTER_PASSWORD,
-              database: process.env.DB_MASTER_DATABASE,
-            },
-            slaves: [
-              // {
-              //   host: process.env.DB_SLAVE_HOST,
-              //   port: +process.env.DB_SLAVE_PORT,
-              //   username: process.env.DB_SLAVE_USERNAME,
-              //   password: process.env.DB_SLAVE_PASSWORD,
-              //   database: process.env.DB_SLAVE_DATABASE,
-              // },
-              {
-                host: process.env.DB_MASTER_HOST,
-                port: +process.env.DB_MASTER_PORT,
-                username: process.env.DB_MASTER_USERNAME,
-                password: process.env.DB_MASTER_PASSWORD,
-                database: process.env.DB_MASTER_DATABASE,
-              },
-            ],
-          },
+          host: process.env.DB_HOST,
+          port: +process.env.DB_PORT,
+          username: process.env.DB_USERNAME,
+          password: process.env.DB_PASSWORD,
+          database: process.env.DB_DATABASE,
           migrations: ['dist/database/migrations/*.js'],
           migrationsTableName: 'migrations',
         };
