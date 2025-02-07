@@ -59,11 +59,8 @@ import { v4 as uuidv4 } from 'uuid';
           poolSize: +process.env.DB_MAX_POOL_SIZE,
           extra: {
             connectionLimit: +process.env.DB_MAX_POOL_SIZE,
-            minConnections: +process.env.DB_MIN_IDLE_SIZE,
-            acquireTimeout: +process.env.DB_TIMEOUT,
+            connectTimeout: +process.env.DB_TIMEOUT,
             idleTimeout: +process.env.DB_IDLE_TIMEOUT,
-            maxLifetime: +process.env.DB_MAX_LIFE_TIME,
-            autoCommit: false,
             enableKeepAlive: true,
             keepAliveInitialDelay: +process.env.KEEP_ALIVE,
           },
@@ -77,6 +74,7 @@ import { v4 as uuidv4 } from 'uuid';
         return addTransactionalDataSource(new DataSource(option));
       },
     }),
+
     RedisModule.forRoot({
       readyLog: true,
       config: {

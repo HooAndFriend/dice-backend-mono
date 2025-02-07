@@ -7,9 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start": "nest start -b swc",
-    "dev": "cross-env NODE_ENV=local nest start -b swc -w",
-    "start:debug": "cross-env NODE_ENV=staging nest start --debug --watch",
+    "dev": "cross-env NODE_ENV=development nest start -b swc -w",
+    "start:dev": "cross-env NODE_ENV=development nest start -b swc -w",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
     "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration",
     "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/database/migrations/Migration -d ./src/database/data-source.ts",
