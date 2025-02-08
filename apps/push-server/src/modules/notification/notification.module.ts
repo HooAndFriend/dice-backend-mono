@@ -11,11 +11,13 @@ import { NotificationListener } from './listener/notification.listener';
 
 // ** Entity Imports
 import Notification from './domain/notification.entity';
+import AuthModule from '../auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Notification]),
     TypeOrmExModule.forCustomRepository([NotificationRepository]),
+    AuthModule,
   ],
   providers: [NotificationService, NotificationListener],
   exports: [NotificationService],
