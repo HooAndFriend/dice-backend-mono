@@ -100,12 +100,11 @@ export default class EpicRepository extends Repository<Epic> {
         'ticketSetting.name',
         'ticketSetting.type',
       ])
-      .leftJoin('epic.ticket', 'ticket')
+      .leftJoin('epic.ticket', 'ticket', 'ticket.isDeleted = false')
       .leftJoin('ticket.admin', 'admin')
       .leftJoin('ticket.worker', 'worker')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
-      .where('ticket.isDeleted = false')
-      .andWhere('epic.epicId = :epicId', { epicId })
+      .where('epic.epicId = :epicId', { epicId })
       .andWhere('epic.isDeleted = false')
       .orderBy('ticket.orderId', 'ASC');
 
