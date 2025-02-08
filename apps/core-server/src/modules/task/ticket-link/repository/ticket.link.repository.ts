@@ -29,7 +29,7 @@ export default class TicketLinkRepository extends Repository<TicketLink> {
         'ticketSetting.name',
         'ticketSetting.type',
       ])
-      .leftJoin('ticketLink.childTicket', 'ticket')
+      .leftJoin('ticketLink.childTicket', 'ticket', 'ticket.isDeleted = false')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
       .where('ticketLink.parentTicketId = :ticketId', { ticketId })
@@ -56,7 +56,7 @@ export default class TicketLinkRepository extends Repository<TicketLink> {
         'ticketSetting.name',
         'ticketSetting.type',
       ])
-      .leftJoin('ticketLink.parentTicket', 'ticket')
+      .leftJoin('ticketLink.childTicket', 'ticket', 'ticket.isDeleted = false')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
       .leftJoin('ticket.worker', 'worker')
       .where('ticketLink.childTicketId = :ticketId', { ticketId })
