@@ -423,7 +423,7 @@ export default class TicketController {
   @ApiResponse(TicketResponse.updateTicketDueDate[404])
   @WorkspaceRole(RoleEnum.WRITER)
   @UseGuards(WorkspaceRoleGuard)
-  @Patch('/dueDate')
+  @Patch('/priority')
   public async updateTicketPriority(
     @Body() dto: RequestTicketPriorityUpdateDto,
   ) {

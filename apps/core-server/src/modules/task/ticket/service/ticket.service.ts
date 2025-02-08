@@ -320,15 +320,35 @@ export default class TicketService {
         where: { workspace: { workspaceId: workspace.workspaceId } },
       })) + 1;
 
+    const lastOrderTicket = await this.ticketRepository.findOne({
+      where: {
+        workspace: {
+          workspaceId: workspace.workspaceId,
+        },
+      },
+      order: { orderId: 'DESC' },
+    });
+
     const ticketNumber = workspace.code + '-' + ticketCount;
 
     if (dto.epicId) {
       const epic = await this.epicService.findOne(dto.epicId);
+      const lastEpicOrderTicket = await this.ticketRepository.findOne({
+        where: {
+          workspace: {
+            workspaceId: workspace.workspaceId,
+          },
+          epic: { epicId: dto.epicId },
+        },
+        order: { orderId: 'DESC' },
+      });
 
       const ticket = await this.ticketRepository.save(
         this.ticketRepository.create({
           admin: user,
           code: ticketNumber,
+          orderId: lastOrderTicket.orderId + 1,
+          epicOrderId: lastEpicOrderTicket.epicOrderId + 1,
           workspace,
           name: dto.name,
           status: TaskStatusEnum.NOTHING,
@@ -353,6 +373,8 @@ export default class TicketService {
       this.ticketRepository.create({
         admin: user,
         code: ticketNumber,
+        orderId: lastOrderTicket.orderId + 1,
+        epicOrderId: 0,
         workspace,
         name: dto.name,
         status: TaskStatusEnum.NOTHING,

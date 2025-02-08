@@ -8,7 +8,7 @@
   "scripts": {
     "build:package": "turbo build:package",
     "build": "turbo build",
-    "clear:port": "kill-port 8080 8180 8280 8380 8480 8580",
+    "clear:port": "kill-port 8080 8180 8280 8380 8480",
     "dev": "pnpm clear:port && turbo run dev --parallel --no-cache",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

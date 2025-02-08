@@ -11,7 +11,16 @@ import Epic from '../domain/epic.entity';
 export default class EpicRepository extends Repository<Epic> {
   public async findEpicList(workspaceId: number) {
     const querybuilder = this.createQueryBuilder('epic')
-      .select(['epic.epicId', 'epic.name', 'epic.code', 'epic.orderId'])
+      .select([
+        'epic.epicId',
+        'epic.name',
+        'epic.code',
+        'epic.orderId',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
+      ])
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC');
@@ -35,6 +44,7 @@ export default class EpicRepository extends Repository<Epic> {
         'ticket.status',
         'ticket.code',
         'ticket.orderId',
+        'ticket.epicOrderId',
         'ticket.dueDate',
         'ticket.completeDate',
         'ticket.reopenDate',
@@ -54,7 +64,7 @@ export default class EpicRepository extends Repository<Epic> {
       .where('epic.workspace = :workspaceId', { workspaceId })
       .andWhere('epic.isDeleted = false')
       .orderBy('epic.orderId', 'ASC')
-      .addOrderBy('ticket.orderId', 'ASC');
+      .addOrderBy('ticket.epicOrderId', 'ASC');
 
     return await querybuilder.getManyAndCount();
   }

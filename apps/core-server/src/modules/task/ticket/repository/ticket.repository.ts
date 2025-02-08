@@ -117,13 +117,25 @@ export default class TicketRepository extends Repository<Ticket> {
         'worker.email',
         'worker.nickname',
         'worker.profile',
+        'admin.userId',
+        'admin.email',
+        'admin.nickname',
+        'admin.profile',
         'ticketSetting.ticketSettingId',
         'ticketSetting.name',
         'ticketSetting.type',
+        'epic.epicId',
+        'epic.name',
+        'epicSetting.ticketSettingId',
+        'epicSetting.name',
+        'epicSetting.type',
       ])
       .leftJoin('ticket.workspace', 'workspace')
       .leftJoin('ticket.ticketSetting', 'ticketSetting')
+      .leftJoin('ticket.epic', 'epic')
+      .leftJoin('epic.ticketSetting', 'epicSetting')
       .leftJoin('ticket.worker', 'worker')
+      .leftJoin('ticket.admin', 'admin')
       .where('workspace.workspaceId = :workspaceId', { workspaceId })
       .andWhere('ticket.isDeleted = false')
       .orderBy('ticket.orderId', 'ASC');

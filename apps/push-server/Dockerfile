@@ -18,7 +18,7 @@ FROM base as prod
 
 WORKDIR /app
 
-ENV NODE_ENV development
+ENV NODE_ENV production
 
 COPY --from=build /app .
 

@@ -62,7 +62,7 @@ export default class EpicController {
     private readonly ticketSettingService: TicketSettingService,
   ) {}
 
-  @ApiOperation({ summary: 'EPIC 리스트 조회' })
+  @ApiOperation({ summary: 'EPIC 리스트 조회 With Ticket' })
   @ApiResponse(EpicResponse.findAllEpic[200])
   @WorkspaceRole(RoleEnum.VIEWER)
   @UseGuards(WorkspaceRoleGuard)

@@ -175,25 +175,30 @@ export const TicketResponse = {
               type: 'BLACK',
               name: 'SCN',
             },
-            worker: null,
-            subTickets: [
-              {
-                ticketId: 2,
-                name: '게시판',
-                orderId: 1,
-                status: 'NOTHING',
-                code: 'PIN-1',
-                dueDate: null,
-                completeDate: null,
-                reopenDate: null,
-                ticketSetting: {
-                  ticketSettingId: 1,
-                  type: 'BLACK',
-                  name: 'SCN',
-                },
-                worker: null,
+            epic: {
+              epicId: 1,
+              name: 'DICE 로그인',
+              code: '김인후-2',
+              ticketSetting: {
+                ticketSettingId: 1,
+                type: 'BLUE',
+                name: '티켓',
               },
-            ],
+            },
+            admin: {
+              userId: 4,
+              email: 'inhoo987654321@gmail.com',
+              nickname: '김인후',
+              profile:
+                'https://file.hi-dice.com/file//20240813111450-314631462_1719969028389444_6312286304904119979_n.jpg',
+            },
+            worker: {
+              userId: 7,
+              email: 'chhari0708@naver.com',
+              nickname: '최혜림',
+              profile:
+                'https://file.hi-dice.com/file//20240816000417-áá³áá³ááµá«áá£áº 2024-08-16 áá©áá¥á« 12.03.51.png',
+            },
           },
         ],
         count: 1,
