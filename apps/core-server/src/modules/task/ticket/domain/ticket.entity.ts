@@ -20,6 +20,7 @@ import Sprint from '../../sprint/domain/sprint.entity';
 import TicketLink from '../../ticket-link/domain/ticket.link.entity';
 import Epic from '../../epic/domain/epic.entity';
 import PriorityEnum from '../enum/priority.enum';
+import TicketLabel from '../../ticket-label/domain/ticket.label.entity';
 
 @Entity({ name: 'TB_TICKET' })
 export default class Ticket extends BaseTimeEntity {
@@ -28,7 +29,7 @@ export default class Ticket extends BaseTimeEntity {
 
   @Column({
     type: 'varchar',
-    length: 50,
+    length: 255,
     name: 'name',
     comment: '티켓 명',
     nullable: false,
@@ -42,6 +43,34 @@ export default class Ticket extends BaseTimeEntity {
     default: 1,
   })
   orderId: number;
+
+  @Column({
+    type: 'int',
+    comment: 'epic 내부 티켓 정렬 순서',
+    name: 'epic_order_id',
+    nullable: false,
+    default: 1,
+  })
+  epicOrderId: number;
+
+  @Column({
+    type: 'int',
+    comment: 'sprint 내부 티켓 정렬 순서',
+    name: 'sprint_order_id',
+    nullable: false,
+    default: 1,
+  })
+  sprintOrderId: number;
+
+  @Column({
+    type: 'enum',
+    enum: PriorityEnum,
+    default: PriorityEnum.MEDIUM,
+    name: 'priority',
+    comment: '우선 순위',
+    nullable: false,
+  })
+  priority: PriorityEnum;
 
   @Column({
     type: 'enum',
@@ -108,34 +137,6 @@ export default class Ticket extends BaseTimeEntity {
   })
   reopenDate: Date;
 
-  @Column({
-    type: 'enum',
-    enum: PriorityEnum,
-    default: PriorityEnum.MEDIUM,
-    name: 'priority',
-    comment: '우선 순위',
-    nullable: false,
-  })
-  priority: PriorityEnum;
-
-  @Column({
-    type: 'int',
-    comment: 'epic 내부 티켓 정렬 순서',
-    name: 'epic_order_id',
-    nullable: false,
-    default: 1,
-  })
-  epicOrderId: number;
-
-  @Column({
-    type: 'int',
-    comment: 'sprint 내부 티켓 정렬 순서',
-    name: 'sprint_order_id',
-    nullable: false,
-    default: 1,
-  })
-  sprintOrderId: number;
-
   @OneToMany(() => TicketFile, (ticketFile) => ticketFile.ticket)
   ticketFile: Relation<TicketFile>[];
 
@@ -167,6 +168,11 @@ export default class Ticket extends BaseTimeEntity {
     onDelete: 'CASCADE',
   })
   ticketSetting: Relation<TicketSetting>;
+
+  @ManyToOne(() => TicketLabel, (ticketLabel) => ticketLabel.ticket, {
+    onDelete: 'CASCADE',
+  })
+  ticketLabel: Relation<TicketLabel>;
 
   @OneToMany(() => TicketLink, (ticketLink) => ticketLink.parentTicket)
   parentLink: Relation<TicketLink>[];
