@@ -35,10 +35,10 @@ export default class BoardContent extends BaseTimeEntity {
   })
   version: string;
 
-  @OneToMany(() => BoardBlock, (block) => block.content, { cascade: true })
-  blocks: Relation<BoardBlock>[];
-
   @OneToOne(() => Board, (board) => board.content)
   @JoinColumn({ name: 'boardId' })
   board: Relation<Board>;
+
+  @OneToMany(() => BoardBlock, (block) => block.content, { cascade: true })
+  blocks: Relation<BoardBlock>[];
 }

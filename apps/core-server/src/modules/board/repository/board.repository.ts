@@ -79,4 +79,47 @@ export default class BoardRepository extends Repository<Board> {
 
     return await queryBuilder.getManyAndCount();
   }
+
+  public async findBoardById(boardId: number) {
+    const queryBuilder = this.createQueryBuilder('board')
+      .select([
+        'board.createdDate',
+        'board.modifiedDate',
+        'board.boardId',
+        'board.title',
+        'board.createdId',
+        'board.modifiedId',
+        'board.orderId',
+        'board.isDeleted',
+        'children',
+        'parent',
+        'content.createdDate',
+        'content.modifiedDate',
+        'content.contentId',
+        'content.time',
+        'content.version',
+        'blocks.boardBlockId',
+        'blocks.type',
+        'blocks.data',
+        'mentions.mentionId',
+        'mentions.mentionKey',
+        'mentioner.email',
+        'mentioner.nickname',
+        'mentioner.userId',
+        'mentionedUser.email',
+        'mentionedUser.nickname',
+        'mentionedUser.userId',
+      ])
+      .leftJoin('board.children', 'children')
+      .leftJoin('board.parent', 'parent')
+      .leftJoin('board.content', 'content')
+      .leftJoin('content.blocks', 'blocks')
+      .leftJoin('blocks.mentions', 'mentions')
+      .leftJoin('mentions.mentioner', 'mentioner')
+      .leftJoin('mentions.mentionedUser', 'mentionedUser')
+      .where('board.boardId = :boardId', { boardId })
+      .andWhere('board.isDeleted = :isDeleted', { isDeleted: false });
+
+    return await queryBuilder.getOne();
+  }
 }

@@ -7,6 +7,7 @@ import TicketRepository from '../../task/ticket/repository/ticket.repository';
 import TicketCommentRepository from '../../task/ticket-comment/repository/ticket.comment.repository';
 import BoardTypeEnum from '../../board/enum/board.type.enum';
 import { Transactional } from 'typeorm-transactional';
+import WorkspaceRepository from '../../workspace/repository/workspace.repository';
 
 @Injectable()
 export default class RunnerService {
@@ -14,9 +15,56 @@ export default class RunnerService {
     private readonly boardRepository: BoardRepository,
     private readonly ticketRepository: TicketRepository,
     private readonly ticketCommentRepository: TicketCommentRepository,
+    private readonly workspaceRepository: WorkspaceRepository,
   ) {}
 
   private logger = new Logger(RunnerService.name);
+
+  /**
+   * Task의 정렬 순서를 업데이트합니다.
+   */
+  @Transactional()
+  public async runnerTaskOrder(): Promise<void> {
+    const workspaceList = await this.workspaceRepository.find({
+      relations: ['ticket', 'epic', 'epic.ticket'],
+    });
+
+    for await (const workspace of workspaceList) {
+      this.logger.log(
+        `workspaceId: ${workspace.workspaceId} workspaceName: ${workspace.name}, ticketCount: ${workspace.ticket.length}`,
+      );
+      const ticketList = workspace.ticket.sort(
+        (a, b) => a.createdDate.getTime() - b.createdDate.getTime(),
+      );
+      for (let i = 0; i < ticketList.length; i++) {
+        await this.ticketRepository.update(
+          { ticketId: ticketList[i].ticketId },
+          {
+            orderId: i + 1,
+          },
+        );
+      }
+
+      this.logger.log(`Epic Count: ${workspace.epic.length}`);
+
+      for await (const epic of workspace.epic) {
+        this.logger.log(
+          `epicId: ${epic.epicId} epicName: ${epic.name}, ticketCount: ${epic.ticket.length}`,
+        );
+        const epicTicketList = epic.ticket.sort(
+          (a, b) => a.createdDate.getTime() - b.createdDate.getTime(),
+        );
+        for (let i = 0; i < epicTicketList.length; i++) {
+          await this.ticketRepository.update(
+            { ticketId: epicTicketList[i].ticketId },
+            {
+              epicOrderId: i + 1,
+            },
+          );
+        }
+      }
+    }
+  }
 
   /**
    * Ticket과 Comment에 대한 Board를 생성합니다.
