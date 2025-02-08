@@ -1,12 +1,24 @@
 // ** Nest Imports
-import { Controller, Get, Param, Patch, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Sse,
+  UseGuards,
+} from '@nestjs/common';
 
 // ** Module Imports
 import NotificationService from '../service/notification.service';
+import SSEService from '../service/sse.service';
 
 // ** Swagger Imports
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -23,6 +35,9 @@ import { NotificationResponse } from '@/src/global/response/notification.respons
 // ** Utils Imports
 import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { Observable } from 'rxjs';
+import { SseJwtGuard } from '../../auth/passport/auth.jwt-sse-access.guard';
+import SendSSEMessageDto from '../dto/sse-send.dto';
 
 // ** Dto Imports
 
@@ -31,7 +46,34 @@ import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/notification', version: '1' })
 export default class NotificationController {
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly sseService: SSEService,
+  ) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'SSE 연결 요청' })
+  @UseGuards(SseJwtGuard)
+  @Sse('sse')
+  public connectSSE(@GetUser() user: any): Observable<{ data: string }> {
+    const clients = this.sseService.addConnection(user.email);
+
+    return clients;
+  }
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'SSE 메시지 전송' })
+  @ApiBody({ type: SendSSEMessageDto })
+  @UseGuards(JwtAccessGuard)
+  @Post('sse/send')
+  public sendMessage(@Body() dto: SendSSEMessageDto) {
+    this.sseService.sendMessage(dto.userIds, '메시지 내용입니다');
+
+    return CommonResponse.createResponseMessage({
+      statusCode: 200,
+      message: 'Send Message',
+    });
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '유저의 알림 리스트 조회' })
