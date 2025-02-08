@@ -347,8 +347,8 @@ export default class TicketService {
         this.ticketRepository.create({
           admin: user,
           code: ticketNumber,
-          orderId: (lastOrderTicket.orderId || 0) + 1,
-          epicOrderId: (lastEpicOrderTicket.epicOrderId || 0) + 1,
+          orderId: (lastOrderTicket?.orderId || 0) + 1,
+          epicOrderId: (lastEpicOrderTicket?.epicOrderId || 0) + 1,
           workspace,
           name: dto.name,
           status: TaskStatusEnum.NOTHING,
@@ -373,7 +373,7 @@ export default class TicketService {
       this.ticketRepository.create({
         admin: user,
         code: ticketNumber,
-        orderId: (lastOrderTicket.orderId || 0) + 1,
+        orderId: (lastOrderTicket?.orderId || 0) + 1,
         epicOrderId: 0,
         workspace,
         name: dto.name,
