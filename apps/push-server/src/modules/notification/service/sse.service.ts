@@ -5,6 +5,7 @@ import { finalize, Observable, Subject } from 'rxjs';
 // ** Custom Module Imports
 
 // ** enum, dto, entity, types Imports
+import { SendMentionDto } from '../dto/mention-send.dto';
 
 @Injectable()
 export default class SSEService {
@@ -32,11 +33,13 @@ export default class SSEService {
   }
 
   // 사용자에게 메시지 전송
-  public sendMessage(userIds: Array<string>, data: string): void {
-    userIds.forEach((userId) => {
+  public sendMessage(dto: SendMentionDto): void {
+    const message = `${dto.mentioner}님이 회원님을 언급했습니다.`;
+
+    dto.mentioned_userIds.forEach((userId) => {
       const userConnection = this.userConnections.get(userId);
       if (userConnection) {
-        userConnection.next({ data });
+        userConnection.next({ data: message });
       }
     });
   }

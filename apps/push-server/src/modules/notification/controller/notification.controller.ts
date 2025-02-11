@@ -1,15 +1,14 @@
 // ** Nest Imports
 import {
-  Body,
   Controller,
   Get,
   Param,
   Patch,
-  Post,
   Put,
   Sse,
   UseGuards,
 } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 // ** Module Imports
 import NotificationService from '../service/notification.service';
@@ -18,7 +17,6 @@ import SSEService from '../service/sse.service';
 // ** Swagger Imports
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -29,7 +27,7 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { CommonResponse } from '@hi-dice/common';
+import { CommonResponse, SendMailDto } from '@hi-dice/common';
 import { NotificationResponse } from '@/src/global/response/notification.response';
 
 // ** Utils Imports
@@ -37,9 +35,9 @@ import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
 import { Observable } from 'rxjs';
 import { SseJwtGuard } from '../../auth/passport/auth.jwt-sse-access.guard';
-import SendSSEMessageDto from '../dto/sse-send.dto';
 
 // ** Dto Imports
+import { SendMentionDto } from '../dto/mention-send.dto';
 
 @ApiTags('Notification')
 @ApiResponse(createServerExceptionResponse())
@@ -56,23 +54,14 @@ export default class NotificationController {
   @UseGuards(SseJwtGuard)
   @Sse('sse')
   public connectSSE(@GetUser() user: any): Observable<{ data: string }> {
-    const clients = this.sseService.addConnection(user.email);
+    const clients = this.sseService.addConnection(user.userId);
 
     return clients;
   }
 
-  @ApiBearerAuth('access-token')
-  @ApiOperation({ summary: 'SSE 메시지 전송' })
-  @ApiBody({ type: SendSSEMessageDto })
-  @UseGuards(JwtAccessGuard)
-  @Post('sse/send')
-  public sendMessage(@Body() dto: SendSSEMessageDto) {
-    this.sseService.sendMessage(dto.userIds, '메시지 내용입니다');
-
-    return CommonResponse.createResponseMessage({
-      statusCode: 200,
-      message: 'Send Message',
-    });
+  @EventPattern('notification.send-sse')
+  public async sendSSEMessage(@Payload() data: SendMentionDto) {
+    this.sseService.sendMessage(data);
   }
 
   @ApiBearerAuth('access-token')

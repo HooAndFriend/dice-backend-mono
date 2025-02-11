@@ -1,13 +1,13 @@
 // ** Nest Imports
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ClientProxy } from '@nestjs/microservices';
 
 // ** Module Imports
 import BoardRepository from '../repository/board.repository';
 import BoardMentionRepository from '../repository/mention.repository';
 import BoardContentRepository from '../repository/content.repository';
 import BoardBlockRepository from '../repository/block.repository';
-import WorkspaceUserService from '../../workspace/service/workspace-user.service';
 
 // ** enum, dto, entity, types Imports
 import Workspace from '../../workspace/domain/workspace.entity';
@@ -23,6 +23,7 @@ import BoardBlock from '../domain/board-block.entity';
 import { Transactional } from 'typeorm-transactional';
 import BoardTypeEnum from '../enum/board.type.enum';
 import Optional from 'node-optional';
+import UserService from '../../user/service/user.service';
 
 @Injectable()
 export default class BoardService {
@@ -31,6 +32,8 @@ export default class BoardService {
     private readonly boardContentRepository: BoardContentRepository,
     private readonly boardBlockRepository: BoardBlockRepository,
     private readonly boardMentionRepository: BoardMentionRepository,
+    private readonly userService: UserService,
+    @Inject('RMQ_PUSH_QUE') private readonly rmqClient: ClientProxy,
   ) {}
 
   /**
@@ -157,6 +160,11 @@ export default class BoardService {
           mentionedUser: { userId: mention.userId } as User,
         }),
       );
+    });
+
+    this.rmqClient.emit('notification.send-sse', {
+      mentioner: mentioner.nickname,
+      mentioned_userIds: mentions.map((m) => m.userId),
     });
 
     await Promise.all(savePromises);

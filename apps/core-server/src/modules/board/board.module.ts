@@ -1,5 +1,7 @@
 // ** Nest Imports
 import { Module, forwardRef } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // ** Typeorm Imports
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,12 +20,29 @@ import BoardMentionRepository from './repository/mention.repository';
 
 @Module({
   imports: [
+    ClientsModule.registerAsync([
+      {
+        name: 'RMQ_PUSH_QUE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: configService.get<string>('RMQ_PUSH_QUE'),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
     TypeOrmModule.forFeature([Board]),
     TypeOrmExModule.forCustomRepository([
       BoardRepository,
       BoardContentRepository,
       BoardBlockRepository,
-      BoardMentionRepository
+      BoardMentionRepository,
     ]),
     forwardRef(() => WorkspaceModule),
     forwardRef(() => UserModule),
