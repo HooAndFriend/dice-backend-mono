@@ -5,6 +5,7 @@ export * from './libs/dto/common/api.response';
 export * from './libs/dto/common/paging.dto';
 export * from './libs/dto/push/push.send.dto';
 export * from './libs/dto/push/mail-send.dto';
+export * from './libs/dto/push/mention-send.dto';
 
 // ** Domain
 export * from './libs/domain/common/BaseTime.Entity';

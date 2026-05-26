@@ -1,8 +1,18 @@
 // ** Nest Imports
-import { Controller, Get, Param, Patch, Put, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Put,
+  Sse,
+  UseGuards,
+} from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 // ** Module Imports
 import NotificationService from '../service/notification.service';
+import SSEService from '../service/sse.service';
 
 // ** Swagger Imports
 import {
@@ -17,21 +27,42 @@ import {
   createServerExceptionResponse,
   createUnauthorizedResponse,
 } from '@/src/global/response/common';
-import { CommonResponse } from '@hi-dice/common';
+import { CommonResponse, SendMailDto } from '@hi-dice/common';
 import { NotificationResponse } from '@/src/global/response/notification.response';
 
 // ** Utils Imports
 import { GetUser } from '@/src/global/decorators/user/user.decorators';
 import JwtAccessGuard from '../../auth/passport/auth.jwt-access.guard';
+import { Observable } from 'rxjs';
+import { SseJwtGuard } from '../../auth/passport/auth.jwt-sse-access.guard';
 
 // ** Dto Imports
+import { SendMentionDto } from '../dto/mention-send.dto';
 
 @ApiTags('Notification')
 @ApiResponse(createServerExceptionResponse())
 @ApiResponse(createUnauthorizedResponse())
 @Controller({ path: '/notification', version: '1' })
 export default class NotificationController {
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly sseService: SSEService,
+  ) {}
+
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'SSE 연결 요청' })
+  @UseGuards(SseJwtGuard)
+  @Sse('sse')
+  public connectSSE(@GetUser() user: any): Observable<{ data: string }> {
+    const clients = this.sseService.addConnection(user.userId);
+
+    return clients;
+  }
+
+  @EventPattern('notification.send-sse')
+  public async sendSSEMessage(@Payload() data: SendMentionDto) {
+    this.sseService.sendMessage(data);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '유저의 알림 리스트 조회' })

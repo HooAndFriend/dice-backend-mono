@@ -20,7 +20,7 @@ import JwtAccessStrategy from './passport/auth.jwt-access.strategy';
       }),
     }),
   ],
-  exports: [],
+  exports: [JwtModule],
   controllers: [],
   providers: [JwtAccessStrategy],
 })
